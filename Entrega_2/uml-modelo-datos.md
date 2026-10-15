@@ -13,6 +13,7 @@ classDiagram
         +string localidad
         +string ubicacionBase
         +enum rol
+        +int tallerId
         +bool verificado
         +date fechaAlta
     }
@@ -32,6 +33,7 @@ classDiagram
         +string modelo
         +int anio
         +int kilometraje
+        +string patente
         +enum estadoVehiculo
         +decimal precio
         +bool aceptaCanje
@@ -102,8 +104,59 @@ classDiagram
         +string motivo
         +enum estado
     }
+    class ListaFavoritos {
+        +int id
+        +int usuarioId
+        +string nombre
+        +date fechaCreacion
+    }
     class Favorito {
         +int usuarioId
         +int publicacionId
+        +int listaId
+    }
+    class Taller {
+        +int id
+        +string nombre
+        +string cuit
+        +string direccion
+        +string ubicacion
+        +string telefono
+        +string horarios
+        +enum estado
+        +decimal calificacionPromedio
+        +date fechaAlta
+    }
+    class Verificacion {
+        +int id
+        +int publicacionId
+        +int tallerId
+        +int mecanicoId
+        +int usuarioSolicitaId
+        +string codigo
+        +enum estado
+        +int kmLeido
+        +int puntaje
+        +enum resultado
+        +int versionChecklist
+        +date fechaSolicitud
+        +date fechaEmision
+        +date vence
+        +int calificacionTaller
+    }
+    class ItemChecklist {
+        +int id
+        +string categoria
+        +int pesoCategoria
+        +string descripcion
+        +bool critico
+        +int version
+    }
+    class ResultadoItem {
+        +int verificacionId
+        +int itemId
+        +enum estado
+        +string comentario
+        +string fotoUrl
     }
 ```
