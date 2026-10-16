@@ -108,33 +108,21 @@ p{
     color: var(--color-texto-suave);
 }
 
-.sin-js{
-    padding: var(--margen);
-}
-
 /* ---------- Estructura de pantalla ---------- */
 
-/* El main deja lugar abajo para la barra de navegación fija */
-#app{
-    min-height: 100vh;
+/* Las páginas con barra de navegación dejan lugar abajo para la barra fija (en celular) */
+body.con-barra{
     padding-bottom: calc(var(--alto-barra) + var(--esp-4));
-}
-#app:focus{
-    outline: none;
-}
-
-/* Pantallas sin barra (landing, login, formularios largos) */
-body.sin-barra #app{
-    padding-bottom: var(--esp-6);
-}
-body.sin-barra barra-navegacion{
-    display: none;
 }
 
 .pantalla{
     display: grid;
     gap: var(--esp-5);
     padding: var(--esp-5) var(--margen);
+}
+/* min-width: 0 evita que un hijo ancho (como una tabla con scroll) estire toda la pantalla */
+.pantalla > *{
+    min-width: 0;
 }
 .pantalla--compacta{
     gap: var(--esp-4);
@@ -146,16 +134,18 @@ body.sin-barra barra-navegacion{
 
 /* ---------- Tablet: el contenido se centra con un ancho máximo ---------- */
 @media (min-width: 768px){
-    #app{
+    .encabezado, .pantalla{
         max-width: 720px;
         margin-inline: auto;
     }
 }
 
-/* ---------- Escritorio ---------- */
+/* ---------- Escritorio: la barra pasa arriba, ya no hace falta el lugar abajo ---------- */
 @media (min-width: 1024px){
-    #app{
-        max-width: 960px;
+    body.con-barra{
         padding-bottom: var(--esp-6);
+    }
+    .encabezado, .pantalla{
+        max-width: 960px;
     }
 }

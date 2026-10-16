@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Planes y precios - AutoCar</title>
+  <meta name="description" content="Planes de AutoCar: Free, Meta-searching, Uso Portal y Ambas.">
+  <link rel="stylesheet" href="styles/estilos.css">
+  <link rel="stylesheet" href="styles/componentes.css">
+  <link rel="stylesheet" href="styles/pantallas.css">
+  <link rel="stylesheet" href="styles/print.css" media="print">
+</head>
+<body>
+
+  <a class="saltar" href="#contenido">Saltar al contenido</a>
+
+  <header class="encabezado">
+    <a class="encabezado__volver" href="index.html" aria-label="Volver">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12H4M4 12l7-7M4 12l7 7"/></svg>
+    </a>
+    <h1>Planes y precios</h1>
+  </header>
+
+  <!-- Precios de Free, Meta-searching y Uso Portal Bronce: los de la landing de Figma.
+       El resto son valores de ejemplo hasta que el grupo los defina. -->
+  <main id="contenido" class="pantalla">
+    <p class="suave">Elegí cómo querés usar AutoCar. Podés cambiar de plan cuando quieras desde Mi cuenta.</p>
+
+    <ul class="planes" role="list">
+      <li>
+        <article class="plan" aria-labelledby="plan-free">
+          <h2 id="plan-free">Free</h2>
+          <p class="plan__resumen">Para mirar y consultar</p>
+          <p class="plan__precio"><strong>Gratis</strong></p>
+          <ul class="plan__incluye">
+            <li>Explorar publicaciones y el mapa</li>
+            <li>Consultar por chat</li>
+            <li>Guardar favoritos en listas</li>
+          </ul>
+          <a class="boton boton--secundario boton--bloque" href="/registro">Elegir Free</a>
+        </article>
+      </li>
+      <li>
+        <article class="plan" aria-labelledby="plan-meta">
+          <h2 id="plan-meta">Meta-searching</h2>
+          <p class="plan__resumen">Para encontrar el auto que buscás</p>
+          <p class="plan__precio"><strong>$9.900</strong> / mes</p>
+          <ul class="plan__incluye">
+            <li>Todo lo de Free</li>
+            <li>Búsquedas guardadas con reporte</li>
+            <li>Resultados de AutoCar y de otros sitios</li>
+            <li>Estadísticas de precios del mercado</li>
+          </ul>
+          <a class="boton boton--secundario boton--bloque" href="/registro?plan=meta-searching">Elegir Meta-searching</a>
+        </article>
+      </li>
+      <li>
+        <article class="plan" aria-labelledby="plan-portal">
+          <h2 id="plan-portal">Uso Portal</h2>
+          <p class="plan__resumen">Para publicar y canjear</p>
+          <p class="plan__precio">desde <strong>$12.900</strong> / mes</p>
+          <ul class="plan__incluye">
+            <li>Todo lo de Free</li>
+            <li>Publicar vehículos (cupo según nivel)</li>
+            <li>Tasación con IA</li>
+            <li>Propuestas de canje</li>
+            <li>Descuento en talleres adheridos</li>
+          </ul>
+          <a class="boton boton--secundario boton--bloque" href="/registro?plan=uso-portal">Elegir Uso Portal</a>
+        </article>
+      </li>
+      <li>
+        <article class="plan" aria-labelledby="plan-ambas">
+          <h2 id="plan-ambas">Ambas</h2>
+          <p class="plan__resumen">Meta-searching + Uso Portal</p>
+          <p class="plan__precio">desde <strong>$19.900</strong> / mes</p>
+          <ul class="plan__incluye">
+            <li>Todo lo de Meta-searching</li>
+            <li>Todo lo de Uso Portal</li>
+          </ul>
+          <a class="boton boton--secundario boton--bloque" href="/registro?plan=ambas">Elegir Ambas</a>
+        </article>
+      </li>
+    </ul>
+
+    <section aria-labelledby="niveles-titulo">
+      <h2 id="niveles-titulo" class="titulo-seccion">Niveles de Uso Portal</h2>
+      <div class="tabla-desplazable" role="region" aria-labelledby="niveles-titulo" tabindex="0">
+        <table class="tabla">
+          <thead>
+            <tr>
+              <th scope="col">Nivel</th>
+              <th scope="col">Precio por mes</th>
+              <th scope="col">Anuncios</th>
+              <th scope="col">Fotos por anuncio</th>
+              <th scope="col">Descuento en talleres</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><th scope="row">Bronce</th><td>$12.900</td><td>1</td><td>5</td><td>10 %</td></tr>
+            <tr><th scope="row">Plata</th><td>$18.900</td><td>3</td><td>10</td><td>15 %</td></tr>
+            <tr><th scope="row">Oro</th><td>$26.900</td><td>5</td><td>15</td><td>25 %</td></tr>
+            <tr><th scope="row">Platino</th><td>$39.900</td><td>10</td><td>20</td><td>35 %</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="campo__ayuda">El plan Ambas suma Meta-searching a cualquier nivel de Uso Portal. El descuento en talleres se usa al verificar un vehículo publicado.</p>
+    </section>
+  </main>
+
+</body>
+</html>

@@ -1,0 +1,258 @@
+/* AutoCar - estilos propios de cada pantalla (lo que no se repite en otras). */
+
+/* ---------- Landing ---------- */
+.landing-barra{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--esp-3);
+    min-height: var(--alto-encabezado);
+    padding: 0 var(--margen);
+    border-bottom: 1px solid var(--color-linea);
+}
+.landing-barra__marca{
+    font-size: var(--tam-xl);
+    font-weight: 800;
+    text-decoration: none;
+}
+.landing-barra__enlaces{
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--esp-4);
+    font-size: var(--tam-md);
+}
+.landing-barra__enlaces a{
+    color: #555555;
+    text-decoration: none;
+}
+.landing-barra__enlaces a:hover{
+    color: var(--color-texto);
+    text-decoration: underline;
+}
+
+.landing{
+    display: grid;
+    gap: var(--esp-6);
+    padding: var(--esp-5) var(--margen);
+}
+
+/* Portada: texto con el botón y, al costado, el widget para talleres */
+.portada{
+    display: grid;
+    gap: var(--esp-4);
+    padding: var(--esp-5);
+    border: 1px dashed #bbbbbb;
+    background: var(--color-campo);
+}
+.portada__texto{
+    display: grid;
+    justify-items: start;
+    gap: var(--esp-3);
+}
+.portada h1{
+    font-size: var(--tam-xl);
+}
+.portada p{
+    color: #555555;
+}
+
+.widget-taller{
+    display: grid;
+    justify-items: start;
+    gap: var(--esp-1);
+    padding: var(--esp-3);
+    border: 1px solid var(--color-principal);
+    border-radius: var(--radio-grande);
+    background: var(--color-fondo);
+}
+.widget-taller h2{
+    font-size: var(--tam-md);
+}
+.widget-taller p{
+    margin-bottom: var(--esp-2);
+    font-size: var(--tam-xs);
+}
+.widget-taller__icono{
+    display: grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radio-pildora);
+    background: var(--color-suave);
+}
+
+.planes-destacados{
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--esp-3);
+    padding: 0;
+    list-style: none;
+}
+.plan-resumen{
+    display: grid;
+    gap: var(--esp-1);
+    height: 100%;
+    padding: var(--esp-3);
+    border: 1px solid var(--color-borde);
+    background: #fafafa;
+    font-size: var(--tam-xs);
+    text-decoration: none;
+}
+.plan-resumen strong{
+    font-size: var(--tam-md);
+}
+.plan-resumen span{
+    color: var(--color-texto-suave);
+}
+.plan-resumen .plan-resumen__mas{
+    margin-top: var(--esp-3);
+    color: var(--color-texto);
+}
+
+.pie{
+    display: grid;
+    gap: var(--esp-3);
+    padding: var(--esp-5) var(--margen);
+    border-top: 1px solid var(--color-linea);
+    font-size: var(--tam-sm);
+    color: var(--color-texto-suave);
+}
+.pie a{
+    text-decoration: none;
+}
+.pie a:hover{
+    text-decoration: underline;
+}
+.pie p{
+    margin-top: var(--esp-4);
+    font-size: var(--tam-xs);
+}
+
+/* ---------- Acceso: iniciar sesión / crear cuenta ---------- */
+.alternar{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+.alternar__opcion{
+    display: grid;
+    place-items: center;
+    min-height: var(--alto-campo);
+    border: 1px solid var(--color-borde-fuerte);
+    background: var(--color-fondo);
+    font-weight: 600;
+    text-decoration: none;
+}
+.alternar__opcion:first-child{
+    border-radius: var(--radio) 0 0 var(--radio);
+}
+.alternar__opcion:last-child{
+    border-left: 0;
+    border-radius: 0 var(--radio) var(--radio) 0;
+}
+.alternar__opcion[aria-current="page"]{
+    border-color: var(--color-principal);
+    background: var(--color-principal);
+    color: var(--color-sobre-principal);
+}
+
+.acceso__olvido{
+    justify-self: end;
+    font-size: var(--tam-sm);
+}
+.acceso__pie{
+    text-align: center;
+    font-size: var(--tam-sm);
+}
+.acceso__prueba{
+    padding: var(--esp-3);
+    border: 1px dashed var(--color-borde-fuerte);
+    border-radius: var(--radio);
+    font-size: var(--tam-xs);
+    color: var(--color-texto-suave);
+}
+.acceso__prueba .boton-link{
+    display: block;
+    margin-top: var(--esp-1);
+    color: var(--color-texto);
+}
+
+/* ---------- Planes ---------- */
+.planes{
+    display: grid;
+    gap: var(--esp-4);
+    padding: 0;
+    list-style: none;
+}
+.plan{
+    display: grid;
+    align-content: start;
+    gap: var(--esp-2);
+    height: 100%;
+    padding: var(--esp-4);
+    border: 1px solid var(--color-borde);
+    border-radius: var(--radio-grande);
+}
+.plan__resumen{
+    font-size: var(--tam-sm);
+    color: var(--color-texto-suave);
+}
+.plan__precio strong{
+    font-size: var(--tam-xl);
+}
+.plan__incluye{
+    display: grid;
+    gap: var(--esp-1);
+    margin-bottom: var(--esp-2);
+    padding-left: var(--esp-4);
+    font-size: var(--tam-sm);
+}
+
+/* La tabla de niveles se desplaza de costado en celular en vez de romper la pantalla */
+.tabla-desplazable{
+    overflow-x: auto;
+}
+.tabla{
+    width: 100%;
+    min-width: 520px;
+    border-collapse: collapse;
+    font-size: var(--tam-sm);
+}
+.tabla th, .tabla td{
+    padding: var(--esp-2) var(--esp-3);
+    border-bottom: 1px solid var(--color-linea);
+    text-align: left;
+}
+.tabla thead th{
+    font-size: var(--tam-xs);
+    color: var(--color-texto-suave);
+}
+
+/* ---------- Tablet y escritorio ---------- */
+@media (min-width: 768px){
+    .portada{
+        grid-template-columns: 1fr 220px;
+        align-items: end;
+    }
+    .planes{
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (min-width: 1024px){
+    .landing-barra, .landing, .pie{
+        padding-inline: max(var(--margen), calc((100% - 960px) / 2));
+    }
+    .portada{
+        padding: var(--esp-6);
+    }
+    .portada h1{
+        font-size: var(--tam-xxl);
+    }
+    .planes{
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+    .acceso{
+        max-width: 420px;
+        margin-inline: auto;
+    }
+}

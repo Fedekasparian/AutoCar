@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guía de componentes - AutoCar</title>
+  <meta name="description" content="Componentes del sistema de diseño de AutoCar.">
+  <link rel="stylesheet" href="styles/estilos.css">
+  <link rel="stylesheet" href="styles/componentes.css">
+  <link rel="stylesheet" href="styles/pantallas.css">
+  <link rel="stylesheet" href="styles/print.css" media="print">
+</head>
+<body class="con-barra">
+
+  <!-- Guía de componentes: todas las piezas del front en un solo lugar.
+       Para armar una pantalla nueva se copia de acá el HTML de cada componente. -->
+
+  <a class="saltar" href="#contenido">Saltar al contenido</a>
+
+  <!-- Barra de navegación: va primero en el HTML. En celular se fija abajo y en escritorio arriba.
+       aria-current="page" marca la sección actual. -->
+  <nav class="barra" aria-label="Navegación principal">
+    <a class="barra__marca" href="home.html">AutoCar</a>
+    <ul class="barra__lista">
+      <li>
+        <a class="barra__enlace" href="home.html">
+          <span class="barra__icono"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/></svg></span>
+          Home
+        </a>
+      </li>
+      <li>
+        <a class="barra__enlace" href="meta-busqueda.html">
+          <span class="barra__icono"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4.5-4.5"/></svg></span>
+          Meta-S
+        </a>
+      </li>
+      <li>
+        <a class="barra__enlace" href="mis-publicaciones.html">
+          <span class="barra__icono"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span>
+          Publicar
+        </a>
+      </li>
+      <li>
+        <a class="barra__enlace" href="mensajes.html">
+          <span class="barra__icono"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z"/></svg></span>
+          Mensajes
+        </a>
+      </li>
+      <li>
+        <a class="barra__enlace" href="cuenta.html" aria-current="page">
+          <span class="barra__icono"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg></span>
+          Cuenta
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <!-- Encabezado de pantalla: volver (enlace a la pantalla anterior), título con subtítulo opcional y una acción -->
+  <header class="encabezado">
+    <a class="encabezado__volver" href="index.html" aria-label="Volver">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12H4M4 12l7-7M4 12l7 7"/></svg>
+    </a>
+    <h1>Guía de componentes <span class="encabezado__subtitulo">Sistema de diseño de AutoCar</span></h1>
+    <button type="button" class="encabezado__accion" aria-label="Más opciones">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/></svg>
+    </button>
+  </header>
+
+  <main id="contenido" class="pantalla">
+
+    <section class="pila" aria-labelledby="g-botones">
+      <h2 id="g-botones">Botones</h2>
+      <button type="button" class="boton boton--bloque">Guardar y buscar</button>
+      <button type="button" class="boton boton--secundario boton--bloque">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l2 7 7 2-7 2-2 7-2-7-7-2 7-2z"/></svg>
+        Completar con IA
+      </button>
+      <p>
+        <button type="button" class="boton boton--chico">Aprobar</button>
+        <button type="button" class="boton boton--secundario boton--chico">Rechazar</button>
+        <button type="button" class="boton boton--chico" disabled>Deshabilitado</button>
+      </p>
+      <button type="button" class="boton-link">+ Nueva lista</button>
+    </section>
+
+    <section aria-labelledby="g-campos">
+      <h2 id="g-campos" class="titulo-seccion">Campos</h2>
+      <!-- Los errores se muestran al lado de cada campo: aria-invalid en el campo y el texto en .campo__error -->
+      <form class="formulario" action="#" novalidate>
+        <p class="formulario__alerta" role="alert">Revisá los datos marcados.</p>
+        <div class="campo">
+          <label class="campo__etiqueta" for="g-marca">Marca</label>
+          <select class="campo__input" id="g-marca" name="marca">
+            <option value="">Seleccionar marca</option>
+            <option>Toyota</option>
+          </select>
+        </div>
+        <div class="campos-fila">
+          <div class="campo">
+            <label class="campo__etiqueta" for="g-desde">Año desde</label>
+            <input class="campo__input" id="g-desde" name="anio_desde" inputmode="numeric" placeholder="2015">
+          </div>
+          <div class="campo">
+            <label class="campo__etiqueta" for="g-hasta">Año hasta</label>
+            <input class="campo__input" id="g-hasta" name="anio_hasta" inputmode="numeric" placeholder="2022" aria-invalid="true" aria-describedby="g-hasta-error">
+            <span class="campo__error" id="g-hasta-error">Tiene que ser mayor que el año desde.</span>
+          </div>
+        </div>
+        <div class="campo">
+          <label class="campo__etiqueta" for="g-texto">Describí el auto que buscás</label>
+          <textarea class="campo__input" id="g-texto" name="texto" placeholder="Busco un Corolla automático, del 2015 en adelante…" aria-describedby="g-texto-ayuda"></textarea>
+          <span class="campo__ayuda" id="g-texto-ayuda">La IA completa los campos. Revisalos antes de guardar.</span>
+        </div>
+        <label class="casilla">
+          <input type="checkbox" name="terminos">
+          <span>Acepto los términos y condiciones</span>
+        </label>
+      </form>
+    </section>
+
+    <section class="pila" aria-labelledby="g-chips">
+      <h2 id="g-chips">Chips y etiquetas</h2>
+      <ul class="chips" role="list">
+        <li><a class="chip" href="#" aria-current="true">Todos (4)</a></li>
+        <li><a class="chip" href="#">Para canje (2)</a></li>
+        <li><a class="chip" href="#">Familia (1)</a></li>
+      </ul>
+      <p>
+        <span class="etiqueta">IA</span>
+        <span class="etiqueta etiqueta--oscura">−25 %</span>
+        <span class="etiqueta etiqueta--borde">Pendiente</span>
+      </p>
+    </section>
+
+    <section aria-labelledby="g-fichas">
+      <h2 id="g-fichas" class="titulo-seccion">Fichas de vehículo <a href="home.html">Ver todas</a></h2>
+      <ul class="grilla-vehiculos" role="list">
+        <li>
+          <a class="ficha-vehiculo" href="vehiculo.html">
+            <div class="ficha-vehiculo__imagen" role="img" aria-label="Toyota Corolla 2018, sin foto"></div>
+            <span class="etiqueta etiqueta--borde ficha-vehiculo__etiqueta">Para canje</span>
+            <div class="ficha-vehiculo__cuerpo">
+              <span class="ficha-vehiculo__precio">$8.500.000</span>
+              <span class="ficha-vehiculo__titulo">Toyota Corolla 2018</span>
+              <span class="ficha-vehiculo__lugar">Mercedes, BA</span>
+            </div>
+          </a>
+        </li>
+        <li>
+          <a class="ficha-vehiculo" href="vehiculo.html">
+            <div class="ficha-vehiculo__imagen" role="img" aria-label="Ford Ranger 2020, sin foto"></div>
+            <div class="ficha-vehiculo__cuerpo">
+              <span class="ficha-vehiculo__precio">$9.200.000</span>
+              <span class="ficha-vehiculo__titulo">Ford Ranger 2020</span>
+              <span class="ficha-vehiculo__lugar">Luján, BA</span>
+            </div>
+          </a>
+        </li>
+      </ul>
+    </section>
+
+    <section aria-labelledby="g-filas">
+      <h2 id="g-filas" class="titulo-seccion">Filas</h2>
+      <ul class="lista-filas" role="list">
+        <li class="fila">
+          <span class="fila__miniatura"></span>
+          <span class="fila__cuerpo">
+            <span class="fila__titulo">Toyota Corolla 2018</span><br>
+            <span class="fila__meta">AB***12 · 85.000 km</span>
+          </span>
+          <span class="etiqueta etiqueta--borde">Pendiente</span>
+        </li>
+      </ul>
+    </section>
+
+    <section class="pila" aria-labelledby="g-otros">
+      <h2 id="g-otros">Pestañas, control segmentado y recuadro</h2>
+      <nav class="pestanas" aria-label="Ejemplo de pestañas">
+        <a class="pestanas__pestana" href="#" aria-current="page">Pendientes (2)</a>
+        <a class="pestanas__pestana" href="#">En inspección (1)</a>
+        <a class="pestanas__pestana" href="#">Aprobaciones</a>
+      </nav>
+      <fieldset class="segmentado">
+        <legend class="solo-lector">Pastillas y discos</legend>
+        <input type="radio" name="g-seg" id="g-ok" checked><label for="g-ok">OK</label>
+        <input type="radio" name="g-seg" id="g-obs"><label for="g-obs">Observado</label>
+        <input type="radio" name="g-seg" id="g-falla"><label for="g-falla">Falla</label>
+      </fieldset>
+      <div class="recuadro">Tu plan Oro: −25 % en cualquier taller adherido</div>
+    </section>
+
+  </main>
+
+</body>
+</html>

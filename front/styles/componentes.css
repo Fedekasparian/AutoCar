@@ -1,12 +1,6 @@
 /* AutoCar - componentes que se repiten en varias pantallas:
    encabezado, barra de navegación, botones, campos, chips, fichas y listas. */
 
-/* Los web components son sólo envoltorios: su contenido se ubica como si no estuvieran,
-   así el encabezado sticky y la barra fija se posicionan respecto de la página. */
-barra-navegacion, encabezado-pantalla{
-    display: contents;
-}
-
 /* ---------- Encabezado de pantalla: volver, título y una acción ---------- */
 .encabezado{
     position: sticky;

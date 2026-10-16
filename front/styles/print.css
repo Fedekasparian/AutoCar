@@ -4,7 +4,7 @@
     margin: 2cm;
 }
 
-barra-navegacion, .encabezado__volver, .encabezado__accion, .boton, .saltar{
+.barra, .encabezado__volver, .encabezado__accion, .boton, .saltar{
     display: none;
 }
 
@@ -14,8 +14,7 @@ body{
     background: #fff;
 }
 
-#app{
-    max-width: 100%;
+body.con-barra{
     padding: 0;
 }
 
