@@ -256,3 +256,187 @@
         margin-inline: auto;
     }
 }
+
+/* ---------- Home: buscador, filtros rápidos y grilla ---------- */
+.buscador{
+    display: flex;
+    gap: var(--esp-2);
+}
+.buscador .campo__input{
+    flex: 1;
+}
+.filtros-rapidos{
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--esp-2);
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+.filtros-rapidos .campo__input{
+    min-height: 36px;
+    padding: 0 var(--esp-2);
+    font-size: var(--tam-xs);
+}
+.resultados__barra{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--esp-3);
+    font-size: var(--tam-sm);
+}
+
+/* ---------- Detalle de vehículo ---------- */
+.galeria{
+    display: grid;
+    gap: var(--esp-2);
+    margin: 0;
+}
+.galeria__principal{
+    position: relative;
+    aspect-ratio: 4 / 3;
+    background: var(--color-imagen);
+}
+.galeria__contador{
+    position: absolute;
+    right: var(--esp-2);
+    bottom: var(--esp-2);
+}
+.galeria__miniaturas{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--esp-2);
+    padding: 0;
+    list-style: none;
+}
+.galeria__miniaturas li{
+    aspect-ratio: 4 / 3;
+    background: var(--color-imagen);
+}
+
+.detalle__info{
+    display: grid;
+    gap: var(--esp-5);
+}
+.detalle__titulo{
+    display: grid;
+    gap: var(--esp-1);
+}
+.detalle__titulo h2{
+    font-size: var(--tam-xl);
+}
+.detalle__precio{
+    font-size: var(--tam-lg);
+    font-weight: 700;
+}
+
+.verificado{
+    display: flex;
+    align-items: center;
+    gap: var(--esp-3);
+    padding: var(--esp-3);
+    border: 1px solid var(--color-principal);
+    border-radius: var(--radio-grande);
+    background: var(--color-campo);
+    text-decoration: none;
+}
+.verificado__icono{
+    display: grid;
+    flex: none;
+    place-items: center;
+    width: 28px;
+    height: 28px;
+    border-radius: var(--radio-pildora);
+    background: var(--color-principal);
+    color: var(--color-sobre-principal);
+}
+.verificado__texto{
+    flex: 1;
+    font-size: var(--tam-xs);
+    color: var(--color-texto-suave);
+}
+.verificado__texto strong{
+    display: block;
+    font-size: var(--tam-md);
+    color: var(--color-texto);
+}
+.verificado__enlace{
+    font-size: var(--tam-xs);
+    font-weight: 600;
+}
+
+.tasacion__rango{
+    font-size: var(--tam-lg);
+    font-weight: 700;
+}
+
+.mapa-chico{
+    display: grid;
+    place-items: center;
+    aspect-ratio: 16 / 7;
+    border-radius: var(--radio);
+    background:
+        repeating-linear-gradient(0deg, transparent 0 38px, #d8d8d8 38px 44px),
+        repeating-linear-gradient(90deg, transparent 0 58px, #d8d8d8 58px 64px),
+        #e9e9e9;
+}
+.mapa-chico__zona{
+    width: 96px;
+    height: 96px;
+    border: 2px solid var(--color-principal);
+    border-radius: var(--radio-pildora);
+    background: rgb(51 51 51 / .12);
+}
+
+.publicador{
+    display: flex;
+    align-items: center;
+    gap: var(--esp-3);
+}
+.publicador__avatar{
+    display: grid;
+    flex: none;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    border-radius: var(--radio-pildora);
+    background: var(--color-suave);
+    font-weight: 700;
+}
+
+.detalle__acciones{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--esp-3);
+}
+.detalle__reportar{
+    justify-self: center;
+    font-size: var(--tam-xs);
+    color: var(--color-texto-suave);
+}
+
+/* ---------- Favoritos ---------- */
+.listas__barra{
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: var(--esp-3);
+}
+.listas__barra h2{
+    font-size: var(--tam-sm);
+}
+
+@media (min-width: 1024px){
+    .filtros-rapidos{
+        grid-template-columns: repeat(3, 200px);
+    }
+    /* Detalle en dos columnas: fotos a la izquierda, datos a la derecha */
+    .detalle{
+        grid-template-columns: 3fr 2fr;
+        align-items: start;
+    }
+    .detalle .galeria{
+        position: sticky;
+        top: calc(64px + var(--esp-4));
+    }
+}

@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chevrolet Onix 2019 - AutoCar</title>
+  <meta name="description" content="Chevrolet Onix 2019 en venta o canje en Mercedes, Buenos Aires.">
+  <link rel="stylesheet" href="styles/estilos.css">
+  <link rel="stylesheet" href="styles/componentes.css">
+  <link rel="stylesheet" href="styles/pantallas.css">
+  <link rel="stylesheet" href="styles/print.css" media="print">
+  <script src="js/dialogos.js" defer></script>
+</head>
+<body class="con-barra">
+
+  <a class="saltar" href="#contenido">Saltar al contenido</a>
+
+  <nav class="barra" aria-label="Navegación principal">
+    <a class="barra__marca" href="home.html">AutoCar</a>
+    <ul class="barra__lista">
+      <li>
+        <a class="barra__enlace" href="home.html" aria-current="page">
+          <span class="barra__icono"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/></svg></span>
+          Home
+        </a>
+      </li>
+      <li>
+        <a class="barra__enlace" href="meta-busqueda.html">
+          <span class="barra__icono"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4.5-4.5"/></svg></span>
+          Meta-S
+        </a>
+      </li>
+      <li>
+        <a class="barra__enlace" href="mis-publicaciones.html">
+          <span class="barra__icono"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span>
+          Publicar
+        </a>
+      </li>
+      <li>
+        <a class="barra__enlace" href="mensajes.html">
+          <span class="barra__icono"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z"/></svg></span>
+          Mensajes
+        </a>
+      </li>
+      <li>
+        <a class="barra__enlace" href="cuenta.html">
+          <span class="barra__icono"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg></span>
+          Cuenta
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <header class="encabezado">
+    <a class="encabezado__volver" href="home.html" aria-label="Volver">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12H4M4 12l7-7M4 12l7 7"/></svg>
+    </a>
+    <h1>Detalle</h1>
+    <button type="button" class="encabezado__accion" data-abrir="guardar-favorito" aria-label="Guardar en favoritos">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 20s-7-4.5-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.5-7 10-7 10z"/></svg>
+    </button>
+  </header>
+
+  <main id="contenido" class="pantalla detalle">
+
+    <figure class="galeria">
+      <div class="galeria__principal" role="img" aria-label="Chevrolet Onix 2019, foto 1 de 6">
+        <span class="etiqueta etiqueta--borde galeria__contador">1 / 6</span>
+      </div>
+      <figcaption class="solo-lector">Fotos del Chevrolet Onix 2019</figcaption>
+      <ul class="galeria__miniaturas" role="list" aria-label="Más fotos">
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+      </ul>
+    </figure>
+
+    <div class="detalle__info">
+
+      <section class="detalle__titulo" aria-labelledby="vehiculo-titulo">
+        <h2 id="vehiculo-titulo">Chevrolet Onix 2019</h2>
+        <p class="detalle__precio">$4.800.000</p>
+        <p class="suave">62.300 km · Mercedes, BA</p>
+        <p><span class="etiqueta etiqueta--borde">Acepta canje</span></p>
+      </section>
+
+      <!-- Sólo si tiene una verificación vigente (ver Entrega_2/talleres-adheridos.md) -->
+      <a class="verificado" href="verificacion.html">
+        <span class="verificado__icono">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg>
+        </span>
+        <span class="verificado__texto">
+          <strong>Verificado · 86/100</strong>
+          Muy bueno · Taller San Martín · 08/10/2026
+        </span>
+        <span class="verificado__enlace">Ver informe</span>
+      </a>
+
+      <section aria-labelledby="ficha-titulo">
+        <h2 id="ficha-titulo" class="titulo-seccion">Ficha técnica</h2>
+        <dl class="datos">
+          <dt>Año</dt><dd>2019</dd>
+          <dt>Kilometraje</dt><dd>62.300 km (leído en la verificación)</dd>
+          <dt>Combustible</dt><dd>Nafta</dd>
+          <dt>Transmisión</dt><dd>Manual</dd>
+          <dt>Estado</dt><dd>Muy bueno (verificado)</dd>
+        </dl>
+      </section>
+
+      <section class="recuadro pila" aria-labelledby="tasacion-titulo">
+        <h2 id="tasacion-titulo">Tasación de referencia</h2>
+        <p class="tasacion__rango">$4.500.000 a $5.000.000</p>
+        <p class="campo__ayuda">Calculada con el estado verificado y publicaciones parecidas. Es una estimación, no un precio de venta.</p>
+      </section>
+
+      <section class="pila" aria-labelledby="ubicacion-titulo">
+        <h2 id="ubicacion-titulo">Ubicación</h2>
+        <div class="mapa-chico" role="img" aria-label="Mapa con la zona aproximada en Mercedes, Buenos Aires">
+          <span class="mapa-chico__zona"></span>
+        </div>
+        <p class="campo__ayuda">Zona aproximada: Mercedes, BA. Por privacidad no mostramos la dirección exacta.</p>
+      </section>
+
+      <section class="pila" aria-labelledby="publicador-titulo">
+        <h2 id="publicador-titulo">Publicado por</h2>
+        <div class="publicador">
+          <span class="publicador__avatar" aria-hidden="true">MG</span>
+          <div>
+            <p><strong>Martín G.</strong></p>
+            <p class="campo__ayuda">En AutoCar desde 2025 · 3 operaciones cerradas · 4,8 de 5</p>
+          </div>
+        </div>
+      </section>
+
+      <div class="detalle__acciones">
+        <a class="boton" href="conversacion.html">Consultar</a>
+        <a class="boton boton--secundario" href="proponer-canje.html">Proponer canje</a>
+      </div>
+      <a class="detalle__reportar" href="reportar.html">Reportar publicación</a>
+
+    </div>
+  </main>
+
+  <!-- Guardar en favoritos: se elige una lista o ninguna (queda sólo en "Todos") -->
+  <dialog class="hoja" id="guardar-favorito" aria-labelledby="guardar-titulo">
+    <form class="pila" action="/favoritos" method="post">
+      <h2 id="guardar-titulo">Guardar en favoritos</h2>
+      <p class="campo__ayuda">Elegí una lista (opcional)</p>
+      <input type="hidden" name="publicacion_id" value="4">
+      <fieldset class="opciones">
+        <legend class="solo-lector">Lista</legend>
+        <label><input type="radio" name="lista_id" value=""><span>Sin lista (sólo en Todos)</span></label>
+        <label><input type="radio" name="lista_id" value="1" checked><span>Para canje</span></label>
+        <label><input type="radio" name="lista_id" value="2"><span>Familia</span></label>
+      </fieldset>
+      <div class="campo">
+        <label class="campo__etiqueta" for="nueva-lista">O creá una lista nueva</label>
+        <input class="campo__input" id="nueva-lista" name="nueva_lista" maxlength="40" placeholder="Ej: Primer auto">
+      </div>
+      <div class="hoja__acciones">
+        <button class="boton boton--secundario" type="button" data-cerrar>Cancelar</button>
+        <button class="boton" type="submit">Guardar</button>
+      </div>
+    </form>
+  </dialog>
+
+</body>
+</html>

@@ -16,6 +16,9 @@ Login, registro y salir ya están hechos en el back, así que no están acá.
 |---|---|---|
 | `index.html` | `/` | Landing pública |
 | `planes.html` | `/planes` | Planes y precios |
+| `home.html` | `/home` | Publicaciones con filtros rápidos y paginación |
+| `vehiculo.html` | `/vehiculo/:id` | Detalle de vehículo, con la ventana "Guardar en favoritos" |
+| `favoritos.html` | `/cuenta/favoritos` | Favoritos organizados en listas |
 | `guia.html` | — | Guía de componentes (sólo de referencia) |
 
 ## Cómo ver las páginas
@@ -34,6 +37,8 @@ Para ver la versión de celular alcanza con achicar la ventana o usar la vista a
 front/
 ├── index.html, planes.html, …   una página por pantalla
 ├── guia.html                    todos los componentes, para copiar el HTML
+├── js/
+│   └── dialogos.js              abre y cierra las ventanas <dialog>
 └── styles/
     ├── reset.css
     ├── estilos.css              variables (colores, tipografía, espaciado) y estructura
@@ -51,5 +56,9 @@ front/
 **Barra de navegación.** Va primero en el HTML. En celular se fija abajo, como en Figma; desde 1024px pasa a ser una barra superior con la marca. Las páginas con barra llevan `class="con-barra"` en el `body` para dejarle lugar abajo. La sección actual se marca con `aria-current="page"`.
 
 **Errores de formulario al lado de cada campo.** Los wireframes lo piden así. El campo lleva `aria-invalid="true"` y `aria-describedby` apuntando al texto del error (`.campo__error`), así el lector de pantalla lo lee al llegar al campo.
+
+**JavaScript sólo donde suma.** Las ventanas como "Guardar en favoritos" son `<dialog>` que abre `js/dialogos.js` con botones `data-abrir="id"`. Los menús "⋯" usan `<details>`, que funciona sin JavaScript. Los formularios envían a las rutas del back por POST, así que sin JavaScript también funcionan.
+
+**Estados vacíos.** Las pantallas con listas (home, favoritos) tienen comentado en el HTML qué mostrar cuando no hay resultados.
 
 **Responsive.** Mobile first: lo base es para celular. Desde 768px el contenido se centra con un ancho máximo y la grilla de vehículos pasa a 3 columnas; desde 1024px la grilla va a 4 columnas.

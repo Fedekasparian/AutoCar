@@ -447,6 +447,149 @@ textarea.campo__input{
     color: var(--color-texto);
 }
 
+/* ---------- Ventana inferior (dialog): guardar en favoritos, nueva lista ---------- */
+.hoja{
+    width: 100%;
+    max-width: 480px;
+    margin: auto auto 0;
+    padding: var(--esp-3) var(--margen) var(--esp-5);
+    border: 0;
+    border-radius: var(--radio-grande) var(--radio-grande) 0 0;
+    background: var(--color-fondo);
+    color: var(--color-texto);
+}
+.hoja::backdrop{
+    background: rgb(0 0 0 / .45);
+}
+/* La rayita de arriba indica que es una ventana que se puede cerrar */
+.hoja::before{
+    content: "";
+    display: block;
+    width: 40px;
+    height: 4px;
+    margin: 0 auto var(--esp-4);
+    border-radius: 2px;
+    background: var(--color-borde);
+}
+.hoja h2{
+    font-size: var(--tam-lg);
+}
+.hoja__acciones{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--esp-3);
+}
+
+/* Lista de opciones con radio (una sola elección) */
+.opciones{
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+.opciones label{
+    display: flex;
+    align-items: center;
+    gap: var(--esp-3);
+    min-height: 48px;
+    border-bottom: 1px solid var(--color-linea);
+    cursor: pointer;
+}
+.opciones input{
+    width: 18px;
+    height: 18px;
+    margin: 0;
+    accent-color: var(--color-principal);
+}
+.opciones input:checked + span{
+    font-weight: 600;
+}
+
+/* ---------- Menú desplegable "⋯" (details/summary, funciona sin JavaScript) ---------- */
+.menu{
+    position: relative;
+}
+.menu summary{
+    display: grid;
+    place-items: center;
+    min-width: 44px;
+    min-height: 44px;
+    list-style: none;
+    cursor: pointer;
+}
+.menu summary::-webkit-details-marker{
+    display: none;
+}
+.menu__lista{
+    position: absolute;
+    top: calc(100% + 4px);
+    right: 0;
+    z-index: 30;
+    min-width: 180px;
+    padding: var(--esp-1) 0;
+    border: 1px solid var(--color-linea);
+    border-radius: var(--radio);
+    background: var(--color-fondo);
+    box-shadow: 0 4px 12px rgb(0 0 0 / .12);
+    list-style: none;
+}
+.menu__lista a, .menu__lista button{
+    display: block;
+    width: 100%;
+    padding: var(--esp-2) var(--esp-4);
+    border: 0;
+    background: none;
+    font-size: var(--tam-sm);
+    text-align: left;
+    text-decoration: none;
+}
+.menu__lista a:hover, .menu__lista button:hover{
+    background: var(--color-campo);
+}
+
+/* ---------- Paginación ---------- */
+.paginacion ul{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--esp-2);
+    padding: 0;
+    list-style: none;
+}
+.paginacion a, .paginacion span{
+    display: grid;
+    place-items: center;
+    min-width: 36px;
+    min-height: 36px;
+    padding: 0 var(--esp-2);
+    border: 1px solid var(--color-borde);
+    border-radius: var(--radio);
+    font-size: var(--tam-sm);
+    text-decoration: none;
+}
+.paginacion [aria-current="page"]{
+    border-color: var(--color-principal);
+    background: var(--color-principal);
+    color: var(--color-sobre-principal);
+    font-weight: 600;
+}
+.paginacion [aria-disabled="true"]{
+    color: var(--color-placeholder);
+}
+
+/* Lista de datos "nombre: valor" (ficha técnica) */
+.datos{
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    gap: var(--esp-2) var(--esp-4);
+    font-size: var(--tam-sm);
+}
+.datos dt{
+    color: var(--color-texto-suave);
+}
+.datos dd{
+    margin: 0;
+}
+
 /* ---------- Tablet ---------- */
 @media (min-width: 768px){
     .grilla-vehiculos{
