@@ -1,0 +1,24 @@
+/* AutoCar - hoja de impresión: sin navegación ni botones, negro sobre blanco */
+@page{
+    size: A4;
+    margin: 2cm;
+}
+
+barra-navegacion, .encabezado__volver, .encabezado__accion, .boton, .saltar{
+    display: none;
+}
+
+body{
+    font-size: 11pt;
+    color: #000;
+    background: #fff;
+}
+
+#app{
+    max-width: 100%;
+    padding: 0;
+}
+
+.ficha-vehiculo, .fila, .recuadro{
+    break-inside: avoid;
+}

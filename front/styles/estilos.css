@@ -1,0 +1,161 @@
+/* AutoCar - estilos generales.
+   Colores y medidas tomados de los wireframes de Figma (escala de grises, ver README).
+   Mobile first: lo base es para celular y las media queries del final adaptan
+   a tablet y escritorio. */
+@import url(reset.css);
+
+:root{
+    /* Tipografía: Inter si está instalada, si no la del sistema */
+    --fuente: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    --tam-xs: .75rem;      /* 12px */
+    --tam-sm: .8125rem;    /* 13px */
+    --tam-md: .875rem;     /* 14px */
+    --tam-lg: 1.0625rem;   /* 17px */
+    --tam-xl: 1.375rem;    /* 22px */
+    --tam-xxl: 1.75rem;    /* 28px */
+
+    /* Colores de los wireframes */
+    --color-fondo: #ffffff;
+    --color-texto: #333333;
+    --color-texto-suave: #777777;
+    --color-placeholder: #aaaaaa;
+    --color-linea: #e0e0e0;
+    --color-borde: #cccccc;
+    --color-borde-fuerte: #999999;
+    --color-campo: #f5f5f5;
+    --color-superficie: #efefef;
+    --color-imagen: #dcdcdc;
+    --color-barra: #f7f7f7;
+    --color-principal: #333333;
+    --color-principal-oscuro: #1f1f1f;
+    --color-sobre-principal: #ffffff;
+    --color-suave: #e6e6e6;
+    --color-error: #b00020;
+    --color-foco: #1a73e8;
+
+    /* Espaciado */
+    --margen: 20px;
+    --esp-1: 4px;
+    --esp-2: 8px;
+    --esp-3: 12px;
+    --esp-4: 16px;
+    --esp-5: 24px;
+    --esp-6: 32px;
+
+    /* Formas y alturas fijas */
+    --radio: 4px;
+    --radio-grande: 8px;
+    --radio-pildora: 999px;
+    --alto-encabezado: 72px;
+    --alto-barra: 64px;
+    --alto-campo: 44px;
+
+    font-family: var(--fuente);
+    font-size: 16px;
+    line-height: 1.4;
+    color: var(--color-texto);
+}
+
+body{
+    background: var(--color-fondo);
+    font-size: var(--tam-md);
+}
+
+h1, h2, h3{
+    line-height: 1.2;
+}
+h2{
+    font-size: var(--tam-lg);
+}
+h3{
+    font-size: var(--tam-md);
+}
+p{
+    line-height: 1.5;
+}
+
+:focus-visible{
+    outline: 2px solid var(--color-foco);
+    outline-offset: 2px;
+}
+
+/* Enlace para saltear la navegación con teclado */
+.saltar{
+    position: absolute;
+    top: -100px;
+    left: var(--esp-2);
+    z-index: 100;
+    padding: var(--esp-2) var(--esp-3);
+    border-radius: var(--radio);
+    background: var(--color-principal);
+    color: var(--color-sobre-principal);
+}
+.saltar:focus{
+    top: var(--esp-2);
+}
+
+/* Texto que sólo leen los lectores de pantalla */
+.solo-lector{
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+}
+
+.suave{
+    color: var(--color-texto-suave);
+}
+
+.sin-js{
+    padding: var(--margen);
+}
+
+/* ---------- Estructura de pantalla ---------- */
+
+/* El main deja lugar abajo para la barra de navegación fija */
+#app{
+    min-height: 100vh;
+    padding-bottom: calc(var(--alto-barra) + var(--esp-4));
+}
+#app:focus{
+    outline: none;
+}
+
+/* Pantallas sin barra (landing, login, formularios largos) */
+body.sin-barra #app{
+    padding-bottom: var(--esp-6);
+}
+body.sin-barra barra-navegacion{
+    display: none;
+}
+
+.pantalla{
+    display: grid;
+    gap: var(--esp-5);
+    padding: var(--esp-5) var(--margen);
+}
+.pantalla--compacta{
+    gap: var(--esp-4);
+}
+.pila{
+    display: grid;
+    gap: var(--esp-3);
+}
+
+/* ---------- Tablet: el contenido se centra con un ancho máximo ---------- */
+@media (min-width: 768px){
+    #app{
+        max-width: 720px;
+        margin-inline: auto;
+    }
+}
+
+/* ---------- Escritorio ---------- */
+@media (min-width: 1024px){
+    #app{
+        max-width: 960px;
+        padding-bottom: var(--esp-6);
+    }
+}

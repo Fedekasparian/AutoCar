@@ -1,0 +1,502 @@
+/* AutoCar - componentes que se repiten en varias pantallas:
+   encabezado, barra de navegación, botones, campos, chips, fichas y listas. */
+
+/* Los web components son sólo envoltorios: su contenido se ubica como si no estuvieran,
+   así el encabezado sticky y la barra fija se posicionan respecto de la página. */
+barra-navegacion, encabezado-pantalla{
+    display: contents;
+}
+
+/* ---------- Encabezado de pantalla: volver, título y una acción ---------- */
+.encabezado{
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    display: grid;
+    grid-template-columns: 48px 1fr 48px;
+    align-items: center;
+    height: var(--alto-encabezado);
+    padding: 0 var(--esp-2);
+    border-bottom: 1px solid var(--color-linea);
+    background: var(--color-fondo);
+}
+.encabezado h1{
+    grid-column: 2;
+    font-size: var(--tam-lg);
+    text-align: center;
+}
+.encabezado__subtitulo{
+    display: block;
+    margin-top: 2px;
+    font-size: var(--tam-xs);
+    font-weight: 400;
+    color: var(--color-texto-suave);
+}
+.encabezado__volver, .encabezado__accion{
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border: 0;
+    border-radius: var(--radio-pildora);
+    background: transparent;
+    text-decoration: none;
+}
+.encabezado__volver{
+    grid-column: 1;
+}
+.encabezado__accion{
+    grid-column: 3;
+}
+.encabezado__volver:hover, .encabezado__accion:hover{
+    background: var(--color-campo);
+}
+
+/* ---------- Barra de navegación: abajo en celular, arriba en escritorio ---------- */
+.barra{
+    position: fixed;
+    inset: auto 0 0 0;
+    z-index: 20;
+    height: var(--alto-barra);
+    border-top: 1px solid var(--color-linea);
+    background: var(--color-barra);
+}
+.barra__marca{
+    display: none;
+}
+.barra__lista{
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    height: 100%;
+    padding: 0;
+    list-style: none;
+}
+.barra__enlace{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    height: 100%;
+    font-size: 11px;
+    color: #666666;
+    text-decoration: none;
+}
+.barra__icono{
+    display: grid;
+    place-items: center;
+    width: 28px;
+    height: 28px;
+    border-radius: var(--radio-pildora);
+    background: #d0d0d0;
+    color: var(--color-fondo);
+}
+.barra__enlace[aria-current="page"]{
+    font-weight: 600;
+    color: var(--color-texto);
+}
+.barra__enlace[aria-current="page"] .barra__icono{
+    background: var(--color-principal);
+}
+
+/* ---------- Botones ---------- */
+.boton{
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--esp-2);
+    min-height: var(--alto-campo);
+    padding: 0 var(--esp-4);
+    border: 1px solid var(--color-principal);
+    border-radius: var(--radio);
+    background: var(--color-principal);
+    color: var(--color-sobre-principal);
+    font-size: 15px;
+    font-weight: 600;
+    text-align: center;
+    text-decoration: none;
+}
+.boton:hover{
+    background: var(--color-principal-oscuro);
+}
+.boton--secundario{
+    background: var(--color-fondo);
+    color: var(--color-texto);
+}
+.boton--secundario:hover{
+    background: var(--color-campo);
+}
+.boton--bloque{
+    display: flex;
+    width: 100%;
+}
+.boton--chico{
+    min-height: 32px;
+    padding: 0 var(--esp-3);
+    font-size: var(--tam-sm);
+}
+.boton[disabled]{
+    opacity: .5;
+    cursor: not-allowed;
+}
+
+/* Botón que se ve como enlace */
+.boton-link{
+    justify-self: start;
+    padding: 0;
+    border: 0;
+    background: none;
+    font-weight: 600;
+    text-decoration: none;
+}
+.boton-link:hover{
+    text-decoration: underline;
+}
+
+/* ---------- Formularios ---------- */
+.formulario{
+    display: grid;
+    gap: var(--esp-4);
+}
+.formulario__alerta{
+    padding: var(--esp-3);
+    border: 1px solid var(--color-error);
+    border-radius: var(--radio);
+    font-size: var(--tam-sm);
+    color: var(--color-error);
+}
+.formulario__alerta:empty{
+    display: none;
+}
+
+/* align-content: start para que dos campos en la misma fila queden alineados
+   aunque uno muestre un mensaje de error abajo */
+.campo{
+    display: grid;
+    align-content: start;
+    gap: 6px;
+}
+.campo__etiqueta{
+    font-size: var(--tam-sm);
+    color: #555555;
+}
+.campo__input{
+    width: 100%;
+    min-height: var(--alto-campo);
+    padding: 0 var(--esp-3);
+    border: 1px solid var(--color-borde);
+    border-radius: var(--radio);
+    background: var(--color-campo);
+    font-size: var(--tam-md);
+}
+textarea.campo__input{
+    min-height: 88px;
+    padding: var(--esp-3);
+    resize: vertical;
+}
+.campo__input::placeholder{
+    color: var(--color-placeholder);
+}
+.campo__input[aria-invalid="true"]{
+    border-color: var(--color-error);
+}
+.campo__ayuda{
+    font-size: var(--tam-xs);
+    color: var(--color-texto-suave);
+}
+.campo__error{
+    font-size: var(--tam-xs);
+    font-weight: 600;
+    color: var(--color-error);
+}
+.campo__error:empty{
+    display: none;
+}
+
+/* Dos campos en la misma fila (por ejemplo, año desde y hasta) */
+.campos-fila{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--esp-4);
+}
+
+.casilla{
+    display: flex;
+    align-items: flex-start;
+    gap: var(--esp-3);
+    font-size: var(--tam-sm);
+}
+.casilla input{
+    flex: none;
+    width: 20px;
+    height: 20px;
+    margin: 0;
+    accent-color: var(--color-principal);
+}
+
+/* ---------- Chips (filtros, listas) y etiquetas ---------- */
+.chips{
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--esp-2);
+    padding: 0;
+    list-style: none;
+}
+.chip{
+    display: inline-flex;
+    align-items: center;
+    min-height: 30px;
+    padding: 0 var(--esp-3);
+    border: 1px solid #bbbbbb;
+    border-radius: var(--radio-pildora);
+    background: var(--color-fondo);
+    font-size: var(--tam-xs);
+    text-decoration: none;
+}
+.chip[aria-pressed="true"], .chip[aria-current="true"]{
+    border-color: var(--color-principal);
+    background: var(--color-principal);
+    color: var(--color-sobre-principal);
+    font-weight: 600;
+}
+
+.etiqueta{
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px var(--esp-2);
+    border-radius: var(--radio-pildora);
+    background: var(--color-suave);
+    font-size: 11px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+.etiqueta--oscura{
+    background: var(--color-principal);
+    color: var(--color-sobre-principal);
+}
+.etiqueta--borde{
+    border: 1px solid #bbbbbb;
+    background: var(--color-fondo);
+}
+
+/* ---------- Ficha de vehículo y grilla ---------- */
+.grilla-vehiculos{
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--esp-3);
+    padding: 0;
+    list-style: none;
+}
+.ficha-vehiculo{
+    position: relative;
+    display: block;
+    height: 100%;
+    border: 1px solid #d0d0d0;
+    background: var(--color-superficie);
+    text-decoration: none;
+}
+.ficha-vehiculo__imagen{
+    width: 100%;
+    aspect-ratio: 3 / 2;
+    background: var(--color-imagen);
+    object-fit: cover;
+}
+.ficha-vehiculo__cuerpo{
+    display: grid;
+    gap: 2px;
+    padding: var(--esp-3);
+}
+.ficha-vehiculo__precio{
+    font-size: var(--tam-md);
+    font-weight: 700;
+}
+.ficha-vehiculo__titulo, .ficha-vehiculo__lugar{
+    font-size: var(--tam-xs);
+    color: var(--color-texto-suave);
+}
+.ficha-vehiculo__etiqueta{
+    position: absolute;
+    top: var(--esp-2);
+    left: var(--esp-2);
+}
+
+/* ---------- Listas de filas (mensajes, verificaciones, publicaciones) ---------- */
+.lista-filas{
+    padding: 0;
+    list-style: none;
+}
+.fila{
+    display: flex;
+    align-items: center;
+    gap: var(--esp-3);
+    padding: var(--esp-3) 0;
+    border-bottom: 1px solid var(--color-linea);
+    text-decoration: none;
+}
+.fila__miniatura{
+    flex: none;
+    width: 56px;
+    height: 56px;
+    border-radius: var(--radio);
+    background: var(--color-imagen);
+}
+.fila__cuerpo{
+    flex: 1;
+    min-width: 0;
+}
+.fila__titulo{
+    font-weight: 600;
+}
+.fila__meta{
+    font-size: var(--tam-xs);
+    color: var(--color-texto-suave);
+}
+
+/* ---------- Bloques ---------- */
+.titulo-seccion{
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--esp-3);
+    margin-bottom: var(--esp-3);
+    font-size: 15px;
+}
+.titulo-seccion a{
+    font-size: var(--tam-xs);
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.recuadro{
+    padding: var(--esp-4);
+    border: 1px solid var(--color-linea);
+    border-radius: var(--radio-grande);
+    background: var(--color-campo);
+}
+
+.vacio{
+    display: grid;
+    justify-items: center;
+    gap: var(--esp-3);
+    padding: var(--esp-6) var(--esp-4);
+    text-align: center;
+    color: var(--color-texto-suave);
+}
+
+.imagen-vacia{
+    background: var(--color-imagen);
+}
+
+/* ---------- Control segmentado (OK / Observado / Falla) ---------- */
+.segmentado{
+    display: grid;
+    grid-auto-columns: 1fr;
+    grid-auto-flow: column;
+    padding: 0;
+    border: 0;
+}
+.segmentado input{
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+.segmentado label{
+    display: grid;
+    place-items: center;
+    min-height: 36px;
+    margin-left: -1px;
+    border: 1px solid #bbbbbb;
+    background: var(--color-fondo);
+    font-size: var(--tam-sm);
+    cursor: pointer;
+}
+.segmentado label:first-of-type{
+    margin-left: 0;
+    border-radius: var(--radio) 0 0 var(--radio);
+}
+.segmentado label:last-of-type{
+    border-radius: 0 var(--radio) var(--radio) 0;
+}
+.segmentado input:checked + label{
+    border-color: var(--color-principal);
+    background: var(--color-principal);
+    color: var(--color-sobre-principal);
+    font-weight: 600;
+}
+.segmentado input:focus-visible + label{
+    outline: 2px solid var(--color-foco);
+    outline-offset: 2px;
+}
+
+/* ---------- Pestañas ---------- */
+.pestanas{
+    display: grid;
+    grid-auto-columns: 1fr;
+    grid-auto-flow: column;
+    border-bottom: 1px solid var(--color-linea);
+}
+.pestanas__pestana{
+    padding: var(--esp-3) var(--esp-1);
+    border: 0;
+    border-bottom: 2px solid transparent;
+    background: none;
+    font-size: var(--tam-sm);
+    color: #888888;
+    text-align: center;
+    text-decoration: none;
+}
+.pestanas__pestana[aria-selected="true"], .pestanas__pestana[aria-current="page"]{
+    border-bottom-color: var(--color-principal);
+    font-weight: 700;
+    color: var(--color-texto);
+}
+
+/* ---------- Tablet ---------- */
+@media (min-width: 768px){
+    .grilla-vehiculos{
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+/* ---------- Escritorio: la barra inferior pasa arriba, con la marca ---------- */
+@media (min-width: 1024px){
+    .barra{
+        position: sticky;
+        inset: 0 0 auto 0;
+        display: flex;
+        align-items: center;
+        gap: var(--esp-6);
+        padding: 0 max(var(--margen), calc((100% - 960px) / 2));
+        border-top: 0;
+        border-bottom: 1px solid var(--color-linea);
+        background: var(--color-fondo);
+    }
+    .barra__marca{
+        display: block;
+        font-size: var(--tam-xl);
+        font-weight: 800;
+        text-decoration: none;
+    }
+    .barra__lista{
+        display: flex;
+        gap: var(--esp-5);
+        margin-left: auto;
+    }
+    .barra__enlace{
+        flex-direction: row;
+        gap: var(--esp-2);
+        font-size: var(--tam-md);
+    }
+    .barra__icono{
+        width: 24px;
+        height: 24px;
+    }
+    .encabezado{
+        position: static;
+    }
+    .grilla-vehiculos{
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+}
