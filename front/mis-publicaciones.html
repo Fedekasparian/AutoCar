@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mis publicaciones - AutoCar</title>
+  <meta name="description" content="Tus vehículos publicados en AutoCar.">
+  <link rel="stylesheet" href="styles/estilos.css">
+  <link rel="stylesheet" href="styles/componentes.css">
+  <link rel="stylesheet" href="styles/pantallas.css">
+  <link rel="stylesheet" href="styles/print.css" media="print">
+</head>
+<body class="con-barra">
+
+  <a class="saltar" href="#contenido">Saltar al contenido</a>
+
+  <nav class="barra" aria-label="Navegación principal">
+    <a class="barra__marca" href="home.html">AutoCar</a>
+    <ul class="barra__lista">
+      <li>
+        <a class="barra__enlace" href="home.html">
+          <span class="barra__icono"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/></svg></span>
+          Home
+        </a>
+      </li>
+      <li>
+        <a class="barra__enlace" href="meta-busqueda.html">
+          <span class="barra__icono"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4.5-4.5"/></svg></span>
+          Meta-S
+        </a>
+      </li>
+      <li>
+        <a class="barra__enlace" href="mis-publicaciones.html" aria-current="page">
+          <span class="barra__icono"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span>
+          Publicar
+        </a>
+      </li>
+      <li>
+        <a class="barra__enlace" href="mensajes.html">
+          <span class="barra__icono"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z"/></svg></span>
+          Mensajes
+        </a>
+      </li>
+      <li>
+        <a class="barra__enlace" href="cuenta.html">
+          <span class="barra__icono"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg></span>
+          Cuenta
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <header class="encabezado">
+    <h1>Mis publicaciones</h1>
+  </header>
+
+  <!-- Sólo para planes Uso Portal y Ambas. Con otro plan, en lugar de esto va una invitación a ver los planes. -->
+  <main id="contenido" class="pantalla pantalla--compacta">
+
+    <section class="cupo" aria-labelledby="cupo-titulo">
+      <h2 id="cupo-titulo" class="solo-lector">Cupo del plan</h2>
+      <p class="cupo__texto">
+        <span><strong>3 de 5</strong> anuncios usados</span>
+        <a href="plan.html">Plan Oro</a>
+      </p>
+      <progress class="progreso" max="5" value="3">3 de 5</progress>
+    </section>
+
+    <a class="boton boton--bloque" href="publicar.html">Publicar vehículo</a>
+
+    <a class="recuadro fila" href="propuestas.html">
+      <span class="fila__cuerpo">
+        <span class="fila__titulo">Propuestas de canje</span><br>
+        <span class="fila__meta">2 recibidas sin responder</span>
+      </span>
+      <span class="etiqueta etiqueta--oscura">2</span>
+    </a>
+
+    <nav class="pestanas" aria-label="Estado de las publicaciones">
+      <a class="pestanas__pestana" href="mis-publicaciones.html" aria-current="page">Activas (2)</a>
+      <a class="pestanas__pestana" href="mis-publicaciones.html?estado=pausadas">Pausadas (1)</a>
+      <a class="pestanas__pestana" href="mis-publicaciones.html?estado=cerradas">Cerradas (1)</a>
+    </nav>
+
+    <ul class="lista-filas" role="list">
+      <li class="publicacion">
+        <div class="publicacion__foto" role="img" aria-label="Toyota Corolla 2018, sin foto"></div>
+        <div class="publicacion__titulo">
+          <a href="vehiculo.html">Toyota Corolla 2018</a>
+          <span class="etiqueta etiqueta--borde">Sin verificar</span>
+        </div>
+        <div>
+          <p class="fila__meta">$8.500.000 · 85.000 km · Acepta canje</p>
+          <p class="fila__meta">Publicado el 02/10 · 14 consultas</p>
+          <ul class="acciones-fila" role="list">
+            <li><a href="publicar.html?editar=1">Editar</a></li>
+            <li><a href="tasacion.html">Tasación</a></li>
+            <li><a href="verificar-vehiculo.html">Verificar</a></li>
+            <li>
+              <form action="/mis-publicaciones/1/pausar" method="post">
+                <button type="submit">Pausar</button>
+              </form>
+            </li>
+          </ul>
+        </div>
+      </li>
+      <li class="publicacion">
+        <div class="publicacion__foto" role="img" aria-label="Chevrolet Onix 2019, sin foto"></div>
+        <div class="publicacion__titulo">
+          <a href="vehiculo.html">Chevrolet Onix 2019</a>
+          <span class="etiqueta etiqueta--oscura">Verificado</span>
+        </div>
+        <div>
+          <p class="fila__meta">$4.800.000 · 62.300 km · Acepta canje</p>
+          <p class="fila__meta">Publicado el 25/09 · 31 consultas</p>
+          <ul class="acciones-fila" role="list">
+            <li><a href="publicar.html?editar=4">Editar</a></li>
+            <li><a href="tasacion.html">Tasación</a></li>
+            <li><a href="verificacion.html">Ver informe</a></li>
+            <li>
+              <form action="/mis-publicaciones/4/pausar" method="post">
+                <button type="submit">Pausar</button>
+              </form>
+            </li>
+          </ul>
+        </div>
+      </li>
+    </ul>
+
+    <!-- Estado vacío (sin publicaciones activas):
+    <div class="vacio">
+      <p><strong>No tenés publicaciones activas.</strong></p>
+      <p>Publicá tu vehículo para venderlo o canjearlo.</p>
+      <a class="boton" href="publicar.html">Publicar vehículo</a>
+    </div>
+    -->
+
+  </main>
+
+</body>
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Proponer canje - AutoCar</title>
+  <meta name="description" content="Proponé un canje con uno de tus vehículos.">
+  <link rel="stylesheet" href="styles/estilos.css">
+  <link rel="stylesheet" href="styles/componentes.css">
+  <link rel="stylesheet" href="styles/pantallas.css">
+  <link rel="stylesheet" href="styles/print.css" media="print">
+  <script src="js/validacion.js" defer></script>
+</head>
+<body class="con-barra">
+
+  <a class="saltar" href="#contenido">Saltar al contenido</a>
+
+  <nav class="barra" aria-label="Navegación principal">
+    <a class="barra__marca" href="home.html">AutoCar</a>
+    <ul class="barra__lista">
+      <li>
+        <a class="barra__enlace" href="home.html" aria-current="page">
+          <span class="barra__icono"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/></svg></span>
+          Home
+        </a>
+      </li>
+      <li>
+        <a class="barra__enlace" href="meta-busqueda.html">
+          <span class="barra__icono"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4.5-4.5"/></svg></span>
+          Meta-S
+        </a>
+      </li>
+      <li>
+        <a class="barra__enlace" href="mis-publicaciones.html">
+          <span class="barra__icono"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span>
+          Publicar
+        </a>
+      </li>
+      <li>
+        <a class="barra__enlace" href="mensajes.html">
+          <span class="barra__icono"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z"/></svg></span>
+          Mensajes
+        </a>
+      </li>
+      <li>
+        <a class="barra__enlace" href="cuenta.html">
+          <span class="barra__icono"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg></span>
+          Cuenta
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <header class="encabezado">
+    <a class="encabezado__volver" href="vehiculo.html" aria-label="Volver">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12H4M4 12l7-7M4 12l7 7"/></svg>
+    </a>
+    <h1>Proponer canje</h1>
+  </header>
+
+  <main id="contenido" class="pantalla">
+    <section class="pila" aria-labelledby="quiero-titulo">
+      <h2 id="quiero-titulo" class="titulo-seccion">Querés</h2>
+      <div class="fila">
+        <span class="fila__miniatura"></span>
+        <span class="fila__cuerpo">
+          <span class="fila__titulo">Chevrolet Onix 2019</span><br>
+          <span class="fila__meta">$4.800.000 · tasado entre $4.500.000 y $5.000.000</span>
+        </span>
+      </div>
+    </section>
+
+    <form class="formulario" action="/propuestas" method="post" data-validar novalidate>
+      <p class="formulario__alerta" role="alert" tabindex="-1"></p>
+      <input type="hidden" name="publicacion_destino_id" value="4">
+
+      <fieldset class="elegir-vehiculo campo">
+        <legend class="titulo-seccion">Ofrecés uno de tus vehículos</legend>
+        <label><input type="radio" name="publicacion_origen_id" value="1" checked><span class="imagen-vacia"></span><span><strong>Toyota Corolla 2018</strong><br><span class="fila__meta">Tasado entre $8.100.000 y $8.900.000</span></span></label>
+        <label><input type="radio" name="publicacion_origen_id" value="6"><span class="imagen-vacia"></span><span><strong>Renault Sandero 2017</strong><br><span class="fila__meta">Sin tasación</span></span></label>
+      </fieldset>
+
+      <p class="canje__diferencia">Según las tasaciones, tu Corolla vale unos <strong>$3.700.000 más</strong> que el Onix.</p>
+
+      <fieldset class="opciones">
+        <legend class="campo__etiqueta">¿Quién paga la diferencia?</legend>
+        <label><input type="radio" name="quien_paga" value="otro" checked><span>Me pagan a mí</span></label>
+        <label><input type="radio" name="quien_paga" value="yo"><span>Pago yo</span></label>
+      </fieldset>
+      <div class="campo">
+        <label class="campo__etiqueta" for="diferencia">Monto de la diferencia</label>
+        <input class="campo__input" id="diferencia" name="diferencia" type="number" inputmode="numeric" min="0" step="1000" value="3700000" required aria-describedby="diferencia-error">
+        <span class="campo__error" id="diferencia-error"></span>
+      </div>
+      <div class="campo">
+        <label class="campo__etiqueta" for="mensaje">Mensaje <span class="suave">(opcional)</span></label>
+        <textarea class="campo__input" id="mensaje" name="mensaje" maxlength="500" placeholder="Hola, te propongo un canje…"></textarea>
+      </div>
+      <button class="boton boton--bloque" type="submit">Enviar propuesta</button>
+    </form>
+  </main>
+
+</body>
+</html>

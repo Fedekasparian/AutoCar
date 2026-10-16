@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Publicar vehículo - AutoCar</title>
+  <meta name="description" content="Publicá tu vehículo en AutoCar para venderlo o canjearlo.">
+  <link rel="stylesheet" href="styles/estilos.css">
+  <link rel="stylesheet" href="styles/componentes.css">
+  <link rel="stylesheet" href="styles/pantallas.css">
+  <link rel="stylesheet" href="styles/print.css" media="print">
+  <script src="js/validacion.js" defer></script>
+  <script src="js/publicar.js" defer></script>
+</head>
+<body>
+
+  <a class="saltar" href="#contenido">Saltar al contenido</a>
+
+  <header class="encabezado">
+    <a class="encabezado__volver" href="mis-publicaciones.html" aria-label="Volver a mis publicaciones">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12H4M4 12l7-7M4 12l7 7"/></svg>
+    </a>
+    <h1>Publicar vehículo</h1>
+  </header>
+
+  <main id="contenido" class="pantalla pantalla--compacta">
+
+    <!-- El indicador de pasos sólo se usa con JavaScript (un paso por vez) -->
+    <div class="pasos" id="pasos" hidden>
+      <p class="pasos__texto" aria-live="polite">
+        <span id="pasos-texto">Paso 1 de 6 · Vehículo</span>
+        <span id="pasos-numero">1/6</span>
+      </p>
+      <progress class="progreso" id="pasos-progreso" max="6" value="1"></progress>
+    </div>
+
+    <!-- enctype multipart para poder subir las fotos -->
+    <form class="formulario formulario-pasos" id="form-publicar" action="/mis-publicaciones" method="post" enctype="multipart/form-data" novalidate>
+      <p class="formulario__alerta" role="alert" tabindex="-1"></p>
+
+      <!-- Paso 1 -->
+      <fieldset class="paso" data-paso="Vehículo">
+        <legend>Vehículo</legend>
+        <div class="campo">
+          <label class="campo__etiqueta" for="marca">Marca</label>
+          <select class="campo__input" id="marca" name="marca" required aria-describedby="marca-error">
+            <option value="">Seleccionar marca</option>
+            <option>Chevrolet</option>
+            <option>Fiat</option>
+            <option>Ford</option>
+            <option>Peugeot</option>
+            <option>Renault</option>
+            <option>Toyota</option>
+            <option>Volkswagen</option>
+          </select>
+          <span class="campo__error" id="marca-error"></span>
+        </div>
+        <!-- Los modelos van agrupados por marca; con JavaScript se muestran sólo los de la marca elegida -->
+        <div class="campo">
+          <label class="campo__etiqueta" for="modelo">Modelo</label>
+          <select class="campo__input" id="modelo" name="modelo" required aria-describedby="modelo-error">
+            <option value="">Seleccionar modelo</option>
+            <optgroup label="Chevrolet"><option>Cruze</option><option>Onix</option><option>Tracker</option></optgroup>
+            <optgroup label="Fiat"><option>Argo</option><option>Cronos</option><option>Strada</option></optgroup>
+            <optgroup label="Ford"><option>EcoSport</option><option>Ka</option><option>Ranger</option></optgroup>
+            <optgroup label="Peugeot"><option>2008</option><option>208</option><option>Partner</option></optgroup>
+            <optgroup label="Renault"><option>Duster</option><option>Kangoo</option><option>Sandero</option></optgroup>
+            <optgroup label="Toyota"><option>Corolla</option><option>Etios</option><option>Hilux</option></optgroup>
+            <optgroup label="Volkswagen"><option>Amarok</option><option>Gol</option><option>Polo</option></optgroup>
+          </select>
+          <span class="campo__error" id="modelo-error"></span>
+        </div>
+        <div class="campos-fila">
+          <div class="campo">
+            <label class="campo__etiqueta" for="anio">Año</label>
+            <input class="campo__input" id="anio" name="anio" type="number" inputmode="numeric" min="1980" max="2027" required placeholder="2018" aria-describedby="anio-error">
+            <span class="campo__error" id="anio-error"></span>
+          </div>
+          <div class="campo">
+            <label class="campo__etiqueta" for="version">Versión <span class="suave">(opcional)</span></label>
+            <input class="campo__input" id="version" name="version" maxlength="60" placeholder="1.8 XEI">
+          </div>
+        </div>
+      </fieldset>
+
+      <!-- Paso 2 -->
+      <fieldset class="paso" data-paso="Ficha técnica y estado">
+        <legend>Ficha técnica y estado</legend>
+        <div class="campos-fila">
+          <div class="campo">
+            <label class="campo__etiqueta" for="km">Kilometraje</label>
+            <input class="campo__input" id="km" name="km" type="number" inputmode="numeric" min="0" max="999999" required placeholder="85000" aria-describedby="km-error">
+            <span class="campo__error" id="km-error"></span>
+          </div>
+          <div class="campo">
+            <label class="campo__etiqueta" for="combustible">Combustible</label>
+            <select class="campo__input" id="combustible" name="combustible" required aria-describedby="combustible-error">
+              <option value="">Elegir</option>
+              <option>Nafta</option>
+              <option>Diésel</option>
+              <option>GNC</option>
+              <option>Híbrido</option>
+              <option>Eléctrico</option>
+            </select>
+            <span class="campo__error" id="combustible-error"></span>
+          </div>
+        </div>
+        <fieldset class="campo">
+          <legend class="campo__etiqueta">Transmisión</legend>
+          <div class="segmentado">
+            <input type="radio" name="transmision" id="tr-manual" value="Manual" checked><label for="tr-manual">Manual</label>
+            <input type="radio" name="transmision" id="tr-auto" value="Automática"><label for="tr-auto">Automática</label>
+          </div>
+        </fieldset>
+        <div class="campo">
+          <label class="campo__etiqueta" for="patente">Patente</label>
+          <input class="campo__input" id="patente" name="patente" required maxlength="9" autocapitalize="characters" placeholder="AB123CD"
+            pattern="[A-Za-z]{3} ?[0-9]{3}|[A-Za-z]{2} ?[0-9]{3} ?[A-Za-z]{2}"
+            data-error-formato="Usá el formato ABC123 o AB123CD."
+            aria-describedby="patente-ayuda patente-error">
+          <span class="campo__ayuda" id="patente-ayuda">No se publica completa. La usa el taller para verificar que el auto revisado es el publicado.</span>
+          <span class="campo__error" id="patente-error"></span>
+        </div>
+        <div class="campo">
+          <label class="campo__etiqueta" for="estado">Estado general</label>
+          <select class="campo__input" id="estado" name="estado" required aria-describedby="estado-error">
+            <option value="">Elegir</option>
+            <option>Excelente</option>
+            <option>Muy bueno</option>
+            <option>Bueno</option>
+            <option>Regular</option>
+          </select>
+          <span class="campo__error" id="estado-error"></span>
+        </div>
+        <div class="campo">
+          <label class="campo__etiqueta" for="descripcion">Descripción <span class="suave">(opcional)</span></label>
+          <textarea class="campo__input" id="descripcion" name="descripcion" maxlength="1000" placeholder="Service al día, único dueño, cubiertas nuevas…"></textarea>
+        </div>
+      </fieldset>
+
+      <!-- Paso 3 -->
+      <fieldset class="paso" data-paso="Fotos">
+        <legend>Fotos</legend>
+        <!-- data-max: fotos que permite el plan (Oro: 15). El back vuelve a validar cantidad, tipo y tamaño. -->
+        <label class="subir-fotos" for="fotos">
+          <strong>+ Agregar fotos</strong>
+          <span class="campo__ayuda">Hasta 15 fotos (plan Oro). JPG, PNG o WebP de hasta 5 MB.</span>
+        </label>
+        <input class="solo-lector" id="fotos" name="fotos[]" type="file" accept="image/jpeg,image/png,image/webp" multiple required
+          data-max="15" data-max-mb="5" aria-describedby="fotos-error">
+        <span class="campo__error" id="fotos-error"></span>
+        <ul class="fotos-previa" id="fotos-previa" role="list" aria-label="Fotos elegidas"></ul>
+      </fieldset>
+
+      <!-- Paso 4 -->
+      <fieldset class="paso" data-paso="Precio y canje">
+        <legend>Precio y canje</legend>
+        <div class="campo">
+          <label class="campo__etiqueta" for="precio">Precio en pesos</label>
+          <input class="campo__input" id="precio" name="precio" type="number" inputmode="numeric" min="100000" step="1000" required placeholder="8500000" aria-describedby="precio-ayuda precio-error">
+          <span class="campo__ayuda" id="precio-ayuda">Después de publicar podés pedir la tasación con IA para comparar.</span>
+          <span class="campo__error" id="precio-error"></span>
+        </div>
+        <label class="casilla">
+          <input type="checkbox" id="acepta-canje" name="acepta_canje" value="1" checked>
+          <span>Acepto canje por otro vehículo</span>
+        </label>
+        <div class="campo" id="campo-busca">
+          <label class="campo__etiqueta" for="busca">¿Qué te interesa recibir? <span class="suave">(opcional)</span></label>
+          <input class="campo__input" id="busca" name="busca_canje" maxlength="120" placeholder="Ej: SUV o pick-up, hasta 2020">
+        </div>
+      </fieldset>
+
+      <!-- Paso 5 -->
+      <fieldset class="paso" data-paso="Ubicación">
+        <legend>Ubicación</legend>
+        <div class="campo">
+          <label class="campo__etiqueta" for="localidad">Localidad</label>
+          <input class="campo__input" id="localidad" name="localidad" required value="Mercedes, Buenos Aires" autocomplete="address-level2" aria-describedby="localidad-ayuda localidad-error">
+          <span class="campo__ayuda" id="localidad-ayuda">Por privacidad sólo se muestra la zona aproximada, nunca la dirección.</span>
+          <span class="campo__error" id="localidad-error"></span>
+        </div>
+        <div class="mapa-chico" role="img" aria-label="Mapa con la zona aproximada en Mercedes, Buenos Aires">
+          <span class="mapa-chico__zona"></span>
+        </div>
+      </fieldset>
+
+      <!-- Paso 6: con JavaScript se completa el resumen con lo cargado en los pasos anteriores -->
+      <fieldset class="paso" data-paso="Revisión">
+        <legend>Revisión</legend>
+        <dl class="datos" id="resumen">
+          <dt>Vehículo</dt><dd data-resumen="marca modelo anio version">—</dd>
+          <dt>Kilometraje</dt><dd data-resumen="km">—</dd>
+          <dt>Combustible</dt><dd data-resumen="combustible transmision">—</dd>
+          <dt>Estado</dt><dd data-resumen="estado">—</dd>
+          <dt>Fotos</dt><dd data-resumen="fotos">—</dd>
+          <dt>Precio</dt><dd data-resumen="precio">—</dd>
+          <dt>Canje</dt><dd data-resumen="acepta_canje">—</dd>
+          <dt>Zona</dt><dd data-resumen="localidad">—</dd>
+        </dl>
+        <div class="campo">
+          <label class="casilla">
+            <input type="checkbox" id="confirmo" name="confirmo" required aria-describedby="confirmo-error">
+            <span>Confirmo que los datos son correctos y que el vehículo es mío.</span>
+          </label>
+          <span class="campo__error" id="confirmo-error"></span>
+        </div>
+      </fieldset>
+
+      <div class="pasos__botones">
+        <button class="boton boton--secundario" type="button" id="paso-anterior" hidden>Anterior</button>
+        <button class="boton" type="button" id="paso-siguiente" hidden>Siguiente</button>
+        <button class="boton" type="submit" id="publicar">Publicar</button>
+      </div>
+    </form>
+
+  </main>
+
+</body>
+</html>

@@ -31,3 +31,7 @@ ul[role="list"], ol[role="list"]{
 a{
     color: inherit;
 }
+/* hidden tiene que ocultar aunque la clase del elemento le ponga otro display */
+[hidden]{
+    display: none !important;
+}

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tasación con IA - AutoCar</title>
+  <meta name="description" content="Tasación estimada de tu vehículo con inteligencia artificial.">
+  <link rel="stylesheet" href="styles/estilos.css">
+  <link rel="stylesheet" href="styles/componentes.css">
+  <link rel="stylesheet" href="styles/pantallas.css">
+  <link rel="stylesheet" href="styles/print.css" media="print">
+</head>
+<body class="con-barra">
+
+  <a class="saltar" href="#contenido">Saltar al contenido</a>
+
+  <nav class="barra" aria-label="Navegación principal">
+    <a class="barra__marca" href="home.html">AutoCar</a>
+    <ul class="barra__lista">
+      <li>
+        <a class="barra__enlace" href="home.html">
+          <span class="barra__icono"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/></svg></span>
+          Home
+        </a>
+      </li>
+      <li>
+        <a class="barra__enlace" href="meta-busqueda.html">
+          <span class="barra__icono"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4.5-4.5"/></svg></span>
+          Meta-S
+        </a>
+      </li>
+      <li>
+        <a class="barra__enlace" href="mis-publicaciones.html" aria-current="page">
+          <span class="barra__icono"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span>
+          Publicar
+        </a>
+      </li>
+      <li>
+        <a class="barra__enlace" href="mensajes.html">
+          <span class="barra__icono"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z"/></svg></span>
+          Mensajes
+        </a>
+      </li>
+      <li>
+        <a class="barra__enlace" href="cuenta.html">
+          <span class="barra__icono"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg></span>
+          Cuenta
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <header class="encabezado">
+    <a class="encabezado__volver" href="mis-publicaciones.html" aria-label="Volver a mis publicaciones">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12H4M4 12l7-7M4 12l7 7"/></svg>
+    </a>
+    <h1>Tasación con IA <span class="encabezado__subtitulo">Toyota Corolla 2018 · 85.000 km</span></h1>
+  </header>
+
+  <main id="contenido" class="pantalla">
+
+    <section class="recuadro tasacion-resultado" aria-labelledby="rango-titulo">
+      <h2 id="rango-titulo" class="campo__ayuda">Valor estimado</h2>
+      <p class="tasacion-resultado__rango">$8.100.000 a $8.900.000</p>
+      <p class="campo__ayuda">Valor medio: $8.500.000 · Tu precio publicado: $8.500.000</p>
+    </section>
+
+    <section aria-labelledby="factores-titulo">
+      <h2 id="factores-titulo" class="titulo-seccion">Qué tuvimos en cuenta</h2>
+      <ul class="factores">
+        <li><span class="factores__signo" aria-label="Sube el valor">+</span> Kilometraje por debajo del promedio para su año.</li>
+        <li><span class="factores__signo" aria-label="Sube el valor">+</span> Versión con caja automática, muy buscada.</li>
+        <li><span class="factores__signo" aria-label="Baja el valor">−</span> Estado declarado por el dueño, sin verificar en un taller.</li>
+        <li><span class="factores__signo" aria-label="Baja el valor">−</span> Hay muchas publicaciones parecidas en la zona.</li>
+      </ul>
+    </section>
+
+    <section aria-labelledby="comparables-titulo">
+      <h2 id="comparables-titulo" class="titulo-seccion">Publicaciones parecidas usadas para comparar</h2>
+      <ul class="lista-filas" role="list">
+        <li class="fila">
+          <span class="fila__miniatura"></span>
+          <span class="fila__cuerpo">
+            <span class="fila__titulo">Toyota Corolla 2018 XEI</span><br>
+            <span class="fila__meta">92.000 km · Luján, BA</span>
+          </span>
+          <span>$8.300.000</span>
+        </li>
+        <li class="fila">
+          <span class="fila__miniatura"></span>
+          <span class="fila__cuerpo">
+            <span class="fila__titulo">Toyota Corolla 2017 SEG</span><br>
+            <span class="fila__meta">78.000 km · Mercedes, BA</span>
+          </span>
+          <span>$8.700.000</span>
+        </li>
+        <li class="fila">
+          <span class="fila__miniatura"></span>
+          <span class="fila__cuerpo">
+            <span class="fila__titulo">Toyota Corolla 2019 XLI</span><br>
+            <span class="fila__meta">101.000 km · Chivilcoy, BA</span>
+          </span>
+          <span>$8.900.000</span>
+        </li>
+      </ul>
+    </section>
+
+    <p class="campo__ayuda">
+      La tasación es una estimación hecha con inteligencia artificial a partir de publicaciones parecidas. No es vinculante ni reemplaza la revisión de un mecánico.
+      Para que sea más precisa, <a href="verificar-vehiculo.html">verificá el vehículo en un taller adherido</a>.
+    </p>
+
+    <a class="boton boton--secundario boton--bloque" href="publicar.html?editar=1">Ajustar el precio</a>
+
+  </main>
+
+</body>
+</html>

@@ -19,6 +19,11 @@ Login, registro y salir ya están hechos en el back, así que no están acá.
 | `home.html` | `/home` | Publicaciones con filtros rápidos y paginación |
 | `vehiculo.html` | `/vehiculo/:id` | Detalle de vehículo, con la ventana "Guardar en favoritos" |
 | `favoritos.html` | `/cuenta/favoritos` | Favoritos organizados en listas |
+| `mis-publicaciones.html` | `/mis-publicaciones` | Publicaciones propias con el cupo del plan |
+| `publicar.html` | `/mis-publicaciones/nueva` | Publicar vehículo en 6 pasos |
+| `tasacion.html` | `/mis-publicaciones/:id/tasacion` | Tasación con IA |
+| `propuestas.html` | `/mis-publicaciones/propuestas` | Propuestas de canje recibidas y enviadas |
+| `proponer-canje.html` | `/vehiculo/:id/proponer-canje` | Proponer un canje |
 | `guia.html` | — | Guía de componentes (sólo de referencia) |
 
 ## Cómo ver las páginas
@@ -38,7 +43,9 @@ front/
 ├── index.html, planes.html, …   una página por pantalla
 ├── guia.html                    todos los componentes, para copiar el HTML
 ├── js/
-│   └── dialogos.js              abre y cierra las ventanas <dialog>
+│   ├── dialogos.js              abre y cierra las ventanas <dialog>
+│   ├── validacion.js            validación en el cliente con el error al lado de cada campo
+│   └── publicar.js              formulario de publicar en pasos, vista previa de fotos y resumen
 └── styles/
     ├── reset.css
     ├── estilos.css              variables (colores, tipografía, espaciado) y estructura
@@ -58,6 +65,8 @@ front/
 **Errores de formulario al lado de cada campo.** Los wireframes lo piden así. El campo lleva `aria-invalid="true"` y `aria-describedby` apuntando al texto del error (`.campo__error`), así el lector de pantalla lo lee al llegar al campo.
 
 **JavaScript sólo donde suma.** Las ventanas como "Guardar en favoritos" son `<dialog>` que abre `js/dialogos.js` con botones `data-abrir="id"`. Los menús "⋯" usan `<details>`, que funciona sin JavaScript. Los formularios envían a las rutas del back por POST, así que sin JavaScript también funcionan.
+
+**Validación en el cliente y en el servidor.** `js/validacion.js` usa las reglas del propio HTML (`required`, `min`, `pattern`…) y muestra el mensaje al lado del campo. Es sólo una ayuda para el usuario: el back vuelve a validar todo. El formulario de publicar muestra un paso por vez con JavaScript y todos seguidos sin él.
 
 **Estados vacíos.** Las pantallas con listas (home, favoritos) tienen comentado en el HTML qué mostrar cuando no hay resultados.
 

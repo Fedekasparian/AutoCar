@@ -440,3 +440,263 @@
         top: calc(64px + var(--esp-4));
     }
 }
+
+/* ---------- Mis publicaciones ---------- */
+.cupo{
+    display: grid;
+    gap: var(--esp-2);
+}
+.cupo__texto{
+    display: flex;
+    justify-content: space-between;
+    font-size: var(--tam-sm);
+}
+/* Barra de progreso (cupo del plan, pasos de un formulario) */
+.progreso{
+    width: 100%;
+    height: 6px;
+    border: 0;
+    border-radius: 3px;
+    background: var(--color-suave);
+    appearance: none;
+}
+.progreso::-webkit-progress-bar{
+    border-radius: 3px;
+    background: var(--color-suave);
+}
+.progreso::-webkit-progress-value{
+    border-radius: 3px;
+    background: var(--color-principal);
+}
+.progreso::-moz-progress-bar{
+    border-radius: 3px;
+    background: var(--color-principal);
+}
+
+.publicacion{
+    display: grid;
+    grid-template-columns: 72px 1fr;
+    gap: var(--esp-2) var(--esp-3);
+    padding: var(--esp-3) 0;
+    border-bottom: 1px solid var(--color-linea);
+}
+.publicacion__foto{
+    grid-row: span 2;
+    width: 72px;
+    height: 72px;
+    border-radius: var(--radio);
+    background: var(--color-imagen);
+}
+.publicacion__titulo{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--esp-2);
+}
+.publicacion__titulo a{
+    font-weight: 600;
+    text-decoration: none;
+}
+/* Acciones en una fila de enlaces o botones chicos */
+.acciones-fila{
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--esp-2) var(--esp-4);
+    padding: 0;
+    font-size: var(--tam-xs);
+    font-weight: 600;
+    list-style: none;
+}
+.acciones-fila a, .acciones-fila button{
+    padding: 0;
+    border: 0;
+    background: none;
+    font-weight: 600;
+}
+.acciones-fila form{
+    display: inline;
+}
+
+/* ---------- Publicar: formulario por pasos ---------- */
+.pasos{
+    display: grid;
+    gap: var(--esp-2);
+}
+.pasos__texto{
+    display: flex;
+    justify-content: space-between;
+    font-size: var(--tam-xs);
+    font-weight: 600;
+    color: #555555;
+}
+.paso{
+    display: grid;
+    gap: var(--esp-4);
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+.paso legend{
+    margin-bottom: var(--esp-4);
+    font-size: var(--tam-lg);
+    font-weight: 700;
+}
+/* Con JavaScript se muestra un paso a la vez; sin JavaScript se ven todos seguidos */
+.formulario-pasos.con-js .paso[hidden]{
+    display: none;
+}
+.pasos__botones{
+    display: flex;
+    gap: var(--esp-3);
+}
+.pasos__botones .boton{
+    flex: 1;
+}
+
+.fotos-previa{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--esp-2);
+    padding: 0;
+    list-style: none;
+}
+.fotos-previa li{
+    aspect-ratio: 1;
+    overflow: hidden;
+    border-radius: var(--radio);
+    background: var(--color-imagen);
+}
+.fotos-previa img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.subir-fotos{
+    display: grid;
+    place-items: center;
+    gap: var(--esp-1);
+    padding: var(--esp-5);
+    border: 1px dashed var(--color-borde-fuerte);
+    border-radius: var(--radio);
+    text-align: center;
+    color: #555555;
+    cursor: pointer;
+}
+
+/* ---------- Tasación ---------- */
+.tasacion-resultado{
+    display: grid;
+    gap: var(--esp-1);
+    text-align: center;
+}
+.tasacion-resultado__rango{
+    font-size: var(--tam-xl);
+    font-weight: 700;
+}
+.factores{
+    display: grid;
+    gap: var(--esp-2);
+    padding: 0;
+    font-size: var(--tam-sm);
+    list-style: none;
+}
+.factores li{
+    display: flex;
+    gap: var(--esp-2);
+}
+.factores__signo{
+    flex: none;
+    width: 20px;
+    font-weight: 700;
+    text-align: center;
+}
+
+/* ---------- Propuestas de canje ---------- */
+.propuesta{
+    display: grid;
+    gap: var(--esp-3);
+    padding: var(--esp-4);
+    border: 1px solid var(--color-borde);
+    border-radius: var(--radio-grande);
+}
+.propuesta__cabecera{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--esp-2);
+    font-size: var(--tam-xs);
+    color: var(--color-texto-suave);
+}
+/* Los dos vehículos del canje, uno al lado del otro */
+.canje{
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: var(--esp-2);
+    font-size: var(--tam-sm);
+}
+.canje__vehiculo{
+    display: grid;
+    gap: 2px;
+}
+.canje__vehiculo .imagen-vacia{
+    aspect-ratio: 3 / 2;
+    border-radius: var(--radio);
+}
+.canje__flecha{
+    font-size: var(--tam-lg);
+    color: var(--color-texto-suave);
+}
+.canje__diferencia{
+    padding: var(--esp-2) var(--esp-3);
+    border-radius: var(--radio);
+    background: var(--color-campo);
+    font-size: var(--tam-sm);
+}
+.propuesta__acciones{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--esp-2);
+}
+.propuesta__acciones form{
+    display: grid;
+}
+
+/* Elegir uno de mis vehículos para ofrecer */
+.elegir-vehiculo{
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+.elegir-vehiculo input{
+    accent-color: var(--color-principal);
+}
+.elegir-vehiculo label{
+    display: grid;
+    grid-template-columns: auto 56px 1fr;
+    align-items: center;
+    gap: var(--esp-3);
+    padding: var(--esp-3);
+    border: 1px solid var(--color-borde);
+    border-radius: var(--radio);
+    cursor: pointer;
+}
+.elegir-vehiculo label + label{
+    margin-top: var(--esp-2);
+}
+.elegir-vehiculo label:has(input:checked){
+    border-color: var(--color-principal);
+    box-shadow: inset 0 0 0 1px var(--color-principal);
+}
+.elegir-vehiculo .imagen-vacia{
+    width: 56px;
+    height: 42px;
+    border-radius: var(--radio);
+}
+
+@media (min-width: 768px){
+    .fotos-previa{
+        grid-template-columns: repeat(5, 1fr);
+    }
+}
