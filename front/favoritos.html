@@ -62,7 +62,7 @@
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/></svg>
       </summary>
       <ul class="menu__lista">
-        <li><a href="favoritos-lista-editar.html">Renombrar lista</a></li>
+        <li><button type="button" data-abrir="renombrar-lista">Renombrar lista</button></li>
         <li>
           <form action="/favoritos/listas/1/eliminar" method="post">
             <button type="submit">Eliminar lista</button>
@@ -142,6 +142,20 @@
     -->
 
   </main>
+
+  <dialog class="hoja" id="renombrar-lista" aria-labelledby="renombrar-titulo">
+    <form class="pila" action="/favoritos/listas/1" method="post">
+      <h2 id="renombrar-titulo">Renombrar lista</h2>
+      <div class="campo">
+        <label class="campo__etiqueta" for="nuevo-nombre">Nombre de la lista</label>
+        <input class="campo__input" id="nuevo-nombre" name="nombre" maxlength="40" required value="Para canje">
+      </div>
+      <div class="hoja__acciones">
+        <button class="boton boton--secundario" type="button" data-cerrar>Cancelar</button>
+        <button class="boton" type="submit">Guardar</button>
+      </div>
+    </form>
+  </dialog>
 
   <dialog class="hoja" id="nueva-lista" aria-labelledby="nueva-lista-titulo">
     <form class="pila" action="/favoritos/listas" method="post">

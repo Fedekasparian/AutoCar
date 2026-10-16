@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Adherir mi taller - AutoCar</title>
+  <meta name="description" content="Sumá tu taller a la red de AutoCar.">
+  <link rel="stylesheet" href="styles/estilos.css">
+  <link rel="stylesheet" href="styles/componentes.css">
+  <link rel="stylesheet" href="styles/pantallas.css">
+  <link rel="stylesheet" href="styles/print.css" media="print">
+  <script src="js/validacion.js" defer></script>
+</head>
+<body>
+
+  <a class="saltar" href="#contenido">Saltar al contenido</a>
+
+  <header class="encabezado">
+    <a class="encabezado__volver" href="index.html" aria-label="Volver">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12H4M4 12l7-7M4 12l7 7"/></svg>
+    </a>
+    <h1>Adherir mi taller</h1>
+  </header>
+
+  <main id="contenido" class="pantalla">
+    <p class="suave">Sumate a la red de talleres de AutoCar. Revisamos cada solicitud antes de activarla.</p>
+    <form class="formulario" action="/talleres/adherirse" method="post" data-validar novalidate>
+      <p class="formulario__alerta" role="alert" tabindex="-1"></p>
+      <div class="campo">
+        <label class="campo__etiqueta" for="nombre_taller">Nombre del taller</label>
+        <input class="campo__input" id="nombre_taller" name="nombre_taller" type="text" placeholder="Ej: Taller San Martín" required aria-describedby="nombre_taller-error">
+        <span class="campo__error" id="nombre_taller-error"></span>
+      </div>
+      <div class="campo">
+        <label class="campo__etiqueta" for="cuit">CUIT</label>
+        <input class="campo__input" id="cuit" name="cuit" type="text" placeholder="30-12345678-9" required pattern="[0-9]{{2}}-?[0-9]{{8}}-?[0-9]" data-error-formato="Usá el formato 30-12345678-9." aria-describedby="cuit-error">
+        <span class="campo__error" id="cuit-error"></span>
+      </div>
+      <div class="campo">
+        <label class="campo__etiqueta" for="direccion">Dirección</label>
+        <input class="campo__input" id="direccion" name="direccion" type="text" placeholder="Calle, número y localidad" required aria-describedby="direccion-error">
+        <span class="campo__error" id="direccion-error"></span>
+      </div>
+      <div class="campos-fila">
+      <div class="campo">
+        <label class="campo__etiqueta" for="telefono">Teléfono</label>
+        <input class="campo__input" id="telefono" name="telefono" type="tel" required aria-describedby="telefono-error">
+        <span class="campo__error" id="telefono-error"></span>
+      </div>
+      <div class="campo">
+        <label class="campo__etiqueta" for="horarios">Horarios</label>
+        <input class="campo__input" id="horarios" name="horarios" type="text" placeholder="Lun a vie 8 a 18" required aria-describedby="horarios-error">
+        <span class="campo__error" id="horarios-error"></span>
+      </div>
+      </div>
+      <div class="campo">
+        <label class="campo__etiqueta" for="responsable">Nombre del responsable</label>
+        <input class="campo__input" id="responsable" name="responsable" type="text" required aria-describedby="responsable-error">
+        <span class="campo__error" id="responsable-error"></span>
+      </div>
+      <div class="campo">
+        <label class="campo__etiqueta" for="email">Email</label>
+        <input class="campo__input" id="email" name="email" type="email" required aria-describedby="email-error">
+        <span class="campo__error" id="email-error"></span>
+      </div>
+      <div class="campo">
+        <label class="campo__etiqueta" for="password">Contraseña</label>
+        <input class="campo__input" id="password" name="password" type="password" required minlength="8" aria-describedby="password-error">
+        <span class="campo__error" id="password-error"></span>
+      </div>
+      <div class="campo">
+        <label class="casilla"><input type="checkbox" id="condiciones" name="condiciones" required aria-describedby="condiciones-error"><span>Acepto las condiciones de adhesión: descuentos por plan y uso del checklist de AutoCar.</span></label>
+        <span class="campo__error" id="condiciones-error"></span>
+      </div>
+      <button class="boton" type="submit">Enviar solicitud</button>
+      <p class="campo__ayuda">La cuenta queda pendiente hasta que la apruebe un administrador.</p>
+    </form>
+  </main>
+
+</body>
+</html>

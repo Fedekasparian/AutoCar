@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Administración - AutoCar</title>
+  <meta name="description" content="Panel de administración de AutoCar.">
+  <link rel="stylesheet" href="styles/estilos.css">
+  <link rel="stylesheet" href="styles/componentes.css">
+  <link rel="stylesheet" href="styles/pantallas.css">
+  <link rel="stylesheet" href="styles/print.css" media="print">
+</head>
+<body>
+
+  <a class="saltar" href="#contenido">Saltar al contenido</a>
+
+  <header class="encabezado">
+    <a class="encabezado__volver" href="home.html" aria-label="Volver">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12H4M4 12l7-7M4 12l7 7"/></svg>
+    </a>
+    <h1>Administración</h1>
+  </header>
+
+  <main id="contenido" class="pantalla">
+    <ul class="resumen-admin" role="list">
+      <li class="recuadro"><strong>1.284</strong><span>Usuarios</span></li>
+      <li class="recuadro"><strong>312</strong><span>Publicaciones activas</span></li>
+      <li class="recuadro"><strong>7</strong><span>Reportes pendientes</span></li>
+      <li class="recuadro"><strong>2</strong><span>Talleres por aprobar</span></li>
+    </ul>
+    <section aria-labelledby="talleres-titulo">
+      <h2 id="talleres-titulo" class="titulo-seccion">Talleres pendientes de aprobación</h2>
+      <ul class="pila" role="list">
+        <li class="propuesta">
+          <p><strong>Lubricentro Ruta 5</strong><br><span class="fila__meta">CUIT 30-71234567-8 · Mercedes · Solicitado 14/10</span></p>
+          <form class="pila" action="/admin/talleres/3" method="post">
+            <label class="solo-lector" for="motivo-3">Motivo si se rechaza</label>
+            <input class="campo__input" id="motivo-3" name="motivo" placeholder="Motivo (si se rechaza)">
+            <div class="hoja__acciones">
+              <button class="boton boton--chico" type="submit" name="accion" value="aprobar">Aprobar</button>
+              <button class="boton boton--secundario boton--chico" type="submit" name="accion" value="rechazar">Rechazar</button>
+            </div>
+          </form>
+        </li>
+      </ul>
+    </section>
+    <nav aria-label="Secciones de administración">
+      <ul class="lista-filas" role="list">
+      <li>
+        <a class="fila" href="admin.html">
+          <span class="fila__miniatura"></span>
+          <span class="fila__cuerpo">
+            <span class="fila__titulo">Moderación de publicaciones</span><br>
+            <span class="fila__meta">Cola de revisión</span>
+          </span>
+          <span aria-hidden="true">›</span>
+        </a>
+      </li>
+      <li>
+        <a class="fila" href="admin.html">
+          <span class="fila__miniatura"></span>
+          <span class="fila__cuerpo">
+            <span class="fila__titulo">Usuarios y suscripciones</span><br>
+            <span class="fila__meta">Suspender, restituir, cambiar plan</span>
+          </span>
+          <span aria-hidden="true">›</span>
+        </a>
+      </li>
+      <li>
+        <a class="fila" href="admin.html">
+          <span class="fila__miniatura"></span>
+          <span class="fila__cuerpo">
+            <span class="fila__titulo">Reportes</span><br>
+            <span class="fila__meta">7 pendientes</span>
+          </span>
+          <span aria-hidden="true">›</span>
+        </a>
+      </li>
+      <li>
+        <a class="fila" href="admin.html">
+          <span class="fila__miniatura"></span>
+          <span class="fila__cuerpo">
+            <span class="fila__titulo">Checklist de verificación</span><br>
+            <span class="fila__meta">Ítems y categorías</span>
+          </span>
+          <span aria-hidden="true">›</span>
+        </a>
+      </li>
+      </ul>
+    </nav>
+  </main>
+
+</body>
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Conversación - AutoCar</title>
+  <meta name="description" content="Conversación sobre un vehículo.">
+  <link rel="stylesheet" href="styles/estilos.css">
+  <link rel="stylesheet" href="styles/componentes.css">
+  <link rel="stylesheet" href="styles/pantallas.css">
+  <link rel="stylesheet" href="styles/print.css" media="print">
+</head>
+<body class="con-barra">
+
+  <a class="saltar" href="#contenido">Saltar al contenido</a>
+
+  <nav class="barra" aria-label="Navegación principal">
+    <a class="barra__marca" href="home.html">AutoCar</a>
+    <ul class="barra__lista">
+      <li>
+        <a class="barra__enlace" href="home.html">
+          <span class="barra__icono"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/></svg></span>
+          Home
+        </a>
+      </li>
+      <li>
+        <a class="barra__enlace" href="meta-busqueda.html">
+          <span class="barra__icono"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4.5-4.5"/></svg></span>
+          Meta-S
+        </a>
+      </li>
+      <li>
+        <a class="barra__enlace" href="mis-publicaciones.html">
+          <span class="barra__icono"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span>
+          Publicar
+        </a>
+      </li>
+      <li>
+        <a class="barra__enlace" href="mensajes.html" aria-current="page">
+          <span class="barra__icono"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z"/></svg></span>
+          Mensajes
+        </a>
+      </li>
+      <li>
+        <a class="barra__enlace" href="cuenta.html">
+          <span class="barra__icono"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg></span>
+          Cuenta
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <header class="encabezado">
+    <a class="encabezado__volver" href="mensajes.html" aria-label="Volver">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12H4M4 12l7-7M4 12l7 7"/></svg>
+    </a>
+    <h1>Martín G. <span class="encabezado__subtitulo">Chevrolet Onix 2019</span></h1>
+  </header>
+
+  <main id="contenido" class="pantalla">
+    <a class="recuadro fila" href="vehiculo.html">
+      <span class="fila__miniatura"></span>
+      <span class="fila__cuerpo"><span class="fila__titulo">Chevrolet Onix 2019</span><br><span class="fila__meta">$4.800.000 · Acepta canje</span></span>
+      <span aria-hidden="true">›</span>
+    </a>
+    <ol class="chat" aria-label="Mensajes">
+      <li class="chat__mensaje">Hola, ¿sigue disponible?<span class="chat__hora">10:12</span></li>
+      <li class="chat__mensaje chat__mensaje--mio">Sí, sigue. ¿Querés verlo?<span class="chat__hora">10:20</span></li>
+      <li class="chat__mensaje">¿Lo puedo ver el sábado a la mañana?<span class="chat__hora">10:31</span></li>
+    </ol>
+    <form class="chat__enviar" action="/mensajes/3" method="post">
+      <label class="solo-lector" for="texto">Mensaje</label>
+      <input class="campo__input" id="texto" name="texto" required maxlength="1000" placeholder="Escribí un mensaje">
+      <button class="boton" type="submit">Enviar</button>
+    </form>
+    <p class="acciones-fila"><a href="proponer-canje.html">Proponer canje</a><a href="reportar.html">Reportar usuario</a></p>
+  </main>
+
+</body>
+</html>

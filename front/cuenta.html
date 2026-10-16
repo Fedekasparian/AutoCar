@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mi cuenta - AutoCar</title>
+  <meta name="description" content="Tus datos y la configuración de tu cuenta.">
+  <link rel="stylesheet" href="styles/estilos.css">
+  <link rel="stylesheet" href="styles/componentes.css">
+  <link rel="stylesheet" href="styles/pantallas.css">
+  <link rel="stylesheet" href="styles/print.css" media="print">
+  <script src="js/validacion.js" defer></script>
+</head>
+<body class="con-barra">
+
+  <a class="saltar" href="#contenido">Saltar al contenido</a>
+
+  <nav class="barra" aria-label="Navegación principal">
+    <a class="barra__marca" href="home.html">AutoCar</a>
+    <ul class="barra__lista">
+      <li>
+        <a class="barra__enlace" href="home.html">
+          <span class="barra__icono"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/></svg></span>
+          Home
+        </a>
+      </li>
+      <li>
+        <a class="barra__enlace" href="meta-busqueda.html">
+          <span class="barra__icono"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4.5-4.5"/></svg></span>
+          Meta-S
+        </a>
+      </li>
+      <li>
+        <a class="barra__enlace" href="mis-publicaciones.html">
+          <span class="barra__icono"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span>
+          Publicar
+        </a>
+      </li>
+      <li>
+        <a class="barra__enlace" href="mensajes.html">
+          <span class="barra__icono"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z"/></svg></span>
+          Mensajes
+        </a>
+      </li>
+      <li>
+        <a class="barra__enlace" href="cuenta.html" aria-current="page">
+          <span class="barra__icono"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg></span>
+          Cuenta
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <header class="encabezado">
+    <h1>Mi cuenta</h1>
+  </header>
+
+  <main id="contenido" class="pantalla">
+    <ul class="lista-filas" role="list">
+      <li>
+        <a class="fila" href="plan.html">
+          <span class="fila__miniatura"></span>
+          <span class="fila__cuerpo">
+            <span class="fila__titulo">Plan Oro</span><br>
+            <span class="fila__meta">3 de 5 anuncios usados</span>
+          </span>
+          <span aria-hidden="true">›</span>
+        </a>
+      </li>
+      <li>
+        <a class="fila" href="favoritos.html">
+          <span class="fila__miniatura"></span>
+          <span class="fila__cuerpo">
+            <span class="fila__titulo">Favoritos</span><br>
+            <span class="fila__meta">4 vehículos en 2 listas</span>
+          </span>
+          <span aria-hidden="true">›</span>
+        </a>
+      </li>
+      <li>
+        <a class="fila" href="mis-publicaciones.html">
+          <span class="fila__miniatura"></span>
+          <span class="fila__cuerpo">
+            <span class="fila__titulo">Mis publicaciones</span><br>
+            <span class="fila__meta">2 activas</span>
+          </span>
+          <span aria-hidden="true">›</span>
+        </a>
+      </li>
+      <li>
+        <a class="fila" href="talleres.html">
+          <span class="fila__miniatura"></span>
+          <span class="fila__cuerpo">
+            <span class="fila__titulo">Talleres adheridos</span><br>
+            <span class="fila__meta">Verificá tu vehículo con descuento</span>
+          </span>
+          <span aria-hidden="true">›</span>
+        </a>
+      </li>
+    </ul>
+    <form class="formulario" action="/cuenta" method="post" data-validar novalidate>
+      <h2 class="titulo-seccion">Datos personales</h2>
+      <p class="formulario__alerta" role="alert" tabindex="-1"></p>
+      <div class="campo">
+        <label class="campo__etiqueta" for="nombre">Nombre completo</label>
+        <input class="campo__input" id="nombre" name="nombre" type="text" value="Usuario de prueba" required aria-describedby="nombre-error">
+        <span class="campo__error" id="nombre-error"></span>
+      </div>
+      <div class="campo">
+        <label class="campo__etiqueta" for="telefono">Teléfono</label>
+        <input class="campo__input" id="telefono" name="telefono" type="tel" placeholder="(02324) 15-123456" aria-describedby="telefono-error">
+        <span class="campo__error" id="telefono-error"></span>
+      </div>
+      <div class="campo">
+        <label class="campo__etiqueta" for="localidad">Localidad</label>
+        <input class="campo__input" id="localidad" name="localidad" type="text" value="Mercedes, Buenos Aires" required aria-describedby="localidad-error">
+        <span class="campo__error" id="localidad-error"></span>
+      </div>
+      <button class="boton" type="submit">Guardar cambios</button>
+    </form>
+    <!-- Salir: formulario POST con token CSRF (en el back, logout_form.php) -->
+    <form action="/logout" method="post">
+      <button class="boton boton--secundario boton--bloque" type="submit">Salir</button>
+    </form>
+  </main>
+
+</body>
+</html>

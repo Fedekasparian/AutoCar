@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Verificación - AutoCar</title>
+  <meta name="description" content="Inspección del vehículo con el checklist.">
+  <link rel="stylesheet" href="styles/estilos.css">
+  <link rel="stylesheet" href="styles/componentes.css">
+  <link rel="stylesheet" href="styles/pantallas.css">
+  <link rel="stylesheet" href="styles/print.css" media="print">
+</head>
+<body class="con-barra">
+
+  <a class="saltar" href="#contenido">Saltar al contenido</a>
+
+  <nav class="barra" aria-label="Navegación principal">
+    <a class="barra__marca" href="taller.html">AutoCar</a>
+    <ul class="barra__lista">
+      <li>
+        <a class="barra__enlace" href="taller.html">
+          <span class="barra__icono"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z"/></svg></span>
+          Panel
+        </a>
+      </li>
+      <li>
+        <a class="barra__enlace" href="taller-verificacion.html" aria-current="page">
+          <span class="barra__icono"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg></span>
+          Verificar
+        </a>
+      </li>
+      <li>
+        <a class="barra__enlace" href="taller.html#aprobaciones">
+          <span class="barra__icono"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/></svg></span>
+          Historial
+        </a>
+      </li>
+      <li>
+        <a class="barra__enlace" href="mensajes.html">
+          <span class="barra__icono"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z"/></svg></span>
+          Mensajes
+        </a>
+      </li>
+      <li>
+        <a class="barra__enlace" href="cuenta.html">
+          <span class="barra__icono"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg></span>
+          Cuenta
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <header class="encabezado">
+    <a class="encabezado__volver" href="taller.html" aria-label="Volver">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12H4M4 12l7-7M4 12l7 7"/></svg>
+    </a>
+    <h1>Verificación K7Q2</h1>
+  </header>
+
+  <main id="contenido" class="pantalla">
+    <div class="fila">
+      <span class="fila__miniatura"></span>
+      <span class="fila__cuerpo"><span class="fila__titulo">Ford Ranger 2020</span><br><span class="fila__meta">AE***56 · Plan Bronce −10 %</span></span>
+    </div>
+    <div class="pasos">
+      <p class="pasos__texto"><span>Paso 3 de 8 · Frenos</span><span>3/8</span></p>
+      <progress class="progreso" max="8" value="3"></progress>
+    </div>
+    <form class="formulario" action="/taller/verificacion/12" method="post">
+      <fieldset class="pila">
+        <legend class="campo__etiqueta"><strong>Pastillas y discos</strong> <span class="etiqueta">Crítico</span></legend>
+        <div class="segmentado"><input type="radio" name="pastillas-y-discos" id="pastillas-y-discos-ok" value="ok" checked><label for="pastillas-y-discos-ok">OK</label><input type="radio" name="pastillas-y-discos" id="pastillas-y-discos-observado" value="observado"><label for="pastillas-y-discos-observado">Observado</label><input type="radio" name="pastillas-y-discos" id="pastillas-y-discos-falla" value="falla"><label for="pastillas-y-discos-falla">Falla</label></div>
+      </fieldset>
+      <fieldset class="pila">
+        <legend class="campo__etiqueta"><strong>Líquido de frenos</strong></legend>
+        <div class="segmentado"><input type="radio" name="líquido-de-frenos" id="líquido-de-frenos-ok" value="ok"><label for="líquido-de-frenos-ok">OK</label><input type="radio" name="líquido-de-frenos" id="líquido-de-frenos-observado" value="observado" checked><label for="líquido-de-frenos-observado">Observado</label><input type="radio" name="líquido-de-frenos" id="líquido-de-frenos-falla" value="falla"><label for="líquido-de-frenos-falla">Falla</label></div>
+        <label class="solo-lector" for="líquido-de-frenos-comentario">Comentario</label>
+        <input class="campo__input" id="líquido-de-frenos-comentario" name="líquido-de-frenos_comentario" value="Nivel bajo, reponer antes de la entrega">
+      </fieldset>
+      <fieldset class="pila">
+        <legend class="campo__etiqueta"><strong>Freno de mano</strong> <span class="etiqueta">Crítico</span></legend>
+        <div class="segmentado"><input type="radio" name="freno-de-mano" id="freno-de-mano-ok" value="ok"><label for="freno-de-mano-ok">OK</label><input type="radio" name="freno-de-mano" id="freno-de-mano-observado" value="observado"><label for="freno-de-mano-observado">Observado</label><input type="radio" name="freno-de-mano" id="freno-de-mano-falla" value="falla"><label for="freno-de-mano-falla">Falla</label></div>
+      </fieldset>
+      <fieldset class="pila">
+        <legend class="campo__etiqueta"><strong>ABS y testigos</strong></legend>
+        <div class="segmentado"><input type="radio" name="abs-y-testigos" id="abs-y-testigos-ok" value="ok"><label for="abs-y-testigos-ok">OK</label><input type="radio" name="abs-y-testigos" id="abs-y-testigos-observado" value="observado"><label for="abs-y-testigos-observado">Observado</label><input type="radio" name="abs-y-testigos" id="abs-y-testigos-falla" value="falla"><label for="abs-y-testigos-falla">Falla</label></div>
+      </fieldset>
+      <p class="campo__ayuda">Puntaje parcial: 82/100 · lo calcula el sistema.</p>
+      <div class="pasos__botones">
+        <a class="boton boton--secundario" href="taller-verificacion.html">Anterior</a>
+        <button class="boton" type="submit">Siguiente</button>
+      </div>
+    </form>
+  </main>
+
+</body>
+</html>

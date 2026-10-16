@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Buscar - AutoCar</title>
+  <meta name="description" content="Búsqueda de vehículos con filtros.">
+  <link rel="stylesheet" href="styles/estilos.css">
+  <link rel="stylesheet" href="styles/componentes.css">
+  <link rel="stylesheet" href="styles/pantallas.css">
+  <link rel="stylesheet" href="styles/print.css" media="print">
+</head>
+<body class="con-barra">
+
+  <a class="saltar" href="#contenido">Saltar al contenido</a>
+
+  <nav class="barra" aria-label="Navegación principal">
+    <a class="barra__marca" href="home.html">AutoCar</a>
+    <ul class="barra__lista">
+      <li>
+        <a class="barra__enlace" href="home.html" aria-current="page">
+          <span class="barra__icono"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/></svg></span>
+          Home
+        </a>
+      </li>
+      <li>
+        <a class="barra__enlace" href="meta-busqueda.html">
+          <span class="barra__icono"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4.5-4.5"/></svg></span>
+          Meta-S
+        </a>
+      </li>
+      <li>
+        <a class="barra__enlace" href="mis-publicaciones.html">
+          <span class="barra__icono"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span>
+          Publicar
+        </a>
+      </li>
+      <li>
+        <a class="barra__enlace" href="mensajes.html">
+          <span class="barra__icono"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z"/></svg></span>
+          Mensajes
+        </a>
+      </li>
+      <li>
+        <a class="barra__enlace" href="cuenta.html">
+          <span class="barra__icono"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg></span>
+          Cuenta
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <header class="encabezado">
+    <a class="encabezado__volver" href="home.html" aria-label="Volver">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12H4M4 12l7-7M4 12l7 7"/></svg>
+    </a>
+    <h1>Buscar</h1>
+  </header>
+
+  <main id="contenido" class="pantalla pantalla--compacta">
+    <form class="buscador" action="buscar.html" method="get" role="search">
+      <label class="solo-lector" for="q">Buscar vehículos</label>
+      <input class="campo__input" id="q" name="q" type="search" value="Corolla">
+      <button class="boton" type="submit">Buscar</button>
+    </form>
+
+    <details class="recuadro">
+      <summary><strong>Filtros</strong> · 2 aplicados</summary>
+      <form class="formulario" action="buscar.html" method="get">
+        <input type="hidden" name="q" value="Corolla">
+        <div class="campos-fila">
+      <div class="campo">
+        <label class="campo__etiqueta" for="anio_desde">Año desde</label>
+        <input class="campo__input" id="anio_desde" name="anio_desde" type="number" value="2015" aria-describedby="anio_desde-error">
+        <span class="campo__error" id="anio_desde-error"></span>
+      </div>
+      <div class="campo">
+        <label class="campo__etiqueta" for="anio_hasta">Año hasta</label>
+        <input class="campo__input" id="anio_hasta" name="anio_hasta" type="number" aria-describedby="anio_hasta-error">
+        <span class="campo__error" id="anio_hasta-error"></span>
+      </div>
+        </div>
+        <div class="campos-fila">
+      <div class="campo">
+        <label class="campo__etiqueta" for="km_max">Km máximo</label>
+        <input class="campo__input" id="km_max" name="km_max" type="number" aria-describedby="km_max-error">
+        <span class="campo__error" id="km_max-error"></span>
+      </div>
+      <div class="campo">
+        <label class="campo__etiqueta" for="precio_max">Precio máximo</label>
+        <input class="campo__input" id="precio_max" name="precio_max" type="number" value="9000000" aria-describedby="precio_max-error">
+        <span class="campo__error" id="precio_max-error"></span>
+      </div>
+        </div>
+        <div class="campo">
+          <label class="campo__etiqueta" for="operacion">Tipo de operación</label>
+          <select class="campo__input" id="operacion" name="operacion"><option value="">Cualquiera</option><option>Venta</option><option>Canje</option></select>
+        </div>
+        <label class="casilla"><input type="checkbox" name="verificados" value="1"><span>Sólo vehículos verificados</span></label>
+        <button class="boton" type="submit">Aplicar filtros</button>
+      </form>
+    </details>
+
+    <p class="resultados__barra"><span class="suave">3 resultados para "Corolla"</span><a href="mapa.html">Ver en el mapa</a></p>
+    <ul class="grilla-vehiculos" role="list">
+      <li>
+        <a class="ficha-vehiculo" href="vehiculo.html">
+          <div class="ficha-vehiculo__imagen" role="img" aria-label="Toyota Corolla 2018, sin foto"></div>
+          <span class="etiqueta etiqueta--borde ficha-vehiculo__etiqueta">Acepta canje</span>
+          <div class="ficha-vehiculo__cuerpo">
+            <span class="ficha-vehiculo__precio">$8.500.000</span>
+            <span class="ficha-vehiculo__titulo">Toyota Corolla 2018</span>
+            <span class="ficha-vehiculo__lugar">Mercedes, BA</span>
+          </div>
+        </a>
+      </li>
+      <li>
+        <a class="ficha-vehiculo" href="vehiculo.html">
+          <div class="ficha-vehiculo__imagen" role="img" aria-label="Toyota Corolla 2018 XEI, sin foto"></div>
+          <div class="ficha-vehiculo__cuerpo">
+            <span class="ficha-vehiculo__precio">$8.300.000</span>
+            <span class="ficha-vehiculo__titulo">Toyota Corolla 2018 XEI</span>
+            <span class="ficha-vehiculo__lugar">Luján, BA</span>
+          </div>
+        </a>
+      </li>
+      <li>
+        <a class="ficha-vehiculo" href="vehiculo.html">
+          <div class="ficha-vehiculo__imagen" role="img" aria-label="Toyota Corolla 2017 SEG, sin foto"></div>
+          <div class="ficha-vehiculo__cuerpo">
+            <span class="ficha-vehiculo__precio">$8.700.000</span>
+            <span class="ficha-vehiculo__titulo">Toyota Corolla 2017 SEG</span>
+            <span class="ficha-vehiculo__lugar">Mercedes, BA</span>
+          </div>
+        </a>
+      </li>
+    </ul>
+  </main>
+
+</body>
+</html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Verificar vehículo - AutoCar</title>
+  <meta name="description" content="Código para verificar tu vehículo en un taller.">
+  <link rel="stylesheet" href="styles/estilos.css">
+  <link rel="stylesheet" href="styles/componentes.css">
+  <link rel="stylesheet" href="styles/pantallas.css">
+  <link rel="stylesheet" href="styles/print.css" media="print">
+</head>
+<body class="con-barra">
+
+  <a class="saltar" href="#contenido">Saltar al contenido</a>
+
+  <nav class="barra" aria-label="Navegación principal">
+    <a class="barra__marca" href="home.html">AutoCar</a>
+    <ul class="barra__lista">
+      <li>
+        <a class="barra__enlace" href="home.html">
+          <span class="barra__icono"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/></svg></span>
+          Home
+        </a>
+      </li>
+      <li>
+        <a class="barra__enlace" href="meta-busqueda.html">
+          <span class="barra__icono"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4.5-4.5"/></svg></span>
+          Meta-S
+        </a>
+      </li>
+      <li>
+        <a class="barra__enlace" href="mis-publicaciones.html" aria-current="page">
+          <span class="barra__icono"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span>
+          Publicar
+        </a>
+      </li>
+      <li>
+        <a class="barra__enlace" href="mensajes.html">
+          <span class="barra__icono"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z"/></svg></span>
+          Mensajes
+        </a>
+      </li>
+      <li>
+        <a class="barra__enlace" href="cuenta.html">
+          <span class="barra__icono"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg></span>
+          Cuenta
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <header class="encabezado">
+    <a class="encabezado__volver" href="mis-publicaciones.html" aria-label="Volver">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12H4M4 12l7-7M4 12l7 7"/></svg>
+    </a>
+    <h1>Verificar vehículo</h1>
+  </header>
+
+  <main id="contenido" class="pantalla">
+    <div class="fila">
+      <span class="fila__miniatura"></span>
+      <span class="fila__cuerpo"><span class="fila__titulo">Toyota Corolla 2018</span><br><span class="fila__meta">AB***12 · 85.000 km</span></span>
+    </div>
+    <section class="pila codigo" aria-labelledby="codigo-titulo">
+      <h2 id="codigo-titulo">Mostrá este código en el taller</h2>
+      <p class="codigo__valor">K7Q2-9MXA</p>
+      <p class="campo__ayuda">Vence el 14/11/2026 · un solo uso</p>
+    </section>
+    <section class="recuadro pila" aria-labelledby="taller-titulo">
+      <h2 id="taller-titulo">Taller San Martín <span class="etiqueta etiqueta--oscura">−25 % plan Oro</span></h2>
+      <p class="campo__ayuda">Av. 29 n.º 1234, Mercedes · Lun a vie 8 a 18 h · Tel. (02324) 42-1234</p>
+    </section>
+    <ol class="pila">
+      <li>Llamá al taller para coordinar el horario.</li>
+      <li>Llevá el vehículo y mostrá el código.</li>
+      <li>El mecánico revisa el auto con el checklist.</li>
+      <li>El informe aparece en tu aviso al terminar.</li>
+    </ol>
+    <form action="/verificaciones/12/cancelar" method="post">
+      <button class="boton boton--secundario boton--bloque" type="submit">Cancelar solicitud</button>
+    </form>
+  </main>
+
+</body>
+</html>

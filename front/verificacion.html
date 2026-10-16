@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Informe de verificación - AutoCar</title>
+  <meta name="description" content="Informe de verificación del vehículo.">
+  <link rel="stylesheet" href="styles/estilos.css">
+  <link rel="stylesheet" href="styles/componentes.css">
+  <link rel="stylesheet" href="styles/pantallas.css">
+  <link rel="stylesheet" href="styles/print.css" media="print">
+</head>
+<body class="con-barra">
+
+  <a class="saltar" href="#contenido">Saltar al contenido</a>
+
+  <nav class="barra" aria-label="Navegación principal">
+    <a class="barra__marca" href="home.html">AutoCar</a>
+    <ul class="barra__lista">
+      <li>
+        <a class="barra__enlace" href="home.html" aria-current="page">
+          <span class="barra__icono"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/></svg></span>
+          Home
+        </a>
+      </li>
+      <li>
+        <a class="barra__enlace" href="meta-busqueda.html">
+          <span class="barra__icono"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4.5-4.5"/></svg></span>
+          Meta-S
+        </a>
+      </li>
+      <li>
+        <a class="barra__enlace" href="mis-publicaciones.html">
+          <span class="barra__icono"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span>
+          Publicar
+        </a>
+      </li>
+      <li>
+        <a class="barra__enlace" href="mensajes.html">
+          <span class="barra__icono"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z"/></svg></span>
+          Mensajes
+        </a>
+      </li>
+      <li>
+        <a class="barra__enlace" href="cuenta.html">
+          <span class="barra__icono"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg></span>
+          Cuenta
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <header class="encabezado">
+    <a class="encabezado__volver" href="vehiculo.html" aria-label="Volver">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12H4M4 12l7-7M4 12l7 7"/></svg>
+    </a>
+    <h1>Informe de verificación</h1>
+  </header>
+
+  <main id="contenido" class="pantalla">
+    <section class="recuadro pila" aria-labelledby="resultado-titulo">
+      <h2 id="resultado-titulo">Chevrolet Onix 2019 · AC***78</h2>
+      <p class="codigo__valor">86 <span class="suave">/100</span> <span class="etiqueta etiqueta--oscura">Muy bueno</span></p>
+      <p class="campo__ayuda">Taller San Martín · 08/10/2026 · vigente hasta 06/01/2027</p>
+    </section>
+    <dl class="datos">
+      <dt>Kilometraje</dt><dd>Leído 62.300 · declarado 62.000 (0,5 %)</dd>
+    </dl>
+    <section aria-labelledby="checklist-titulo">
+      <h2 id="checklist-titulo" class="titulo-seccion">Checklist</h2>
+      <dl class="datos">
+          <dt>Motor</dt><dd>3 OK · 1 observado</dd>
+          <dt>Transmisión</dt><dd>3 OK</dd>
+          <dt>Frenos</dt><dd>3 OK · 1 observado</dd>
+          <dt>Suspensión y dirección</dt><dd>2 OK · 1 observado</dd>
+          <dt>Neumáticos</dt><dd>1 OK · 2 observados</dd>
+          <dt>Carrocería y estructura</dt><dd>2 OK · 1 observado</dd>
+          <dt>Interior</dt><dd>2 OK · 1 observado</dd>
+          <dt>Electricidad</dt><dd>3 OK</dd>
+      </dl>
+    </section>
+    <ul class="galeria__miniaturas" role="list" aria-label="Fotos: odómetro, motor y número de chasis">
+      <li></li><li></li><li></li>
+    </ul>
+    <a class="detalle__reportar" href="reportar.html">Reportar informe</a>
+  </main>
+
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contacto - AutoCar</title>
+  <meta name="description" content="Escribinos por consultas o problemas.">
+  <link rel="stylesheet" href="styles/estilos.css">
+  <link rel="stylesheet" href="styles/componentes.css">
+  <link rel="stylesheet" href="styles/pantallas.css">
+  <link rel="stylesheet" href="styles/print.css" media="print">
+  <script src="js/validacion.js" defer></script>
+</head>
+<body>
+
+  <a class="saltar" href="#contenido">Saltar al contenido</a>
+
+  <header class="encabezado">
+    <a class="encabezado__volver" href="index.html" aria-label="Volver">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12H4M4 12l7-7M4 12l7 7"/></svg>
+    </a>
+    <h1>Contacto</h1>
+  </header>
+
+  <main id="contenido" class="pantalla">
+    <form class="formulario" action="/contacto" method="post" data-validar novalidate>
+      <p class="formulario__alerta" role="alert" tabindex="-1"></p>
+      <div class="campo">
+        <label class="campo__etiqueta" for="email">Email</label>
+        <input class="campo__input" id="email" name="email" type="email" required aria-describedby="email-error">
+        <span class="campo__error" id="email-error"></span>
+      </div>
+      <div class="campo">
+        <label class="campo__etiqueta" for="mensaje">Mensaje</label>
+        <textarea class="campo__input" id="mensaje" name="mensaje" required maxlength="1000" aria-describedby="mensaje-error"></textarea>
+        <span class="campo__error" id="mensaje-error"></span>
+      </div>
+      <button class="boton" type="submit">Enviar</button>
+    </form>
+  </main>
+
+</body>
+</html>

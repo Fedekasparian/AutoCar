@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Talleres adheridos - AutoCar</title>
+  <meta name="description" content="Talleres donde verificar tu vehículo con descuento.">
+  <link rel="stylesheet" href="styles/estilos.css">
+  <link rel="stylesheet" href="styles/componentes.css">
+  <link rel="stylesheet" href="styles/pantallas.css">
+  <link rel="stylesheet" href="styles/print.css" media="print">
+</head>
+<body class="con-barra">
+
+  <a class="saltar" href="#contenido">Saltar al contenido</a>
+
+  <nav class="barra" aria-label="Navegación principal">
+    <a class="barra__marca" href="home.html">AutoCar</a>
+    <ul class="barra__lista">
+      <li>
+        <a class="barra__enlace" href="home.html">
+          <span class="barra__icono"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/></svg></span>
+          Home
+        </a>
+      </li>
+      <li>
+        <a class="barra__enlace" href="meta-busqueda.html">
+          <span class="barra__icono"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4.5-4.5"/></svg></span>
+          Meta-S
+        </a>
+      </li>
+      <li>
+        <a class="barra__enlace" href="mis-publicaciones.html">
+          <span class="barra__icono"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span>
+          Publicar
+        </a>
+      </li>
+      <li>
+        <a class="barra__enlace" href="mensajes.html">
+          <span class="barra__icono"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z"/></svg></span>
+          Mensajes
+        </a>
+      </li>
+      <li>
+        <a class="barra__enlace" href="cuenta.html" aria-current="page">
+          <span class="barra__icono"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg></span>
+          Cuenta
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <header class="encabezado">
+    <a class="encabezado__volver" href="cuenta.html" aria-label="Volver">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12H4M4 12l7-7M4 12l7 7"/></svg>
+    </a>
+    <h1>Talleres adheridos</h1>
+  </header>
+
+  <main id="contenido" class="pantalla pantalla--compacta">
+    <nav class="pestanas" aria-label="Qué ver en el mapa">
+      <a class="pestanas__pestana" href="mapa.html">Vehículos</a>
+      <a class="pestanas__pestana" href="talleres.html" aria-current="page">Talleres</a>
+    </nav>
+    <div class="mapa" style="aspect-ratio:16 / 10" role="img" aria-label="Mapa de la zona de Mercedes, Buenos Aires">
+      <span class="mapa__pin" style="left:25%;top:30%">−25 %</span><span class="mapa__pin" style="left:68%;top:20%">−25 %</span><span class="mapa__pin" style="left:78%;top:72%">−25 %</span><span class="mapa__vos" style="left:48%;top:55%">Vos</span>
+    </div>
+    <p class="recuadro"><strong>Tu plan Oro: −25 %</strong> en cualquier taller adherido.</p>
+    <ul class="lista-filas" role="list">
+      <li class="fila">
+          <span class="fila__cuerpo">
+            <span class="fila__titulo">Taller San Martín</span><br>
+            <span class="fila__meta">1,2 km · 4,7 / 5 · 128 verificaciones</span><br>
+            <span class="fila__meta">Lun a vie 8 a 18 h</span>
+          </span>
+          <a class="boton boton--chico" href="verificar-vehiculo.html">Elegir</a>
+      </li>
+      <li class="fila">
+          <span class="fila__cuerpo">
+            <span class="fila__titulo">Lubricentro Ruta 5</span><br>
+            <span class="fila__meta">3,4 km · 4,3 / 5 · 41 verificaciones</span><br>
+            <span class="fila__meta">Lun a sáb 8 a 13 h</span>
+          </span>
+          <a class="boton boton--chico" href="verificar-vehiculo.html">Elegir</a>
+      </li>
+      <li class="fila">
+          <span class="fila__cuerpo">
+            <span class="fila__titulo">Mecánica Don Pepe</span><br>
+            <span class="fila__meta">5,0 km · 4,8 / 5 · 77 verificaciones</span><br>
+            <span class="fila__meta">Lun a vie 9 a 19 h</span>
+          </span>
+          <a class="boton boton--chico" href="verificar-vehiculo.html">Elegir</a>
+      </li>
+    </ul>
+  </main>
+
+</body>
+</html>

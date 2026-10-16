@@ -24,7 +24,26 @@ Login, registro y salir ya están hechos en el back, así que no están acá.
 | `tasacion.html` | `/mis-publicaciones/:id/tasacion` | Tasación con IA |
 | `propuestas.html` | `/mis-publicaciones/propuestas` | Propuestas de canje recibidas y enviadas |
 | `proponer-canje.html` | `/vehiculo/:id/proponer-canje` | Proponer un canje |
-| `guia.html` | — | Guía de componentes (sólo de referencia) |
+| `buscar.html` | `/buscar` | Búsqueda con todos los filtros |
+| `mapa.html` | `/mapa` | Mapa de vehículos |
+| `meta-busqueda.html` | `/meta-busqueda` | Mis intereses (búsquedas guardadas) |
+| `meta-busqueda-nueva.html` | `/meta-busqueda/nueva` | Nueva búsqueda con texto libre e IA |
+| `meta-busqueda-resultados.html` | `/meta-busqueda/:id` | Coincidencias y estadísticas de mercado |
+| `mensajes.html` | `/mensajes` | Conversaciones |
+| `conversacion.html` | `/mensajes/:id` | Conversación |
+| `cuenta.html` | `/cuenta` | Mi cuenta y datos personales |
+| `plan.html` | `/cuenta/plan` | Plan activo y cambio de nivel |
+| `talleres.html` | `/talleres` | Talleres adheridos (mapa y lista) |
+| `verificar-vehiculo.html` | `/mis-publicaciones/:id/verificar` | Código para verificar en el taller |
+| `verificacion.html` | `/verificacion/:id` | Informe de verificación |
+| `talleres-adherirse.html` | `/talleres/adherirse` | Alta de un taller |
+| `taller.html` | `/taller` | Panel del mecánico |
+| `taller-verificacion.html` | `/taller/verificacion/:id` | Inspección con el checklist |
+| `admin.html` | `/admin` | Administración |
+| `legales.html` | `/legales` | Términos y privacidad |
+| `contacto.html` | `/ayuda/contacto` | Contacto |
+| `reportar.html` | `/reportes/nuevo` | Reportar publicación o usuario |
+| `guia.html` | — | Guía de componentes e índice de todas las pantallas (sólo de referencia) |
 
 ## Cómo ver las páginas
 
@@ -33,6 +52,8 @@ No hay que instalar nada: se abre `index.html` en el navegador. También se pued
 ```
 python3 -m http.server 5500 --directory front
 ```
+
+Para recorrer todas las pantallas, `guia.html` tiene un índice con enlaces a cada una.
 
 Para ver la versión de celular alcanza con achicar la ventana o usar la vista adaptable del navegador (F12). Para ver la de impresión, la vista previa de impresión (Ctrl+P).
 
