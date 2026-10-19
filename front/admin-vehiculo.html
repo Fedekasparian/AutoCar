@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vehículo · Administración - AutoCar</title>
+  <meta name="description" content="Alta o modificación de un vehículo.">
+  <link rel="stylesheet" href="styles/estilos.css">
+  <link rel="stylesheet" href="styles/componentes.css">
+  <link rel="stylesheet" href="styles/pantallas.css">
+  <link rel="stylesheet" href="styles/print.css" media="print">
+  <script src="js/validacion.js" defer></script>
+  <script type="module" src="js/paginas/admin-vehiculo.js"></script>
+</head>
+<body>
+
+  <a class="saltar" href="#contenido">Saltar al contenido</a>
+
+  <header class="encabezado">
+    <a class="encabezado__volver" href="admin-vehiculos.html" aria-label="Volver">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12H4M4 12l7-7M4 12l7 7"/></svg>
+    </a>
+    <h1 id="titulo">Nuevo vehículo</h1>
+  </header>
+
+  <!-- Sólo rol admin. admin-vehiculo.html = alta (POST /api/admin/vehiculos);
+       admin-vehiculo.html?id=N = edición (PUT /api/admin/vehiculos/N, con el objeto completo).
+       Las reglas de los campos son las mismas que valida el back (Vehiculo::validar). -->
+  <main id="contenido" class="pantalla">
+    <div class="estado" id="estado"></div>
+
+    <form class="formulario" id="form-vehiculo" novalidate>
+      <p class="formulario__alerta" role="alert" tabindex="-1"></p>
+
+      <div class="campos-fila">
+        <div class="campo">
+          <label class="campo__etiqueta" for="marca">Marca</label>
+          <input class="campo__input" id="marca" name="marca" type="text" maxlength="50" required aria-describedby="marca-error">
+          <span class="campo__error" id="marca-error"></span>
+        </div>
+        <div class="campo">
+          <label class="campo__etiqueta" for="modelo">Modelo</label>
+          <input class="campo__input" id="modelo" name="modelo" type="text" maxlength="60" required aria-describedby="modelo-error">
+          <span class="campo__error" id="modelo-error"></span>
+        </div>
+      </div>
+
+      <div class="campos-fila">
+        <div class="campo">
+          <label class="campo__etiqueta" for="anio">Año</label>
+          <input class="campo__input" id="anio" name="anio" type="number" inputmode="numeric" min="1950" step="1" required aria-describedby="anio-error">
+          <span class="campo__error" id="anio-error"></span>
+        </div>
+        <div class="campo">
+          <label class="campo__etiqueta" for="kilometraje">Kilometraje</label>
+          <input class="campo__input" id="kilometraje" name="kilometraje" type="number" inputmode="numeric" min="0" max="2000000" step="1" required aria-describedby="kilometraje-error">
+          <span class="campo__error" id="kilometraje-error"></span>
+        </div>
+      </div>
+
+      <div class="campo">
+        <label class="campo__etiqueta" for="precio">Precio ($)</label>
+        <input class="campo__input" id="precio" name="precio" type="number" inputmode="decimal" min="0.01" max="999999999.99" step="0.01" required aria-describedby="precio-error">
+        <span class="campo__error" id="precio-error"></span>
+      </div>
+
+      <div class="campos-fila">
+        <div class="campo">
+          <label class="campo__etiqueta" for="combustible">Combustible</label>
+          <select class="campo__input" id="combustible" name="combustible" required aria-describedby="combustible-error">
+            <option value="">Elegí</option>
+            <option value="nafta">Nafta</option>
+            <option value="diesel">Diésel</option>
+            <option value="gnc">GNC</option>
+            <option value="hibrido">Híbrido</option>
+            <option value="electrico">Eléctrico</option>
+          </select>
+          <span class="campo__error" id="combustible-error"></span>
+        </div>
+        <div class="campo">
+          <label class="campo__etiqueta" for="transmision">Transmisión</label>
+          <select class="campo__input" id="transmision" name="transmision" required aria-describedby="transmision-error">
+            <option value="">Elegí</option>
+            <option value="manual">Manual</option>
+            <option value="automatica">Automática</option>
+          </select>
+          <span class="campo__error" id="transmision-error"></span>
+        </div>
+      </div>
+
+      <div class="campo">
+        <label class="campo__etiqueta" for="estado-vehiculo">Estado</label>
+        <select class="campo__input" id="estado-vehiculo" name="estado" aria-describedby="estado-vehiculo-error">
+          <option value="disponible">Disponible</option>
+          <option value="vendido">Vendido</option>
+        </select>
+        <span class="campo__error" id="estado-vehiculo-error"></span>
+      </div>
+
+      <div class="campo">
+        <label class="campo__etiqueta" for="imagen_url">URL de la foto (opcional)</label>
+        <input class="campo__input" id="imagen_url" name="imagen_url" type="url" maxlength="255" placeholder="https://…" aria-describedby="imagen_url-error">
+        <span class="campo__error" id="imagen_url-error"></span>
+      </div>
+
+      <div class="campo">
+        <label class="campo__etiqueta" for="descripcion">Descripción (opcional)</label>
+        <textarea class="campo__input" id="descripcion" name="descripcion" maxlength="2000" rows="5" aria-describedby="descripcion-error"></textarea>
+        <span class="campo__error" id="descripcion-error"></span>
+      </div>
+
+      <button class="boton" type="submit">Guardar</button>
+    </form>
+  </main>
+
+</body>
+</html>

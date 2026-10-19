@@ -379,6 +379,11 @@ textarea.campo__input{
     color: var(--color-texto-suave);
 }
 
+/* Lugar donde va "Cargando…" o un error mientras se pide a la API; vacío no ocupa lugar */
+.estado:empty{
+    display: none;
+}
+
 .imagen-vacia{
     background: var(--color-imagen);
 }

@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Chevrolet Onix 2019 - AutoCar</title>
-  <meta name="description" content="Chevrolet Onix 2019 en venta o canje en Mercedes, Buenos Aires.">
+  <title>Vehículo - AutoCar</title>
+  <meta name="description" content="Detalle de un vehículo publicado en AutoCar.">
   <link rel="stylesheet" href="styles/estilos.css">
   <link rel="stylesheet" href="styles/componentes.css">
   <link rel="stylesheet" href="styles/pantallas.css">
   <link rel="stylesheet" href="styles/print.css" media="print">
-  <script src="js/dialogos.js" defer></script>
+  <script type="module" src="js/paginas/vehiculo.js"></script>
 </head>
 <body class="con-barra">
 
@@ -56,114 +56,56 @@
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12H4M4 12l7-7M4 12l7 7"/></svg>
     </a>
     <h1>Detalle</h1>
-    <button type="button" class="encabezado__accion" data-abrir="guardar-favorito" aria-label="Guardar en favoritos">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 20s-7-4.5-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.5-7 10-7 10z"/></svg>
-    </button>
   </header>
 
+  <!-- Los datos los completa js/paginas/vehiculo.js con GET /api/vehiculos/{id} (vehiculo.html?id=N).
+       Verificación, tasación, ubicación, publicador y favoritos todavía no están en la API:
+       el maquetado de esas partes está en la historia de git y en guia.html. -->
   <main id="contenido" class="pantalla detalle">
 
-    <figure class="galeria">
-      <div class="galeria__principal" role="img" aria-label="Chevrolet Onix 2019, foto 1 de 6">
-        <span class="etiqueta etiqueta--borde galeria__contador">1 / 6</span>
-      </div>
-      <figcaption class="solo-lector">Fotos del Chevrolet Onix 2019</figcaption>
-      <ul class="galeria__miniaturas" role="list" aria-label="Más fotos">
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-      </ul>
+    <div class="estado" id="estado"></div>
+
+    <figure class="galeria" id="vehiculo" hidden>
+      <div class="galeria__principal" id="vehiculo-foto"></div>
+      <figcaption class="solo-lector" id="vehiculo-foto-texto"></figcaption>
     </figure>
 
-    <div class="detalle__info">
+    <div class="detalle__info" id="vehiculo-info" hidden>
 
       <section class="detalle__titulo" aria-labelledby="vehiculo-titulo">
-        <h2 id="vehiculo-titulo">Chevrolet Onix 2019</h2>
-        <p class="detalle__precio">$4.800.000</p>
-        <p class="suave">62.300 km · Mercedes, BA</p>
-        <p><span class="etiqueta etiqueta--borde">Acepta canje</span></p>
+        <h2 id="vehiculo-titulo"></h2>
+        <p class="detalle__precio" id="vehiculo-precio"></p>
+        <p class="suave" id="vehiculo-resumen"></p>
+        <p id="vehiculo-vendido" hidden><span class="etiqueta etiqueta--oscura">Vendido</span></p>
       </section>
-
-      <!-- Sólo si tiene una verificación vigente (ver Entrega_2/talleres-adheridos.md) -->
-      <a class="verificado" href="verificacion.html">
-        <span class="verificado__icono">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg>
-        </span>
-        <span class="verificado__texto">
-          <strong>Verificado · 86/100</strong>
-          Muy bueno · Taller San Martín · 08/10/2026
-        </span>
-        <span class="verificado__enlace">Ver informe</span>
-      </a>
 
       <section aria-labelledby="ficha-titulo">
         <h2 id="ficha-titulo" class="titulo-seccion">Ficha técnica</h2>
         <dl class="datos">
-          <dt>Año</dt><dd>2019</dd>
-          <dt>Kilometraje</dt><dd>62.300 km (leído en la verificación)</dd>
-          <dt>Combustible</dt><dd>Nafta</dd>
-          <dt>Transmisión</dt><dd>Manual</dd>
-          <dt>Estado</dt><dd>Muy bueno (verificado)</dd>
+          <dt>Marca</dt><dd id="dato-marca"></dd>
+          <dt>Modelo</dt><dd id="dato-modelo"></dd>
+          <dt>Año</dt><dd id="dato-anio"></dd>
+          <dt>Kilometraje</dt><dd id="dato-kilometraje"></dd>
+          <dt>Combustible</dt><dd id="dato-combustible"></dd>
+          <dt>Transmisión</dt><dd id="dato-transmision"></dd>
+          <dt>Estado</dt><dd id="dato-estado"></dd>
         </dl>
       </section>
 
-      <section class="recuadro pila" aria-labelledby="tasacion-titulo">
-        <h2 id="tasacion-titulo">Tasación de referencia</h2>
-        <p class="tasacion__rango">$4.500.000 a $5.000.000</p>
-        <p class="campo__ayuda">Calculada con el estado verificado y publicaciones parecidas. Es una estimación, no un precio de venta.</p>
-      </section>
-
-      <section class="pila" aria-labelledby="ubicacion-titulo">
-        <h2 id="ubicacion-titulo">Ubicación</h2>
-        <div class="mapa-chico" role="img" aria-label="Mapa con la zona aproximada en Mercedes, Buenos Aires">
-          <span class="mapa-chico__zona"></span>
-        </div>
-        <p class="campo__ayuda">Zona aproximada: Mercedes, BA. Por privacidad no mostramos la dirección exacta.</p>
-      </section>
-
-      <section class="pila" aria-labelledby="publicador-titulo">
-        <h2 id="publicador-titulo">Publicado por</h2>
-        <div class="publicador">
-          <span class="publicador__avatar" aria-hidden="true">MG</span>
-          <div>
-            <p><strong>Martín G.</strong></p>
-            <p class="campo__ayuda">En AutoCar desde 2025 · 3 operaciones cerradas · 4,8 de 5</p>
-          </div>
-        </div>
+      <section class="pila" aria-labelledby="descripcion-titulo" id="vehiculo-descripcion" hidden>
+        <h2 id="descripcion-titulo">Descripción</h2>
+        <p id="vehiculo-descripcion-texto"></p>
       </section>
 
       <div class="detalle__acciones">
         <a class="boton" href="conversacion.html">Consultar</a>
         <a class="boton boton--secundario" href="proponer-canje.html">Proponer canje</a>
       </div>
+      <a class="boton boton--secundario boton--bloque" id="vehiculo-editar" hidden>Editar (administración)</a>
       <a class="detalle__reportar" href="reportar.html">Reportar publicación</a>
 
     </div>
   </main>
-
-  <!-- Guardar en favoritos: se elige una lista o ninguna (queda sólo en "Todos") -->
-  <dialog class="hoja" id="guardar-favorito" aria-labelledby="guardar-titulo">
-    <form class="pila" action="/favoritos" method="post">
-      <h2 id="guardar-titulo">Guardar en favoritos</h2>
-      <p class="campo__ayuda">Elegí una lista (opcional)</p>
-      <input type="hidden" name="publicacion_id" value="4">
-      <fieldset class="opciones">
-        <legend class="solo-lector">Lista</legend>
-        <label><input type="radio" name="lista_id" value=""><span>Sin lista (sólo en Todos)</span></label>
-        <label><input type="radio" name="lista_id" value="1" checked><span>Para canje</span></label>
-        <label><input type="radio" name="lista_id" value="2"><span>Familia</span></label>
-      </fieldset>
-      <div class="campo">
-        <label class="campo__etiqueta" for="nueva-lista">O creá una lista nueva</label>
-        <input class="campo__input" id="nueva-lista" name="nueva_lista" maxlength="40" placeholder="Ej: Primer auto">
-      </div>
-      <div class="hoja__acciones">
-        <button class="boton boton--secundario" type="button" data-cerrar>Cancelar</button>
-        <button class="boton" type="submit">Guardar</button>
-      </div>
-    </form>
-  </dialog>
 
 </body>
 </html>

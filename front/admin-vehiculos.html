@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vehículos · Administración - AutoCar</title>
+  <meta name="description" content="Alta, modificación y baja de vehículos.">
+  <link rel="stylesheet" href="styles/estilos.css">
+  <link rel="stylesheet" href="styles/componentes.css">
+  <link rel="stylesheet" href="styles/pantallas.css">
+  <link rel="stylesheet" href="styles/print.css" media="print">
+  <script src="js/dialogos.js" defer></script>
+  <script type="module" src="js/paginas/admin-vehiculos.js"></script>
+</head>
+<body>
+
+  <a class="saltar" href="#contenido">Saltar al contenido</a>
+
+  <header class="encabezado">
+    <a class="encabezado__volver" href="admin.html" aria-label="Volver">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12H4M4 12l7-7M4 12l7 7"/></svg>
+    </a>
+    <h1>Vehículos</h1>
+  </header>
+
+  <!-- Sólo rol admin. La tabla la arma js/paginas/admin-vehiculos.js con GET /api/admin/vehiculos
+       (incluye los vendidos, 15 por página). -->
+  <main id="contenido" class="pantalla pantalla--compacta">
+
+    <p class="recuadro" id="aviso" role="status" hidden></p>
+
+    <a class="boton boton--bloque" href="admin-vehiculo.html">Nuevo vehículo</a>
+
+    <form class="buscador" action="admin-vehiculos.html" method="get" role="search">
+      <label class="solo-lector" for="q">Buscar vehículos</label>
+      <input class="campo__input" id="q" name="q" type="search" placeholder="Marca, modelo o descripción" maxlength="60">
+      <button class="boton" type="submit">Buscar</button>
+    </form>
+
+    <p class="resultados__barra"><span class="suave" id="resultados-total" aria-live="polite"></span></p>
+
+    <div class="tabla-desplazable" role="region" aria-labelledby="tabla-titulo" tabindex="0">
+      <table class="tabla">
+        <caption class="solo-lector" id="tabla-titulo">Vehículos cargados</caption>
+        <thead>
+          <tr>
+            <th scope="col">Vehículo</th>
+            <th scope="col">Precio</th>
+            <th scope="col">Km</th>
+            <th scope="col">Estado</th>
+            <th scope="col"><span class="solo-lector">Acciones</span></th>
+          </tr>
+        </thead>
+        <tbody id="resultados"></tbody>
+      </table>
+    </div>
+    <div class="estado" id="estado"></div>
+
+    <nav class="paginacion" id="paginacion" aria-label="Páginas de resultados"></nav>
+  </main>
+
+  <!-- Confirmación de baja: DELETE /api/admin/vehiculos/{id} -->
+  <dialog class="hoja" id="confirmar-baja" aria-labelledby="baja-titulo">
+    <form class="pila" method="dialog">
+      <h2 id="baja-titulo">¿Eliminar este vehículo?</h2>
+      <p id="baja-vehiculo"></p>
+      <p class="campo__ayuda">Se borra definitivamente. Si sólo se vendió, conviene editarlo y marcarlo como vendido.</p>
+      <p class="formulario__alerta" id="baja-error" role="alert" tabindex="-1"></p>
+      <div class="hoja__acciones">
+        <button class="boton boton--secundario" type="button" data-cerrar>Cancelar</button>
+        <button class="boton" type="button" id="baja-confirmar">Eliminar</button>
+      </div>
+    </form>
+  </dialog>
+
+</body>
+</html>

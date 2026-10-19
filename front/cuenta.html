@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="styles/pantallas.css">
   <link rel="stylesheet" href="styles/print.css" media="print">
   <script src="js/validacion.js" defer></script>
+  <script type="module" src="js/paginas/cuenta.js"></script>
 </head>
 <body class="con-barra">
 
@@ -56,6 +57,13 @@
   </header>
 
   <main id="contenido" class="pantalla">
+    <!-- Datos de GET /api/me (los completa js/paginas/cuenta.js) -->
+    <section class="recuadro" aria-labelledby="usuario-nombre">
+      <h2 id="usuario-nombre">&nbsp;</h2>
+      <p class="campo__ayuda" id="usuario-email"></p>
+    </section>
+    <!-- Sólo para rol admin -->
+    <a class="boton boton--secundario boton--bloque" id="enlace-admin" href="admin-vehiculos.html" hidden>Administrar vehículos</a>
     <ul class="lista-filas" role="list">
       <li>
         <a class="fila" href="plan.html">
@@ -118,10 +126,8 @@
       </div>
       <button class="boton" type="submit">Guardar cambios</button>
     </form>
-    <!-- Salir: formulario POST con token CSRF (en el back, logout_form.php) -->
-    <form action="/logout" method="post">
-      <button class="boton boton--secundario boton--bloque" type="submit">Salir</button>
-    </form>
+    <!-- Salir: la API no usa cookies, así que alcanza con descartar el token (js/paginas/cuenta.js) -->
+    <button class="boton boton--secundario boton--bloque" type="button" id="salir">Salir</button>
   </main>
 
 </body>
