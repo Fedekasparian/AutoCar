@@ -38,7 +38,7 @@ export async function pedir(metodo, ruta, { consulta, cuerpo } = {}) {
         });
     } catch {
         throw new ErrorApi(0, 'sin_conexion',
-            'No se pudo conectar con el servidor. Si recién se despierta (Render), probá de nuevo en un minuto.');
+            'No se pudo conectar con el servidor. Probá de nuevo en un minuto.');
     }
 
     if (respuesta.status === 204) return null;
