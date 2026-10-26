@@ -1,6 +1,7 @@
 // Sesión del usuario: el token JWT y los datos públicos del usuario que devuelve el login.
 // Se guardan en sessionStorage (se borran al cerrar la pestaña). El back no usa cookies:
 // salir es simplemente descartar el token.
+import { ruta } from './rutas.js';
 const CLAVE = 'autocar.sesion';
 
 function leer() {
@@ -58,7 +59,7 @@ function aqui() {
 // Si no hay sesión, manda a login.html y después vuelve a esta página. Devuelve false si redirigió.
 export function requerirLogin() {
     if (iniciada()) return true;
-    window.location.replace(`login.html?volver=${encodeURIComponent(aqui())}`);
+    window.location.replace(ruta(`login.html?volver=${encodeURIComponent(aqui())}`));
     return false;
 }
 
@@ -66,12 +67,12 @@ export function requerirLogin() {
 export function requerirAdmin() {
     if (!requerirLogin()) return false;
     if (esAdmin()) return true;
-    window.location.replace('home.html');
+    window.location.replace(ruta('home.html'));
     return false;
 }
 
 // Destino seguro del parámetro ?volver= (sólo páginas de este mismo sitio).
 export function destinoDespuesDelLogin() {
     const volver = new URLSearchParams(window.location.search).get('volver') || '';
-    return /^[\w-]+\.html(\?[^#]*)?$/.test(volver) ? volver : 'home.html';
+    return (/^[\w-]+\.html(\?[^#]*)?$/.test(volver) && ruta(volver)) || ruta('home.html');
 }

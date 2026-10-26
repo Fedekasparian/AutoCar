@@ -2,7 +2,8 @@
 import * as admin from '../api/admin.js';
 import * as formato from '../servicios/formato.js';
 import * as sesion from '../servicios/sesion.js';
-import * as vistas from '../servicios/vistas.js';
+import * as vistas from '../servicios/vistas.js';
+import { ruta } from '../servicios/rutas.js';
 
 const { el } = vistas;
 const params = new URLSearchParams(window.location.search);
@@ -33,13 +34,13 @@ function fila(v) {
         dialogo.showModal();
     });
     return el('tr', {},
-        el('td', {}, el('a', { href: `vehiculo.html?id=${v.id}` }, formato.titulo(v))),
+        el('td', {}, el('a', { href: ruta(`vehiculo.html?id=${v.id}`) }, formato.titulo(v))),
         el('td', {}, formato.precio(v.precio)),
         el('td', {}, formato.km(v.kilometraje)),
         el('td', {}, formato.estado(v.estado)),
         el('td', {},
             el('ul', { class: 'acciones-fila', role: 'list' },
-                el('li', {}, el('a', { href: `admin-vehiculo.html?id=${v.id}` }, 'Editar')),
+                el('li', {}, el('a', { href: ruta(`admin-vehiculo.html?id=${v.id}`) }, 'Editar')),
                 el('li', {}, eliminar))));
 }
 

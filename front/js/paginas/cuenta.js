@@ -1,6 +1,7 @@
 // Mi cuenta: datos del usuario (GET /api/me) y salir.
 import * as auth from '../api/auth.js';
-import * as sesion from '../servicios/sesion.js';
+import * as sesion from '../servicios/sesion.js';
+import { ruta } from '../servicios/rutas.js';
 
 function mostrar(usuario) {
     document.getElementById('usuario-nombre').textContent = usuario.nombre;
@@ -12,7 +13,7 @@ function mostrar(usuario) {
 
 document.getElementById('salir').addEventListener('click', () => {
     sesion.cerrar();
-    window.location.assign('index.html');
+    window.location.assign(ruta('index.html'));
 });
 
 if (sesion.requerirLogin()) {

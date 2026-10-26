@@ -2,7 +2,8 @@
 // con los mismos datos para no pedirlos dos veces.
 import * as auth from '../api/auth.js';
 import * as sesion from '../servicios/sesion.js';
-import { alEnviar } from '../servicios/formularios.js';
+import { alEnviar } from '../servicios/formularios.js';
+import { ruta } from '../servicios/rutas.js';
 
 const formulario = document.getElementById('form-registro');
 const password = formulario.elements.password;
@@ -23,6 +24,6 @@ alEnviar(formulario, async (datos) => {
         window.location.replace(sesion.destinoDespuesDelLogin());
     } catch {
         // La cuenta se creó igual: que ingrese a mano.
-        window.location.replace('login.html?registrado=1');
+        window.location.replace(ruta('login.html?registrado=1'));
     }
 });

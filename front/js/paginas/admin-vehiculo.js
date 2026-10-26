@@ -4,7 +4,8 @@ import * as vehiculos from '../api/vehiculos.js';
 import * as formato from '../servicios/formato.js';
 import * as sesion from '../servicios/sesion.js';
 import * as vistas from '../servicios/vistas.js';
-import { alEnviar } from '../servicios/formularios.js';
+import { alEnviar } from '../servicios/formularios.js';
+import { ruta } from '../servicios/rutas.js';
 
 const id = new URLSearchParams(window.location.search).get('id');
 const formulario = document.getElementById('form-vehiculo');
@@ -28,7 +29,7 @@ async function cargarVehiculo() {
     } catch (error) {
         estado.replaceChildren(error.status === 404
             ? vistas.aviso('Ese vehículo no existe.', null,
-                vistas.el('a', { class: 'boton boton--secundario', href: 'admin-vehiculos.html' }, 'Volver al listado'))
+                vistas.el('a', { class: 'boton boton--secundario', href: ruta('admin-vehiculos.html') }, 'Volver al listado'))
             : vistas.avisoDeError(error));
     }
 }
@@ -41,7 +42,7 @@ alEnviar(formulario, async (datos) => {
         if (error.status === 401) sesion.requerirLogin();
         throw error;
     }
-    window.location.assign('admin-vehiculos.html?guardado=1');
+    window.location.assign(ruta('admin-vehiculos.html?guardado=1'));
 });
 
 if (sesion.requerirAdmin() && id) cargarVehiculo();

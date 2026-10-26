@@ -2,7 +2,8 @@
 import * as vehiculos from '../api/vehiculos.js';
 import * as formato from '../servicios/formato.js';
 import * as sesion from '../servicios/sesion.js';
-import * as vistas from '../servicios/vistas.js';
+import * as vistas from '../servicios/vistas.js';
+import { ruta } from '../servicios/rutas.js';
 
 const id = new URLSearchParams(window.location.search).get('id');
 const estado = document.getElementById('estado');
@@ -33,7 +34,7 @@ function mostrar(v) {
         $('vehiculo-descripcion').hidden = false;
     }
     if (sesion.esAdmin()) {
-        $('vehiculo-editar').href = `admin-vehiculo.html?id=${v.id}`;
+        $('vehiculo-editar').href = ruta(`admin-vehiculo.html?id=${v.id}`);
         $('vehiculo-editar').hidden = false;
     }
 
@@ -44,7 +45,7 @@ function mostrar(v) {
 async function cargar() {
     if (!/^\d+$/.test(id || '')) {
         estado.replaceChildren(vistas.aviso('No encontramos ese vehículo.', null,
-            vistas.el('a', { class: 'boton boton--secundario', href: 'home.html' }, 'Ver publicaciones')));
+            vistas.el('a', { class: 'boton boton--secundario', href: ruta('home.html') }, 'Ver publicaciones')));
         return;
     }
     estado.replaceChildren(vistas.cargando());
@@ -55,7 +56,7 @@ async function cargar() {
     } catch (error) {
         estado.replaceChildren(error.status === 404
             ? vistas.aviso('No encontramos ese vehículo.', 'Puede que se haya dado de baja.',
-                vistas.el('a', { class: 'boton boton--secundario', href: 'home.html' }, 'Ver publicaciones'))
+                vistas.el('a', { class: 'boton boton--secundario', href: ruta('home.html') }, 'Ver publicaciones'))
             : vistas.avisoDeError(error));
     }
 }

@@ -1,6 +1,7 @@
 // Piezas de HTML que se arman con los datos de la API. Todo se crea con el DOM (textContent),
 // así nada de lo que viene del servidor se interpreta como HTML.
-import * as formato from './formato.js';
+import * as formato from './formato.js';
+import { ruta } from './rutas.js';
 
 // Crea un elemento: el('span', {class: 'x'}, 'texto', otroNodo)
 export function el(etiqueta, atributos = {}, ...hijos) {
@@ -27,7 +28,7 @@ export function imagenVehiculo(v, clase) {
 // Ficha de la grilla de publicaciones (home y buscar). Mismo HTML que el maquetado.
 export function fichaVehiculo(v) {
     return el('li', {},
-        el('a', { class: 'ficha-vehiculo', href: `vehiculo.html?id=${v.id}` },
+        el('a', { class: 'ficha-vehiculo', href: ruta(`vehiculo.html?id=${v.id}`) },
             imagenVehiculo(v, 'ficha-vehiculo__imagen'),
             v.estado === 'vendido'
                 ? el('span', { class: 'etiqueta etiqueta--oscura ficha-vehiculo__etiqueta' }, 'Vendido')
