@@ -5,12 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Crear cuenta - AutoCar</title>
   <meta name="description" content="Creá tu cuenta de AutoCar para publicar, guardar favoritos y proponer canjes.">
-  <link rel="stylesheet" href="styles/estilos.css">
-  <link rel="stylesheet" href="styles/componentes.css">
-  <link rel="stylesheet" href="styles/pantallas.css">
-  <link rel="stylesheet" href="styles/print.css" media="print">
-  <script src="js/validacion.js" defer></script>
-  <script type="module" src="js/paginas/registro.js"></script>
+  <link rel="stylesheet" href="/styles/estilos.css">
+  <link rel="stylesheet" href="/styles/componentes.css">
+  <link rel="stylesheet" href="/styles/pantallas.css">
+  <link rel="stylesheet" href="/styles/print.css" media="print">
+  <script src="/js/validacion.js" defer></script>
+  <script type="module" src="/js/paginas/registro.js"></script>
 </head>
 <body>
 
@@ -25,8 +25,8 @@
 
   <main id="contenido" class="pantalla acceso">
     <nav class="alternar" aria-label="Ingresar o crear cuenta">
-      <a class="alternar__opcion" href="login.html">Ingresar</a>
-      <a class="alternar__opcion" href="registro.html" aria-current="page">Crear cuenta</a>
+      <a class="alternar__opcion" href="/pages/auth/login.html">Ingresar</a>
+      <a class="alternar__opcion" href="/pages/auth/registro.html" aria-current="page">Crear cuenta</a>
     </nav>
 
     <!-- Lo envía js/paginas/registro.js con POST /api/registro. Las reglas son las mismas que valida el back. -->
@@ -62,7 +62,7 @@
       <button class="boton boton--bloque" type="submit">Crear cuenta</button>
     </form>
 
-    <p class="acceso__pie">¿Ya tenés cuenta? <a href="login.html">Ingresá</a></p>
+    <p class="acceso__pie">¿Ya tenés cuenta? <a href="/pages/auth/login.html">Ingresá</a></p>
   </main>
 
 </body>
