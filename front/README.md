@@ -2,13 +2,15 @@
 
 Pantallas de AutoCar en HTML, CSS y JavaScript nativo, sin frameworks ni librerías de terceros. Las pantallas siguen los wireframes de Figma y [wireframes.md](../Entrega_2/wireframes.md).
 
+- **Sitio publicado (Vercel):** https://autocar-zeta.vercel.app/front/index.html
+
 ## Cómo se conecta con el back
 
 El back es una API JSON en PHP ([AutoCarBackend](https://github.com/MateoPonti/AutoCarBackend)). El front pide los datos con `fetch` y arma las pantallas en el navegador.
 
 - **Dirección de la API** (`js/api/config.js`): si el front se abre en `localhost` o `127.0.0.1` usa `http://localhost:8000`; en cualquier otro dominio usa `https://autocarbackend-1.onrender.com`.
 - **Sesión:** `POST /api/login` devuelve un token JWT. Se guarda en `sessionStorage` y va en cada pedido como `Authorization: Bearer <token>`. Salir es descartar el token. No hay cookies ni CSRF.
-- **CORS:** el back sólo acepta los orígenes de su variable `FRONT_URL`. Hay que agregar ahí la dirección desde donde se abre el front: `http://localhost:5500` en local y la URL del front desplegado en Render.
+- **CORS:** el back sólo acepta los orígenes de su variable `FRONT_URL`. Hay que agregar ahí la dirección desde donde se abre el front: `http://localhost:5500` en local y la URL del front desplegado en Vercel (`https://autocar-zeta.vercel.app`).
 - **Errores:** la API responde `{"error", "mensaje", "errores": {campo: mensaje}}`. Los errores por campo (422) se muestran al lado de cada campo, igual que la validación del cliente.
 
 ### Pantallas conectadas a la API
