@@ -1,4 +1,4 @@
-// Sesión del usuario. El JWT lo guarda el navegador en una cookie HttpOnly que pone el back:
+// Sesión del usuario. El id de sesión (la sesión vive en el back, en $_SESSION) va en una cookie HttpOnly que pone el back:
 // JavaScript no la puede leer ni borrar (salir es POST /api/logout). Acá sólo se guardan, en sessionStorage,
 // los datos públicos del usuario (para mostrar nombre y rol) y el token CSRF que el back pide en cada cambio.
 import { ruta } from './rutas.js';

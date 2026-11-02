@@ -1,7 +1,7 @@
 // Rutas de autenticación de la API.
 import { get, post } from './cliente.js';
 
-// → {csrf, expira_en, usuario}. El JWT queda en una cookie HttpOnly que pone el back.
+// → {csrf, expira_en, usuario}. El id de la sesión queda en una cookie HttpOnly que pone el back.
 export const login = (email, password) => post('/api/login', { email, password });
 
 // → 204. Borra la cookie de sesión (JavaScript no puede porque es HttpOnly).
