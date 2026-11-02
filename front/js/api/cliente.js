@@ -30,7 +30,13 @@ export async function pedir(metodo, ruta, { consulta, cuerpo } = {}) {
     // pero no puede conocer este valor.
     const csrf = sesion.csrf();
     if (csrf && metodo !== 'GET') cabeceras['X-CSRF-Token'] = csrf;
-    if (cuerpo !== undefined) cabeceras['Content-Type'] = 'application/json';
+    // FormData (formularios con fotos) va tal cual y sin Content-Type: el navegador pone
+    // multipart/form-data con el boundary que separa cada campo. Si lo pusiéramos a mano, faltaría el boundary.
+    const esFormulario = cuerpo instanceof FormData;
+    if (cuerpo !== undefined && !esFormulario) cabeceras['Content-Type'] = 'application/json';
+    let cuerpoHttp;
+    if (esFormulario) cuerpoHttp = cuerpo;
+    else if (cuerpo !== undefined) cuerpoHttp = JSON.stringify(cuerpo);
 
     let respuesta;
     try {
@@ -38,7 +44,7 @@ export async function pedir(metodo, ruta, { consulta, cuerpo } = {}) {
             method: metodo,
             headers: cabeceras,
             credentials: 'include', // manda y recibe la cookie de sesión (en local la API está en otro puerto)
-            body: cuerpo !== undefined ? JSON.stringify(cuerpo) : undefined,
+            body: cuerpoHttp,
         });
     } catch {
         throw new ErrorApi(0, 'sin_conexion',
@@ -70,4 +76,5 @@ export async function pedir(metodo, ruta, { consulta, cuerpo } = {}) {
 export const get = (ruta, consulta) => pedir('GET', ruta, { consulta });
 export const post = (ruta, cuerpo) => pedir('POST', ruta, { cuerpo });
 export const put = (ruta, cuerpo) => pedir('PUT', ruta, { cuerpo });
+export const patch = (ruta, cuerpo) => pedir('PATCH', ruta, { cuerpo });
 export const del = (ruta) => pedir('DELETE', ruta);
