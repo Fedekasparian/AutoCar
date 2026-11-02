@@ -154,6 +154,8 @@ Las páginas cargan su script con `<script type="module" src="js/paginas/....js"
 
 **Datos del servidor como texto.** Todo lo que llega de la API se pone con `textContent` o creando elementos (`js/servicios/vistas.js`), nunca con `innerHTML`. Así un dato con HTML no se ejecuta en la página.
 
+**Texto del chat.** `js/paginas/mensajes.js` asigna cada mensaje con `textContent` y después agrega la hora como un nodo separado. Al conectar la API, se debe conservar este tratamiento: el backend guarda el texto literal, que puede contener etiquetas. No usar `innerHTML`, `insertAdjacentHTML` ni interpretar el contenido como marcado.
+
 **Errores de formulario al lado de cada campo.** Los wireframes lo piden así. El campo lleva `aria-invalid="true"` y `aria-describedby` apuntando al texto del error (`.campo__error`), así el lector de pantalla lo lee al llegar al campo. Se usa lo mismo para los errores de validación del cliente y para los del back.
 
 **Validación en el cliente y en el servidor.** `js/validacion.js` usa las reglas del propio HTML (`required`, `min`, `pattern`…), que copian las del back. Es sólo una ayuda para el usuario: el back vuelve a validar todo.
@@ -163,3 +165,9 @@ Las páginas cargan su script con `<script type="module" src="js/paginas/....js"
 **Estados vacíos y de carga.** Las pantallas conectadas muestran "Cargando…" mientras esperan, un aviso con "Reintentar" si la API falla y un estado vacío si no hay resultados.
 
 **Responsive.** La base original es mobile first y las hojas de identidad añaden ajustes para cada ancho. La grilla de vehículos muestra 2 columnas debajo de 768 px, 3 desde 768 px y 4 desde 1024 px. Los formularios y paneles reorganizan sus columnas sin ocultar contenido para forzar una altura fija.
+
+## Prueba del render de mensajes
+
+La prueba [tests/mensajes-xss.html](../tests/mensajes-xss.html) carga el script del chat y reemplaza únicamente los datos de ejemplo por cinco casos: texto normal, etiquetas con eventos, una etiqueta de script y caracteres especiales. Comprueba que el mensaje conserve el texto literal, que sólo se agregue el nodo de la hora y que no se ejecute código del mensaje. No agrega dependencias al frontend ni envía mensajes al backend.
+
+Desde la raíz del repositorio, ejecutar `python3 -m http.server 5501 --bind 127.0.0.1` y abrir `http://127.0.0.1:5501/tests/mensajes-xss.html`. El resultado esperado es «5 de 5 casos correctos».

@@ -39,7 +39,8 @@ historial.replaceChildren(fecha);
 conversacion.mensajes.forEach(([texto, hora, propio]) => {
     const mensaje = document.createElement('li');
     mensaje.className = 'chat__mensaje' + (propio ? ' chat__mensaje--mio' : '');
-    mensaje.append(document.createTextNode(texto));
+    // El mensaje es texto literal, aunque contenga etiquetas HTML.
+    mensaje.textContent = texto;
     const tiempo = document.createElement('span');
     tiempo.className = 'chat__hora';
     tiempo.textContent = hora;
