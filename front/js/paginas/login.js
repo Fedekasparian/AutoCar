@@ -1,4 +1,4 @@
-// Ingresar con POST /api/login. Guarda el token y vuelve a la página que pidió el login (?volver=).
+// Ingresar con POST /api/login. El back deja la cookie de sesión; acá se guardan el usuario y el csrf, y se vuelve a la página que pidió el login (?volver=).
 import * as auth from '../api/auth.js';
 import * as sesion from '../servicios/sesion.js';
 import { alEnviar } from '../servicios/formularios.js';

@@ -1,13 +1,13 @@
-// Sesión del usuario: el token JWT y los datos públicos del usuario que devuelve el login.
-// Se guardan en sessionStorage (se borran al cerrar la pestaña). El back no usa cookies:
-// salir es simplemente descartar el token.
+// Sesión del usuario. El JWT lo guarda el navegador en una cookie HttpOnly que pone el back:
+// JavaScript no la puede leer ni borrar (salir es POST /api/logout). Acá sólo se guardan, en sessionStorage,
+// los datos públicos del usuario (para mostrar nombre y rol) y el token CSRF que el back pide en cada cambio.
 import { ruta } from './rutas.js';
 const CLAVE = 'autocar.sesion';
 
 function leer() {
     try {
         const guardada = JSON.parse(sessionStorage.getItem(CLAVE));
-        if (!guardada?.token) return null;
+        if (!guardada?.usuario) return null;
         if (guardada.vence && Date.now() > guardada.vence) {
             sessionStorage.removeItem(CLAVE);
             return null;
@@ -18,26 +18,28 @@ function leer() {
     }
 }
 
-// respuestaLogin: {token, expira_en, usuario}
-export function guardar({ token, expira_en: expiraEn, usuario }) {
+// respuestaLogin: {csrf, expira_en, usuario}
+export function guardar({ csrf, expira_en: expiraEn, usuario }) {
     const vence = expiraEn ? Date.now() + expiraEn * 1000 : null;
     try {
-        sessionStorage.setItem(CLAVE, JSON.stringify({ token, vence, usuario }));
+        sessionStorage.setItem(CLAVE, JSON.stringify({ csrf, vence, usuario }));
     } catch {
         // Sin almacenamiento disponible (navegación privada estricta): la sesión no persiste.
     }
 }
 
-export function actualizarUsuario(usuario) {
+// Con lo que devuelve GET /api/me: el usuario puede haber cambiado (rol) y el csrf se renueva.
+export function actualizar({ usuario, csrf }) {
     const actual = leer();
     if (!actual) return;
     try {
-        sessionStorage.setItem(CLAVE, JSON.stringify({ ...actual, usuario }));
+        sessionStorage.setItem(CLAVE, JSON.stringify({ ...actual, usuario, csrf: csrf || actual.csrf }));
     } catch {
         // Sin almacenamiento disponible.
     }
 }
 
+// Sólo borra lo guardado en el navegador; la cookie la borra el back con POST /api/logout.
 export function cerrar() {
     try {
         sessionStorage.removeItem(CLAVE);
@@ -46,7 +48,7 @@ export function cerrar() {
     }
 }
 
-export const token = () => leer()?.token || null;
+export const csrf = () => leer()?.csrf || null;
 export const usuario = () => leer()?.usuario || null;
 export const iniciada = () => leer() !== null;
 export const esAdmin = () => usuario()?.rol === 'admin';

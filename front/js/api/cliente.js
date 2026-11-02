@@ -1,4 +1,4 @@
-// Cliente HTTP de la API: arma la URL, manda el token y convierte las respuestas.
+// Cliente HTTP de la API: arma la URL, manda la cookie de sesión y el token CSRF, y convierte las respuestas.
 // Todos los fetch del front pasan por acá; los archivos de al lado (auth.js, vehiculos.js, admin.js)
 // sólo dicen qué ruta llamar.
 import { API_URL } from './config.js';
@@ -16,7 +16,8 @@ export class ErrorApi extends Error {
 }
 
 function armarUrl(ruta, consulta) {
-    const url = new URL(API_URL + ruta);
+    // Con API_URL vacío (publicado) la ruta queda relativa al dominio del front
+    const url = new URL(API_URL + ruta, window.location.origin);
     Object.entries(consulta || {}).forEach(([clave, valor]) => {
         if (valor !== undefined && valor !== null && valor !== '') url.searchParams.set(clave, valor);
     });
@@ -25,8 +26,10 @@ function armarUrl(ruta, consulta) {
 
 export async function pedir(metodo, ruta, { consulta, cuerpo } = {}) {
     const cabeceras = { Accept: 'application/json' };
-    const token = sesion.token();
-    if (token) cabeceras.Authorization = `Bearer ${token}`;
+    // Lo que cambia datos lleva el token CSRF: otro sitio puede hacer que el navegador mande la cookie,
+    // pero no puede conocer este valor.
+    const csrf = sesion.csrf();
+    if (csrf && metodo !== 'GET') cabeceras['X-CSRF-Token'] = csrf;
     if (cuerpo !== undefined) cabeceras['Content-Type'] = 'application/json';
 
     let respuesta;
@@ -34,6 +37,7 @@ export async function pedir(metodo, ruta, { consulta, cuerpo } = {}) {
         respuesta = await fetch(armarUrl(ruta, consulta), {
             method: metodo,
             headers: cabeceras,
+            credentials: 'include', // manda y recibe la cookie de sesión (en local la API está en otro puerto)
             body: cuerpo !== undefined ? JSON.stringify(cuerpo) : undefined,
         });
     } catch {
@@ -51,8 +55,8 @@ export async function pedir(metodo, ruta, { consulta, cuerpo } = {}) {
     }
 
     if (!respuesta.ok) {
-        // Token vencido o usuario borrado: la sesión guardada ya no sirve.
-        if (respuesta.status === 401 && token) sesion.cerrar();
+        // Cookie vencida o usuario borrado: los datos guardados de la sesión ya no sirven.
+        if (respuesta.status === 401 && sesion.iniciada()) sesion.cerrar();
         throw new ErrorApi(
             respuesta.status,
             datos?.error || 'error',

@@ -1,0 +1,5 @@
+{
+  "rewrites": [
+    { "source": "/api/:path*", "destination": "https://autocarbackend-1.onrender.com/api/:path*" }
+  ]
+}

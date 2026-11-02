@@ -8,9 +8,10 @@ Pantallas de AutoCar en HTML, CSS y JavaScript nativo, sin frameworks ni librer�
 
 El back es una API JSON en PHP ([AutoCarBackend](https://github.com/MateoPonti/AutoCarBackend)). El front pide los datos con `fetch` y arma las pantallas en el navegador.
 
-- **Dirección de la API** (`js/api/config.js`): si el front se abre en `localhost` o `127.0.0.1` usa `http://localhost:8000`; en cualquier otro dominio usa `https://autocarbackend-1.onrender.com`.
-- **Sesión:** `POST /api/login` devuelve un token JWT. Se guarda en `sessionStorage` y va en cada pedido como `Authorization: Bearer <token>`. Salir es descartar el token. No hay cookies ni CSRF.
-- **CORS:** el back sólo acepta los orígenes de su variable `FRONT_URL`. Hay que agregar ahí la dirección desde donde se abre el front: `http://localhost:5500` en local y la URL del front desplegado en Vercel (`https://autocar-zeta.vercel.app`).
+- **Dirección de la API** (`js/api/config.js`): si el front se abre en `localhost` o `127.0.0.1` usa `http://localhost:8000`. Publicado, pide `/api/...` a su **propio dominio** y Vercel reenvía esos pedidos a `https://autocarbackend-1.onrender.com` (proxy configurado en `vercel.json`, en la raíz del repo). Así la cookie de sesión es del propio sitio y no una cookie de terceros, que Safari y otros navegadores bloquean.
+- **Sesión con cookie:** `POST /api/login` deja el JWT en una cookie `HttpOnly`, `Secure` y `SameSite=Strict` que pone el back: JavaScript no la puede leer ni borrar. Todos los `fetch` van con `credentials: 'include'`. En `sessionStorage` sólo se guardan el usuario (nombre y rol, para mostrar) y el token CSRF (`js/servicios/sesion.js`). Salir llama a `POST /api/logout`, que borra la cookie.
+- **CSRF:** los pedidos `POST`, `PUT` y `DELETE` llevan el header `X-CSRF-Token` con el valor que devolvió el login (`js/api/cliente.js`). Sin él, el back responde 403.
+- **CORS (sólo en local):** el back sólo acepta los orígenes de su variable `FRONT_URL`; en local tiene que incluir `http://localhost:5500`. Publicado no hace falta porque, gracias al proxy, front y API están en el mismo dominio.
 - **Errores:** la API responde `{"error", "mensaje", "errores": {campo: mensaje}}`. Los errores por campo (422) se muestran al lado de cada campo, igual que la validación del cliente.
 
 ### Pantallas conectadas a la API
@@ -27,7 +28,7 @@ El back es una API JSON en PHP ([AutoCarBackend](https://github.com/MateoPonti/A
 | `admin-vehiculos.html` | `GET /api/admin/vehiculos`, `DELETE /api/admin/vehiculos/{id}` | Listado con vendidos, editar y eliminar |
 | `admin-vehiculo.html` | `POST /api/admin/vehiculos` · `?id=N`: `PUT /api/admin/vehiculos/{id}` | Alta y edición de un vehículo |
 
-Las páginas que piden sesión mandan a `login.html` si no hay token. Las de administración, además, mandan a `home.html` si el rol no es admin. Es sólo una comodidad: el back controla el rol en cada pedido.
+Las páginas que piden sesión mandan a `login.html` si no hay sesión iniciada. Las de administración, además, mandan a `home.html` si el rol no es admin. Es sólo una comodidad: el back controla el rol en cada pedido.
 
 ### Pantallas que siguen siendo maqueta
 
@@ -82,7 +83,7 @@ Por la misma razón, el detalle de vehículo todavía no tiene las partes de ver
    ```
    python3 -m http.server 5500 --directory front
    ```
-3. Entrar a `http://localhost:5500`.
+3. Entrar a `http://localhost:5500` (con `localhost`, no `127.0.0.1`: la cookie de sesión es de `localhost`, igual que la API).
 
 No alcanza con abrir los `.html` con doble clic: los módulos de JavaScript y el CORS necesitan que la página venga de un servidor. Para tener un administrador, registrate y seguí "Crear el primer administrador" del README del back.
 
@@ -98,13 +99,13 @@ front/
 ├── guia.html                    todos los componentes, para copiar el HTML
 ├── js/
 │   ├── api/                     los fetch: una función por ruta de la API
-│   │   ├── config.js            URL de la API (local o Render)
-│   │   ├── cliente.js           fetch con token, JSON y errores (ErrorApi)
-│   │   ├── auth.js              login, registro, me
+│   │   ├── config.js            URL de la API (local, o el mismo dominio con el proxy de Vercel)
+│   │   ├── cliente.js           fetch con la cookie de sesión, token CSRF, JSON y errores (ErrorApi)
+│   │   ├── auth.js              login, logout, registro, me
 │   │   ├── vehiculos.js         listado, detalle y marcas (público)
 │   │   └── admin.js             alta, modificación y baja de vehículos
 │   ├── servicios/               lógica que comparten las páginas
-│   │   ├── sesion.js            token y usuario, requerirLogin / requerirAdmin
+│   │   ├── sesion.js            usuario y token CSRF, requerirLogin / requerirAdmin
 │   │   ├── formato.js           precios, km y nombres de combustible, transmisión y estado
 │   │   ├── vistas.js            fichas, paginación y avisos armados con el DOM
 │   │   └── formularios.js       envío por fetch y errores del back al lado de cada campo
