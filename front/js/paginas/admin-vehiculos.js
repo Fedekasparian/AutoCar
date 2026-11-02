@@ -2,7 +2,8 @@
 import * as admin from '../api/admin.js';
 import * as formato from '../servicios/formato.js';
 import * as sesion from '../servicios/sesion.js';
-import * as vistas from '../servicios/vistas.js';
+import * as vistas from '../servicios/vistas.js';
+
 import { ruta } from '../servicios/rutas.js';
 
 const { el } = vistas;
@@ -80,7 +81,7 @@ botonBaja.addEventListener('click', async () => {
     }
 });
 
-if (sesion.requerirAdmin()) {
+if (sesion.requerirPermiso('vehiculos.gestionar')) {
     document.getElementById('q').value = filtros.q;
     if (params.has('guardado')) avisar('Los cambios se guardaron.');
     cargar();

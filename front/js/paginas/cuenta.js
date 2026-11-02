@@ -6,7 +6,14 @@ import { ruta } from '../servicios/rutas.js';
 function mostrar(usuario) {
     document.getElementById('usuario-nombre').textContent = usuario.nombre;
     document.getElementById('usuario-email').textContent = usuario.email;
-    document.getElementById('enlace-admin').hidden = usuario.rol !== 'admin';
+    // El panel lo ven el admin y el moderador (cada sección según sus permisos)
+    document.getElementById('enlace-admin').hidden = !sesion.vePanel();
+    // Los planes no aplican para el admin: tiene siempre el mejor incluido
+    const plan = sesion.planIncluido();
+    if (plan) {
+        document.getElementById('plan-nombre').textContent = `Plan ${plan.nombre} · ${plan.nivel}`;
+        document.getElementById('plan-meta').textContent = 'Incluido por ser administrador';
+    }
     const nombre = document.getElementById('nombre');
     if (nombre) nombre.value = usuario.nombre;
 }

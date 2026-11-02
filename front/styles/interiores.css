@@ -204,3 +204,11 @@
 
 .mapa__pin,.mapa__vos { padding:7px 12px; font-size:12px; }
 @media(max-width:767px) { .vista-talleres .mapa,.vista-mapa .mapa { height:280px; } }
+
+/* Administración: filtros en línea, tablas chicas de métricas, opción con casilla y fotos de la cola de moderación */
+.buscador--filtros { flex-wrap:wrap; }
+.buscador--filtros .campo__input { flex:1 1 160px; min-width:0; }
+.tabla--angosta { min-width:0; width:100%; }
+.opcion { display:flex; gap:8px; align-items:flex-start; }
+.moderar__fotos { display:flex; gap:8px; overflow-x:auto; }
+.moderar__foto { width:160px; height:110px; object-fit:cover; border-radius:10px; flex:0 0 auto; }

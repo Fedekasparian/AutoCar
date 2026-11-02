@@ -2,7 +2,8 @@
 import * as vehiculos from '../api/vehiculos.js';
 import * as formato from '../servicios/formato.js';
 import * as sesion from '../servicios/sesion.js';
-import * as vistas from '../servicios/vistas.js';
+import * as vistas from '../servicios/vistas.js';
+
 import { ruta } from '../servicios/rutas.js';
 
 const id = new URLSearchParams(window.location.search).get('id');
@@ -33,7 +34,7 @@ function mostrar(v) {
         $('vehiculo-descripcion-texto').textContent = v.descripcion;
         $('vehiculo-descripcion').hidden = false;
     }
-    if (sesion.esAdmin()) {
+    if (sesion.puede('vehiculos.gestionar')) {
         $('vehiculo-editar').href = ruta(`admin-vehiculo.html?id=${v.id}`);
         $('vehiculo-editar').hidden = false;
     }
