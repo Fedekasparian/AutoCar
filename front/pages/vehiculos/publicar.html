@@ -6,19 +6,27 @@
   <title>Publicar vehículo - AutoCar</title>
   <meta name="description" content="Publicá tu vehículo en AutoCar para venderlo o canjearlo.">
   <link rel="stylesheet" href="../../styles/estilos.css">
-  <link rel="stylesheet" href="../../styles/componentes.css">
+  <script src="../../js/tema.js"></script><link rel="stylesheet" href="../../styles/componentes.css">
   <link rel="stylesheet" href="../../styles/pantallas.css">
   <link rel="stylesheet" href="../../styles/print.css" media="print">
   <script src="../../js/validacion.js" defer></script>
   <script src="../../js/publicar.js" defer></script>
-</head>
-<body>
+<link rel="stylesheet" href="../../styles/identidad.css">
+<link rel="stylesheet" href="../../styles/portada.css">
+<link rel="stylesheet" href="../../styles/interiores.css"></head>
+<body class="con-barra vista-publicar">
 
   <a class="saltar" href="#contenido">Saltar al contenido</a>
 
-  <header class="encabezado">
+  <nav class="barra" aria-label="Navegación principal"><a class="barra__marca" href="../../index.html" aria-label="AutoCar, inicio"><span class="marca__simbolo" aria-hidden="true"></span>autocar</a><ul class="barra__lista">
+<li><a class="barra__enlace" href="../info/home.html"><span class="barra__icono"><svg width="22" height="22" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-7 9 7M5 10v10h14V10"></path></svg></span><span>Explorar</span></a></li>
+<li><a class="barra__enlace" href="../operaciones/meta-busqueda.html"><span class="barra__icono"><svg width="22" height="22" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"></circle><path d="m16 16 5 5"></path></svg></span><span>Búsquedas</span></a></li>
+<li><a class="barra__enlace" href="../vehiculos/mis-publicaciones.html" aria-current="page"><span class="barra__icono"><svg width="22" height="22" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v16M4 12h16"></path></svg></span><span>Publicar</span></a></li>
+<li><a class="barra__enlace" href="../operaciones/mensajes.html"><span class="barra__icono"><svg width="22" height="22" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z"></path></svg></span><span>Mensajes</span></a></li>
+<li><a class="barra__enlace" href="../auth/cuenta.html"><span class="barra__icono"><svg width="22" height="22" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"></circle><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"></path></svg></span><span>Cuenta</span></a></li>
+</ul></nav><header class="encabezado">
     <a class="encabezado__volver" href="mis-publicaciones.html" aria-label="Volver a mis publicaciones">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12H4M4 12l7-7M4 12l7 7"/></svg>
+      <svg width="22" height="22" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12H4M4 12l7-7M4 12l7 7"></path></svg>
     </a>
     <h1>Publicar vehículo</h1>
   </header>
@@ -60,13 +68,41 @@
           <label class="campo__etiqueta" for="modelo">Modelo</label>
           <select class="campo__input" id="modelo" name="modelo" required aria-describedby="modelo-error">
             <option value="">Seleccionar modelo</option>
-            <optgroup label="Chevrolet"><option>Cruze</option><option>Onix</option><option>Tracker</option></optgroup>
-            <optgroup label="Fiat"><option>Argo</option><option>Cronos</option><option>Strada</option></optgroup>
-            <optgroup label="Ford"><option>EcoSport</option><option>Ka</option><option>Ranger</option></optgroup>
-            <optgroup label="Peugeot"><option>2008</option><option>208</option><option>Partner</option></optgroup>
-            <optgroup label="Renault"><option>Duster</option><option>Kangoo</option><option>Sandero</option></optgroup>
-            <optgroup label="Toyota"><option>Corolla</option><option>Etios</option><option>Hilux</option></optgroup>
-            <optgroup label="Volkswagen"><option>Amarok</option><option>Gol</option><option>Polo</option></optgroup>
+            <optgroup label="Chevrolet">
+<option>Cruze</option>
+<option>Onix</option>
+<option>Tracker</option>
+</optgroup>
+            <optgroup label="Fiat">
+<option>Argo</option>
+<option>Cronos</option>
+<option>Strada</option>
+</optgroup>
+            <optgroup label="Ford">
+<option>EcoSport</option>
+<option>Ka</option>
+<option>Ranger</option>
+</optgroup>
+            <optgroup label="Peugeot">
+<option>2008</option>
+<option>208</option>
+<option>Partner</option>
+</optgroup>
+            <optgroup label="Renault">
+<option>Duster</option>
+<option>Kangoo</option>
+<option>Sandero</option>
+</optgroup>
+            <optgroup label="Toyota">
+<option>Corolla</option>
+<option>Etios</option>
+<option>Hilux</option>
+</optgroup>
+            <optgroup label="Volkswagen">
+<option>Amarok</option>
+<option>Gol</option>
+<option>Polo</option>
+</optgroup>
           </select>
           <span class="campo__error" id="modelo-error"></span>
         </div>
@@ -114,10 +150,7 @@
         </fieldset>
         <div class="campo">
           <label class="campo__etiqueta" for="patente">Patente</label>
-          <input class="campo__input" id="patente" name="patente" required maxlength="9" autocapitalize="characters" placeholder="AB123CD"
-            pattern="[A-Za-z]{3} ?[0-9]{3}|[A-Za-z]{2} ?[0-9]{3} ?[A-Za-z]{2}"
-            data-error-formato="Usá el formato ABC123 o AB123CD."
-            aria-describedby="patente-ayuda patente-error">
+          <input class="campo__input" id="patente" name="patente" required maxlength="9" autocapitalize="characters" placeholder="AB123CD" pattern="[A-Za-z]{3} ?[0-9]{3}|[A-Za-z]{2} ?[0-9]{3} ?[A-Za-z]{2}" data-error-formato="Usá el formato ABC123 o AB123CD." aria-describedby="patente-ayuda patente-error">
           <span class="campo__ayuda" id="patente-ayuda">No se publica completa. La usa el taller para verificar que el auto revisado es el publicado.</span>
           <span class="campo__error" id="patente-error"></span>
         </div>
@@ -146,8 +179,7 @@
           <strong>+ Agregar fotos</strong>
           <span class="campo__ayuda">Hasta 15 fotos (plan Oro). JPG, PNG o WebP de hasta 5 MB.</span>
         </label>
-        <input class="solo-lector" id="fotos" name="fotos[]" type="file" accept="image/jpeg,image/png,image/webp" multiple required
-          data-max="15" data-max-mb="5" aria-describedby="fotos-error">
+        <input class="solo-lector" id="fotos" name="fotos[]" type="file" accept="image/jpeg,image/png,image/webp" multiple required data-max="15" data-max-mb="5" aria-describedby="fotos-error">
         <span class="campo__error" id="fotos-error"></span>
         <ul class="fotos-previa" id="fotos-previa" role="list" aria-label="Fotos elegidas"></ul>
       </fieldset>
@@ -189,14 +221,22 @@
       <fieldset class="paso" data-paso="Revisión">
         <legend>Revisión</legend>
         <dl class="datos" id="resumen">
-          <dt>Vehículo</dt><dd data-resumen="marca modelo anio version">—</dd>
-          <dt>Kilometraje</dt><dd data-resumen="km">—</dd>
-          <dt>Combustible</dt><dd data-resumen="combustible transmision">—</dd>
-          <dt>Estado</dt><dd data-resumen="estado">—</dd>
-          <dt>Fotos</dt><dd data-resumen="fotos">—</dd>
-          <dt>Precio</dt><dd data-resumen="precio">—</dd>
-          <dt>Canje</dt><dd data-resumen="acepta_canje">—</dd>
-          <dt>Zona</dt><dd data-resumen="localidad">—</dd>
+          <dt>Vehículo</dt>
+<dd data-resumen="marca modelo anio version">—</dd>
+          <dt>Kilometraje</dt>
+<dd data-resumen="km">—</dd>
+          <dt>Combustible</dt>
+<dd data-resumen="combustible transmision">—</dd>
+          <dt>Estado</dt>
+<dd data-resumen="estado">—</dd>
+          <dt>Fotos</dt>
+<dd data-resumen="fotos">—</dd>
+          <dt>Precio</dt>
+<dd data-resumen="precio">—</dd>
+          <dt>Canje</dt>
+<dd data-resumen="acepta_canje">—</dd>
+          <dt>Zona</dt>
+<dd data-resumen="localidad">—</dd>
         </dl>
         <div class="campo">
           <label class="casilla">

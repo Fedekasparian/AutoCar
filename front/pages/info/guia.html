@@ -6,11 +6,14 @@
   <title>Guía de componentes - AutoCar</title>
   <meta name="description" content="Componentes del sistema de diseño de AutoCar.">
   <link rel="stylesheet" href="../../styles/estilos.css">
-  <link rel="stylesheet" href="../../styles/componentes.css">
+  <script src="../../js/tema.js"></script><link rel="stylesheet" href="../../styles/componentes.css">
   <link rel="stylesheet" href="../../styles/pantallas.css">
   <link rel="stylesheet" href="../../styles/print.css" media="print">
+<link rel="stylesheet" href="../../styles/identidad.css">
+<link rel="stylesheet" href="../../styles/portada.css">
+<link rel="stylesheet" href="../../styles/interiores.css">
 </head>
-<body class="con-barra">
+<body class="con-barra vista-guia">
 
   <!-- Guía de componentes: todas las piezas del front en un solo lugar.
        Para armar una pantalla nueva se copia de acá el HTML de cada componente. -->
@@ -19,50 +22,21 @@
 
   <!-- Barra de navegación: va primero en el HTML. En celular se fija abajo y en escritorio arriba.
        aria-current="page" marca la sección actual. -->
-  <nav class="barra" aria-label="Navegación principal">
-    <a class="barra__marca" href="home.html">AutoCar</a>
-    <ul class="barra__lista">
-      <li>
-        <a class="barra__enlace" href="home.html">
-          <span class="barra__icono"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/></svg></span>
-          Home
-        </a>
-      </li>
-      <li>
-        <a class="barra__enlace" href="../operaciones/meta-busqueda.html">
-          <span class="barra__icono"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4.5-4.5"/></svg></span>
-          Meta-S
-        </a>
-      </li>
-      <li>
-        <a class="barra__enlace" href="../vehiculos/mis-publicaciones.html">
-          <span class="barra__icono"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span>
-          Publicar
-        </a>
-      </li>
-      <li>
-        <a class="barra__enlace" href="../operaciones/mensajes.html">
-          <span class="barra__icono"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z"/></svg></span>
-          Mensajes
-        </a>
-      </li>
-      <li>
-        <a class="barra__enlace" href="../auth/cuenta.html" aria-current="page">
-          <span class="barra__icono"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg></span>
-          Cuenta
-        </a>
-      </li>
-    </ul>
-  </nav>
-
-  <!-- Encabezado de pantalla: volver (enlace a la pantalla anterior), título con subtítulo opcional y una acción -->
+  <nav class="barra" aria-label="Navegación principal"><a class="barra__marca" href="../../index.html" aria-label="AutoCar, inicio"><span class="marca__simbolo" aria-hidden="true"></span>autocar</a><ul class="barra__lista">
+<li><a class="barra__enlace" href="../info/home.html" aria-current="page"><span class="barra__icono"><svg width="22" height="22" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-7 9 7M5 10v10h14V10"></path></svg></span><span>Explorar</span></a></li>
+<li><a class="barra__enlace" href="../operaciones/meta-busqueda.html"><span class="barra__icono"><svg width="22" height="22" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"></circle><path d="m16 16 5 5"></path></svg></span><span>Búsquedas</span></a></li>
+<li><a class="barra__enlace" href="../vehiculos/mis-publicaciones.html"><span class="barra__icono"><svg width="22" height="22" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v16M4 12h16"></path></svg></span><span>Publicar</span></a></li>
+<li><a class="barra__enlace" href="../operaciones/mensajes.html"><span class="barra__icono"><svg width="22" height="22" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z"></path></svg></span><span>Mensajes</span></a></li>
+<li><a class="barra__enlace" href="../auth/cuenta.html"><span class="barra__icono"><svg width="22" height="22" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"></circle><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"></path></svg></span><span>Cuenta</span></a></li>
+</ul></nav><!-- Encabezado de pantalla: volver (enlace a la pantalla anterior), título con subtítulo opcional y una acción -->
   <header class="encabezado">
     <a class="encabezado__volver" href="../../index.html" aria-label="Volver">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12H4M4 12l7-7M4 12l7 7"/></svg>
+      <svg width="22" height="22" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12H4M4 12l7-7M4 12l7 7"></path></svg>
     </a>
-    <h1>Guía de componentes <span class="encabezado__subtitulo">Sistema de diseño de AutoCar</span></h1>
+    <h1>Guía de componentes <span class="encabezado__subtitulo">Sistema de diseño de AutoCar</span>
+</h1>
     <button type="button" class="encabezado__accion" aria-label="Más opciones">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/></svg>
+      <svg width="20" height="20" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="5" cy="12" r="1"></circle><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle></svg>
     </button>
   </header>
 
@@ -72,13 +46,27 @@
       <h2 id="g-pantallas">Todas las pantallas</h2>
       <p class="campo__ayuda">Índice para recorrer el front. Las pantallas conectadas a la API están en el README.</p>
       <ul class="pila">
-        <li><strong>Público:</strong> <a href="../../index.html">Landing</a> · <a href="planes.html">Planes</a> · <a href="../auth/login.html">Ingresar</a> · <a href="../auth/registro.html">Crear cuenta</a> · <a href="../talleres/talleres-adherirse.html">Adherir mi taller</a> · <a href="legales.html">Legales</a> · <a href="contacto.html">Contacto</a></li>
-        <li><strong>Explorar:</strong> <a href="home.html">Home</a> · <a href="../vehiculos/buscar.html">Buscar</a> · <a href="mapa.html">Mapa</a> · <a href="../vehiculos/vehiculo.html?id=1">Detalle de vehículo</a> · <a href="reportar.html">Reportar</a></li>
-        <li><strong>Meta-búsqueda:</strong> <a href="../operaciones/meta-busqueda.html">Mis intereses</a> · <a href="../operaciones/meta-busqueda-nueva.html">Nueva búsqueda</a> · <a href="../operaciones/meta-busqueda-resultados.html">Resultados</a></li>
-        <li><strong>Publicar y canjear:</strong> <a href="../vehiculos/mis-publicaciones.html">Mis publicaciones</a> · <a href="../vehiculos/publicar.html">Publicar vehículo</a> · <a href="../vehiculos/tasacion.html">Tasación</a> · <a href="../operaciones/propuestas.html">Propuestas de canje</a> · <a href="../operaciones/proponer-canje.html">Proponer canje</a></li>
-        <li><strong>Mensajes y cuenta:</strong> <a href="../operaciones/mensajes.html">Mensajes</a> · <a href="../operaciones/conversacion.html">Conversación</a> · <a href="../auth/cuenta.html">Mi cuenta</a> · <a href="plan.html">Mi plan</a> · <a href="../vehiculos/favoritos.html">Favoritos</a></li>
-        <li><strong>Talleres adheridos:</strong> <a href="../talleres/talleres.html">Talleres</a> · <a href="../talleres/verificar-vehiculo.html">Código de verificación</a> · <a href="../talleres/verificacion.html">Informe</a></li>
-        <li><strong>Mecánico y admin:</strong> <a href="../talleres/taller.html">Panel del taller</a> · <a href="../talleres/taller-verificacion.html">Inspección con checklist</a> · <a href="../admin/admin.html">Administración</a> · <a href="../admin/admin-vehiculos.html">Vehículos (admin)</a> · <a href="../admin/admin-vehiculo.html">Alta de vehículo</a></li>
+        <li>
+<strong>Público:</strong> <a href="../../index.html">Landing</a> · <a href="planes.html">Planes</a> · <a href="../auth/login.html">Ingresar</a> · <a href="../auth/registro.html">Crear cuenta</a> · <a href="../talleres/talleres-adherirse.html">Adherir mi taller</a> · <a href="legales.html">Legales</a> · <a href="contacto.html">Contacto</a>
+</li>
+        <li>
+<strong>Explorar:</strong> <a href="home.html">Home</a> · <a href="../vehiculos/buscar.html">Buscar</a> · <a href="mapa.html">Mapa</a> · <a href="../vehiculos/vehiculo.html?id=1">Detalle de vehículo</a> · <a href="reportar.html">Reportar</a>
+</li>
+        <li>
+<strong>Meta-búsqueda:</strong> <a href="../operaciones/meta-busqueda.html">Mis intereses</a> · <a href="../operaciones/meta-busqueda-nueva.html">Nueva búsqueda</a> · <a href="../operaciones/meta-busqueda-resultados.html">Resultados</a>
+</li>
+        <li>
+<strong>Publicar y canjear:</strong> <a href="../vehiculos/mis-publicaciones.html">Mis publicaciones</a> · <a href="../vehiculos/publicar.html">Publicar vehículo</a> · <a href="../vehiculos/tasacion.html">Tasación</a> · <a href="../operaciones/propuestas.html">Propuestas de canje</a> · <a href="../operaciones/proponer-canje.html">Proponer canje</a>
+</li>
+        <li>
+<strong>Mensajes y cuenta:</strong> <a href="../operaciones/mensajes.html">Mensajes</a> · <a href="../operaciones/conversacion.html">Conversación</a> · <a href="../auth/cuenta.html">Mi cuenta</a> · <a href="plan.html">Mi plan</a> · <a href="../vehiculos/favoritos.html">Favoritos</a>
+</li>
+        <li>
+<strong>Talleres adheridos:</strong> <a href="../talleres/talleres.html">Talleres</a> · <a href="../talleres/verificar-vehiculo.html">Código de verificación</a> · <a href="../talleres/verificacion.html">Informe</a>
+</li>
+        <li>
+<strong>Mecánico y admin:</strong> <a href="../talleres/taller.html">Panel del taller</a> · <a href="../talleres/taller-verificacion.html">Inspección con checklist</a> · <a href="../admin/admin.html">Administración</a> · <a href="../admin/admin-vehiculos.html">Vehículos (admin)</a> · <a href="../admin/admin-vehiculo.html">Alta de vehículo</a>
+</li>
       </ul>
     </section>
 
@@ -86,7 +74,7 @@
       <h2 id="g-botones">Botones</h2>
       <button type="button" class="boton boton--bloque">Guardar y buscar</button>
       <button type="button" class="boton boton--secundario boton--bloque">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l2 7 7 2-7 2-2 7-2-7-7-2 7-2z"/></svg>
+        <svg width="16" height="16" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l2 7 7 2-7 2-2 7-2-7-7-2 7-2z"></path></svg>
         Completar con IA
       </button>
       <p>
@@ -147,12 +135,12 @@
     </section>
 
     <section aria-labelledby="g-fichas">
-      <h2 id="g-fichas" class="titulo-seccion">Fichas de vehículo <a href="home.html">Ver todas</a></h2>
+      <h2 id="g-fichas" class="titulo-seccion">Fichas de vehículo <a href="home.html">Ver todas</a>
+</h2>
       <ul class="grilla-vehiculos" role="list">
         <li>
           <a class="ficha-vehiculo" href="../vehiculos/vehiculo.html?id=1">
-            <div class="ficha-vehiculo__imagen" role="img" aria-label="Toyota Corolla 2018, sin foto"></div>
-            <span class="etiqueta etiqueta--borde ficha-vehiculo__etiqueta">Para canje</span>
+            <img class="ficha-vehiculo__imagen foto-ejemplo" src="../../assets/identidad/corolla.jpg" alt="Imagen ilustrativa de Toyota Corolla 2018" loading="lazy"><span class="etiqueta etiqueta--borde ficha-vehiculo__etiqueta">Para canje</span>
             <div class="ficha-vehiculo__cuerpo">
               <span class="ficha-vehiculo__precio">$8.500.000</span>
               <span class="ficha-vehiculo__titulo">Toyota Corolla 2018</span>
@@ -162,8 +150,7 @@
         </li>
         <li>
           <a class="ficha-vehiculo" href="../vehiculos/vehiculo.html?id=1">
-            <div class="ficha-vehiculo__imagen" role="img" aria-label="Ford Ranger 2020, sin foto"></div>
-            <div class="ficha-vehiculo__cuerpo">
+            <img class="ficha-vehiculo__imagen foto-ejemplo" src="../../assets/identidad/ranger.jpg" alt="Imagen ilustrativa de Ford Ranger 2020" loading="lazy"><div class="ficha-vehiculo__cuerpo">
               <span class="ficha-vehiculo__precio">$9.200.000</span>
               <span class="ficha-vehiculo__titulo">Ford Ranger 2020</span>
               <span class="ficha-vehiculo__lugar">Luján, BA</span>
@@ -177,8 +164,7 @@
       <h2 id="g-filas" class="titulo-seccion">Filas</h2>
       <ul class="lista-filas" role="list">
         <li class="fila">
-          <span class="fila__miniatura"></span>
-          <span class="fila__cuerpo">
+          <img class="fila__miniatura foto-ejemplo" src="../../assets/identidad/corolla.jpg" alt="" loading="lazy"><span class="fila__cuerpo">
             <span class="fila__titulo">Toyota Corolla 2018</span><br>
             <span class="fila__meta">AB***12 · 85.000 km</span>
           </span>
