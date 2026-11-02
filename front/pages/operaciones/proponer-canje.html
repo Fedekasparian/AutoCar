@@ -6,54 +6,27 @@
   <title>Proponer canje - AutoCar</title>
   <meta name="description" content="Proponé un canje con uno de tus vehículos.">
   <link rel="stylesheet" href="../../styles/estilos.css">
-  <link rel="stylesheet" href="../../styles/componentes.css">
+  <script src="../../js/tema.js"></script><link rel="stylesheet" href="../../styles/componentes.css">
   <link rel="stylesheet" href="../../styles/pantallas.css">
   <link rel="stylesheet" href="../../styles/print.css" media="print">
   <script src="../../js/validacion.js" defer></script>
+<link rel="stylesheet" href="../../styles/identidad.css">
+<link rel="stylesheet" href="../../styles/portada.css">
+<link rel="stylesheet" href="../../styles/interiores.css">
 </head>
-<body class="con-barra">
+<body class="con-barra vista-proponer-canje">
 
   <a class="saltar" href="#contenido">Saltar al contenido</a>
 
-  <nav class="barra" aria-label="Navegación principal">
-    <a class="barra__marca" href="../info/home.html">AutoCar</a>
-    <ul class="barra__lista">
-      <li>
-        <a class="barra__enlace" href="../info/home.html" aria-current="page">
-          <span class="barra__icono"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/></svg></span>
-          Home
-        </a>
-      </li>
-      <li>
-        <a class="barra__enlace" href="meta-busqueda.html">
-          <span class="barra__icono"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4.5-4.5"/></svg></span>
-          Meta-S
-        </a>
-      </li>
-      <li>
-        <a class="barra__enlace" href="../vehiculos/mis-publicaciones.html">
-          <span class="barra__icono"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span>
-          Publicar
-        </a>
-      </li>
-      <li>
-        <a class="barra__enlace" href="mensajes.html">
-          <span class="barra__icono"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z"/></svg></span>
-          Mensajes
-        </a>
-      </li>
-      <li>
-        <a class="barra__enlace" href="../auth/cuenta.html">
-          <span class="barra__icono"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg></span>
-          Cuenta
-        </a>
-      </li>
-    </ul>
-  </nav>
-
-  <header class="encabezado">
+  <nav class="barra" aria-label="Navegación principal"><a class="barra__marca" href="../../index.html" aria-label="AutoCar, inicio"><span class="marca__simbolo" aria-hidden="true"></span>autocar</a><ul class="barra__lista">
+<li><a class="barra__enlace" href="../info/home.html"><span class="barra__icono"><svg width="22" height="22" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-7 9 7M5 10v10h14V10"></path></svg></span><span>Explorar</span></a></li>
+<li><a class="barra__enlace" href="../operaciones/meta-busqueda.html"><span class="barra__icono"><svg width="22" height="22" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"></circle><path d="m16 16 5 5"></path></svg></span><span>Búsquedas</span></a></li>
+<li><a class="barra__enlace" href="../vehiculos/mis-publicaciones.html" aria-current="page"><span class="barra__icono"><svg width="22" height="22" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v16M4 12h16"></path></svg></span><span>Publicar</span></a></li>
+<li><a class="barra__enlace" href="../operaciones/mensajes.html"><span class="barra__icono"><svg width="22" height="22" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z"></path></svg></span><span>Mensajes</span></a></li>
+<li><a class="barra__enlace" href="../auth/cuenta.html"><span class="barra__icono"><svg width="22" height="22" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"></circle><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"></path></svg></span><span>Cuenta</span></a></li>
+</ul></nav><header class="encabezado">
     <a class="encabezado__volver" href="../vehiculos/vehiculo.html?id=1" aria-label="Volver">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12H4M4 12l7-7M4 12l7 7"/></svg>
+      <svg width="22" height="22" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12H4M4 12l7-7M4 12l7 7"></path></svg>
     </a>
     <h1>Proponer canje</h1>
   </header>
@@ -62,8 +35,7 @@
     <section class="pila" aria-labelledby="quiero-titulo">
       <h2 id="quiero-titulo" class="titulo-seccion">Querés</h2>
       <div class="fila">
-        <span class="fila__miniatura"></span>
-        <span class="fila__cuerpo">
+        <img class="fila__miniatura foto-ejemplo" src="../../assets/identidad/onix.jpg" alt="" loading="lazy"><span class="fila__cuerpo">
           <span class="fila__titulo">Chevrolet Onix 2019</span><br>
           <span class="fila__meta">$4.800.000 · tasado entre $4.500.000 y $5.000.000</span>
         </span>
@@ -76,8 +48,8 @@
 
       <fieldset class="elegir-vehiculo campo">
         <legend class="titulo-seccion">Ofrecés uno de tus vehículos</legend>
-        <label><input type="radio" name="publicacion_origen_id" value="1" checked><span class="imagen-vacia"></span><span><strong>Toyota Corolla 2018</strong><br><span class="fila__meta">Tasado entre $8.100.000 y $8.900.000</span></span></label>
-        <label><input type="radio" name="publicacion_origen_id" value="6"><span class="imagen-vacia"></span><span><strong>Renault Sandero 2017</strong><br><span class="fila__meta">Sin tasación</span></span></label>
+        <label><input type="radio" name="publicacion_origen_id" value="1" checked><img class="foto-ejemplo" src="../../assets/identidad/corolla.jpg" alt="" loading="lazy"><span><strong>Toyota Corolla 2018</strong><br><span class="fila__meta">Tasado entre $8.100.000 y $8.900.000</span></span></label>
+        <label><input type="radio" name="publicacion_origen_id" value="6"><img class="foto-ejemplo" src="../../assets/identidad/sandero.jpg" alt="" loading="lazy"><span><strong>Renault Sandero 2017</strong><br><span class="fila__meta">Sin tasación</span></span></label>
       </fieldset>
 
       <p class="canje__diferencia">Según las tasaciones, tu Corolla vale unos <strong>$3.700.000 más</strong> que el Onix.</p>

@@ -1,0 +1,350 @@
+/* Propuestas de identidad AutoCar. CSS nativo, sin dependencias.
+   Tinta + aqua es la identidad elegida; las otras paletas siguen disponibles para comparar. */
+:root {
+    --marca-tinta: #131b2d;
+    --marca-acento: #69e6d8;
+    --marca-papel: #f3f7f7;
+    --marca-hover: #4cd1c2;
+    --marca-tenue: #e3edef;
+    --marca-blanco: #ffffff;
+    --marca-gris: #526271;
+    --marca-linea: #d2dee1;
+    --marca-error: #a4262c;
+    --marca-exito: #246142;
+    --marca-aviso: #805a12;
+    --color-fondo: var(--marca-papel);
+    --color-texto: var(--marca-tinta);
+    --color-texto-suave: var(--marca-gris);
+    --color-placeholder: #64727e;
+    --color-linea: var(--marca-linea);
+    --color-borde: #7d8a96;
+    --color-borde-fuerte: var(--marca-tinta);
+    --color-campo: var(--marca-blanco);
+    --color-superficie: var(--marca-blanco);
+    --color-imagen: var(--marca-tenue);
+    --color-barra: var(--marca-blanco);
+    --color-principal: var(--marca-tinta);
+    --color-principal-oscuro: #0a101e;
+    --color-sobre-principal: var(--marca-blanco);
+    --color-suave: var(--marca-tenue);
+    --color-error: var(--marca-error);
+    --color-foco: var(--marca-tinta);
+    --tam-xs: 12px;
+    --tam-sm: 14px;
+    --tam-md: 16px;
+    --tam-lg: 22px;
+    --tam-xl: 30px;
+    --tam-xxl: 48px;
+    --radio: 10px;
+    --radio-grande: 18px;
+    --alto-campo: 50px;
+    --ancho: 1280px;
+    --margen: 24px;
+    --fuente: "Avenir Next", "Segoe UI", system-ui, sans-serif;
+}
+:root[data-tema="petroleo"] { --marca-tinta:#163a3c; --marca-acento:#d4ef62; --marca-papel:#f5f7f2; --marca-hover:#bed94d; --marca-tenue:#e8eeea; --marca-gris:#536360; --marca-linea:#d7dfd9; --color-principal-oscuro:#0e292b; }
+
+:root[data-tema="mandarina"] {
+    --marca-tinta: #20252b; --marca-acento: #ff875b; --marca-papel: #f8f5f0;
+    --marca-hover: #f47548; --marca-tenue: #efe8df; --marca-gris: #625d58;
+    --marca-linea: #ded7ce; --color-principal-oscuro: #12171d;
+}
+:root[data-tema="aqua"] {
+    --marca-tinta: #131b2d; --marca-acento: #69e6d8; --marca-papel: #f3f7f7;
+    --marca-hover: #4cd1c2; --marca-tenue: #e3edef; --marca-gris: #526271;
+    --marca-linea: #d2dee1; --color-principal-oscuro: #0a101e;
+}
+:root[data-tema="durazno"] {
+    --marca-tinta: #402b43; --marca-acento: #f6b5a0; --marca-papel: #fbf6f2;
+    --marca-hover: #eca48d; --marca-tenue: #f0e5e8; --marca-gris: #6b5965;
+    --marca-linea: #e2d5db; --color-principal-oscuro: #291a2b;
+}
+html { scroll-behavior: smooth; scroll-padding-top: 100px; }
+body { font-size: 16px; }
+button, a, input, select, summary { -webkit-tap-highlight-color: transparent; }
+a, button { touch-action: manipulation; }
+:focus-visible { outline: 3px solid var(--marca-tinta); outline-offset: 4px; }
+.marca-nav { display:flex; align-items:center; justify-content:space-between; gap:24px; min-height:96px; padding:18px max(24px, calc((100% - var(--ancho)) / 2)); background:var(--marca-papel); border-bottom:1px solid var(--marca-linea); }
+.marca { display:inline-flex; align-items:center; gap:10px; text-decoration:none; font-weight:800; font-size:32px; letter-spacing:-1.5px; flex:none; }
+.marca-nav nav { display:flex; align-items:center; gap:30px; font-size:14px; font-weight:600; }
+.marca-nav nav a:not(.boton) { text-decoration:none; padding-block:10px; }
+.marca-nav nav a:hover { text-decoration:underline; text-underline-offset:6px; }
+.marca-nav [aria-current="page"] { text-decoration:underline !important; text-underline-offset:6px; }
+.marca-nav .boton { min-height:44px; }
+.contenedor { width:min(var(--ancho), calc(100% - 48px)); margin-inline:auto; }
+.boton { border-radius:9px; min-height:50px; padding:12px 24px; font-size:14px; letter-spacing:.01em; transition:background .15s, transform .15s; }
+.boton:hover { transform:translateY(-1px); }
+.boton--acento { background:var(--marca-acento); border-color:var(--marca-acento); color:var(--marca-tinta); }
+.boton--acento:hover { background:var(--marca-hover); border-color:var(--marca-hover); }
+.boton--secundario { background:transparent; color:var(--marca-tinta); }
+.boton--secundario:hover { background:var(--marca-tenue); }
+.boton--chico { min-height:44px; }
+.enlace-flecha { display:inline-flex; align-items:center; gap:16px; font-size:14px; font-weight:700; text-decoration:none; }
+.enlace-flecha:hover { text-decoration:underline; text-underline-offset:5px; }
+.seccion { padding-block:60px; }
+.seccion__cabecera { display:flex; align-items:flex-end; justify-content:space-between; gap:24px; margin-bottom:28px; }
+.seccion__cabecera h2 { font-size:clamp(26px,3vw,38px); letter-spacing:-1.3px; margin-top:8px; }
+.seccion__cabecera p { margin-top:10px; color:var(--marca-gris); max-width:620px; }
+.hero { display:grid; grid-template-columns: .92fr 1.08fr; margin-top:28px; min-height:560px; overflow:hidden; border-radius:24px; background:var(--marca-tinta); color:var(--marca-blanco); }
+.hero__texto { display:flex; flex-direction:column; align-items:flex-start; justify-content:center; padding:50px; position:relative; z-index:1; }
+.hero h1 { font-size:clamp(42px,4.4vw,66px); letter-spacing:-2.7px; font-weight:700; line-height:1.04; }
+.hero h1 span { color:var(--marca-acento); }
+.hero__texto>p { margin:24px 0 28px; font-size:16px; line-height:1.65; max-width:340px; color:#e1e9e4; }
+.hero :focus-visible { outline-color:var(--marca-acento); }
+.hero__foto { position:relative; min-width:0; }
+.hero__foto img { height:100%; width:100%; object-fit:cover; object-position:57% center; }
+.ruta__icono { display:grid; place-items:center; width:44px; height:44px; flex:none; color:var(--marca-tinta); border:1px solid var(--marca-linea); border-radius:50%; }
+.grilla-vehiculos { gap:20px; }
+.ficha-vehiculo { background:var(--marca-blanco); border:1px solid var(--marca-linea); border-radius:14px; overflow:hidden; transition:box-shadow .15s, transform .15s; }
+a.ficha-vehiculo:hover { box-shadow:0 10px 26px #162d3c13; transform:translateY(-3px); }
+.ficha-vehiculo__imagen { display:block; height:auto; aspect-ratio:1.48; object-fit:cover; }
+.ficha-vehiculo__cuerpo { gap:8px; padding:20px; }
+.ficha-vehiculo__titulo { font-size:16px; font-weight:650; color:var(--marca-tinta); }
+.ficha-vehiculo__precio { font-size:23px; letter-spacing:-.6px; }
+.ficha-vehiculo__lugar { font-size:12px; }
+.ficha-vehiculo__pie { border-top:1px solid var(--marca-linea); margin-top:8px; padding-top:12px; display:flex; justify-content:space-between; font-size:12px; color:var(--marca-gris); }
+.nota-editorial { margin-top:16px; font-size:12px; color:var(--marca-gris); }
+.taller-banner { display:grid; grid-template-columns:1fr 1fr; min-height:410px; border-radius:20px; overflow:hidden; background:var(--marca-tenue); }
+.taller-banner__foto { min-width:0; min-height:410px; position:relative; }
+.taller-banner__foto img { position:absolute; inset:0; height:100%; width:100%; object-fit:cover; object-position:center; }
+.taller-banner__texto { display:flex; flex-direction:column; align-items:flex-start; justify-content:center; padding:48px; }
+.taller-banner h2 { font-size:clamp(28px,3vw,42px); letter-spacing:-1.5px; margin:16px 0; }
+.taller-banner p { max-width:400px; color:var(--marca-gris); margin-bottom:24px; line-height:1.65; }
+.taller-banner small { font-size:12px; margin-top:14px; color:var(--marca-gris); }
+.planes-home { display:flex; align-items:center; justify-content:space-between; gap:32px; background:var(--marca-acento); border-radius:18px; padding:36px 42px; margin-bottom:60px; }
+.planes-home h2 { font-size:30px; letter-spacing:-1px; margin:8px 0; }
+.planes-home p { font-size:14px; }
+.pie-marca { border-top:1px solid var(--marca-linea); padding-block:36px 24px; }
+.pie-marca__fila { display:flex; justify-content:space-between; align-items:center; gap:24px; }
+.pie-marca nav { display:flex; flex-wrap:wrap; gap:24px; font-size:13px; }
+.pie-marca nav a { text-decoration:none; }
+.pie-marca nav a:hover { text-decoration:underline; }
+.pie-marca__legal { display:flex; justify-content:space-between; gap:20px; font-size:12px; color:var(--marca-gris); margin-top:30px; }
+.pagina-intro { padding:52px 0 36px; }
+.pagina-intro h1 { font-size:clamp(36px,4vw,54px); letter-spacing:-2px; line-height:1.1; margin:12px 0 20px; }
+.pagina-intro>p { color:var(--marca-gris); max-width:620px; font-size:16px; }
+.pagina-intro--centrada { text-align:center; }
+.pagina-intro--centrada>p { margin-inline:auto; }
+.planes-layout { padding-bottom:60px; }
+.planes { gap:16px; }
+.plan { position:relative; padding:28px 24px; background:var(--marca-blanco); gap:14px; display:flex; flex-direction:column; border-color:var(--marca-linea); }
+.plan h2 { font-size:22px; letter-spacing:-.6px; }
+.plan__resumen { min-height:42px; font-size:14px; }
+.plan__precio { font-size:12px; min-height:66px; padding:2px 0 18px; border-bottom:1px solid var(--marca-linea); }
+.plan__precio strong { font-size:32px; letter-spacing:-1px; }
+.plan__precio>span { display:block; }
+.plan__incluye { padding:0; list-style:none; font-size:13px; gap:12px; margin-bottom:24px; }
+.plan__incluye li { padding-left:22px; position:relative; }
+.plan__incluye li::before { content:'✓'; position:absolute; left:0; font-weight:800; }
+.plan>.boton { margin-top:auto; padding-inline:12px; width:100%; }
+.plan--destacado { border:2px solid var(--marca-tinta); background:var(--marca-tenue); }
+.niveles { padding-top:64px; }
+.tabla-desplazable { position:relative; min-width:0; border:1px solid var(--marca-linea); border-radius:14px; background:var(--marca-blanco); }
+.tabla { border-collapse:collapse; min-width:640px; font-size:14px; }
+.tabla th,.tabla td { padding:20px; }
+.tabla thead { background:var(--marca-tenue); }
+.tabla thead th { color:var(--marca-tinta); font-size:12px; }
+.tabla tbody tr:last-child th,.tabla tbody tr:last-child td { border-bottom:0; }
+.niveles .campo__ayuda { margin-top:16px; }
+.faq { max-width:860px; margin:56px auto 0; }
+.faq h2 { font-size:28px; letter-spacing:-1px; margin-bottom:24px; }
+.faq details { border-top:1px solid var(--marca-linea); padding:20px 0; }
+.faq summary { font-weight:600; cursor:pointer; line-height:1.5; }
+.faq details p { margin-top:16px; color:var(--marca-gris); font-size:14px; }
+.adhesion { display:grid; grid-template-columns:.9fr 1.1fr; gap:64px; padding-block:46px 64px; align-items:start; }
+.adhesion__historia h1 { font-size:46px; letter-spacing:-1.8px; line-height:1.1; margin:14px 0 20px; }
+.adhesion__historia p { color:var(--marca-gris); margin-bottom:24px; }
+.adhesion__historia img { width:100%; height:auto; aspect-ratio:4/3; object-fit:cover; border-radius:16px; }
+.adhesion__pasos { display:grid; gap:16px; margin:24px 0; padding-left:20px; font-size:14px; }
+.adhesion .formulario { padding:32px; background:var(--marca-blanco); border:1px solid var(--marca-linea); border-radius:18px; gap:18px; }
+.formulario h2 { font-size:22px; letter-spacing:-.6px; }
+.campo__etiqueta { font-size:13px; color:var(--marca-tinta); font-weight:600; }
+.campo__input { border-color:#7d8a96; font-size:15px; background:var(--marca-blanco); }
+.campo__input:hover { border-color:var(--marca-tinta); }
+.campo__input:focus { border-color:var(--marca-tinta); }
+.acceso-layout { display:grid; grid-template-columns:1fr 1fr; min-height:calc(100vh - 96px); }
+.acceso-relato { padding:64px max(40px, calc((100vw - 1280px) / 2)); padding-right:64px; background:var(--marca-tinta); color:var(--marca-blanco); display:flex; flex-direction:column; justify-content:center; align-items:flex-start; }
+.acceso-relato__titulo { font-size:clamp(36px,4vw,55px); line-height:1.08; letter-spacing:-2px; max-width:460px; margin:24px 0; }
+.acceso-relato p { font-size:15px; line-height:1.7; max-width:400px; color:#e1e9e4; }
+.acceso-relato img { border-radius:16px; margin-top:32px; width:100%; height:auto; max-width:480px; aspect-ratio:1.8; object-fit:cover; }
+.acceso-layout .acceso { width:100%; max-width:510px; align-self:center; padding:48px; gap:26px; margin-inline:auto; }
+.acceso h1 { font-size:32px; letter-spacing:-1px; margin-bottom:8px; }
+.acceso .alternar__opcion { font-size:13px; }
+.acceso .formulario { gap:20px; }
+.acceso__pie { font-size:13px; }
+.catalogo-intro { display:flex; justify-content:space-between; align-items:center; padding:32px 0 8px; gap:20px; }
+.catalogo-intro h1 { font-size:42px; letter-spacing:-1.5px; margin:10px 0; }
+.catalogo-intro p { color:var(--marca-gris); }
+.pantalla { max-width:var(--ancho); margin-inline:auto; padding:28px 24px 60px; }
+.pantalla .buscador { max-width:720px; }
+.filtros-rapidos { gap:12px; margin-block:16px; }
+.filtros-rapidos .campo__input { min-height:46px; font-size:13px; padding:10px 16px; }
+.resultados__barra { margin-block:12px; }
+.encabezado { max-width:1280px; margin-inline:auto; background:transparent; }
+.encabezado h1 { font-size:26px; }
+.galeria__principal { border-radius:16px; overflow:hidden; }
+.detalle__titulo h2 { font-size:36px; letter-spacing:-1px; }
+.detalle__precio { font-size:30px; }
+.detalle__info { border:1px solid var(--marca-linea); background:var(--marca-blanco); border-radius:16px; padding:32px; }
+.recuadro { background:var(--marca-tenue); }
+.barra { background:var(--marca-blanco); }
+.barra__icono { background:var(--marca-tenue); color:var(--marca-tinta); }
+.barra__enlace { color:var(--marca-gris); }
+.barra__enlace[aria-current="page"] .barra__icono { color:var(--marca-blanco); }
+.barra__marca { letter-spacing:-1.5px; }
+@media (min-width:1024px) {
+    .barra { padding-inline:max(24px, calc((100% - 1280px) / 2)); }
+    .pantalla:has(.grilla-vehiculos) { max-width:1328px; }
+}
+@media (max-width:1100px) {
+    .marca-nav nav { gap:18px; }
+    .hero { min-height:500px; }
+    .hero__texto { padding:36px; }
+    .hero h1 { font-size:50px; }
+    .planes { grid-template-columns:repeat(2,minmax(0,1fr)); }
+    .adhesion { gap:32px; }
+    .adhesion__historia h1 { font-size:38px; }
+}
+@media (max-width:767px) {
+    :root { --margen:20px; }
+    .marca-nav { padding:16px 20px; min-height:78px; flex-wrap:wrap; gap:16px; }
+    .marca { font-size:28px; }
+    .marca-nav nav { gap:16px; font-size:12px; flex-wrap:wrap; }
+    .marca-nav .nav-desktop { display:none; }
+    .marca-nav .boton { min-height:40px; padding:8px 14px; font-size:12px; }
+    .contenedor { width:calc(100% - 40px); }
+    .hero { grid-template-columns:1fr; margin-top:20px; border-radius:18px; }
+    .hero__texto { padding:32px 26px 36px; }
+    .hero h1 { font-size:48px; letter-spacing:-2px; }
+    .hero__texto>p { margin:20px 0 24px; font-size:15px; }
+    .hero__foto { height:310px; }
+    .hero__foto img { object-position:center 61%; }
+    .seccion { padding-block:38px; }
+    .seccion__cabecera { align-items:flex-start; flex-direction:column; gap:18px; }
+    .seccion__cabecera h2 { font-size:30px; }
+    .grilla-vehiculos { grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; }
+    .ficha-vehiculo__cuerpo { padding:14px 12px; gap:7px; }
+    .ficha-vehiculo__titulo { font-size:13px; }
+    .ficha-vehiculo__precio { font-size:18px; }
+    .ficha-vehiculo__lugar { font-size:12px; }
+    .ficha-vehiculo__pie { flex-direction:column; gap:5px; font-size:12px; }
+    .taller-banner { grid-template-columns:1fr; }
+    .taller-banner__foto { height:260px; min-height:260px; }
+    .taller-banner__texto { padding:30px 26px; }
+    .taller-banner h2 { font-size:32px; }
+    .planes-home { flex-direction:column; align-items:flex-start; padding:28px; margin-bottom:40px; gap:24px; }
+    .planes-home h2 { font-size:28px; }
+    .pie-marca__fila,.pie-marca__legal { align-items:flex-start; flex-direction:column; }
+    .pie-marca nav { gap:20px; }
+    .pagina-intro { padding-top:34px; }
+    .pagina-intro h1 { font-size:38px; letter-spacing:-1.5px; }
+    .planes { grid-template-columns:1fr; }
+    .plan__resumen,.plan__precio { min-height:0; }
+    .plan__incluye { margin-bottom:16px; }
+    .niveles { padding-top:40px; }
+    .tabla th,.tabla td { padding:16px; }
+    .adhesion { grid-template-columns:1fr; padding-top:32px; gap:32px; }
+    .adhesion__historia h1 { font-size:38px; }
+    .adhesion__historia img { aspect-ratio:1.6; }
+    .adhesion .formulario { padding:24px 20px; }
+    .acceso-layout { grid-template-columns:1fr; min-height:0; }
+    .acceso-relato { padding:30px 24px; }
+    .acceso-relato__titulo { font-size:32px; margin:14px 0; max-width:none; letter-spacing:-1px; }
+    .acceso-relato img { display:none; }
+    .acceso-layout .acceso { padding:32px 24px 48px; }
+    .catalogo-intro { padding-top:24px; align-items:flex-start; }
+    .catalogo-intro h1 { font-size:32px; }
+    .catalogo-intro p { font-size:14px; }
+    .catalogo-intro .enlace-flecha { font-size:12px; }
+    .filtros-rapidos { grid-template-columns:1fr; gap:8px; }
+    .detalle__info { padding:24px; }
+    .detalle__titulo h2 { font-size:28px; }
+}
+@media (max-width:390px) {
+    .marca-nav nav { gap:12px; }
+    .marca-nav { gap:10px; }
+    .marca-nav nav .nav-ingreso { display:none; }
+    .hero h1 { font-size:42px; }
+    .campos-fila { grid-template-columns:1fr; }
+}
+@media (prefers-reduced-motion:reduce) {
+    html { scroll-behavior:auto; }
+    *,*::before,*::after { transition:none !important; }
+}
+@media print {
+    .marca-nav nav,.hero__acciones,.pie-marca nav { display:none; }
+    .hero { color:#000; background:#fff; }
+    .seccion,.pagina-intro { padding-block:20px; }
+    .plan,.taller-banner,.ficha-vehiculo { break-inside:avoid; }
+}
+
+/* Segunda revisión: contenido concreto y menos elementos decorativos. */
+.marca { letter-spacing:-1.2px; }
+.hero { min-height:500px; border-radius:14px; }
+.hero h1 { font-size:clamp(42px,4.4vw,64px); }
+.hero__texto { padding:44px; }
+.hero__texto>p { max-width:370px; margin:22px 0; }
+.hero__busqueda { width:100%; max-width:400px; }
+.hero__busqueda label { display:block; font-size:14px; font-weight:600; margin-bottom:10px; }
+.hero__busqueda>div { display:flex; gap:8px; }
+.hero__busqueda input { min-width:0; width:100%; padding:12px 14px; background:#fff; color:var(--marca-tinta); border:1px solid #fff; border-radius:6px; font-size:15px; }
+.hero__busqueda .boton { padding-inline:20px; }
+.hero__publicar { margin-top:18px; font-size:14px; text-underline-offset:4px; }
+.hero__busqueda input:focus-visible { outline-color:var(--marca-acento); }
+.planes-home { margin-top:56px; background:transparent; border-radius:0; border-top:1px solid var(--marca-linea); border-bottom:1px solid var(--marca-linea); padding:34px 0; }
+.planes-home h2 { margin:0 0 10px; }
+.taller-banner { border-radius:12px; }
+.plan { border-radius:12px; }
+.pagina-intro h1 { margin-top:0; }
+.boton:hover { transform:none; }
+.ficha-vehiculo { border-radius:10px; }
+a.ficha-vehiculo:hover { transform:none; box-shadow:none; border-color:var(--marca-tinta); }
+.marca-nav--acceso { min-height:68px; padding-block:12px; }
+.marca-nav--acceso>a:last-child { font-size:13px; text-underline-offset:4px; }
+.auth-page { display:flex; flex-direction:column; }
+.auth-page .acceso-layout { flex:1; min-height:0; }
+.auth-page .acceso-relato { padding-block:32px; }
+.auth-page .acceso-relato__titulo { margin:0 0 16px; font-size:40px; }
+.auth-page .acceso-relato img { margin-top:28px; aspect-ratio:1.8; }
+.auth-page .acceso { max-width:500px; padding:28px 40px; gap:20px; }
+.auth-page .acceso h1 { font-size:30px; }
+.auth-page .acceso .suave { font-size:14px; }
+.auth-page .acceso .formulario { gap:14px; }
+.auth-page .campo { gap:5px; }
+.auth-page .campo__input { min-height:44px; }
+.auth-page .boton { min-height:46px; }
+@media(max-width:767px) {
+    .hero__texto { padding:30px 26px; }
+    .hero h1 { font-size:44px; }
+    .hero__foto { height:260px; }
+    .hero__busqueda .boton { padding-inline:16px; }
+    .planes-home { margin-top:36px; padding-block:28px; }
+    .auth-page .acceso-relato { display:none; }
+    .auth-page .acceso { padding:28px 24px; align-self:start; }
+    .auth-page .marca-nav--acceso { flex-wrap:nowrap; }
+    .auth-page .marca-nav--acceso .marca { font-size:28px; }
+}
+@media(min-width:768px) and (max-height:780px) {
+    .auth-page .acceso { padding-block:20px; gap:16px; }
+    .auth-page .acceso-relato__titulo { font-size:34px; }
+    .auth-page .acceso-relato img { max-height:230px; width:100%; }
+}
+
+.acceso-relato .acceso-relato__titulo { color:var(--marca-blanco); font-weight:700; line-height:1.1; }
+
+/* Perfil del auto elegido para la identidad; hereda la tinta de cada paleta. */
+.marca__simbolo {
+    display:inline-block;
+    width:44px;
+    height:31px;
+    flex:none;
+    background:currentColor;
+    -webkit-mask:url('../assets/identidad/logo-perfil.svg') center / contain no-repeat;
+    mask:url('../assets/identidad/logo-perfil.svg') center / contain no-repeat;
+}
+.barra__marca { display:inline-flex; align-items:center; gap:10px; }
+.barra__marca .marca__simbolo { width:36px; height:25px; }
+@media (max-width:720px) {
+    .marca { gap:8px; }
+    .marca__simbolo { width:38px; height:27px; }
+}
