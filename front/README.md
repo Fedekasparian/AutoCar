@@ -91,6 +91,19 @@ En Render (plan Free) el back se duerme tras unos minutos sin uso: el primer ped
 
 Para ver la versión de celular alcanza con achicar la ventana o usar la vista adaptable del navegador (F12). Para ver la de impresión, la vista previa de impresión (Ctrl+P).
 
+## Entorno de prueba
+
+Versiones con las que se desarrolló y probó (lo pide la guía de entrega):
+
+| | Versión |
+|---|---|
+| Sistema operativo | Windows 11 Pro (build 26200) |
+| Navegadores | Chrome 156 y Edge 156 (escritorio y vista adaptable de celular con F12) |
+| Servidor local para el front | `php -S` (PHP 8.4.10) o `python -m http.server` (Python 3.14.4) |
+| Publicado en | Vercel (sitio estático, sin build) |
+
+El front no necesita instalar nada: es HTML, CSS y JavaScript nativo.
+
 ## Estructura
 
 ```
