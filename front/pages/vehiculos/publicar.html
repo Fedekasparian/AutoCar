@@ -18,7 +18,7 @@
 
   <a class="saltar" href="#contenido">Saltar al contenido</a>
 
-  <nav class="barra" aria-label="Navegación principal"><a class="barra__marca" href="../../index.html" aria-label="AutoCar, inicio"><span class="marca__simbolo" aria-hidden="true"></span>autocar</a><ul class="barra__lista">
+  <nav class="barra" aria-label="Navegación principal"><a class="barra__marca" href="../../index.html" aria-label="AutoCar, inicio"><span class="marca__simbolo" aria-hidden="true"></span>AutoCar</a><ul class="barra__lista">
 <li><a class="barra__enlace" href="../info/home.html"><span class="barra__icono"><svg width="22" height="22" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-7 9 7M5 10v10h14V10"></path></svg></span><span>Explorar</span></a></li>
 <li><a class="barra__enlace" href="../operaciones/meta-busqueda.html"><span class="barra__icono"><svg width="22" height="22" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"></circle><path d="m16 16 5 5"></path></svg></span><span>Búsquedas</span></a></li>
 <li><a class="barra__enlace" href="../vehiculos/mis-publicaciones.html" aria-current="page"><span class="barra__icono"><svg width="22" height="22" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v16M4 12h16"></path></svg></span><span>Publicar</span></a></li>
@@ -109,7 +109,7 @@
         <div class="campos-fila">
           <div class="campo">
             <label class="campo__etiqueta" for="anio">Año</label>
-            <input class="campo__input" id="anio" name="anio" type="number" inputmode="numeric" min="1980" max="2027" required placeholder="2018" aria-describedby="anio-error">
+            <input class="campo__input" id="anio" name="anio" type="number" inputmode="numeric" min="1950" max="2027" required placeholder="2018" aria-describedby="anio-error">
             <span class="campo__error" id="anio-error"></span>
           </div>
           <div class="campo">
@@ -125,7 +125,7 @@
         <div class="campos-fila">
           <div class="campo">
             <label class="campo__etiqueta" for="km">Kilometraje</label>
-            <input class="campo__input" id="km" name="km" type="number" inputmode="numeric" min="0" max="999999" required placeholder="85000" aria-describedby="km-error">
+            <input class="campo__input" id="km" name="km" type="number" inputmode="numeric" min="0" max="2000000" required placeholder="85000" aria-describedby="km-error">
             <span class="campo__error" id="km-error"></span>
           </div>
           <div class="campo">
@@ -189,7 +189,7 @@
         <legend>Precio y canje</legend>
         <div class="campo">
           <label class="campo__etiqueta" for="precio">Precio en pesos</label>
-          <input class="campo__input" id="precio" name="precio" type="number" inputmode="numeric" min="100000" step="1000" required placeholder="8500000" aria-describedby="precio-ayuda precio-error">
+          <input class="campo__input" id="precio" name="precio" type="number" inputmode="numeric" min="100000" max="999999999" step="1" required placeholder="8500000" aria-describedby="precio-ayuda precio-error">
           <span class="campo__ayuda" id="precio-ayuda">Después de publicar podés pedir la tasación con IA para comparar.</span>
           <span class="campo__error" id="precio-error"></span>
         </div>
