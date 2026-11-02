@@ -52,6 +52,9 @@ export const csrf = () => leer()?.csrf || null;
 export const usuario = () => leer()?.usuario || null;
 export const iniciada = () => leer() !== null;
 export const esAdmin = () => usuario()?.rol === 'admin';
+// Permisos del rol (vienen en el usuario del login y de /api/me), p. ej. puede('vehiculos.moderar').
+// Sólo sirve para mostrar u ocultar cosas: el back vuelve a controlar el permiso en cada pedido.
+export const puede = (permiso) => (usuario()?.permisos || []).includes(permiso);
 
 // Página actual (sin el dominio), para volver a ella después del login.
 function aqui() {
