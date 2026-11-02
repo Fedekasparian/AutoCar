@@ -2,6 +2,10 @@
 
 Pantallas de AutoCar en HTML, CSS y JavaScript nativo, sin frameworks ni librerías de terceros. Las pantallas siguen los wireframes de Figma y [wireframes.md](../Entrega_2/wireframes.md).
 
+La consigna del [TP integrador](../TP%20Integrador%20-%20PAW%202026%20Mercedes.pdf), página 1, establece JavaScript para el contenido dinámico y exige consultar al equipo docente antes de usar librerías de terceros. El diseño debe ser responsivo, multipantalla y crossbrowser, con validación de estándares W3C. No exige resolver las interacciones únicamente con CSS.
+
+El rediseño conserva CSS propio, HTML semántico y JavaScript nativo. No incorpora frameworks, bibliotecas de componentes, fuentes externas ni dependencias de ejecución. El comparador, los datos del preview y las herramientas para capturas y documentos están fuera del frontend que se entrega; no son librerías del producto. Las comprobaciones locales de estructura y responsive no sustituyen una validación formal W3C ni pruebas en todos los navegadores.
+
 - **Sitio publicado (Vercel):** https://autocar-zeta.vercel.app/front/index.html
 
 ## Cómo se conecta con el back
@@ -138,15 +142,19 @@ Las páginas cargan su script con `<script type="module" src="js/paginas/....js"
 
 ## Decisiones
 
-**Colores provisorios.** Por ahora son los grises de los wireframes: la paleta de la marca todavía no está definida. Todos los colores están como variables en `:root` (`styles/estilos.css`) y ninguna regla usa un color suelto, así que cuando el grupo elija la paleta se cambia en un solo lugar.
+**Identidad visual.** La paleta elegida es tinta y aqua: tinta `#131B2D`, acento `#69E6D8` y fondo `#F3F7F7`. Los colores semánticos están en `styles/identidad.css`; `styles/interiores.css` adapta las vistas de cuenta y `styles/portada.css` resuelve el banner y el menú público. El logo elegido es `assets/identidad/logo-perfil.svg`. `js/tema.js` permite comparar cuatro paletas mediante `?tema=aqua`, `petroleo`, `mandarina` o `durazno`, y recuerda la preferencia local.
+
+**Pantallas internas.** La identidad se aplica a las 34 páginas HTML, incluida la guía. Navegación inferior hasta 1099 px; chat separado de la bandeja debajo de 768 px. `js/paginas/mensajes.js` permite explorar tres conversaciones de ejemplo y filtrarlas, sin implementar persistencia de mensajes. Las fotografías y el mapa esquemático son ilustrativos. Las limitaciones de API descritas arriba siguen vigentes.
 
 **Nombres en castellano.** Las clases y variables siguen el estilo de PAWPrints: bloque y elemento separados por `__` (`ficha-vehiculo__precio`) y variantes por `--` (`boton--secundario`).
 
-**Barra de navegación.** Va primero en el HTML. En celular se fija abajo, como en Figma; desde 1024px pasa a ser una barra superior con la marca. Las páginas con barra llevan `class="con-barra"` en el `body` para dejarle lugar abajo. La sección actual se marca con `aria-current="page"`.
+**Barra de navegación.** Va primero en el HTML. Hasta 1099 px se fija abajo; desde 1100 px pasa a ser una barra superior con la marca. Las páginas con barra llevan `class="con-barra"` en el `body` para dejarle lugar abajo. La sección actual se marca con `aria-current="page"`.
 
 **Filtros en la URL.** Los filtros y la página del listado son formularios GET (`home.html?marca=Toyota&page=2`). Se puede recargar, compartir el enlace o volver atrás sin perder la búsqueda.
 
 **Datos del servidor como texto.** Todo lo que llega de la API se pone con `textContent` o creando elementos (`js/servicios/vistas.js`), nunca con `innerHTML`. Así un dato con HTML no se ejecuta en la página.
+
+**Texto del chat.** `js/paginas/mensajes.js` asigna cada mensaje con `textContent` y después agrega la hora como un nodo separado. Al conectar la API, se debe conservar este tratamiento: el backend guarda el texto literal, que puede contener etiquetas. No usar `innerHTML`, `insertAdjacentHTML` ni interpretar el contenido como marcado.
 
 **Errores de formulario al lado de cada campo.** Los wireframes lo piden así. El campo lleva `aria-invalid="true"` y `aria-describedby` apuntando al texto del error (`.campo__error`), así el lector de pantalla lo lee al llegar al campo. Se usa lo mismo para los errores de validación del cliente y para los del back.
 
@@ -156,4 +164,10 @@ Las páginas cargan su script con `<script type="module" src="js/paginas/....js"
 
 **Estados vacíos y de carga.** Las pantallas conectadas muestran "Cargando…" mientras esperan, un aviso con "Reintentar" si la API falla y un estado vacío si no hay resultados.
 
-**Responsive.** Mobile first: lo base es para celular. Desde 768px el contenido se centra con un ancho máximo y la grilla de vehículos pasa a 3 columnas; desde 1024px la grilla va a 4 columnas.
+**Responsive.** La base original es mobile first y las hojas de identidad añaden ajustes para cada ancho. La grilla de vehículos muestra 2 columnas debajo de 768 px, 3 desde 768 px y 4 desde 1024 px. Los formularios y paneles reorganizan sus columnas sin ocultar contenido para forzar una altura fija.
+
+## Prueba del render de mensajes
+
+La prueba [tests/mensajes-xss.html](../tests/mensajes-xss.html) carga el script del chat y reemplaza únicamente los datos de ejemplo por cinco casos: texto normal, etiquetas con eventos, una etiqueta de script y caracteres especiales. Comprueba que el mensaje conserve el texto literal, que sólo se agregue el nodo de la hora y que no se ejecute código del mensaje. No agrega dependencias al frontend ni envía mensajes al backend.
+
+Desde la raíz del repositorio, ejecutar `python3 -m http.server 5501 --bind 127.0.0.1` y abrir `http://127.0.0.1:5501/tests/mensajes-xss.html`. El resultado esperado es «5 de 5 casos correctos».

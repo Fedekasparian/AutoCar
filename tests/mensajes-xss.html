@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="es">
+<meta charset="utf-8">
+<base href="/front/pages/operaciones/">
+<title>Prueba local del render del chat</title>
+<body>
+<h1>Prueba local del render del chat</h1>
+<p id="resultado" role="status">Ejecutando prueba…</p>
+<a data-chat="onix" href="#">Conversación de prueba</a>
+<h2 id="chat-persona"></h2><a id="chat-vehiculo"></a><img id="chat-foto" alt="">
+<ul id="chat-historial"></ul>
+<form class="chat__enviar"></form>
+<label>Buscar<input id="buscar-conversacion"></label><p id="sin-conversaciones" hidden>Sin resultados</p>
+<script type="module">
+const casos = [
+    'Hola, ¿sigue disponible? 😀',
+    '<img src=x onerror="document.body.dataset.xssEjecutado=1">',
+    '<svg onload="document.body.dataset.xssEjecutado=1"></svg>',
+    '<scr' + 'ipt>document.body.dataset.xssEjecutado=1</scr' + 'ipt>',
+    '&lt;img src=x&gt; & comillas "dobles" y simples\nSegunda línea'
+];
+const salida = document.querySelector('#resultado');
+try {
+    const respuesta = await fetch('/front/js/paginas/mensajes.js');
+    if (!respuesta.ok) throw new Error('No se pudo leer el script del producto');
+    const fuente = await respuesta.text();
+    const punto = 'const solicitado =';
+    if (!fuente.includes(punto)) throw new Error('Cambió el punto de carga de los datos de prueba');
+    const datos = casos.map((texto, i) => [texto, '10:0' + i, i % 2 === 0]);
+    // Se conserva el render del producto; sólo se sustituyen sus datos de ejemplo.
+    const prueba = fuente.replace(punto, 'conversaciones.onix.mensajes = ' + JSON.stringify(datos) + ';\n' + punto);
+    new Function(prueba)();
+    const mensajes = [...document.querySelectorAll('#chat-historial .chat__mensaje')];
+    if (mensajes.length !== casos.length) throw new Error('Cantidad incorrecta de mensajes');
+    mensajes.forEach((mensaje, i) => {
+        if (mensaje.firstChild?.nodeType !== Node.TEXT_NODE || mensaje.firstChild.nodeValue !== casos[i]) throw new Error('Texto alterado en caso ' + i);
+        if (mensaje.children.length !== 1 || !mensaje.firstElementChild.matches('.chat__hora')) throw new Error('Se interpretó HTML en caso ' + i);
+        if (mensaje.firstElementChild.textContent !== datos[i][1]) throw new Error('Hora incorrecta en caso ' + i);
+    });
+    if (document.body.dataset.xssEjecutado) throw new Error('Se ejecutó código del mensaje');
+    salida.dataset.estado = 'ok';
+    salida.textContent = '5 de 5 casos correctos: contenido literal, sin elementos HTML inyectados; horas conservadas.';
+} catch (error) {
+    salida.dataset.estado = 'error';
+    salida.textContent = error.message;
+}
+</script>
+</body></html>

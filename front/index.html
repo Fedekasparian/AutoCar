@@ -1,127 +1,106 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AutoCar - Comprá, vendé o canjeá tu vehículo</title>
-  <meta name="description" content="AutoCar: la forma simple de comprar, vender o canjear tu vehículo.">
-  <link rel="stylesheet" href="styles/estilos.css">
-  <link rel="stylesheet" href="styles/componentes.css">
-  <link rel="stylesheet" href="styles/pantallas.css">
-  <link rel="stylesheet" href="styles/print.css" media="print">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Comprá, vendé o canjeá tu auto - AutoCar</title>
+<meta name="description" content="Comprá, vendé o canjeá tu vehículo con AutoCar.">
+    <link rel="stylesheet" href="styles/estilos.css">
+<link rel="stylesheet" href="styles/componentes.css">
+<link rel="stylesheet" href="styles/pantallas.css">
+<link rel="stylesheet" href="styles/identidad.css">
+<link rel="stylesheet" href="styles/print.css" media="print">
+<script src="js/tema.js"></script><link rel="stylesheet" href="styles/portada.css">
 </head>
 <body>
+<a class="saltar" href="#contenido">Saltar al contenido</a><header class="marca-nav"><a class="marca" href="index.html" aria-label="AutoCar, inicio"><span class="marca__simbolo" aria-hidden="true"></span>autocar</a><nav aria-label="Navegación principal">
+    <a class="nav-desktop" href="pages/info/home.html">Explorar autos</a>
+    <a href="pages/info/planes.html">Planes</a>
+    <a class="nav-desktop" href="pages/talleres/talleres-adherirse.html">Soy mecánico</a>
+    <a class="nav-ingreso" href="pages/auth/login.html">Ingresar</a>
+    <a class="boton" href="pages/auth/registro.html">Crear cuenta</a>
+    </nav><details class="menu-publico"><summary>Menú</summary><nav aria-label="Navegación móvil">
+    <a class="nav-desktop" href="pages/info/home.html">Explorar autos</a>
+    <a href="pages/info/planes.html">Planes</a>
+    <a class="nav-desktop" href="pages/talleres/talleres-adherirse.html">Soy mecánico</a>
+    <a class="nav-ingreso" href="pages/auth/login.html">Ingresar</a>
+    <a class="boton" href="pages/auth/registro.html">Crear cuenta</a>
+    </nav></details></header>
+<main id="contenido"><div class="contenedor">
+  <section class="portada-auto" aria-labelledby="hero-titulo">
+ <div class="portada-auto__escena">
+  <img class="portada-auto__foto" src="assets/identidad/hero-v3.jpg" width="1536" height="1024" fetchpriority="high" alt="Dos autos junto a un camino; imagen ilustrativa">
+  <div class="portada-auto__texto">
+<h1 id="hero-titulo">Encontrá tu <span>próximo auto.</span>
+</h1>
+<p>Comprá, vendé o canjeá entre particulares.</p>
+<a href="pages/auth/registro.html">Publicar mi auto</a>
+</div>
+ </div>
+ <form class="busqueda-principal" action="pages/info/home.html" method="get" role="search">
+  <div class="campo">
+<label for="buscar-auto">¿Qué auto buscás?</label><input class="campo__input" id="buscar-auto" name="q" type="search" placeholder="Marca o modelo" maxlength="60">
+</div>
+  <div class="campo">
+<label for="presupuesto">Precio máximo</label><select class="campo__input" id="presupuesto" name="precio_max"><option value="">Sin límite</option>
+<option value="6000000">$6.000.000</option>
+<option value="9000000">$9.000.000</option>
+<option value="12000000">$12.000.000</option>
+<option value="20000000">$20.000.000</option></select>
+</div>
+  <button class="boton boton--acento" type="submit">Buscar autos</button>
+ </form>
+</section><section class="seccion" aria-labelledby="autos-titulo"><div class="seccion__cabecera">
+<div><h2 id="autos-titulo">Vehículos de ejemplo</h2></div>
+<a class="enlace-flecha" href="pages/info/home.html">Explorar publicaciones</a>
+</div>
+<ul class="grilla-vehiculos" role="list">
+<li><article class="ficha-vehiculo"><img class="ficha-vehiculo__imagen" src="assets/identidad/corolla.jpg" width="1536" height="1024" alt="Imagen ilustrativa de Toyota Corolla" loading="lazy"><div class="ficha-vehiculo__cuerpo">
+<h3 class="ficha-vehiculo__titulo">Toyota Corolla</h3>
+<p class="ficha-vehiculo__lugar">2018 · Mercedes, BA</p>
+<p class="ficha-vehiculo__precio">$8.500.000</p>
+<div class="ficha-vehiculo__pie"><span>Publicación de ejemplo</span></div>
+</div></article></li>
+<li><article class="ficha-vehiculo"><img class="ficha-vehiculo__imagen" src="assets/identidad/sandero.jpg" width="1536" height="1024" alt="Imagen ilustrativa de Renault Sandero" loading="lazy"><div class="ficha-vehiculo__cuerpo">
+<h3 class="ficha-vehiculo__titulo">Renault Sandero</h3>
+<p class="ficha-vehiculo__lugar">2017 · Luján, BA</p>
+<p class="ficha-vehiculo__precio">$6.200.000</p>
+<div class="ficha-vehiculo__pie"><span>Publicación de ejemplo</span></div>
+</div></article></li>
+<li><article class="ficha-vehiculo"><img class="ficha-vehiculo__imagen" src="assets/identidad/cronos.jpg" width="1536" height="1024" alt="Imagen ilustrativa de Fiat Cronos" loading="lazy"><div class="ficha-vehiculo__cuerpo">
+<h3 class="ficha-vehiculo__titulo">Fiat Cronos</h3>
+<p class="ficha-vehiculo__lugar">2021 · Chivilcoy, BA</p>
+<p class="ficha-vehiculo__precio">$11.900.000</p>
+<div class="ficha-vehiculo__pie"><span>Publicación de ejemplo</span></div>
+</div></article></li>
+<li><article class="ficha-vehiculo"><img class="ficha-vehiculo__imagen" src="assets/identidad/onix.jpg" width="1536" height="1024" alt="Imagen ilustrativa de Chevrolet Onix" loading="lazy"><div class="ficha-vehiculo__cuerpo">
+<h3 class="ficha-vehiculo__titulo">Chevrolet Onix</h3>
+<p class="ficha-vehiculo__lugar">2019 · Mercedes, BA</p>
+<p class="ficha-vehiculo__precio">$4.800.000</p>
+<div class="ficha-vehiculo__pie"><span>Publicación de ejemplo</span></div>
+</div></article></li>
+</ul>
+<p class="nota-editorial">Vehículos y precios de ejemplo del proyecto. Imágenes ilustrativas generadas con IA; no representan unidades ofrecidas a la venta.</p></section>
+  <section class="taller-banner" aria-labelledby="taller-titulo"><div class="taller-banner__foto"><img src="assets/identidad/mecanico.jpg" alt="Mecánico revisando el motor de un auto, imagen ilustrativa" width="1536" height="1024" loading="lazy"></div>
+<div class="taller-banner__texto">
+<h2 id="taller-titulo">Sumá tu taller a AutoCar</h2>
+<p>Ofrecé revisiones mecánicas a quienes compran o venden un vehículo. Completá la solicitud para adherir tu taller.</p>
+<a class="boton" href="pages/talleres/talleres-adherirse.html">Quiero sumar mi taller</a><small>Adhesión sujeta a revisión. Foto ilustrativa generada con IA.</small>
+</div></section>
 
-  <a class="saltar" href="#contenido">Saltar al contenido</a>
-
-  <!-- Ingresar y Registrarme usan la API del back (POST /api/login y /api/registro) -->
-  <header class="landing-barra">
-    <a class="landing-barra__marca" href="index.html">AutoCar</a>
-    <nav class="landing-barra__enlaces" aria-label="Cuenta">
-      <a href="pages/info/planes.html">Planes</a>
-      <a href="pages/auth/login.html">Ingresar</a>
-      <a href="pages/auth/registro.html">Registrarme</a>
-    </nav>
-  </header>
-
-  <main id="contenido" class="landing">
-
-    <section class="portada" aria-labelledby="portada-titulo">
-      <div class="portada__texto">
-        <h1 id="portada-titulo">Comprá, vendé o canjeá tu vehículo</h1>
-        <p>La forma simple de encontrar el auto que buscás.</p>
-        <a class="boton" href="pages/auth/registro.html">Registrarme</a>
-      </div>
-
-      <aside class="widget-taller" aria-labelledby="widget-taller-titulo">
-        <span class="widget-taller__icono">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.5 5.5a4 4 0 0 0 4.9 4.9L21 12l-9 9-3-3 9-9"/></svg>
-        </span>
-        <h2 id="widget-taller-titulo">Asociate como mecánico</h2>
-        <p>Sumá tu taller y recibí clientes de AutoCar.</p>
-        <a class="boton boton--chico" href="pages/talleres/talleres-adherirse.html">Quiero sumarme</a>
-      </aside>
-    </section>
-
-    <section aria-labelledby="planes-titulo">
-      <h2 id="planes-titulo" class="titulo-seccion">Planes destacados</h2>
-      <ul class="planes-destacados" role="list">
-        <li>
-          <a class="plan-resumen" href="pages/info/planes.html">
-            <strong>Free</strong>
-            <span>$0 / mes</span>
-            <span class="plan-resumen__mas">Ver más</span>
-          </a>
-        </li>
-        <li>
-          <a class="plan-resumen" href="pages/info/planes.html">
-            <strong>Uso Portal</strong>
-            <span>desde $12.900</span>
-            <span class="plan-resumen__mas">Ver más</span>
-          </a>
-        </li>
-        <li>
-          <a class="plan-resumen" href="pages/info/planes.html">
-            <strong>Meta-searching</strong>
-            <span>$9.900 / mes</span>
-            <span class="plan-resumen__mas">Ver más</span>
-          </a>
-        </li>
-      </ul>
-    </section>
-
-    <!-- El visitante ve precio y zona, pero no entra al detalle hasta registrarse -->
-    <section aria-labelledby="ejemplos-titulo">
-      <h2 id="ejemplos-titulo" class="titulo-seccion">Vehículos de ejemplo</h2>
-      <ul class="grilla-vehiculos" role="list">
-        <li>
-          <article class="ficha-vehiculo">
-            <div class="ficha-vehiculo__imagen" role="img" aria-label="Toyota Corolla 2018"></div>
-            <div class="ficha-vehiculo__cuerpo">
-              <span class="ficha-vehiculo__precio">$8.500.000</span>
-              <span class="ficha-vehiculo__lugar">Mercedes, BA</span>
-            </div>
-          </article>
-        </li>
-        <li>
-          <article class="ficha-vehiculo">
-            <div class="ficha-vehiculo__imagen" role="img" aria-label="Renault Sandero 2017"></div>
-            <div class="ficha-vehiculo__cuerpo">
-              <span class="ficha-vehiculo__precio">$6.200.000</span>
-              <span class="ficha-vehiculo__lugar">Luján, BA</span>
-            </div>
-          </article>
-        </li>
-        <li>
-          <article class="ficha-vehiculo">
-            <div class="ficha-vehiculo__imagen" role="img" aria-label="Fiat Cronos 2021"></div>
-            <div class="ficha-vehiculo__cuerpo">
-              <span class="ficha-vehiculo__precio">$11.900.000</span>
-              <span class="ficha-vehiculo__lugar">Chivilcoy, BA</span>
-            </div>
-          </article>
-        </li>
-        <li>
-          <article class="ficha-vehiculo">
-            <div class="ficha-vehiculo__imagen" role="img" aria-label="Chevrolet Onix 2019"></div>
-            <div class="ficha-vehiculo__cuerpo">
-              <span class="ficha-vehiculo__precio">$4.800.000</span>
-              <span class="ficha-vehiculo__lugar">Mercedes, BA</span>
-            </div>
-          </article>
-        </li>
-      </ul>
-    </section>
-
-  </main>
-
-  <footer class="pie">
-    <nav aria-label="Legales">
-      <a href="pages/info/legales.html">Legales</a> · <a href="pages/info/legales.html#terminos">Términos y condiciones</a> · <a href="pages/info/legales.html#privacidad">Privacidad</a>
-    </nav>
-    <a href="pages/info/contacto.html">Contacto</a>
-    <p>© AutoCar 2026</p>
-  </footer>
-
+  <section class="planes-home" aria-labelledby="plan-home-titulo"><div>
+<h2 id="plan-home-titulo">Planes para buscar y publicar</h2>
+<p>Free sin costo. Meta-searching desde $9.900 y Uso Portal desde $12.900 por mes.</p>
+</div>
+<a class="boton" href="pages/info/planes.html">Comparar planes</a></section>
+</div></main><footer class="pie-marca"><div class="contenedor">
+    <div class="pie-marca__fila">
+<a class="marca" href="index.html" aria-label="AutoCar, inicio"><span class="marca__simbolo" aria-hidden="true"></span>autocar</a><nav aria-label="Información"><a href="pages/info/planes.html">Planes</a><a href="pages/talleres/talleres-adherirse.html">Sumá tu taller</a><a href="pages/info/contacto.html">Contacto</a><a href="pages/info/legales.html">Legales y privacidad</a></nav>
+</div>
+    <div class="pie-marca__legal">
+<p>© AutoCar 2026</p>
+<p>Compra, venta y canje de vehículos</p>
+</div>
+</div></footer>
 </body>
 </html>

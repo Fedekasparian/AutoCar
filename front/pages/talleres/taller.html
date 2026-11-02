@@ -6,52 +6,26 @@
   <title>Mi taller - AutoCar</title>
   <meta name="description" content="Panel del taller adherido.">
   <link rel="stylesheet" href="../../styles/estilos.css">
-  <link rel="stylesheet" href="../../styles/componentes.css">
+  <script src="../../js/tema.js"></script><link rel="stylesheet" href="../../styles/componentes.css">
   <link rel="stylesheet" href="../../styles/pantallas.css">
   <link rel="stylesheet" href="../../styles/print.css" media="print">
+<link rel="stylesheet" href="../../styles/identidad.css">
+<link rel="stylesheet" href="../../styles/portada.css">
+<link rel="stylesheet" href="../../styles/interiores.css">
 </head>
-<body class="con-barra">
+<body class="con-barra vista-taller">
 
   <a class="saltar" href="#contenido">Saltar al contenido</a>
 
-  <nav class="barra" aria-label="Navegación principal">
-    <a class="barra__marca" href="taller.html">AutoCar</a>
-    <ul class="barra__lista">
-      <li>
-        <a class="barra__enlace" href="taller.html" aria-current="page">
-          <span class="barra__icono"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z"/></svg></span>
-          Panel
-        </a>
-      </li>
-      <li>
-        <a class="barra__enlace" href="taller-verificacion.html">
-          <span class="barra__icono"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg></span>
-          Verificar
-        </a>
-      </li>
-      <li>
-        <a class="barra__enlace" href="taller.html#aprobaciones">
-          <span class="barra__icono"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/></svg></span>
-          Historial
-        </a>
-      </li>
-      <li>
-        <a class="barra__enlace" href="../operaciones/mensajes.html">
-          <span class="barra__icono"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z"/></svg></span>
-          Mensajes
-        </a>
-      </li>
-      <li>
-        <a class="barra__enlace" href="../auth/cuenta.html">
-          <span class="barra__icono"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg></span>
-          Cuenta
-        </a>
-      </li>
-    </ul>
-  </nav>
-
-  <header class="encabezado">
-    <h1>Mi taller <span class="encabezado__subtitulo">Taller San Martín · Mercedes</span></h1>
+  <nav class="barra" aria-label="Navegación principal"><a class="barra__marca" href="../../index.html" aria-label="AutoCar, inicio"><span class="marca__simbolo" aria-hidden="true"></span>autocar</a><ul class="barra__lista">
+<li><a class="barra__enlace" href="../info/home.html"><span class="barra__icono"><svg width="22" height="22" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-7 9 7M5 10v10h14V10"></path></svg></span><span>Explorar</span></a></li>
+<li><a class="barra__enlace" href="../operaciones/meta-busqueda.html"><span class="barra__icono"><svg width="22" height="22" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"></circle><path d="m16 16 5 5"></path></svg></span><span>Búsquedas</span></a></li>
+<li><a class="barra__enlace" href="../vehiculos/mis-publicaciones.html"><span class="barra__icono"><svg width="22" height="22" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v16M4 12h16"></path></svg></span><span>Publicar</span></a></li>
+<li><a class="barra__enlace" href="../operaciones/mensajes.html"><span class="barra__icono"><svg width="22" height="22" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z"></path></svg></span><span>Mensajes</span></a></li>
+<li><a class="barra__enlace" href="../auth/cuenta.html" aria-current="page"><span class="barra__icono"><svg width="22" height="22" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"></circle><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"></path></svg></span><span>Cuenta</span></a></li>
+</ul></nav><header class="encabezado">
+    <h1>Mi taller <span class="encabezado__subtitulo">Taller San Martín · Mercedes</span>
+</h1>
   </header>
 
   <main id="contenido" class="pantalla">
@@ -72,8 +46,7 @@
       <ul class="lista-filas" role="list">
       <li>
         <a class="fila" href="taller-verificacion.html">
-          <span class="fila__miniatura"></span>
-          <span class="fila__cuerpo">
+          <img class="fila__miniatura foto-ejemplo" src="../../assets/identidad/corolla.jpg" alt="" loading="lazy"><span class="fila__cuerpo">
             <span class="fila__titulo">Toyota Corolla 2018</span><br>
             <span class="fila__meta">AB***12 · Solicitada 12/10 · Plan Oro −25 %</span>
           </span>
@@ -82,8 +55,7 @@
       </li>
       <li>
         <a class="fila" href="taller-verificacion.html">
-          <span class="fila__miniatura"></span>
-          <span class="fila__cuerpo">
+          <img class="fila__miniatura foto-ejemplo" src="../../assets/identidad/gol.jpg" alt="" loading="lazy"><span class="fila__cuerpo">
             <span class="fila__titulo">VW Gol 2016</span><br>
             <span class="fila__meta">AD***34 · Solicitada 13/10 · Plan Plata −15 %</span>
           </span>
@@ -97,8 +69,7 @@
       <ul class="lista-filas" role="list">
       <li>
         <a class="fila" href="verificacion.html">
-          <span class="fila__miniatura"></span>
-          <span class="fila__cuerpo">
+          <img class="fila__miniatura foto-ejemplo" src="../../assets/identidad/onix.jpg" alt="" loading="lazy"><span class="fila__cuerpo">
             <span class="fila__titulo">Chevrolet Onix 2019</span><br>
             <span class="fila__meta">86/100 · Muy bueno · 08/10</span>
           </span>
@@ -107,8 +78,7 @@
       </li>
       <li>
         <a class="fila" href="verificacion.html">
-          <span class="fila__miniatura"></span>
-          <span class="fila__cuerpo">
+          <img class="fila__miniatura foto-ejemplo" src="../../assets/identidad/cronos.jpg" alt="" loading="lazy"><span class="fila__cuerpo">
             <span class="fila__titulo">Fiat Cronos 2021</span><br>
             <span class="fila__meta">Falla crítica en frenos · 05/10</span>
           </span>
