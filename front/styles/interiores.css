@@ -212,3 +212,12 @@
 .opcion { display:flex; gap:8px; align-items:flex-start; }
 .moderar__fotos { display:flex; gap:8px; overflow-x:auto; }
 .moderar__foto { width:160px; height:110px; object-fit:cover; border-radius:10px; flex:0 0 auto; }
+
+/* Acceso al panel (js/barra-admin.js): sexto ítem de la barra y tarjeta en el inicio */
+@media (max-width: 1099px) {
+    .con-barra .barra__lista--admin { grid-template-columns:repeat(6,minmax(0,1fr)); }
+}
+.acceso-admin { display:flex; flex-direction:column; gap:2px; margin-bottom:16px; padding:14px 18px; border-radius:14px;
+    background:var(--marca-tinta); color:var(--marca-blanco); text-decoration:none; }
+.acceso-admin span { font-size:13px; opacity:.85; }
+.acceso-admin:hover, .acceso-admin:focus-visible { filter:brightness(1.15); }
