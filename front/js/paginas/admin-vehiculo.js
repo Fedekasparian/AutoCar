@@ -1,10 +1,10 @@
 // Administración: alta (sin ?id) o edición (?id=N) de un vehículo.
 import * as admin from '../api/admin.js';
-import * as vehiculos from '../api/vehiculos.js';
 import * as formato from '../servicios/formato.js';
 import * as sesion from '../servicios/sesion.js';
 import * as vistas from '../servicios/vistas.js';
-import { alEnviar } from '../servicios/formularios.js';
+import { alEnviar } from '../servicios/formularios.js';
+
 import { ruta } from '../servicios/rutas.js';
 
 const id = new URLSearchParams(window.location.search).get('id');
@@ -14,12 +14,12 @@ const estado = document.getElementById('estado');
 // El back acepta hasta el año que viene.
 formulario.elements.anio.max = new Date().getFullYear() + 1;
 
-// Para editar se usa el detalle público, que también devuelve los vendidos.
+// Para editar se usa el detalle de admin: el público da 404 con los pendientes, rechazados y eliminados.
 async function cargarVehiculo() {
     formulario.hidden = true;
     estado.replaceChildren(vistas.cargando());
     try {
-        const { vehiculo } = await vehiculos.detalle(id);
+        const { vehiculo } = await admin.detalle(id);
         document.getElementById('titulo').textContent = `Editar ${formato.titulo(vehiculo)}`;
         Array.from(formulario.elements).forEach((control) => {
             if (control.name && control.name in vehiculo) control.value = vehiculo[control.name] ?? '';
@@ -45,4 +45,4 @@ alEnviar(formulario, async (datos) => {
     window.location.assign(ruta('admin-vehiculos.html?guardado=1'));
 });
 
-if (sesion.requerirAdmin() && id) cargarVehiculo();
+if (sesion.requerirPermiso('vehiculos.gestionar') && id) cargarVehiculo();

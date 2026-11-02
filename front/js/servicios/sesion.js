@@ -68,13 +68,22 @@ export function requerirLogin() {
     return false;
 }
 
-// Para las pantallas de administración. El back vuelve a controlar el rol en cada pedido.
-export function requerirAdmin() {
+// Permisos de las pantallas de administración (el admin los tiene todos; el moderador, sólo moderar).
+export const PERMISOS_PANEL = ['usuarios.ver', 'vehiculos.moderar', 'vehiculos.gestionar', 'metricas.ver'];
+export const vePanel = () => PERMISOS_PANEL.some(puede);
+
+// Para las pantallas de administración: hace falta alguno de los permisos pedidos (sin argumentos, cualquiera
+// del panel). Si no, vuelve al inicio. El back vuelve a controlar el permiso en cada pedido.
+export function requerirPermiso(...permisos) {
     if (!requerirLogin()) return false;
-    if (esAdmin()) return true;
+    if ((permisos.length ? permisos : PERMISOS_PANEL).some(puede)) return true;
     window.location.replace(ruta('home.html'));
     return false;
 }
+
+// El admin tiene siempre el mejor plan, incluido y sin cobro: los planes no aplican para él.
+export const PLAN_ADMIN = { nombre: 'Ambas', nivel: 'Platino', anuncios: 'Sin límite', descuento: '25 %' };
+export const planIncluido = () => (esAdmin() ? PLAN_ADMIN : null);
 
 // Destino seguro del parámetro ?volver= (sólo páginas de este mismo sitio).
 export function destinoDespuesDelLogin() {

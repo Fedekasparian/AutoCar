@@ -12,7 +12,11 @@ export const COMBUSTIBLES = {
     electrico: 'Eléctrico',
 };
 export const TRANSMISIONES = { manual: 'Manual', automatica: 'Automática' };
-export const ESTADOS = { disponible: 'Disponible', vendido: 'Vendido' };
+export const ESTADOS = {
+    pendiente: 'Pendiente', disponible: 'Disponible', rechazado: 'Rechazado', vendido: 'Vendido', eliminado: 'Eliminado',
+};
+export const ROLES = { usuario: 'Usuario', moderador: 'Moderador', admin: 'Administrador', mecanico: 'Mecánico' };
+export const rol = (valor) => ROLES[valor] || valor;
 
 export const combustible = (valor) => COMBUSTIBLES[valor] || valor;
 export const transmision = (valor) => TRANSMISIONES[valor] || valor;

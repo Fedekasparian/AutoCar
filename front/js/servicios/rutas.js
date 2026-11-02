@@ -6,6 +6,9 @@ const RAIZ = new URL('../../', import.meta.url);
 
 const PAGINAS = {
     'index.html': 'index.html',
+    'admin-metricas.html': 'pages/admin/admin-metricas.html',
+    'admin-moderar.html': 'pages/admin/admin-moderar.html',
+    'admin-usuarios.html': 'pages/admin/admin-usuarios.html',
     'admin-vehiculo.html': 'pages/admin/admin-vehiculo.html',
     'admin-vehiculos.html': 'pages/admin/admin-vehiculos.html',
     'admin.html': 'pages/admin/admin.html',

@@ -30,85 +30,65 @@
     <h1>Administración</h1>
   </header>
 
+  <!-- Cada sección se muestra según los permisos del usuario (js/paginas/admin.js). El admin tiene todos;
+       el moderador sólo "Moderar". El back vuelve a controlar cada permiso en cada pedido. -->
   <main id="contenido" class="pantalla">
-    <ul class="resumen-admin" role="list">
-      <li class="recuadro">
-<strong>1.284</strong><span>Usuarios</span>
-</li>
-      <li class="recuadro">
-<strong>312</strong><span>Publicaciones activas</span>
-</li>
-      <li class="recuadro">
-<strong>7</strong><span>Reportes pendientes</span>
-</li>
-      <li class="recuadro">
-<strong>2</strong><span>Talleres por aprobar</span>
-</li>
+    <p class="suave" id="rol-actual"></p>
+    <ul class="resumen-admin" role="list" id="resumen" hidden>
+      <li class="recuadro"><strong id="r-usuarios">—</strong><span>Usuarios activos</span></li>
+      <li class="recuadro"><strong id="r-publicaciones">—</strong><span>Publicaciones</span></li>
+      <li class="recuadro"><strong id="r-pendientes">—</strong><span>Por moderar</span></li>
+      <li class="recuadro"><strong id="r-mensajes">—</strong><span>Mensajes (30 días)</span></li>
     </ul>
-    <section aria-labelledby="talleres-titulo">
-      <h2 id="talleres-titulo" class="titulo-seccion">Talleres pendientes de aprobación</h2>
-      <ul class="pila" role="list">
-        <li class="propuesta">
-          <p><strong>Lubricentro Ruta 5</strong><br><span class="fila__meta">CUIT 30-71234567-8 · Mercedes · Solicitado 14/10</span></p>
-          <form class="pila" action="/admin/talleres/3" method="post">
-            <label class="solo-lector" for="motivo-3">Motivo si se rechaza</label>
-            <input class="campo__input" id="motivo-3" name="motivo" placeholder="Motivo (si se rechaza)">
-            <div class="hoja__acciones">
-              <button class="boton boton--chico" type="submit" name="accion" value="aprobar">Aprobar</button>
-              <button class="boton boton--secundario boton--chico" type="submit" name="accion" value="rechazar">Rechazar</button>
-            </div>
-          </form>
-        </li>
-      </ul>
-    </section>
     <nav aria-label="Secciones de administración">
+      <h2 class="titulo-seccion">Secciones</h2>
       <ul class="lista-filas" role="list">
-      <li>
+      <li data-permiso="usuarios.ver" hidden>
+        <a class="fila" href="admin-usuarios.html">
+          <span class="fila__miniatura sin-foto" aria-hidden="true"><svg width="22" height="22" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"></circle><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"></path></svg></span>
+          <span class="fila__cuerpo">
+            <span class="fila__titulo">Administrar usuarios</span><br>
+            <span class="fila__meta">Ver datos, cambiar el rol (moderador, mecánico…) y dar de baja</span>
+          </span>
+          <span aria-hidden="true">›</span>
+        </a>
+      </li>
+      <li data-permiso="vehiculos.moderar" hidden>
+        <a class="fila" href="admin-moderar.html">
+          <span class="fila__miniatura sin-foto" aria-hidden="true"><svg width="22" height="22" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h12v18H6zM9 8h6M9 12h6M9 16h4"/></svg></span>
+          <span class="fila__cuerpo">
+            <span class="fila__titulo">Moderar publicaciones</span><br>
+            <span class="fila__meta" id="meta-pendientes">Aprobar o rechazar las pendientes</span>
+          </span>
+          <span aria-hidden="true">›</span>
+        </a>
+      </li>
+      <li data-permiso="vehiculos.gestionar" hidden>
+        <a class="fila" href="admin-vehiculo.html">
+          <span class="fila__miniatura sin-foto" aria-hidden="true"><svg width="22" height="22" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v16M4 12h16"></path></svg></span>
+          <span class="fila__cuerpo">
+            <span class="fila__titulo">Crear publicación</span><br>
+            <span class="fila__meta">Cargar un vehículo al catálogo</span>
+          </span>
+          <span aria-hidden="true">›</span>
+        </a>
+      </li>
+      <li data-permiso="vehiculos.gestionar" hidden>
         <a class="fila" href="admin-vehiculos.html">
           <span class="fila__miniatura sin-foto" aria-hidden="true"><svg width="22" height="22" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 10 2-5h12l2 5M3 10h18v8H3zM6 18v2M18 18v2M6 14h2M16 14h2"/></svg></span>
           <span class="fila__cuerpo">
-            <span class="fila__titulo">Vehículos</span><br>
-            <span class="fila__meta">Alta, modificación y baja</span>
+            <span class="fila__titulo">Catálogo</span><br>
+            <span class="fila__meta">Ver, editar y dar de baja vehículos</span>
           </span>
           <span aria-hidden="true">›</span>
         </a>
       </li>
-      <li>
-        <a class="fila" href="admin.html">
-          <span class="fila__miniatura sin-foto" aria-hidden="true"><svg width="22" height="22" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h12v18H6zM9 8h6M9 12h6M9 16h4"/></svg></span>
+      <li data-permiso="metricas.ver" hidden>
+        <a class="fila" href="admin-metricas.html">
+          <span class="fila__miniatura sin-foto" aria-hidden="true"><svg width="22" height="22" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg></span>
           <span class="fila__cuerpo">
-            <span class="fila__titulo">Moderación de publicaciones</span><br>
-            <span class="fila__meta">Cola de revisión</span>
-          </span>
-          <span aria-hidden="true">›</span>
-        </a>
-      </li>
-      <li>
-        <a class="fila" href="admin.html">
-          <span class="fila__miniatura sin-foto" aria-hidden="true"><svg width="22" height="22" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"></circle><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"></path></svg></span>
-          <span class="fila__cuerpo">
-            <span class="fila__titulo">Usuarios y suscripciones</span><br>
-            <span class="fila__meta">Suspender, restituir, cambiar plan</span>
-          </span>
-          <span aria-hidden="true">›</span>
-        </a>
-      </li>
-      <li>
-        <a class="fila" href="admin.html">
-          <span class="fila__miniatura sin-foto" aria-hidden="true"><svg width="22" height="22" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 3 20h18ZM12 9v5M12 17v.1"/></svg></span>
-          <span class="fila__cuerpo">
-            <span class="fila__titulo">Reportes</span><br>
-            <span class="fila__meta">7 pendientes</span>
-          </span>
-          <span aria-hidden="true">›</span>
-        </a>
-      </li>
-      <li>
-        <a class="fila" href="admin.html">
-          <span class="fila__miniatura sin-foto" aria-hidden="true"><svg width="22" height="22" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18M7 15h4"/></svg></span>
-          <span class="fila__cuerpo">
-            <span class="fila__titulo">Checklist de verificación</span><br>
-            <span class="fila__meta">Ítems y categorías</span>
+            <span class="fila__titulo">Métricas</span><br>
+            <span class="fila__meta">Usuarios activos, publicaciones, moderación y chat</span>
           </span>
           <span aria-hidden="true">›</span>
         </a>

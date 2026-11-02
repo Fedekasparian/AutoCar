@@ -28,7 +28,7 @@
     <a class="encabezado__volver" href="admin.html" aria-label="Volver">
       <svg width="22" height="22" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12H4M4 12l7-7M4 12l7 7"></path></svg>
     </a>
-    <h1>Vehículos</h1>
+    <h1>Catálogo</h1>
   </header>
 
   <!-- Sólo rol admin. La tabla la arma js/paginas/admin-vehiculos.js con GET /api/admin/vehiculos
@@ -37,7 +37,7 @@
 
     <p class="recuadro" id="aviso" role="status" hidden></p>
 
-    <a class="boton boton--bloque" href="admin-vehiculo.html">Nuevo vehículo</a>
+    <a class="boton boton--bloque" href="admin-vehiculo.html">Crear publicación</a>
 
     <form class="buscador" action="admin-vehiculos.html" method="get" role="search">
       <label class="solo-lector" for="q">Buscar vehículos</label>
@@ -72,7 +72,7 @@
     <form class="pila" method="dialog">
       <h2 id="baja-titulo">¿Eliminar este vehículo?</h2>
       <p id="baja-vehiculo"></p>
-      <p class="campo__ayuda">Se borra definitivamente. Si sólo se vendió, conviene editarlo y marcarlo como vendido.</p>
+      <p class="campo__ayuda">Es una baja lógica: deja de verse en el sitio pero queda guardado (lo referencian los chats). Si sólo se vendió, conviene editarlo y marcarlo como vendido.</p>
       <p class="formulario__alerta" id="baja-error" role="alert" tabindex="-1"></p>
       <div class="hoja__acciones">
         <button class="boton boton--secundario" type="button" data-cerrar>Cancelar</button>
