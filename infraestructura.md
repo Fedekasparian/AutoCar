@@ -16,7 +16,7 @@ Este documento registra cómo se organizan los entornos de AutoCar, qué decidim
 | Entorno | Rama | Front | API | Base de datos | Datos |
 |---|---|---|---|---|---|
 | **Local** | `feature/*` | Live Server · `localhost:5500` | `php -S localhost:8000` | Docker `postgres:17` · `autocar-db` · puerto 5433 | `schema.sql` + `seed.sql` |
-| **Dev** (nuevo) | `dev` | Vercel Preview · `autocar-git-dev-….vercel.app` | Render · `autocar-backend-dev` | Neon · branch `dev` | Copia de producción |
+| **Dev** (nuevo) | `dev` | Vercel Preview · `autocar-git-dev-….vercel.app` | Render · [autocarbackend-dev.onrender.com](https://autocarbackend-dev.onrender.com) | Neon · branch `dev` | Copia de producción |
 | **Producción** | `main` | Vercel Production · [autocar-zeta.vercel.app](https://autocar-zeta.vercel.app) | Render · [autocarbackend-1.onrender.com](https://autocarbackend-1.onrender.com) | Neon · branch `main` | Reales |
 
 ```mermaid
@@ -35,7 +35,7 @@ flowchart LR
         direction LR
         DC["rama dev<br/>deploy automático"]
         DF["Vercel Preview<br/>autocar-git-dev-….vercel.app"]
-        DA["Render<br/>autocar-backend-dev"]
+        DA["Render<br/>autocarbackend-dev"]
         DD[("Neon<br/>branch dev")]
         DC -- "push" --> DF
         DF -- "/api/* → dev" --> DA
@@ -74,7 +74,7 @@ Cada carril es una cadena completa con su front, su API y su base. El código su
 | `DB_SSLMODE` | `disable` | `require` | `require` | Neon exige SSL y el Docker local no lo tiene |
 | `FRONT_URL` | `http://localhost:5500` | `https://autocar-git-dev-….vercel.app` | `https://autocar-zeta.vercel.app` | Orígenes permitidos por CORS, separados por coma |
 | `SESION_TTL` | `7200` | `7200` | `7200` | Duración de la sesión en segundos |
-| `BACKEND_URL` *(front)* | no se usa | `https://…-dev.onrender.com` | `https://autocarbackend-1.onrender.com` | La lee el middleware de Vercel (D4) |
+| `BACKEND_URL` *(front)* | no se usa | `https://autocarbackend-dev.onrender.com` | `https://autocarbackend-1.onrender.com` | La lee el middleware de Vercel (D4) |
 
 **Dónde se carga cada una:**
 - En local, en el `.env` del back, que no se sube al repo. El repo solo tiene `.env.example`.
@@ -286,7 +286,7 @@ flowchart LR
 ## 6. Pendientes para implementar
 
 - [ ] Neon: crear la branch `dev` y un rol propio, y correr `migracion-sesion.sql` sobre ella.
-- [ ] Render: crear el Web Service `autocar-backend-dev` con *Branch: dev* y las variables de la sección 1.
+- [x] Render: crear el Web Service `autocarbackend-dev` ([autocarbackend-dev.onrender.com](https://autocarbackend-dev.onrender.com)) con *Branch: dev* y las variables de la sección 1.
 - [ ] Front: agregar `middleware.js` + `package.json`, sacar `rewrites` de `vercel.json` y cargar `BACKEND_URL` en Vercel para Preview y Production (D4).
 - [ ] Render dev: poner en `FRONT_URL` la URL de rama de Vercel (`autocar-git-dev-….vercel.app`).
 - [ ] GitHub: proteger `main` y `dev` en los dos repos (PR obligatorio + checks).
