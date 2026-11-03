@@ -1,0 +1,50 @@
+# Pruebas de punta a punta con Playwright (infraestructura.md § 5.2).
+# Vercel avisa a GitHub cuando termina cada deploy (evento deployment_status):
+#   - deploy Preview (rama dev u otra que no sea main) → todas las pruebas contra esa URL; el Preview usa el back dev.
+#   - deploy Production (main)                         → solo @humo, que no escribe datos.
+# También se puede correr a mano desde Actions → E2E → Run workflow.
+name: E2E
+
+on:
+  deployment_status:
+  workflow_dispatch:
+    inputs:
+      base_url:
+        description: URL del front a probar (sin barra final)
+        required: true
+      solo_humo:
+        description: Correr solo las pruebas de solo lectura (@humo)
+        type: boolean
+        default: true
+
+jobs:
+  e2e:
+    if: github.event_name == 'workflow_dispatch' || github.event.deployment_status.state == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      CI: true
+      BASE_URL: ${{ github.event.inputs.base_url || github.event.deployment_status.environment_url }}
+      # Settings → Deployment Protection → Protection Bypass for Automation (en Vercel), guardado como secreto en GitHub.
+      VERCEL_AUTOMATION_BYPASS_SECRET: ${{ secrets.VERCEL_AUTOMATION_BYPASS_SECRET }}
+      SOLO_HUMO: ${{ github.event.inputs.solo_humo == 'true' || github.event.deployment.environment == 'Production' }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.deployment.sha || github.sha }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium firefox webkit
+      - name: Pruebas
+        run: |
+          echo "Probando $BASE_URL (solo humo: $SOLO_HUMO)"
+          if [ "$SOLO_HUMO" = "true" ]; then npm run test:humo; else npm run test:e2e; fi
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: reporte-playwright
+          path: playwright-report/
+          retention-days: 7
