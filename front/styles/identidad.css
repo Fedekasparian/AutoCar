@@ -133,11 +133,14 @@ a.ficha-vehiculo:hover { box-shadow:0 10px 26px #162d3c13; transform:translateY(
 .plan__precio { font-size:12px; min-height:66px; padding:2px 0 18px; border-bottom:1px solid var(--marca-linea); }
 .plan__precio strong { font-size:32px; letter-spacing:-1px; }
 .plan__precio>span { display:block; }
-.plan__incluye { padding:0; list-style:none; font-size:13px; gap:12px; margin-bottom:24px; }
+.plan__incluye { padding:0; list-style:none; font-size:13px; gap:10px; margin-bottom:24px; }
 .plan__incluye li { padding-left:22px; position:relative; }
 .plan__incluye li::before { content:'✓'; position:absolute; left:0; font-weight:800; }
 .plan>.boton { margin-top:auto; padding-inline:12px; width:100%; }
 .plan--destacado { border:2px solid var(--marca-tinta); background:var(--marca-tenue); }
+@media (min-width:1024px) {
+    .planes-layout .pagina-intro { padding-top:36px; }
+}
 .niveles { padding-top:64px; }
 .tabla-desplazable { position:relative; min-width:0; border:1px solid var(--marca-linea); border-radius:14px; background:var(--marca-blanco); }
 .tabla { border-collapse:collapse; min-width:640px; font-size:14px; }
