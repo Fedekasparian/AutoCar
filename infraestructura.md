@@ -1,6 +1,6 @@
 # Infraestructura — AutoCar
 
-Bernal Justino · Marino Lautaro · Kasparian Federico · Programación en Ambiente Web · UNLu Mercedes · 2026
+Bernal Justino · Marino Lautaro · Kasparian Federico · Ponti Mateo · Programación en Ambiente Web · UNLu Mercedes · 2026
 
 Este documento registra cómo se organizan los entornos de AutoCar, qué decidimos y por qué. También define los flujos de deploy y de pruebas. Abarca los dos repos:
 
