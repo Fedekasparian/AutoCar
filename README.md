@@ -3,6 +3,10 @@ Trabajo integrador de Programación en Ambiente Web (11086) — Comisión 50, UN
 
 Integrantes: Federico Kasparian, Justino Bernal, Lautaro Marino y Ponti Mateo (legajos en `autores.txt`). Versión: ver `VERSION`.
 
+## Modelo de negocio
+
+Misión, visión, propuesta de valor, competencia, garantía, ingresos y hoja de ruta: [`modelo-de-negocio/`](modelo-de-negocio/) (presentación + README).
+
 ## Entornos y pruebas
 
 Los entornos (local, dev y producción), las variables de cada uno y los flujos de deploy están en `infraestructura.md`.
