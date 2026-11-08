@@ -6,7 +6,7 @@ import * as formularios from '../servicios/formularios.js';
 import * as insp from '../servicios/inspecciones.js';
 import * as sesion from '../servicios/sesion.js';
 import * as vistas from '../servicios/vistas.js';
-import { filasDatos } from '../servicios/informe.js';
+import { bloqueAlcance, filasDatos } from '../servicios/informe.js';
 import { ruta } from '../servicios/rutas.js';
 
 const { el } = vistas;
@@ -156,6 +156,7 @@ form.addEventListener('submit', async (evento) => {
 });
 
 if (sesion.requerirLogin()) {
+    document.getElementById('alcance').replaceChildren(bloqueAlcance(true));
     precargar();
     cargarMecanicos();
 }

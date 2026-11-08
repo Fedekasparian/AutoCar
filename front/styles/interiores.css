@@ -243,3 +243,8 @@
 .fila--mecanico .fila__cuerpo { flex:1 1 260px; min-width:0; }
 .fila--mecanico .fila__acciones { display:flex; align-items:center; gap:12px; }
 .vista-talleres summary { cursor:pointer; font-weight:600; }
+
+/* Alcance de la inspección (pedir-inspeccion.html y el reclamo de verificacion.html) */
+.alcance summary { cursor:pointer; font-weight:600; }
+.alcance__titulo { font-size:1rem; margin:16px 0 8px; }
+.alcance ul { padding-left:20px; list-style:disc; }

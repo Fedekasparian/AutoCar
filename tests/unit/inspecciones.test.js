@@ -136,6 +136,15 @@ test('puntaje muestra "Nuevo en la red" con menos de 3 firmadas', () => {
     assert.equal(insp.puntaje({ nuevo: false, puntaje: 4.5, firmadas: 12 }), '4,5 de 5 · 12 inspecciones firmadas');
 });
 
+test('el alcance cubre los 10 ítems del checklist y dice plazo y tope del reclamo', () => {
+    const cubre = insp.ALCANCE.cubre();
+    assert.equal(cubre.length, insp.CHECKLIST.length);
+    assert.match(cubre[0], /^Carrocería: /);
+    assert.ok(insp.ALCANCE.noCubre.length >= 3);
+    assert.match(insp.ALCANCE.procede, /15 días/);
+    assert.match(insp.ALCANCE.procede, /3 veces el precio/);
+});
+
 test('reclamosProcedentes se muestra también para los nuevos', () => {
     assert.equal(insp.reclamosProcedentes({ reclamos_procedentes: 0 }), 'Ningún reclamo procedió');
     assert.equal(insp.reclamosProcedentes({ reclamos_procedentes: 1, nuevo: true }), '1 reclamo procedió');
