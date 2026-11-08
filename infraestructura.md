@@ -104,12 +104,12 @@ Cada carril es una cadena completa con su front, su API y su base. El código su
 **Decisión:**
 - Dev usa una **branch `dev` de Neon** creada desde `main`, con host y rol propios.
 - Local usa el Postgres de Docker del back (`docker compose up -d`).
-- Las migraciones (`database/migracion-*.sql`) se corren **primero en dev** y en producción recién el día del merge.
+- Las migraciones (`database/NNN-*.sql`, numeradas en el orden en que se corren) se corren **primero en dev** y en producción recién el día del merge.
 
 **Por qué:**
 - Una branch de Neon es una copia instantánea de producción, gratis en el plan actual. Se puede volver a copiar con *Reset from parent*, así que dev siempre tiene datos realistas.
 - Las pruebas pueden crear y borrar publicaciones sin ensuciar datos reales.
-- Ejemplo concreto: `migracion-sesion.sql` cambia el modelo de sesión y no puede llegar a producción antes que el código que la usa.
+- Ejemplo concreto: `004-sesion.sql` cambia el modelo de sesión y no puede llegar a producción antes que el código que la usa.
 
 ### D4. La URL del back sale de una variable de entorno de Vercel
 
@@ -328,11 +328,15 @@ El orden importa: cada paso necesita el anterior.
    ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT USAGE, SELECT ON SEQUENCES TO autocar_dev;
    ```
 5. En el mismo SQL Editor, sobre la branch `dev`, correr las migraciones de `AutoCarBackend/database/`. Hay que copiar y pegar cada archivo completo, en este orden. Todas se pueden volver a correr sin romper nada:
-   1. `migracion-e4.sql`
-   2. `migracion-nombres.sql`
-   3. `migracion-chat.sql`
-   4. `migracion-roles.sql`
-   5. `migracion-sesion.sql`
+   1. `001-e4.sql`
+   2. `002-nombres.sql`
+   3. `003-chat.sql`
+   4. `004-sesion.sql`
+   5. `005-roles.sql`
+   6. `006-inspecciones.sql`
+   7. `007-demo-inspecciones-solo-dev.sql` (solo en `dev`: mecánicos de ejemplo)
+
+   El número del archivo es el orden. Las migraciones nuevas siguen con `008-...`.
 6. Verificar en el SQL Editor (`dev`):
    ```sql
    SELECT to_regclass('public.sesion'), to_regclass('public.rol'), to_regclass('public.conversacion');
