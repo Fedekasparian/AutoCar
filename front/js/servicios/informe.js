@@ -52,3 +52,15 @@ export function etiquetaEstado(i) {
     const oscura = i.estado === 'firmada' || i.estado === 'aceptada';
     return el('span', { class: oscura ? 'etiqueta etiqueta--oscura' : 'etiqueta etiqueta--borde' }, insp.estado(i.estado));
 }
+
+// Qué revisa el mecánico y qué queda afuera (insp.ALCANCE), como <details> plegable.
+export function bloqueAlcance(abierto = false) {
+    const lista = (items) => el('ul', { class: 'pila' }, ...items.map((t) => el('li', {}, t)));
+    return el('details', { class: 'alcance', open: abierto },
+        el('summary', {}, 'Qué revisa el mecánico y qué queda afuera'),
+        el('h3', { class: 'alcance__titulo' }, 'Revisa, sin desarmar el auto'),
+        lista(insp.ALCANCE.cubre()),
+        el('h3', { class: 'alcance__titulo' }, 'No cubre'),
+        lista(insp.ALCANCE.noCubre),
+        el('p', { class: 'campo__ayuda' }, insp.ALCANCE.procede));
+}

@@ -101,7 +101,11 @@
       <section class="recuadro pila" aria-labelledby="paso-pago" id="resumen" hidden>
         <h2 id="paso-pago" class="titulo-seccion">3. Lo que pagás</h2>
         <dl class="datos" id="desglose"></dl>
-        <p class="campo__ayuda">El mecánico responde por lo que se ve sin desarmar el auto. Si se le pasó algo que se veía, tenés 15 días desde la firma para reclamar: te devolvemos lo que pagaste y te compensamos.</p>
+        <div id="alcance"></div>
+        <div class="campo">
+          <label class="casilla"><input type="checkbox" id="acepto_alcance" name="acepto_alcance" required aria-describedby="acepto_alcance-error"><span>Leí qué revisa el mecánico y qué queda afuera.</span></label>
+          <span class="campo__error" id="acepto_alcance-error"></span>
+        </div>
         <p class="campo__ayuda"><strong>Pago simulado:</strong> en esta versión no se cobra; se guarda el desglose.</p>
       </section>
 

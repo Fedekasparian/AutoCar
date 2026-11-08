@@ -91,6 +91,7 @@ function mostrarReclamo(i) {
     }
     if (puedeReclamar) {
         $('reclamo-plazo').textContent = `Si el mecánico pasó por alto algo que se veía, podés reclamar una vez hasta el ${formato.fecha(i.reclamo_hasta)}.`;
+        $('reclamo-alcance').replaceChildren(informe.bloqueAlcance());
     }
 }
 

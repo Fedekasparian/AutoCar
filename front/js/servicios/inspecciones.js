@@ -146,3 +146,19 @@ export function cuerpoInforme({ items, conclusion: concl, resumen = '' }) {
         resumen: resumen.trim(),
     };
 }
+
+// Alcance de la inspección (N3): qué se considera "que se veía". Se muestra antes de pagar y al reclamar.
+// "Cubre" sale del checklist; lo demás queda escrito acá y en modelo-de-negocio/PLAN.md (sección 7).
+export const ALCANCE = {
+    cubre: () => CHECKLIST.map((c) => `${c.nombre}: ${c.detalle.toLowerCase()}`),
+    noCubre: [
+        'Lo que sólo se ve desarmando: el interior del motor o de la caja.',
+        'Fallas intermitentes que no aparecen el día de la revisión.',
+        'Lo que se rompa o se desgaste después de la inspección.',
+        'Los papeles: deudas de patente, multas, prendas o inhibiciones. Te decimos qué trámites pedir.',
+        'Si el precio del aviso es justo.',
+    ],
+    procede: 'El reclamo procede si el problema ya estaba el día de la revisión y se podía ver con el checklist. '
+        + 'Tenés 15 días desde la firma y un solo reclamo. Si procede, te devolvemos lo que pagaste y te '
+        + 'compensamos con hasta 3 veces el precio de la inspección.',
+};

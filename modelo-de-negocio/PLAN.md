@@ -50,7 +50,7 @@ Todo lo que no sirva para esta demo va después.
 | **Metabuscador de Taro:** búsquedas guardadas, avisos (nuevo / bajó / subió / reservado / retirado), reporte de mercado y detalle de un auto externo (`/api/meta-busquedas...`, `/api/autos-externos/{id}`). Guarda en Neon | back `dev` (viene de la rama `scraper`) | ✅ Back hecho, solo con autos de **Kavak** |
 | **Recolectores** de MercadoLibre, Kavak y Autocosmos con curl, en la PC (`recolectores/diario.bat`) | back `dev` | ✅ Probados con datos reales (6.082 autos) |
 | **Comparador de precio** (`GET /api/vehiculos/{id}/comparacion`) | back `dev` | ✅ Back hecho. Pasa a ser un **dato** en el informe y el metabuscador |
-| **Base de las inspecciones:** tablas `taller`, `inspeccion`, `inspeccion_item` y `reclamo` (`schema.sql` + `migracion-inspecciones.sql`), permiso `reclamos.resolver`, datos de demo (5 talleres de Mercedes y Luján) y las reglas de negocio como funciones puras (`src/Inspecciones/`: `Fuente`, `Precio`, `Checklist`, `Huella`, `Estados`, `Ranking`) con 20 pruebas unitarias. Explicado en `docs/inspecciones.md` del back | back `dev` | ✅ Base y reglas hechas (B1, B10 y las unitarias de B9). **Faltan los endpoints** (B2–B8) |
+| **Base de las inspecciones:** tablas `taller`, `inspeccion`, `inspeccion_item` y `reclamo` (`schema.sql` + `migracion-inspecciones.sql`), permiso `reclamos.resolver`, datos de demo (5 talleres de Mercedes y Luján) y las reglas de negocio como funciones puras (`src/Inspecciones/`: `Fuente`, `Precio`, `Checklist`, `Huella`, `Estados`, `Ranking`) con 20 pruebas unitarias. Explicado en `docs/inspecciones.md` del back | back `dev` | ✅ Base y reglas hechas (B1, B10 y las unitarias de B9). Endpoints B2–B8 en `dev` desde el 08/11 (PR #2 del back) |
 | Maquetas: `talleres.html`, `taller.html`, `taller-verificacion.html` (checklist), `verificacion.html`, `verificar-vehiculo.html`, `meta-busqueda*.html` | front `dev` | 🟡 Solo HTML/CSS, sin API. Se reusan |
 
 **El 08/11 se pasaron `feat/inspecciones` y `feat/comparador` (con la rama `scraper` de Taro) a `dev` del back**, con el CI en verde (unitarias + integración) y Render dev ya desplegado. `main` del back todavía no los tiene: va en el próximo `dev` → `main`.
@@ -73,16 +73,16 @@ La base ya está en `dev`: B1, B10 y las pruebas unitarias de B9 (ver la secció
 | ID | Tarea | Prioridad | Depende de |
 |---|---|---|---|
 | B1 | ✅ **Migración** `database/migracion-inspecciones.sql` (y lo mismo en `schema.sql`): tablas `taller`, `inspeccion`, `inspeccion_item` y `reclamo`, y el permiso nuevo `reclamos.resolver` para el moderador y el admin. Ver la sección 6 | P1 | — |
-| B2 | **Perfil del taller** del mecánico: `GET/PUT /api/mecanico/perfil` (nombre del taller, dirección, localidad, teléfono, precio de la inspección) | P1 | B1 |
-| B3 | **Ranking público:** `GET /api/mecanicos?localidad=` con puntaje, cantidad de inspecciones firmadas y reclamos que procedieron. Lo usa el pedido y `talleres.html` | P1 | B1 |
-| B4 | **Pedir una inspección por link:** `POST /api/inspecciones` con `url`, `mecanico_id` y datos opcionales del auto. Detecta el sitio por la URL (MercadoLibre, Kavak, Autocosmos, AutoCar u otro). Aplica las reglas de la sección 7 y calcula el desglose del precio | P1 | B2 |
-| B5 | **Mis inspecciones (comprador):** `GET /api/mis-inspecciones`, `GET /api/inspecciones/{id}` (solo la ven el comprador, el mecánico asignado y el admin; si no, 404) y `POST /api/inspecciones/{id}/cancelar` (solo antes de que el mecánico la acepte) | P1 | B4 |
-| B6 | **Bandeja del mecánico:** `GET /api/mecanico/inspecciones?estado=` y `PATCH /api/mecanico/inspecciones/{id}` para aceptar (con fecha) o rechazar (con motivo; al comprador se le devuelve todo) | P1 | B4 |
-| B7 | **Informe y firma:** `PUT /api/mecanico/inspecciones/{id}/informe` guarda el checklist (se puede editar hasta firmar). `POST /api/mecanico/inspecciones/{id}/firma` exige todos los ítems completos y una conclusión. Guarda el nombre del mecánico y del taller, la fecha y la **huella SHA-256** del informe. Después de firmar, cualquier cambio da 409 | P1 | B6 |
-| B8 | **Reclamo:** `POST /api/inspecciones/{id}/reclamo` (comprador, hasta 15 días después de la firma, uno por inspección). Admin: `GET /api/admin/reclamos?estado=abierto` y `PATCH /api/admin/reclamos/{id}` para decidir si procede (con la compensación hasta el tope) o no. Si procede, el pago queda "reembolsado" y el ranking se recalcula | P1 | B7 |
-| B9 | **Pruebas:** unitarias (detectar el sitio por la URL, validar el checklist, calcular el desglose, calcular el ranking) y de integración (el flujo completo de la demo, el vendedor no puede pedir la inspección de su propio auto, el informe firmado no se puede cambiar, otro usuario recibe 404) | P1 | B4–B8 |
+| B2 | ✅ **Perfil del taller** del mecánico: `GET/PUT /api/mecanico/perfil` (nombre del taller, dirección, localidad, teléfono, precio de la inspección) | P1 | B1 |
+| B3 | ✅ **Ranking público:** `GET /api/mecanicos?localidad=` con puntaje, cantidad de inspecciones firmadas y reclamos que procedieron. Lo usa el pedido y `talleres.html` | P1 | B1 |
+| B4 | ✅ **Pedir una inspección por link:** `POST /api/inspecciones` con `url`, `mecanico_id` y datos opcionales del auto. Detecta el sitio por la URL (MercadoLibre, Kavak, Autocosmos, AutoCar u otro). Aplica las reglas de la sección 7 y calcula el desglose del precio | P1 | B2 |
+| B5 | ✅ **Mis inspecciones (comprador):** `GET /api/mis-inspecciones`, `GET /api/inspecciones/{id}` (solo la ven el comprador, el mecánico asignado y el admin; si no, 404) y `POST /api/inspecciones/{id}/cancelar` (solo antes de que el mecánico la acepte) | P1 | B4 |
+| B6 | ✅ **Bandeja del mecánico:** `GET /api/mecanico/inspecciones?estado=` y `PATCH /api/mecanico/inspecciones/{id}` para aceptar (con fecha) o rechazar (con motivo; al comprador se le devuelve todo) | P1 | B4 |
+| B7 | ✅ **Informe y firma:** `PUT /api/mecanico/inspecciones/{id}/informe` guarda el checklist (se puede editar hasta firmar). `POST /api/mecanico/inspecciones/{id}/firma` exige todos los ítems completos y una conclusión. Guarda el nombre del mecánico y del taller, la fecha y la **huella SHA-256** del informe. Después de firmar, cualquier cambio da 409 | P1 | B6 |
+| B8 | ✅ **Reclamo:** `POST /api/inspecciones/{id}/reclamo` (comprador, hasta 15 días después de la firma, uno por inspección). Admin: `GET /api/admin/reclamos?estado=abierto` y `PATCH /api/admin/reclamos/{id}` para decidir si procede (con la compensación hasta el tope) o no. Si procede, el pago queda "reembolsado" y el ranking se recalcula | P1 | B7 |
+| B9 | ✅ **Pruebas:** unitarias (detectar el sitio por la URL, validar el checklist, calcular el desglose, calcular el ranking) y de integración (el flujo completo de la demo, el vendedor no puede pedir la inspección de su propio auto, el informe firmado no se puede cambiar, otro usuario recibe 404) | P1 | B4–B8 |
 | B10 | ✅ **Datos de demo:** script `database/demo-inspecciones.sql`, solo para `dev`, con 5 talleres de Mercedes y Luján **marcados como demo** e inspecciones firmadas de ejemplo para que el ranking tenga números | P1 | B1 |
-| B11 | README del back: endpoints nuevos y reglas de negocio | P1 | B4–B8 |
+| B11 | ✅ README del back: endpoints nuevos y reglas de negocio | P1 | B4–B8 |
 
 ### 5.2 Back: metabuscador con todas las fuentes (ramas desde `dev`)
 
@@ -98,14 +98,14 @@ La base ya está en `dev`: B1, B10 y las pruebas unitarias de B9 (ver la secció
 
 | ID | Pantalla | Prioridad | Usa |
 |---|---|---|---|
-| F1 | **Botón "Mandale un mecánico"** en `vehiculo.html` (autos de AutoCar) y en cada resultado de `meta-busqueda-resultados.html`. Lleva a `pedir-inspeccion.html?url=...` con los datos del auto | P1 | — |
-| F2 | **`pedir-inspeccion.html`** (nueva): pegar el link (o venir ya cargado), datos del auto, lista de mecánicos por localidad con ranking, desglose del precio y confirmar | P1 | B3, B4 |
-| F3 | **`mis-inspecciones.html`** (nueva): lista con el estado de cada inspección, el informe firmado y el botón **Reclamar** dentro de los 15 días. Se puede rehacer `verificacion.html` | P1 | B5, B8 |
-| F4 | **Panel del mecánico:** perfil del taller, bandeja (aceptar o rechazar) y **checklist + firmar**, reusando la maqueta `taller-verificacion.html` | P1 | B2, B6, B7 |
-| F5 | **`admin-reclamos.html`** (nueva): cola de reclamos con "Procede / No procede", compensación y respuesta | P1 | B8 |
-| F6 | `talleres.html` con el ranking real (sacar los datos de ejemplo y el "plan Oro") | P2 | B3 |
+| F1 | 🟡 Hecho en `vehiculo.html`; falta en el metabuscador (va con M2). **Botón "Mandale un mecánico"** en `vehiculo.html` (autos de AutoCar) y en cada resultado de `meta-busqueda-resultados.html`. Lleva a `pedir-inspeccion.html?url=...` con los datos del auto | P1 | — |
+| F2 | ✅ **`pedir-inspeccion.html`** (nueva): pegar el link (o venir ya cargado), datos del auto, lista de mecánicos por localidad con ranking, desglose del precio y confirmar | P1 | B3, B4 |
+| F3 | ✅ **`mis-inspecciones.html`** (nueva): lista con el estado de cada inspección, el informe firmado y el botón **Reclamar** dentro de los 15 días. Se puede rehacer `verificacion.html` | P1 | B5, B8 |
+| F4 | ✅ **Panel del mecánico:** perfil del taller, bandeja (aceptar o rechazar) y **checklist + firmar**, reusando la maqueta `taller-verificacion.html` | P1 | B2, B6, B7 |
+| F5 | ✅ **`admin-reclamos.html`** (nueva): cola de reclamos con "Procede / No procede", compensación y respuesta | P1 | B8 |
+| F6 | ✅ `talleres.html` con el ranking real (sacar los datos de ejemplo y el "plan Oro") | P2 | B3 |
 | F7 | Metabuscador conectado: búsquedas guardadas, resultados y avisos de "nuevo / bajó" | P1 | M2 |
-| F8 | Sumar las pantallas nuevas a `rutas.js` y a la barra de navegación según los permisos (`sesion.puede(...)`) | P1 | F2–F5 |
+| F8 | ✅ Sumar las pantallas nuevas a `rutas.js` y a la barra de navegación según los permisos (`sesion.puede(...)`) | P1 | F2–F5 |
 | F9 | Pruebas E2E con Playwright del flujo de la demo (contra `dev`) | P2 | F1–F5 |
 
 ### 5.4 Negocio y presentación
@@ -114,7 +114,7 @@ La base ya está en `dev`: B1, B10 y las pruebas unitarias de B9 (ver la secció
 |---|---|---|
 | N1 | PPT v4 y README con el eje nuevo | ✅ Hecho (esta rama) |
 | N2 | **Hablar con 2 o 3 talleres reales de Mercedes o Luján:** cuánto cobrarían una inspección, si aceptan dejar ~23 % y si aceptan responder con la compensación. Anotar las respuestas en el README | P1 |
-| N3 | Escribir el **alcance de la inspección** ("qué se considera que se veía") para mostrarlo antes de pagar. Base: la sección 7 | P1 |
+| N3 | ✅ Escribir el **alcance de la inspección** ("qué se considera que se veía") para mostrarlo antes de pagar. Base: la sección 7 | P1 |
 | N4 | Ensayar la demo de la sección 3 con los datos de demo | P1 |
 
 ### 5.5 Fase 2: va en la presentación, no se programa ahora (P3)
@@ -160,6 +160,16 @@ inspeccion             N──0..1 vehiculo   (solo si el auto es de AutoCar)
 | Si el reclamo procede: el pago queda `reembolsado` y la **compensación tiene un tope de 3 veces el precio** (si se pide más, 422) | B8 |
 | **Ranking:** puntaje = 5 × (1 − 2 × reclamos que procedieron ÷ inspecciones firmadas), con mínimo 0. Con menos de 3 inspecciones firmadas se muestra "Nuevo en la red" en lugar del puntaje. Orden: puntaje y después cantidad de inspecciones. **No depende de ningún pago** | B3 (una función pura, con prueba) |
 | Mercado Pago no se integra: el pago es **simulado** y se guarda el desglose. En pantalla se aclara | B4 |
+
+### 7.1 Alcance de la inspección (N3)
+
+Se muestra en `pedir-inspeccion.html` antes de confirmar (con una casilla obligatoria) y en el formulario de reclamo. El texto está en `front/js/servicios/inspecciones.js` (`ALCANCE`).
+
+- **Revisa, sin desarmar el auto:** los 10 ítems del checklist (sección 6).
+- **No cubre:** lo que sólo se ve desarmando (interior del motor o de la caja); fallas intermitentes que no aparecen el día de la revisión; lo que se rompa o se desgaste después; los papeles (deudas, multas, prendas, inhibiciones: se le dice al comprador qué trámites pedir); si el precio del aviso es justo.
+- **El reclamo procede** si el problema ya estaba el día de la revisión y se podía ver con el checklist. 15 días desde la firma, un reclamo por inspección, devolución + compensación de hasta 3 veces el precio.
+
+Ajustarlo con lo que digan los talleres en N2.
 
 ## 8. Calendario
 
