@@ -33,5 +33,13 @@ export const bajaUsuario = (id) => del(`/api/admin/usuarios/${encodeURIComponent
 // → {items: [{nombre, descripcion, permisos}]}
 export const roles = () => get('/api/admin/roles');
 
+// Reclamos de inspecciones (permiso reclamos.resolver). estado: abierto | procede | no_procede
+// → {items: [{id, estado, item_codigo, descripcion, compensacion, tope, respuesta, created_at, resuelto_at,
+//    resuelto_por, inspeccion: {id, titulo, url, fuente, precio, conclusion, firmada_at, mecanico, comprador}}]}
+export const reclamos = (estado) => get('/api/admin/reclamos', { estado });
+
+// {procede: true, compensacion, respuesta} o {procede: false, respuesta} → {reclamo}
+export const resolverReclamo = (id, resolucion) => patch(`/api/admin/reclamos/${encodeURIComponent(id)}`, resolucion);
+
 // → {usuarios, publicaciones, moderacion, chat, ganancias}
 export const metricas = () => get('/api/admin/metricas');

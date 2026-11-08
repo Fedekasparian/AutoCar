@@ -3,7 +3,7 @@
 // Es un script clásico (como tema.js) para cargarlo igual en todas las páginas. Sólo muestra u oculta:
 // el back vuelve a controlar cada permiso en cada pedido.
 (() => {
-    const PERMISOS_PANEL = ['usuarios.ver', 'vehiculos.moderar', 'vehiculos.gestionar', 'metricas.ver'];
+    const PERMISOS_PANEL = ['usuarios.ver', 'vehiculos.moderar', 'vehiculos.gestionar', 'metricas.ver', 'reclamos.resolver'];
     const panel = new URL('../pages/admin/admin.html', document.currentScript.src).href;
 
     let usuario = null;

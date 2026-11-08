@@ -31,6 +31,12 @@ El back es una API JSON en PHP ([AutoCarBackend](https://github.com/MateoPonti/A
 | `admin.html` | — | Panel de administración (sólo admin) |
 | `admin-vehiculos.html` | `GET /api/admin/vehiculos`, `DELETE /api/admin/vehiculos/{id}` | Listado con vendidos, editar y eliminar |
 | `admin-vehiculo.html` | `POST /api/admin/vehiculos` · `?id=N`: `PUT /api/admin/vehiculos/{id}` | Alta y edición de un vehículo |
+| `pedir-inspeccion.html` | `GET /api/mecanicos`, `POST /api/inspecciones` | "Mandale un mecánico": link del aviso (llega con `?url=` desde el detalle), ranking de mecánicos por localidad, desglose del precio y confirmar (pago simulado) |
+| `mis-inspecciones.html` | `GET /api/mis-inspecciones` | Inspecciones pedidas, con el estado y el paso siguiente |
+| `verificacion.html?id=N` | `GET /api/inspecciones/{id}`, `POST .../cancelar`, `POST .../reclamo` | Detalle para el comprador: turno, cancelar mientras está pedida, informe firmado, trámites para pedir antes de pagar y reclamo dentro de los 15 días |
+| `admin-reclamos.html` | `GET /api/admin/reclamos`, `PATCH /api/admin/reclamos/{id}` | Cola de reclamos (permiso `reclamos.resolver`): procede con compensación hasta el tope, o no procede |
+| `taller.html` | `GET/PUT /api/mecanico/perfil`, `GET /api/mecanico/inspecciones?estado=`, `PATCH /api/mecanico/inspecciones/{id}` | Panel del mecánico (permiso `verificaciones.realizar`): perfil del taller con el desglose del precio y bandeja de pedidos, por revisar y firmadas. Aceptar con fecha de turno o rechazar con motivo |
+| `taller-verificacion.html?id=N` | `GET /api/inspecciones/{id}`, `PUT /api/mecanico/inspecciones/{id}/informe`, `POST /api/mecanico/inspecciones/{id}/firma` | Checklist de 10 ítems (`js/servicios/inspecciones.js`, los mismos códigos que el back), borrador, conclusión y firma. Firmada, se ve sólo para leer con el firmante y la huella |
 
 Las páginas que piden sesión mandan a `login.html` si no hay sesión iniciada. Las de administración, además, mandan a `home.html` si el rol no es admin. Es sólo una comodidad: el back controla el rol en cada pedido.
 
@@ -40,7 +46,7 @@ El resto de las pantallas todavía no tiene ruta en la API, así que muestran da
 
 - favoritos, mis publicaciones, publicar, tasación y canje;
 - meta-búsqueda, mensajes y plan;
-- talleres y verificación;
+- talleres y verificación del lado del comprador (el panel del mecánico ya está conectado);
 - reportar, contacto y legales.
 
 Por la misma razón, el detalle de vehículo todavía no tiene las partes de verificación, tasación, ubicación, publicador ni favoritos. Ese maquetado está en la historia de git y en `guia.html`.
