@@ -234,3 +234,12 @@
 .vista-pedir-inspeccion .opciones label .fila__cuerpo { flex:1; min-width:0; }
 .vista-pedir-inspeccion summary { cursor:pointer; font-weight:600; }
 .vista-mis-inspecciones .pantalla > .boton { justify-self:start; }
+
+/* Mecánicos de la red (talleres.html) */
+.vista-talleres .pantalla { max-width:900px; }
+.lista-ranking { counter-reset:ranking; }
+.fila--mecanico { flex-wrap:wrap; counter-increment:ranking; }
+.fila--mecanico::before { content:counter(ranking) "."; font-weight:700; min-width:2ch; align-self:flex-start; }
+.fila--mecanico .fila__cuerpo { flex:1 1 260px; min-width:0; }
+.fila--mecanico .fila__acciones { display:flex; align-items:center; gap:12px; }
+.vista-talleres summary { cursor:pointer; font-weight:600; }

@@ -77,6 +77,13 @@ export function puntaje(m) {
     return `${String(m.puntaje).replace('.', ',')} de 5 · ${firmadas}`;
 }
 
+// Reclamos que procedieron, siempre a la vista (también para los "Nuevo en la red", que no tienen puntaje).
+export function reclamosProcedentes(m) {
+    const n = m.reclamos_procedentes || 0;
+    if (n === 0) return 'Ningún reclamo procedió';
+    return n === 1 ? '1 reclamo procedió' : `${n} reclamos procedieron`;
+}
+
 // Qué tiene que pedir el comprador antes de pagar el auto (los papeles no los revisa el mecánico).
 // Los links van a la página principal de cada organismo (Provincia de Buenos Aires para patentes y VTV).
 export const TRAMITES = [
