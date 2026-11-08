@@ -47,15 +47,17 @@ Todo lo que no sirva para esta demo va después.
 | Usuarios, sesión con cookie + CSRF, roles y permisos, **incluido el rol `mecanico`** con `verificaciones.ver` y `verificaciones.realizar` | back `dev` y `main` | ✅ Funciona. El rol mecánico todavía no tiene endpoints |
 | Catálogo, detalle, publicar con fotos, moderación, chat, métricas de admin | back `dev` | ✅ |
 | Pruebas PHPUnit (unitarias + integración) y CI | back `dev` | ✅ |
-| **Metabuscador de Taro:** búsquedas guardadas, avisos (nuevo / bajó / subió / reservado / retirado), reporte de mercado y detalle de un auto externo (`/api/meta-busquedas...`, `/api/autos-externos/{id}`). Guarda en Neon | back `feat/comparador` (viene de la rama `scraper`) | ✅ Back hecho, solo con autos de **Kavak** |
-| **Recolectores** de MercadoLibre, Kavak y Autocosmos con curl, en la PC (`recolectores/diario.bat`) | back `feat/comparador` | ✅ Probados con datos reales (6.082 autos) |
-| **Comparador de precio** (`GET /api/vehiculos/{id}/comparacion`) | back `feat/comparador` | ✅ Back hecho. Pasa a ser un **dato** en el informe y el metabuscador |
-| **Base de las inspecciones:** tablas `taller`, `inspeccion`, `inspeccion_item` y `reclamo` (`schema.sql` + `migracion-inspecciones.sql`), permiso `reclamos.resolver`, datos de demo (5 talleres de Mercedes y Luján) y las reglas de negocio como funciones puras (`src/Inspecciones/`: `Fuente`, `Precio`, `Checklist`, `Huella`, `Estados`, `Ranking`) con 20 pruebas unitarias. Explicado en `docs/inspecciones.md` del back | back `feat/inspecciones` (desde `dev`) | ✅ Base y reglas hechas (B1, B10 y las unitarias de B9). **Faltan los endpoints** (B2–B8) |
+| **Metabuscador de Taro:** búsquedas guardadas, avisos (nuevo / bajó / subió / reservado / retirado), reporte de mercado y detalle de un auto externo (`/api/meta-busquedas...`, `/api/autos-externos/{id}`). Guarda en Neon | back `dev` (viene de la rama `scraper`) | ✅ Back hecho, solo con autos de **Kavak** |
+| **Recolectores** de MercadoLibre, Kavak y Autocosmos con curl, en la PC (`recolectores/diario.bat`) | back `dev` | ✅ Probados con datos reales (6.082 autos) |
+| **Comparador de precio** (`GET /api/vehiculos/{id}/comparacion`) | back `dev` | ✅ Back hecho. Pasa a ser un **dato** en el informe y el metabuscador |
+| **Base de las inspecciones:** tablas `taller`, `inspeccion`, `inspeccion_item` y `reclamo` (`schema.sql` + `migracion-inspecciones.sql`), permiso `reclamos.resolver`, datos de demo (5 talleres de Mercedes y Luján) y las reglas de negocio como funciones puras (`src/Inspecciones/`: `Fuente`, `Precio`, `Checklist`, `Huella`, `Estados`, `Ranking`) con 20 pruebas unitarias. Explicado en `docs/inspecciones.md` del back | back `dev` | ✅ Base y reglas hechas (B1, B10 y las unitarias de B9). **Faltan los endpoints** (B2–B8) |
 | Maquetas: `talleres.html`, `taller.html`, `taller-verificacion.html` (checklist), `verificacion.html`, `verificar-vehiculo.html`, `meta-busqueda*.html` | front `dev` | 🟡 Solo HTML/CSS, sin API. Se reusan |
 
-`feat/comparador` ya tiene todo lo de `dev`. **No se sube a `dev` ni a `main` hasta decidirlo** (ver la decisión D4).
+**El 08/11 se pasaron `feat/inspecciones` y `feat/comparador` (con la rama `scraper` de Taro) a `dev` del back**, con el CI en verde (unitarias + integración) y Render dev ya desplegado. `main` del back todavía no los tiene: va en el próximo `dev` → `main`.
 
-**Cómo se adaptó la rama `scraper` de Taro:** `feat/comparador` sale de su último commit ("meta buscador"), así que tiene todo lo suyo, y **su código no se tocó**: `src/MetaBusqueda/`, el workflow `.github/workflows/scraper.yml` y `bin/importar-autos.php` quedan igual, guardando en Neon. Lo que se sumó encima:
+**Falta en la base de Neon (rama `dev`):** correr `migracion-meta-busqueda.sql` y `migracion-inspecciones.sql` (y `demo-inspecciones.sql` para tener los talleres de ejemplo). Sin eso, el código está pero las tablas no, y los endpoints del metabuscador fallan. En `main` se corren las dos migraciones (no la demo) cuando se pase `dev` → `main`.
+
+**Cómo se adaptó la rama `scraper` de Taro:** `feat/comparador` (ya en `dev`) sale de su último commit ("meta buscador"), así que tiene todo lo suyo, y **su código no se tocó**: `src/MetaBusqueda/`, el workflow `.github/workflows/scraper.yml` y `bin/importar-autos.php` quedan igual, guardando en Neon. Lo que se sumó encima:
 - **Recolectores con curl** de MercadoLibre, Kavak y Autocosmos (`recolectores/`), que corren en la PC con `diario.bat` y escriben todos el mismo formato común. El de Kavak con curl (`kavak/recolectar.php` + `ExtractorHtml.php`) reemplaza en la práctica a su `kavak/scraper.php` con Playwright, que queda como alternativa; los dos usan su `Normalizador.php`.
 - **El comparador** (`src/Comparador/`) reusa su `Estadistica` (mediana) y su `Normalizador` de Kavak, y guarda un documento por modelo en Firestore (o en archivos en local).
 - Pendiente (M1): que su `Importador` cargue también la salida de MercadoLibre y Autocosmos, y más adelante (opcional) que su metabuscador lea los documentos por modelo en vez de Neon. Detalle en `docs/arquitectura-scraper.md` del back.
@@ -64,9 +66,9 @@ Todo lo que no sirva para esta demo va después.
 
 Prioridades: **P1** = imprescindible para la demo del 30/11. **P2** = si llegamos. **P3** = va en la presentación como fase 2 y no se programa ahora.
 
-### 5.1 Back: inspecciones (rama `feat/inspecciones`, desde `dev`)
+### 5.1 Back: inspecciones (ramas desde `dev`)
 
-Ya creada y subida: tiene B1, B10 y las pruebas unitarias de B9 (ver la sección 4 y `docs/inspecciones.md` del back). Lo que sigue son los endpoints, que usan esas reglas.
+La base ya está en `dev`: B1, B10 y las pruebas unitarias de B9 (ver la sección 4 y `docs/inspecciones.md` del back). Lo que sigue son los endpoints, que usan esas reglas: se pueden seguir en `feat/inspecciones` o en una rama por tarea (`feat/inspecciones-pedido`, `feat/inspecciones-firma`...), siempre desde `dev` y con PR.
 
 | ID | Tarea | Prioridad | Depende de |
 |---|---|---|---|
@@ -82,7 +84,7 @@ Ya creada y subida: tiene B1, B10 y las pruebas unitarias de B9 (ver la sección
 | B10 | ✅ **Datos de demo:** script `database/demo-inspecciones.sql`, solo para `dev`, con 5 talleres de Mercedes y Luján **marcados como demo** e inspecciones firmadas de ejemplo para que el ranking tenga números | P1 | B1 |
 | B11 | README del back: endpoints nuevos y reglas de negocio | P1 | B4–B8 |
 
-### 5.2 Back: metabuscador con todas las fuentes (`feat/comparador`)
+### 5.2 Back: metabuscador con todas las fuentes (ramas desde `dev`)
 
 | ID | Tarea | Prioridad | Depende de |
 |---|---|---|---|
@@ -90,7 +92,7 @@ Ya creada y subida: tiene B1, B10 y las pruebas unitarias de B9 (ver la sección
 | M2 | Que los resultados del metabuscador traigan **los autos de AutoCar primero** y la **URL original** de cada auto, que es lo que necesita el botón | P1 | M1 |
 | M3 | Agregar a cada resultado la etiqueta del comparador (Buen precio / En precio / Caro) como **dato** | P2 | M1 |
 | M4 | Programar la corrida diaria a las 9:00 en la PC (`diario.bat` → recolectar → importar) | P2 | M1 |
-| M5 | Pasar `feat/comparador` a `dev` (ver D4) | P1 | M1, M2 |
+| M5 | ✅ Pasar `feat/comparador` a `dev`. Hecho el 08/11, antes de M1 y M2, para que todos trabajen sobre lo mismo | P1 | — |
 
 ### 5.3 Front (rama `feat/inspecciones` en el repo del front)
 
@@ -165,7 +167,7 @@ inspeccion             N──0..1 vehiculo   (solo si el auto es de AutoCar)
 |---|---|
 | **Lun 09/11** | Presentar la v4 y este plan. Repartir las tareas |
 | **Mié 11/11** (entrega semanal) | B1–B7 en `dev`, y F2 y F4 funcionando aunque sean básicas: se puede pedir, aceptar y firmar una inspección. M1 hecho |
-| **Mié 18/11** | B8, F3, F5 (reclamo y ranking), F1 (botón en el detalle y en el metabuscador), M2 y F7 (metabuscador con ML + Kavak + AutoCar). `feat/comparador` en `dev` |
+| **Mié 18/11** | B8, F3, F5 (reclamo y ranking), F1 (botón en el detalle y en el metabuscador), M2 y F7 (metabuscador con ML + Kavak + AutoCar) |
 | **Mié 25/11** | B9, B10 y F9 (pruebas y datos de demo), F6, N2–N4, documentación (README, apuntes, seguridad por capa). **`dev` → `main`** y tag `entrega-final` |
 | **Lun 30/11** | Defensa. Despertar Render antes de empezar |
 
