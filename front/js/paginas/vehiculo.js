@@ -34,6 +34,13 @@ function mostrar(v) {
         $('vehiculo-descripcion-texto').textContent = v.descripcion;
         $('vehiculo-descripcion').hidden = false;
     }
+    // "Mandale un mecánico": el link de esta publicación ya lleva el id, el back completa los datos del auto
+    if (v.estado === 'disponible') {
+        const aviso = ruta(`vehiculo.html?id=${v.id}`);
+        $('vehiculo-mecanico').href = ruta(`pedir-inspeccion.html?url=${encodeURIComponent(aviso)}`);
+        $('vehiculo-mecanico').hidden = false;
+        $('vehiculo-mecanico-ayuda').hidden = false;
+    }
     if (sesion.puede('vehiculos.gestionar')) {
         $('vehiculo-editar').href = ruta(`admin-vehiculo.html?id=${v.id}`);
         $('vehiculo-editar').hidden = false;
