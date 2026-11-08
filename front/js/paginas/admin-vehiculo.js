@@ -14,6 +14,29 @@ const estado = document.getElementById('estado');
 // El back acepta hasta el año que viene.
 formulario.elements.anio.max = new Date().getFullYear() + 1;
 
+const marca = formulario.elements.marca;
+const modelo = formulario.elements.modelo;
+
+// Modelo: sólo los de la marca elegida (igual que en publicar.html).
+function mostrarModelosDeLaMarca() {
+    for (const grupo of modelo.querySelectorAll('optgroup')) {
+        const esDeOtraMarca = marca.value !== '' && grupo.label !== marca.value;
+        grupo.hidden = esDeOtraMarca;
+        grupo.disabled = esDeOtraMarca;
+    }
+    const elegido = modelo.selectedOptions[0];
+    if (elegido && elegido.parentElement.disabled) modelo.value = '';
+}
+marca.addEventListener('change', mostrarModelosDeLaMarca);
+
+// Si el vehículo tiene una marca o un modelo que no está en la lista (cargado antes de que existiera),
+// se agrega como opción para no perderlo al guardar.
+function agregarSiFalta(select, valor) {
+    if (valor === '' || valor === null) return;
+    const existe = Array.from(select.options).some((opcion) => opcion.value === valor);
+    if (!existe) select.append(new Option(valor, valor));
+}
+
 // Para editar se usa el detalle de admin: el público da 404 con los pendientes, rechazados y eliminados.
 async function cargarVehiculo() {
     formulario.hidden = true;
@@ -21,9 +44,12 @@ async function cargarVehiculo() {
     try {
         const { vehiculo } = await admin.detalle(id);
         document.getElementById('titulo').textContent = `Editar ${formato.titulo(vehiculo)}`;
+        agregarSiFalta(marca, vehiculo.marca);
+        agregarSiFalta(modelo, vehiculo.modelo);
         Array.from(formulario.elements).forEach((control) => {
             if (control.name && control.name in vehiculo) control.value = vehiculo[control.name] ?? '';
         });
+        mostrarModelosDeLaMarca();
         estado.replaceChildren();
         formulario.hidden = false;
     } catch (error) {
