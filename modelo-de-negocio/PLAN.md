@@ -50,19 +50,27 @@ Todo lo que no sirva para esta demo va después.
 | **Metabuscador de Taro:** búsquedas guardadas, avisos (nuevo / bajó / subió / reservado / retirado), reporte de mercado y detalle de un auto externo (`/api/meta-busquedas...`, `/api/autos-externos/{id}`). Guarda en Neon | back `feat/comparador` (viene de la rama `scraper`) | ✅ Back hecho, solo con autos de **Kavak** |
 | **Recolectores** de MercadoLibre, Kavak y Autocosmos con curl, en la PC (`recolectores/diario.bat`) | back `feat/comparador` | ✅ Probados con datos reales (6.082 autos) |
 | **Comparador de precio** (`GET /api/vehiculos/{id}/comparacion`) | back `feat/comparador` | ✅ Back hecho. Pasa a ser un **dato** en el informe y el metabuscador |
+| **Base de las inspecciones:** tablas `taller`, `inspeccion`, `inspeccion_item` y `reclamo` (`schema.sql` + `migracion-inspecciones.sql`), permiso `reclamos.resolver`, datos de demo (5 talleres de Mercedes y Luján) y las reglas de negocio como funciones puras (`src/Inspecciones/`: `Fuente`, `Precio`, `Checklist`, `Huella`, `Estados`, `Ranking`) con 20 pruebas unitarias. Explicado en `docs/inspecciones.md` del back | back `feat/inspecciones` (desde `dev`) | ✅ Base y reglas hechas (B1, B10 y las unitarias de B9). **Faltan los endpoints** (B2–B8) |
 | Maquetas: `talleres.html`, `taller.html`, `taller-verificacion.html` (checklist), `verificacion.html`, `verificar-vehiculo.html`, `meta-busqueda*.html` | front `dev` | 🟡 Solo HTML/CSS, sin API. Se reusan |
 
 `feat/comparador` ya tiene todo lo de `dev`. **No se sube a `dev` ni a `main` hasta decidirlo** (ver la decisión D4).
+
+**Cómo se adaptó la rama `scraper` de Taro:** `feat/comparador` sale de su último commit ("meta buscador"), así que tiene todo lo suyo, y **su código no se tocó**: `src/MetaBusqueda/`, el workflow `.github/workflows/scraper.yml` y `bin/importar-autos.php` quedan igual, guardando en Neon. Lo que se sumó encima:
+- **Recolectores con curl** de MercadoLibre, Kavak y Autocosmos (`recolectores/`), que corren en la PC con `diario.bat` y escriben todos el mismo formato común. El de Kavak con curl (`kavak/recolectar.php` + `ExtractorHtml.php`) reemplaza en la práctica a su `kavak/scraper.php` con Playwright, que queda como alternativa; los dos usan su `Normalizador.php`.
+- **El comparador** (`src/Comparador/`) reusa su `Estadistica` (mediana) y su `Normalizador` de Kavak, y guarda un documento por modelo en Firestore (o en archivos en local).
+- Pendiente (M1): que su `Importador` cargue también la salida de MercadoLibre y Autocosmos, y más adelante (opcional) que su metabuscador lea los documentos por modelo en vez de Neon. Detalle en `docs/arquitectura-scraper.md` del back.
 
 ## 5. Qué falta: las tareas
 
 Prioridades: **P1** = imprescindible para la demo del 30/11. **P2** = si llegamos. **P3** = va en la presentación como fase 2 y no se programa ahora.
 
-### 5.1 Back: inspecciones (rama nueva `feat/inspecciones`, desde `dev`)
+### 5.1 Back: inspecciones (rama `feat/inspecciones`, desde `dev`)
+
+Ya creada y subida: tiene B1, B10 y las pruebas unitarias de B9 (ver la sección 4 y `docs/inspecciones.md` del back). Lo que sigue son los endpoints, que usan esas reglas.
 
 | ID | Tarea | Prioridad | Depende de |
 |---|---|---|---|
-| B1 | **Migración** `database/migracion-inspecciones.sql` (y lo mismo en `schema.sql`): tablas `taller`, `inspeccion`, `inspeccion_item` y `reclamo`, y el permiso nuevo `reclamos.resolver` para el moderador y el admin. Ver la sección 6 | P1 | — |
+| B1 | ✅ **Migración** `database/migracion-inspecciones.sql` (y lo mismo en `schema.sql`): tablas `taller`, `inspeccion`, `inspeccion_item` y `reclamo`, y el permiso nuevo `reclamos.resolver` para el moderador y el admin. Ver la sección 6 | P1 | — |
 | B2 | **Perfil del taller** del mecánico: `GET/PUT /api/mecanico/perfil` (nombre del taller, dirección, localidad, teléfono, precio de la inspección) | P1 | B1 |
 | B3 | **Ranking público:** `GET /api/mecanicos?localidad=` con puntaje, cantidad de inspecciones firmadas y reclamos que procedieron. Lo usa el pedido y `talleres.html` | P1 | B1 |
 | B4 | **Pedir una inspección por link:** `POST /api/inspecciones` con `url`, `mecanico_id` y datos opcionales del auto. Detecta el sitio por la URL (MercadoLibre, Kavak, Autocosmos, AutoCar u otro). Aplica las reglas de la sección 7 y calcula el desglose del precio | P1 | B2 |
@@ -71,7 +79,7 @@ Prioridades: **P1** = imprescindible para la demo del 30/11. **P2** = si llegamo
 | B7 | **Informe y firma:** `PUT /api/mecanico/inspecciones/{id}/informe` guarda el checklist (se puede editar hasta firmar). `POST /api/mecanico/inspecciones/{id}/firma` exige todos los ítems completos y una conclusión. Guarda el nombre del mecánico y del taller, la fecha y la **huella SHA-256** del informe. Después de firmar, cualquier cambio da 409 | P1 | B6 |
 | B8 | **Reclamo:** `POST /api/inspecciones/{id}/reclamo` (comprador, hasta 15 días después de la firma, uno por inspección). Admin: `GET /api/admin/reclamos?estado=abierto` y `PATCH /api/admin/reclamos/{id}` para decidir si procede (con la compensación hasta el tope) o no. Si procede, el pago queda "reembolsado" y el ranking se recalcula | P1 | B7 |
 | B9 | **Pruebas:** unitarias (detectar el sitio por la URL, validar el checklist, calcular el desglose, calcular el ranking) y de integración (el flujo completo de la demo, el vendedor no puede pedir la inspección de su propio auto, el informe firmado no se puede cambiar, otro usuario recibe 404) | P1 | B4–B8 |
-| B10 | **Datos de demo:** script `database/demo-inspecciones.sql`, solo para `dev`, con 5 talleres de Mercedes y Luján **marcados como demo** e inspecciones firmadas de ejemplo para que el ranking tenga números | P1 | B1 |
+| B10 | ✅ **Datos de demo:** script `database/demo-inspecciones.sql`, solo para `dev`, con 5 talleres de Mercedes y Luján **marcados como demo** e inspecciones firmadas de ejemplo para que el ranking tenga números | P1 | B1 |
 | B11 | README del back: endpoints nuevos y reglas de negocio | P1 | B4–B8 |
 
 ### 5.2 Back: metabuscador con todas las fuentes (`feat/comparador`)
