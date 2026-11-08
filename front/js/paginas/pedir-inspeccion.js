@@ -71,6 +71,7 @@ async function cargarMecanicos() {
             filtro.append(...r.localidades.map((l) => el('option', { value: l }, l)));
         }
         lista.append(...mecanicos.map(opcionMecanico));
+        marcarElegido();
         estadoMecanicos.replaceChildren(mecanicos.length
             ? ''
             : vistas.aviso('No hay mecánicos en esa localidad.', 'Probá con "Todas".'));
@@ -80,6 +81,16 @@ async function cargarMecanicos() {
 }
 
 filtro.addEventListener('change', cargarMecanicos);
+
+// Llega con ?mecanico=N desde el ranking (talleres.html): se marca sólo la primera vez.
+let mecanicoPedido = Number(params.get('mecanico')) || null;
+function marcarElegido() {
+    const radio = mecanicoPedido && document.getElementById(`mecanico-${mecanicoPedido}`);
+    mecanicoPedido = null;
+    if (!radio) return;
+    radio.checked = true;
+    mostrarDesglose();
+}
 
 function elegido() {
     const id = Number(form.querySelector('[name="mecanico_id"]:checked')?.value);

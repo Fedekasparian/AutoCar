@@ -136,6 +136,12 @@ test('puntaje muestra "Nuevo en la red" con menos de 3 firmadas', () => {
     assert.equal(insp.puntaje({ nuevo: false, puntaje: 4.5, firmadas: 12 }), '4,5 de 5 · 12 inspecciones firmadas');
 });
 
+test('reclamosProcedentes se muestra también para los nuevos', () => {
+    assert.equal(insp.reclamosProcedentes({ reclamos_procedentes: 0 }), 'Ningún reclamo procedió');
+    assert.equal(insp.reclamosProcedentes({ reclamos_procedentes: 1, nuevo: true }), '1 reclamo procedió');
+    assert.equal(insp.reclamosProcedentes({ reclamos_procedentes: 3 }), '3 reclamos procedieron');
+});
+
 test('pedir hace POST /api/inspecciones y mias GET /api/mis-inspecciones', async () => {
     respuestas.push(json({ inspeccion: { id: 3 } }, 201), json({ items: [] }));
     await api.pedir({ url: 'https://www.kavak.com/ar/x', mecanico_id: 2 });

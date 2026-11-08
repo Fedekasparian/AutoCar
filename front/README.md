@@ -68,7 +68,7 @@ Por la misma razón, el detalle de vehículo todavía no tiene las partes de ver
 | `mensajes.html` | `/mensajes` | Conversaciones |
 | `conversacion.html` | `/mensajes/:id` | Conversación |
 | `plan.html` | `/cuenta/plan` | Plan activo y cambio de nivel |
-| `talleres.html` | `/talleres` | Talleres adheridos (mapa y lista) |
+| `talleres.html` | `/talleres` | Mecánicos de la red: ranking público (`GET /api/mecanicos`), filtro por localidad y "Elegir" → pedir inspección |
 | `verificar-vehiculo.html` | `/mis-publicaciones/:id/verificar` | Código para verificar en el taller |
 | `verificacion.html` | `/verificacion/:id` | Informe de verificación |
 | `talleres-adherirse.html` | `/talleres/adherirse` | Alta de un taller |
