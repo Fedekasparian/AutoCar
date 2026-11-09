@@ -24,9 +24,14 @@ let mecanicos = [];
 
 // ---------- El auto ----------
 
+// Solo se aceptan avisos de los sitios conocidos (el back también lo controla)
+const SOLO_SITIOS_CONOCIDOS = 'Por ahora solo inspeccionamos autos publicados en MercadoLibre, Kavak, Autocosmos o AutoCar.';
 function describirUrl() {
     const fuente = insp.fuenteDeUrl(campoUrl.value, window.location.hostname);
-    ayudaUrl.textContent = fuente ? `Aviso de ${insp.fuente(fuente)}.` : AYUDA_URL;
+    ayudaUrl.textContent = fuente && fuente !== 'otro' ? `Aviso de ${insp.fuente(fuente)}.` : AYUDA_URL;
+    campoUrl.setCustomValidity(fuente === 'otro' ? SOLO_SITIOS_CONOCIDOS : '');
+    if (fuente === 'otro') window.Validacion.mostrar(campoUrl, SOLO_SITIOS_CONOCIDOS);
+    else window.Validacion.limpiar(campoUrl);
 }
 
 // Datos que llegan en la URL desde el botón "Mandale un mecánico"

@@ -69,6 +69,9 @@ test('recorrido de la demo: pedir, aceptar, firmar, reclamar y resolver', async 
             .locator('input[type="radio"]')).toBeChecked();
         await expect(comprador.locator('#resumen')).toBeVisible();
 
+        // Un link de un sitio cualquiera no se acepta
+        await comprador.fill('#url', 'https://www.otrositio.com/auto/1');
+        await expect(comprador.locator('#url-error')).toContainText('Por ahora solo inspeccionamos');
         await comprador.fill('#url', `https://auto.mercadolibre.com.ar/MLA-${Date.now()}-gol-trend-_JM`);
         await expect(comprador.locator('#url-ayuda')).toContainText('MercadoLibre');
         await comprador.locator('#datos-auto summary').click();
