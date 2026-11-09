@@ -229,7 +229,6 @@
 .fila--inspeccion .acciones-fila { margin-top:0; }
 .item-checklist { padding:16px 0; border:0; border-bottom:1px solid var(--marca-linea); }
 .item-checklist legend .campo__ayuda { font-weight:400; }
-.huella { font-size:12px; overflow-wrap:anywhere; }
 .vista-pedir-inspeccion .pantalla,.vista-mis-inspecciones .pantalla,.vista-admin-reclamos .pantalla { max-width:900px; }
 .vista-pedir-inspeccion .opciones label .fila__cuerpo { flex:1; min-width:0; }
 .vista-pedir-inspeccion summary { cursor:pointer; font-weight:600; }

@@ -52,11 +52,11 @@ Unos 6 minutos. Es la demo de la sección 3 del PLAN, con lo que hoy funciona de
 ### 4. El mecánico acepta, revisa y firma (1 min 30 s) · ventana 2
 - **Mi taller** muestra el pedido nuevo. **Aceptar**, con un turno para mañana.
 - **Revisar y firmar:** marcar todo OK salvo **Carrocería → Observado**, con la nota "Rayón en la puerta trasera". Conclusión: **Con reparos**.
-- **Firmar informe → Firmar.** Mostrar la **huella**.
-> "Firma con su nombre. La huella es un código que cambia si alguien toca una coma del informe, y desde acá ya no se puede editar."
+- **Firmar informe → Firmar.** Mostrar quién firmó, el taller y la fecha.
+> "Firma con su nombre y desde acá ya no se puede editar. Por detrás guardamos una huella del informe: si alguien tocara una coma, nos daríamos cuenta."
 
 ### 5. El comprador ve el informe (30 s) · ventana 1
-- Recargar Mis inspecciones y entrar a la inspección: el informe firmado, la huella y **los trámites a pedir antes de pagar** (informe de dominio, libre deuda, VTV y 08).
+- Recargar Mis inspecciones y entrar a la inspección: el informe firmado con el nombre del mecánico y **los trámites a pedir antes de pagar** (informe de dominio, libre deuda, VTV y 08).
 
 ### 6. El reclamo (1 min) · ventana 1 y después la 3
 - En la misma pantalla, **Reclamo**: ítem *Estructura*, "Tenía un golpe en el zócalo derecho y el informe no lo marca". **Enviar.**
