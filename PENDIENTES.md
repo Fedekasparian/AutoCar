@@ -3,7 +3,7 @@
 Lista viva de lo que falta. Cuando alguien toma un ítem, pone su nombre; cuando lo termina, lo tacha (`~~así~~`) o lo borra con el PR que lo resuelve.
 El plan completo del enfoque del mecánico está en [`modelo-de-negocio/PLAN.md`](modelo-de-negocio/PLAN.md).
 
-Última actualización: 09/11/2026.
+Última actualización: 09/11/2026 (noche).
 
 ## Entrega 4
 
@@ -15,7 +15,7 @@ El plan completo del enfoque del mecánico está en [`modelo-de-negocio/PLAN.md`
 
 ## Front: pantallas que siguen siendo maqueta
 
-- [ ] **Metabuscador** (`meta-busqueda.html`, `meta-busqueda-nueva.html`, `meta-busqueda-resultados.html`): tienen datos de ejemplo y no llaman a la API, aunque el back está completo (`/api/meta-busquedas`). Falta: listar mis búsquedas, crear una con marcas y modelos reales, resultados con el precio de referencia y el botón **"Mandale un mecánico"** en cada auto (que ya existe en `vehiculo.html`).
+- [ ] **Metabuscador** (`meta-busqueda.html`, `meta-busqueda-nueva.html`, `meta-busqueda-resultados.html`): tienen datos de ejemplo y no llaman a la API, aunque el back está completo (`/api/meta-busquedas`). Falta: listar mis búsquedas, crear una con marcas y modelos reales, resultados con el precio de referencia y el botón **"Mandale un mecánico"** en cada auto (que ya existe en `vehiculo.html`). El botón tiene que llevar a `pedir-inspeccion.html?url=<link del aviso>`: así el link queda fijo y el comprador no lo puede cambiar.
 - [ ] **Chat** (`mensajes.html`, `conversacion.html`): `js/paginas/mensajes.js` usa conversaciones de ejemplo. El back ya tiene las 4 rutas: bandeja (`GET /api/conversaciones`), mensajes con `?desde=ultimo_id`, enviar (`POST`) y el botón "Contactar al vendedor" (`POST /api/vehiculos/{id}/conversacion`).
 - [ ] **Planes** (`planes.html`, `plan.html`): maqueta, depende de las suscripciones (abajo).
 - [ ] **Formularios con `action` a rutas que no existen** (`cuenta.html` → `/cuenta`, `contacto.html` → `/contacto`): si se envían dan 404 de Vercel. Conectarlos o avisar "próximamente".
@@ -30,6 +30,8 @@ Hoy no hay tabla de suscripciones ni cobros: los planes son de muestra y las ins
 - [ ] **Decidir si las inspecciones se cobran con Mercado Pago** o quedan simuladas para la entrega (repartir la plata al mecánico es más complejo).
 
 ## Datos y scraper
+
+- [ ] **Inspección de un auto que juntó el scraper**: hoy el back acepta cualquier link de MercadoLibre, Kavak, Autocosmos o AutoCar (controla el dominio, no que el auto exista). Cuando haya autos en Firestore: si el link coincide con uno scrapeado, marcar el pedido como "auto verificado en nuestro buscador" y completar solos título, año, km y precio; si no coincide, aceptarlo igual sin la marca.
 
 - [ ] **Cargar los autos del scraper en Firestore** (dev y prod). Hoy el comparador responde `sin_datos`.
 - [ ] **Corrida diaria** del scraper (`diario.bat` en la PC a las 9:00 o GitHub Actions).
