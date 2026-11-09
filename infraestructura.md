@@ -338,8 +338,11 @@ El orden importa: cada paso necesita el anterior.
    5. `005-roles.sql`
    6. `006-inspecciones.sql`
    7. `007-demo-inspecciones-solo-dev.sql` (solo en `dev`: mecánicos de ejemplo)
+   8. `008-separar-version.sql`
+   9. `009-solicitud-taller.sql`
+   10. `010-publicar-por-partes.sql`
 
-   El número del archivo es el orden. Las migraciones nuevas siguen con `008-...`.
+   El número del archivo es el orden. Las migraciones nuevas siguen con `011-...`.
 6. Verificar en el SQL Editor (`dev`):
    ```sql
    SELECT to_regclass('public.sesion'), to_regclass('public.rol'), to_regclass('public.conversacion');

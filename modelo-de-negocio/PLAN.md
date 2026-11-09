@@ -45,7 +45,10 @@ Todo lo que no sirva para esta demo va después.
 | Pieza | Dónde | Estado |
 |---|---|---|
 | Usuarios, sesión con cookie + CSRF, roles y permisos, **incluido el rol `mecanico`** con `verificaciones.ver` y `verificaciones.realizar` | back `dev` y `main` | ✅ Funciona. El rol mecánico todavía no tiene endpoints |
-| Catálogo, detalle, publicar con fotos, moderación, chat, métricas de admin | back `dev` | ✅ |
+| Catálogo, detalle, publicar con fotos, moderación, chat, métricas de admin | back `dev` y `main` | ✅ |
+| **Publicar por partes** (lo pidió el profe el 09/11): con marca, modelo y año ya se guarda, se completa después (Guardar y salir / Continuar), y el moderador no puede aprobar una incompleta (front, back con 409 `incompleta` y `CHECK` en la base). `publicar.html` y `mis-publicaciones.html` conectados. Migración `010-publicar-por-partes.sql` | back `dev` y `main`, front `dev` | ✅ (front a `main` en el PR #20) |
+| **Adherí tu taller:** el mecánico pide sumarse y un admin lo aprueba (pasa a rol `mecanico` y entra al ranking) o lo rechaza con motivo. `talleres-adherirse.html` y `admin-talleres.html`. Migración `009-solicitud-taller.sql` | back `dev` y `main`, front `dev` | ✅ (front a `main` en el PR #20) |
+| **Firestore** (Firebase, plan gratis Spark): conectado en Render dev y prod desde el 09/11 | Render | 🟡 Conectado; falta cargar los autos del scraper |
 | Pruebas PHPUnit (unitarias + integración) y CI | back `dev` | ✅ |
 | **Metabuscador de Taro:** búsquedas guardadas, avisos (nuevo / bajó / subió / reservado / retirado), reporte de mercado y detalle de un auto externo (`/api/meta-busquedas...`, `/api/autos-externos?id=`). **Guarda en Firestore (NoSQL)** desde el 08/11 (PR #3 del back) | back `dev` (viene de la rama `scraper`) | ✅ Back hecho; importa cualquier fuente, probado con ML + Kavak + Autocosmos |
 | **Recolectores** de MercadoLibre, Kavak y Autocosmos con curl, en la PC (`recolectores/diario.bat`) | back `dev` | ✅ Probados con datos reales (6.082 autos) |
@@ -55,7 +58,7 @@ Todo lo que no sirva para esta demo va después.
 
 **El 08/11 se pasaron `feat/inspecciones` y `feat/comparador` (con la rama `scraper` de Taro) a `dev` del back**, con el CI en verde (unitarias + integración) y Render dev ya desplegado. `main` del back todavía no los tiene: va en el próximo `dev` → `main`.
 
-**Migraciones (numeradas desde el 08/11, PR #4 del back):** en `AutoCarBackend/database/` cada archivo lleva el orden en que se corre: `001-e4` … `005-roles`, `006-inspecciones` y `007-demo-inspecciones-solo-dev` (solo en Neon dev). En Neon `dev` ya se corrió `006`; en `main` se corre `006` (no la demo) cuando se pase `dev` → `main`. **`migracion-meta-busqueda.sql` ya no existe:** el metabuscador no usa tablas de Neon.
+**Migraciones (numeradas desde el 08/11, PR #4 del back):** en `AutoCarBackend/database/` cada archivo lleva el orden en que se corre: `001-e4` … `005-roles`, `006-inspecciones`, `007-demo-inspecciones-solo-dev` (solo en Neon dev), `008-separar-version`, `009-solicitud-taller` y `010-publicar-por-partes`. **Al 09/11 están todas corridas en Neon dev y main** (la 007 solo en dev). La próxima es `011-...`. **`migracion-meta-busqueda.sql` ya no existe:** el metabuscador no usa tablas de Neon.
 
 **Cómo se adaptó la rama `scraper` de Taro:** `feat/comparador` (ya en `dev`) sale de su último commit ("meta buscador"), así que tiene todo lo suyo, y su lógica (comparables, novedades, destacados, reporte) quedó igual. Lo que se sumó encima:
 - **Recolectores con curl** de MercadoLibre, Kavak y Autocosmos (`recolectores/`), que corren en la PC con `diario.bat` y escriben todos el mismo formato común. El de Kavak con curl (`kavak/recolectar.php` + `ExtractorHtml.php`) reemplaza en la práctica a su `kavak/scraper.php` con Playwright, que queda como alternativa; los dos usan su `Normalizador.php`.
