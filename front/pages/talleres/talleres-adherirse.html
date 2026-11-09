@@ -41,8 +41,8 @@
 <li>Con la solicitud aprobada, tu taller aparece en el ranking y ya recibís pedidos de inspección.</li>
 </ol></section>
 
-    <!-- POST /api/mi-solicitud-taller (con sesión). Sin cuenta, el mismo formulario la crea primero
-         (POST /api/registro + /api/login). Lo arma js/paginas/talleres-adherirse.js. -->
+    <!-- POST /api/solicitudes-taller (sin sesión): crea la cuenta del taller, aparte de la personal.
+         Lo arma js/paginas/talleres-adherirse.js. -->
     <div class="pila" id="estado-solicitud" hidden></div>
     <form class="formulario" id="form-adhesion" novalidate>
       <h2>Solicitá la adhesión</h2>
@@ -89,8 +89,8 @@
         <span class="campo__error" id="precio_inspeccion-error"></span>
       </div>
       <fieldset class="pila" id="datos-cuenta">
-        <legend class="campo__etiqueta">Tu cuenta en AutoCar</legend>
-        <p class="campo__ayuda">Con este email y esta contraseña vas a ingresar a tu panel de mecánico. ¿Ya tenés cuenta? <a href="../auth/login.html?volver=talleres-adherirse.html">Ingresá</a> y completá solo los datos del taller.</p>
+        <legend class="campo__etiqueta">La cuenta del taller</legend>
+        <p class="campo__ayuda">Es una cuenta aparte de la que usás para comprar o vender: usá un email que no tenga cuenta en AutoCar (por ejemplo, el del taller). Con este email y esta contraseña vas a ingresar a tu panel de mecánico cuando aprobemos la solicitud. Si te la rechazamos, volvé a mandarla con el mismo email y la misma contraseña.</p>
         <div class="campo">
           <label class="campo__etiqueta" for="responsable">Nombre del responsable</label>
           <input class="campo__input" id="responsable" name="responsable" type="text" required minlength="2" maxlength="80" aria-describedby="responsable-error">
@@ -108,13 +108,12 @@
           <span class="campo__error" id="password-error"></span>
         </div>
       </fieldset>
-      <p class="suave" id="cuenta-actual" hidden></p>
       <div class="campo">
         <label class="casilla"><input type="checkbox" id="condiciones" name="condiciones" required aria-describedby="condiciones-error"><span>Acepto las condiciones de adhesión: descuentos por plan y uso del checklist de AutoCar.</span></label>
         <span class="campo__error" id="condiciones-error"></span>
       </div>
       <button class="boton" type="submit">Enviar solicitud</button>
-      <p class="campo__ayuda">La solicitud queda pendiente hasta que la apruebe un administrador. Mientras tanto tu taller no aparece en el ranking.</p>
+      <p class="campo__ayuda">La solicitud queda pendiente hasta que la apruebe un administrador. Mientras tanto no podés ingresar con la cuenta del taller y tu taller no aparece en el ranking.</p>
     </form>
   </main><footer class="pie-marca"><div class="contenedor">
     <div class="pie-marca__fila">
