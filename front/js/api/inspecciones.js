@@ -62,8 +62,7 @@ export const firmar = (n) => post(`/api/mecanico/inspecciones/${id(n)}/firma`, {
 // La solicitud llega así: {usuario_id, responsable, email, rol, taller, cuit, direccion, localidad, telefono, horarios,
 //  precio_inspeccion, estado: pendiente|aprobado|rechazado, motivo_rechazo, creada, resuelta, resuelta_por}
 
-// → {solicitud} o {solicitud: null} si nunca pidió sumarse
-export const miSolicitud = () => get('/api/mi-solicitud-taller');
-
-// {nombre, cuit, direccion, localidad, telefono, horarios, precio_inspeccion, condiciones: true} → {solicitud} (201)
-export const enviarSolicitud = (datos) => post('/api/mi-solicitud-taller', datos);
+// Sin sesión: crea la cuenta del taller (aparte de la personal) y la solicitud pendiente.
+// {responsable, email, password, nombre, cuit, direccion, localidad, telefono, horarios, precio_inspeccion,
+//  condiciones: true} → {solicitud} (201). Email con cuenta → 422; solicitud pendiente con ese email → 409.
+export const enviarSolicitud = (datos) => post('/api/solicitudes-taller', datos);

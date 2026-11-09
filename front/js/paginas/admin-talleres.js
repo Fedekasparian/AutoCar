@@ -1,5 +1,5 @@
 // Solicitudes de "Adherí tu taller" (permiso usuarios.editar): pendientes, aprobadas y rechazadas.
-// Aprobar: el usuario pasa a mecánico y su taller entra al ranking. Rechazar: con un motivo que ve el que la pidió.
+// Aprobar: la cuenta del taller ya puede ingresar y el taller entra al ranking. Rechazar: con un motivo que el taller ve al querer ingresar.
 import * as admin from '../api/admin.js';
 import * as formato from '../servicios/formato.js';
 import * as formularios from '../servicios/formularios.js';

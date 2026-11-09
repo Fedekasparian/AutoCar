@@ -46,7 +46,7 @@ export const resolverReclamo = (id, resolucion) => patch(`/api/admin/reclamos/${
 // → {items: [solicitud]} (la forma está en api/inspecciones.js)
 export const solicitudesTaller = (estado) => get('/api/admin/solicitudes-taller', { estado });
 
-// {aprobar: true} (el usuario pasa a mecánico y el taller entra al ranking) o {aprobar: false, motivo} → {solicitud}.
+// {aprobar: true} (la cuenta del taller ya puede ingresar y el taller entra al ranking) o {aprobar: false, motivo} → {solicitud}.
 // id = el del usuario que la pidió.
 export const resolverSolicitudTaller = (id, resolucion) =>
     patch(`/api/admin/solicitudes-taller/${encodeURIComponent(id)}`, resolucion);
