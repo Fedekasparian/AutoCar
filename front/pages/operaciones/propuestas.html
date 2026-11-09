@@ -7,6 +7,7 @@
   <meta name="description" content="Propuestas de canje recibidas y enviadas.">
   <link rel="stylesheet" href="../../styles/estilos.css">
   <script src="../../js/tema.js"></script><script src="../../js/barra-admin.js" defer></script><link rel="stylesheet" href="../../styles/componentes.css">
+  <script src="../../js/proximamente.js" defer></script>
   <link rel="stylesheet" href="../../styles/pantallas.css">
   <link rel="stylesheet" href="../../styles/print.css" media="print">
   <script src="../../js/dialogos.js" defer></script>
@@ -54,9 +55,9 @@
           </div>
           <p class="canje__diferencia">Diferencia: <strong>vos pagás $700.000</strong></p>
           <div class="propuesta__acciones">
-            <form action="/propuestas/7/aceptar" method="post"><button class="boton boton--chico" type="submit">Aceptar</button></form>
+            <form data-proximamente method="post"><button class="boton boton--chico" type="submit">Aceptar</button></form>
             <button class="boton boton--secundario boton--chico" type="button" data-abrir="contraoferta">Contraofertar</button>
-            <form action="/propuestas/7/rechazar" method="post"><button class="boton boton--secundario boton--chico" type="submit">Rechazar</button></form>
+            <form data-proximamente method="post"><button class="boton boton--secundario boton--chico" type="submit">Rechazar</button></form>
           </div>
         </div>
       </li>
@@ -81,7 +82,7 @@
     </ul>
 
     <dialog class="hoja" id="contraoferta" aria-labelledby="contraoferta-titulo">
-      <form class="pila" action="/propuestas/7/contraofertar" method="post">
+      <form class="pila" data-proximamente method="post">
         <h2 id="contraoferta-titulo">Contraofertar</h2>
         <fieldset class="opciones">
           <legend class="campo__etiqueta">¿Quién paga la diferencia?</legend>

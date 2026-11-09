@@ -7,6 +7,7 @@
   <meta name="description" content="Tus vehículos favoritos organizados en listas.">
   <link rel="stylesheet" href="../../styles/estilos.css">
   <script src="../../js/tema.js"></script><script src="../../js/barra-admin.js" defer></script><link rel="stylesheet" href="../../styles/componentes.css">
+  <script src="../../js/proximamente.js" defer></script>
   <link rel="stylesheet" href="../../styles/pantallas.css">
   <link rel="stylesheet" href="../../styles/print.css" media="print">
   <script src="../../js/dialogos.js" defer></script>
@@ -37,7 +38,7 @@
       <ul class="menu__lista">
         <li><button type="button" data-abrir="renombrar-lista">Renombrar lista</button></li>
         <li>
-          <form action="/favoritos/listas/1/eliminar" method="post">
+          <form data-proximamente method="post">
             <button type="submit">Eliminar lista</button>
           </form>
         </li>
@@ -107,7 +108,7 @@
   </main>
 
   <dialog class="hoja" id="renombrar-lista" aria-labelledby="renombrar-titulo">
-    <form class="pila" action="/favoritos/listas/1" method="post">
+    <form class="pila" data-proximamente method="post">
       <h2 id="renombrar-titulo">Renombrar lista</h2>
       <div class="campo">
         <label class="campo__etiqueta" for="nuevo-nombre">Nombre de la lista</label>
@@ -121,7 +122,7 @@
   </dialog>
 
   <dialog class="hoja" id="nueva-lista" aria-labelledby="nueva-lista-titulo">
-    <form class="pila" action="/favoritos/listas" method="post">
+    <form class="pila" data-proximamente method="post">
       <h2 id="nueva-lista-titulo">Nueva lista</h2>
       <div class="campo">
         <label class="campo__etiqueta" for="nombre-lista">Nombre de la lista</label>
