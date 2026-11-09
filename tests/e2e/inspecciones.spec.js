@@ -181,3 +181,17 @@ test('recorrido de la demo: pedir, aceptar, firmar, reclamar y resolver', async 
     await comprador.context().close();
     await mecanico.context().close();
 });
+
+test('desde un aviso, el link del auto viene fijo y no se puede cambiar', async ({ page }) => {
+    const aviso = `https://auto.mercadolibre.com.ar/MLA-${Date.now()}-gol-trend-_JM`;
+    await registrar(page, 'Comprador E2E');
+    await page.goto(pagina(`pages/talleres/pedir-inspeccion.html?url=${encodeURIComponent(aviso)}`));
+    const campo = page.locator('#url');
+    await expect(campo).toHaveValue(aviso);
+    await expect(campo).toHaveAttribute('readonly', '');
+    await expect(page.locator('#url-ayuda')).toContainText('que estabas mirando');
+
+    // Sin ?url (botón "Mandale un mecánico a otro auto") se sigue pegando a mano
+    await page.goto(pagina('pages/talleres/pedir-inspeccion.html'));
+    await expect(page.locator('#url')).toBeEditable();
+});

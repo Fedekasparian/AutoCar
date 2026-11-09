@@ -1,5 +1,6 @@
 // Mandale un mecánico: el comprador pega el link del auto (o llega con ?url=... desde un aviso), elige un
 // mecánico del ranking, ve el desglose del precio y confirma. POST /api/inspecciones; el pago es simulado.
+// Si llega con ?url=..., el link queda fijo (solo lectura): es el del auto que estaba mirando.
 import * as api from '../api/inspecciones.js';
 import * as formato from '../servicios/formato.js';
 import * as formularios from '../servicios/formularios.js';
@@ -27,6 +28,7 @@ let mecanicos = [];
 // Solo se aceptan avisos de los sitios conocidos (el back también lo controla)
 const SOLO_SITIOS_CONOCIDOS = 'Por ahora solo inspeccionamos autos publicados en MercadoLibre, Kavak, Autocosmos o AutoCar.';
 function describirUrl() {
+    if (campoUrl.readOnly) return; // fijo: la ayuda ya dice de qué auto es
     const fuente = insp.fuenteDeUrl(campoUrl.value, window.location.hostname);
     ayudaUrl.textContent = fuente && fuente !== 'otro' ? `Aviso de ${insp.fuente(fuente)}.` : AYUDA_URL;
     campoUrl.setCustomValidity(fuente === 'otro' ? SOLO_SITIOS_CONOCIDOS : '');
@@ -45,6 +47,13 @@ function precargar() {
         if (campo !== 'url') conDatos = true;
     });
     document.getElementById('datos-auto').open = conDatos;
+    if (params.get('url')) {
+        campoUrl.readOnly = true;
+        const fuente = insp.fuenteDeUrl(campoUrl.value, window.location.hostname);
+        ayudaUrl.textContent = fuente && fuente !== 'otro'
+            ? `Es el aviso de ${insp.fuente(fuente)} que estabas mirando.`
+            : 'Es el aviso que estabas mirando.';
+    }
     describirUrl();
 }
 
