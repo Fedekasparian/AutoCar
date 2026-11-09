@@ -511,7 +511,8 @@
     font-weight: 600;
     list-style: none;
 }
-.acciones-fila a, .acciones-fila button{
+/* Los enlaces y botones sueltos se ven como texto; los que tienen .boton conservan su estilo de botón */
+.acciones-fila a:not(.boton), .acciones-fila button:not(.boton){
     padding: 0;
     border: 0;
     background: none;
