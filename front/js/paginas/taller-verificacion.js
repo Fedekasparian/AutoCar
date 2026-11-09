@@ -1,6 +1,6 @@
 // Inspección (lado del mecánico): datos del auto, checklist de 10 ítems, conclusión y firma.
 // Mientras está "aceptada" se puede guardar a medias (borrador). Firmar exige todo completo y cierra el informe:
-// después se muestra sólo para leer, con el firmante, la fecha y la huella (SHA-256) que calcula el back.
+// después se muestra sólo para leer, con el firmante y la fecha.
 import * as api from '../api/inspecciones.js';
 import * as formato from '../servicios/formato.js';
 import * as informe from '../servicios/informe.js';

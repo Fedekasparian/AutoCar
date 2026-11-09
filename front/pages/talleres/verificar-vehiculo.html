@@ -7,6 +7,7 @@
   <meta name="description" content="Código para verificar tu vehículo en un taller.">
   <link rel="stylesheet" href="../../styles/estilos.css">
   <script src="../../js/tema.js"></script><script src="../../js/barra-admin.js" defer></script><link rel="stylesheet" href="../../styles/componentes.css">
+  <script src="../../js/proximamente.js" defer></script>
   <link rel="stylesheet" href="../../styles/pantallas.css">
   <link rel="stylesheet" href="../../styles/print.css" media="print">
 <link rel="stylesheet" href="../../styles/identidad.css">
@@ -50,7 +51,7 @@
       <li>El mecánico revisa el auto con el checklist.</li>
       <li>El informe aparece en tu aviso al terminar.</li>
     </ol>
-    <form action="/verificaciones/12/cancelar" method="post">
+    <form data-proximamente method="post">
       <button class="boton boton--secundario boton--bloque" type="submit">Cancelar solicitud</button>
     </form>
   </main>
