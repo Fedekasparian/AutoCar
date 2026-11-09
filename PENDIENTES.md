@@ -3,15 +3,15 @@
 Lista viva de lo que falta. Cuando alguien toma un ítem, pone su nombre; cuando lo termina, lo tacha (`~~así~~`) o lo borra con el PR que lo resuelve.
 El plan completo del enfoque del mecánico está en [`modelo-de-negocio/PLAN.md`](modelo-de-negocio/PLAN.md).
 
-Última actualización: 09/11/2026 (noche).
+Última actualización: 09/11/2026 (noche, después de la entrega 4).
 
 ## Entrega 4
 
-- [ ] **Aprobar el PR #20 (`dev` → `main`)**: `main` exige la aprobación de otro integrante. Después, verificar producción (adherirse, publicar, mis publicaciones, admin de talleres, moderar incompletas).
-- [ ] **Tag `entrega-4`** en los dos repos, sobre `main`, cuando entre el #20.
+- [x] ~~**Aprobar el PR #20 (`dev` → `main`)**~~: mergeado. Después entraron a producción el #33 (la raíz redirige a `/front/`) y el #37 (chat, formularios de maqueta, botones de Mi taller y huella oculta). Producción verificada: humo 15/15 en Chromium, Firefox y WebKit.
+- [x] ~~**Tag `Entrega_4`**~~ en los dos repos, sobre `main` (mismo formato que `Entrega_1` a `Entrega_3`): front `fdc93ed`, back `fa40a54`.
 - [x] ~~**Documento de seguridad por capa**~~: [`Entrega_4/seguridad-por-capa.md`](Entrega_4/seguridad-por-capa.md). Quedan sus pendientes (§ 6): rate limiting, usuario de Neon con privilegios mínimos, concurrencia al moderar.
 - [x] ~~**Validación W3C y accesibilidad**~~: 41 páginas sin errores y 0 violaciones de WCAG A/AA, en [`Entrega_4/validacion-w3c-y-accesibilidad.md`](Entrega_4/validacion-w3c-y-accesibilidad.md).
-- [ ] **E2E en Firefox y WebKit** (hoy se corren en Chromium).
+- [x] ~~**E2E en Firefox y WebKit**~~: `playwright.config.js` corre los tres navegadores y el workflow los instala. Inspecciones pasó en los tres (local) y humo en los tres (producción).
 
 ## Front: pantallas que siguen siendo maqueta
 
