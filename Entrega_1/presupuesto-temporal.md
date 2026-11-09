@@ -191,7 +191,7 @@ La consigna es explícita: *"si bien se acepta la división de tareas, todos los
 
 ## 7. Consideraciones de seguridad por capa
 
-La consigna pide explicarlas en cada entrega y en cada capa. Definición inicial:
+La consigna pide explicarlas en cada entrega y en cada capa. Definición inicial (lo implementado al 09/11 está en [`Entrega_4/seguridad-por-capa.md`](../Entrega_4/seguridad-por-capa.md)):
 
 | Capa | Consideraciones |
 |---|---|

@@ -9,8 +9,8 @@ El plan completo del enfoque del mecánico está en [`modelo-de-negocio/PLAN.md`
 
 - [ ] **Aprobar el PR #20 (`dev` → `main`)**: `main` exige la aprobación de otro integrante. Después, verificar producción (adherirse, publicar, mis publicaciones, admin de talleres, moderar incompletas).
 - [ ] **Tag `entrega-4`** en los dos repos, sobre `main`, cuando entre el #20.
-- [ ] **Documento de seguridad por capa** (front, proxy de Vercel, back, base).
-- [ ] **Validación W3C** del HTML y del CSS de las pantallas principales.
+- [x] ~~**Documento de seguridad por capa**~~: [`Entrega_4/seguridad-por-capa.md`](Entrega_4/seguridad-por-capa.md). Quedan sus pendientes (§ 6): rate limiting, usuario de Neon con privilegios mínimos, concurrencia al moderar.
+- [x] ~~**Validación W3C y accesibilidad**~~: 41 páginas sin errores y 0 violaciones de WCAG A/AA, en [`Entrega_4/validacion-w3c-y-accesibilidad.md`](Entrega_4/validacion-w3c-y-accesibilidad.md).
 - [ ] **E2E en Firefox y WebKit** (hoy se corren en Chromium).
 
 ## Front: pantallas que siguen siendo maqueta
