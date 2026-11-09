@@ -16,8 +16,8 @@ Este documento registra cómo se organizan los entornos de AutoCar, qué decidim
 | Entorno | Rama | Front | API | Base de datos | Datos |
 |---|---|---|---|---|---|
 | **Local** | `feature/*` | Live Server · `localhost:5500` | `php -S localhost:8000` | Docker `postgres:17` · `autocar-db` · puerto 5433 | `schema.sql` + `seed.sql` |
-| **Dev** (nuevo) | `dev` | Vercel Preview · `autocar-git-dev-….vercel.app` | Render · [autocarbackend-dev.onrender.com](https://autocarbackend-dev.onrender.com) | Neon · branch `dev` | Copia de producción |
-| **Producción** | `main` | Vercel Production · [autocar-zeta.vercel.app](https://autocar-zeta.vercel.app) | Render · [autocarbackend-1.onrender.com](https://autocarbackend-1.onrender.com) | Neon · branch `main` | Reales |
+| **Dev** (nuevo) | `dev` | Vercel Preview · `autocar-git-dev-….vercel.app` | Render · [autocarbackend-dev.onrender.com](https://autocarbackend-dev.onrender.com) | Neon · **proyecto de dev** (aparte) | De prueba |
+| **Producción** | `main` | Vercel Production · [autocar-zeta.vercel.app](https://autocar-zeta.vercel.app) | Render · [autocarbackend-1.onrender.com](https://autocarbackend-1.onrender.com) | Neon · **proyecto de producción** | Reales |
 
 ```mermaid
 flowchart LR
@@ -36,7 +36,7 @@ flowchart LR
         DC["rama dev<br/>deploy automático"]
         DF["Vercel Preview<br/>autocar-git-dev-….vercel.app"]
         DA["Render<br/>autocarbackend-dev"]
-        DD[("Neon<br/>branch dev")]
+        DD[("Neon<br/>proyecto dev")]
         DC -- "push" --> DF
         DF -- "/api/* → dev" --> DA
         DA -- "sslmode=require" --> DD
@@ -47,7 +47,7 @@ flowchart LR
         PC["rama main<br/>deploy automático"]
         PF["Vercel Production<br/>autocar-zeta.vercel.app"]
         PA["Render<br/>autocarbackend-1"]
-        PD[("Neon<br/>branch main")]
+        PD[("Neon<br/>proyecto main")]
         PC -- "merge" --> PF
         PF -- "/api/* → prod" --> PA
         PA -- "sslmode=require" --> PD
@@ -55,7 +55,6 @@ flowchart LR
 
     LC -- "PR → merge a dev" --> DC
     DC -- "PR dev → main<br/>cuando dev está probado" --> PC
-    PD -. "copia (branch / reset from parent)" .-> DD
     DF -. "HOY: vercel.json fijo<br/>dev escribiría en prod" .-> PA
 
     linkStyle 11 stroke:#c23b2a,stroke-width:2px,color:#c23b2a
@@ -67,7 +66,7 @@ Cada carril es una cadena completa con su front, su API y su base. El código su
 
 | Variable | Local | Dev | Producción | Para qué |
 |---|---|---|---|---|
-| `DB_HOST` | `localhost` | `ep-…-dev.….neon.tech` | `ep-….….neon.tech` | Cada branch de Neon tiene su propio host |
+| `DB_HOST` | `localhost` | `ep-…-dev.….neon.tech` | `ep-….….neon.tech` | Cada proyecto de Neon tiene su propio host |
 | `DB_PORT` | `5433` | `5432` | `5432` | 5433 en local para no chocar con un Postgres instalado |
 | `DB_NAME` | `autocar` | igual que producción | el actual | Neon copia la base con el mismo nombre |
 | `DB_USER` / `DB_PASS` | `autocar` / `autocar` | rol propio de dev | rol de producción | Con un rol aparte, una clave filtrada de dev no abre producción |
@@ -99,17 +98,19 @@ Cada carril es una cadena completa con su front, su API y su base. El código su
 
 **Por qué:** el deploy queda atado a la rama, así que mergear es desplegar. Nadie despliega a mano y lo que está en `main` es siempre lo que se probó en `dev`.
 
-### D3. Una base separada por entorno, con branches de Neon
+### D3. Una base separada por entorno: dos proyectos de Neon
+
+> **Cómo quedó en la práctica (08/11):** en vez de una *branch* `dev` dentro del proyecto de producción, se usan **dos proyectos de Neon separados**, uno para producción y otro para dev, cada uno con su host. Funciona igual para este flujo y es todavía más difícil tocar producción por error. Lo que cambia: los datos de dev no son una copia de producción (no hay *Reset from parent*) y cada migración se corre en el SQL Editor de cada proyecto. Lo que sigue sobre branches (D3 original, paso 1 y el paso 6 de "Resincronizar dev") queda como alternativa.
 
 **Decisión:**
-- Dev usa una **branch `dev` de Neon** creada desde `main`, con host y rol propios.
+- Dev usa **su propio proyecto de Neon** (al principio se pensó como una branch `dev` creada desde `main`), con host y rol propios.
 - Local usa el Postgres de Docker del back (`docker compose up -d`).
-- Las migraciones (`database/migracion-*.sql`) se corren **primero en dev** y en producción recién el día del merge.
+- Las migraciones (`database/NNN-*.sql`, numeradas en el orden en que se corren) se corren **primero en dev** y en producción recién el día del merge.
 
 **Por qué:**
 - Una branch de Neon es una copia instantánea de producción, gratis en el plan actual. Se puede volver a copiar con *Reset from parent*, así que dev siempre tiene datos realistas.
 - Las pruebas pueden crear y borrar publicaciones sin ensuciar datos reales.
-- Ejemplo concreto: `migracion-sesion.sql` cambia el modelo de sesión y no puede llegar a producción antes que el código que la usa.
+- Ejemplo concreto: `004-sesion.sql` cambia el modelo de sesión y no puede llegar a producción antes que el código que la usa.
 
 ### D4. La URL del back sale de una variable de entorno de Vercel
 
@@ -297,7 +298,7 @@ Estado al 6/11/2026. El código de la infraestructura ya está en `dev` en los d
 
 **Falta**
 
-- [ ] Neon: crear la branch `dev` y un rol propio, y correr las migraciones sobre ella (paso 1).
+- [x] Neon: base de dev (hecho con un proyecto aparte, no con una branch; ver D3).
 - [ ] Render dev: cargar las variables de la base dev y `FRONT_URL` (paso 2). Hoy `/health` da 200 pero `/api/vehiculos` da 500 porque no tiene base.
 - [ ] Vercel: cargar `BACKEND_URL` para Preview y para Production (paso 3). Sin esa variable, `/api` da 503.
 - [ ] Vercel: resolver la *Deployment Protection* de los Preview (paso 4). Hoy piden login de Vercel, y así el E2E y el docente no pueden entrar a dev.
@@ -310,6 +311,8 @@ Estado al 6/11/2026. El código de la infraestructura ya está en `dev` en los d
 El orden importa: cada paso necesita el anterior.
 
 #### Paso 1 · Neon: base de dev
+
+> Se terminó haciendo con **un proyecto de Neon aparte** para dev (ver D3). Si se rehace, alcanza con crear el proyecto, correr `schema.sql` y cargar sus datos en Render dev; los pasos de abajo son para la alternativa con branch.
 
 1. Entrar a [console.neon.tech](https://console.neon.tech) y abrir el proyecto de AutoCar.
 2. **Branches → New branch.**
@@ -328,11 +331,15 @@ El orden importa: cada paso necesita el anterior.
    ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT USAGE, SELECT ON SEQUENCES TO autocar_dev;
    ```
 5. En el mismo SQL Editor, sobre la branch `dev`, correr las migraciones de `AutoCarBackend/database/`. Hay que copiar y pegar cada archivo completo, en este orden. Todas se pueden volver a correr sin romper nada:
-   1. `migracion-e4.sql`
-   2. `migracion-nombres.sql`
-   3. `migracion-chat.sql`
-   4. `migracion-roles.sql`
-   5. `migracion-sesion.sql`
+   1. `001-e4.sql`
+   2. `002-nombres.sql`
+   3. `003-chat.sql`
+   4. `004-sesion.sql`
+   5. `005-roles.sql`
+   6. `006-inspecciones.sql`
+   7. `007-demo-inspecciones-solo-dev.sql` (solo en `dev`: mecánicos de ejemplo)
+
+   El número del archivo es el orden. Las migraciones nuevas siguen con `008-...`.
 6. Verificar en el SQL Editor (`dev`):
    ```sql
    SELECT to_regclass('public.sesion'), to_regclass('public.rol'), to_regclass('public.conversacion');

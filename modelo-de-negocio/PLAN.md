@@ -47,20 +47,20 @@ Todo lo que no sirva para esta demo va después.
 | Usuarios, sesión con cookie + CSRF, roles y permisos, **incluido el rol `mecanico`** con `verificaciones.ver` y `verificaciones.realizar` | back `dev` y `main` | ✅ Funciona. El rol mecánico todavía no tiene endpoints |
 | Catálogo, detalle, publicar con fotos, moderación, chat, métricas de admin | back `dev` | ✅ |
 | Pruebas PHPUnit (unitarias + integración) y CI | back `dev` | ✅ |
-| **Metabuscador de Taro:** búsquedas guardadas, avisos (nuevo / bajó / subió / reservado / retirado), reporte de mercado y detalle de un auto externo (`/api/meta-busquedas...`, `/api/autos-externos/{id}`). Guarda en Neon | back `dev` (viene de la rama `scraper`) | ✅ Back hecho, solo con autos de **Kavak** |
+| **Metabuscador de Taro:** búsquedas guardadas, avisos (nuevo / bajó / subió / reservado / retirado), reporte de mercado y detalle de un auto externo (`/api/meta-busquedas...`, `/api/autos-externos?id=`). **Guarda en Firestore (NoSQL)** desde el 08/11 (PR #3 del back) | back `dev` (viene de la rama `scraper`) | ✅ Back hecho; importa cualquier fuente, probado con ML + Kavak + Autocosmos |
 | **Recolectores** de MercadoLibre, Kavak y Autocosmos con curl, en la PC (`recolectores/diario.bat`) | back `dev` | ✅ Probados con datos reales (6.082 autos) |
 | **Comparador de precio** (`GET /api/vehiculos/{id}/comparacion`) | back `dev` | ✅ Back hecho. Pasa a ser un **dato** en el informe y el metabuscador |
-| **Base de las inspecciones:** tablas `taller`, `inspeccion`, `inspeccion_item` y `reclamo` (`schema.sql` + `migracion-inspecciones.sql`), permiso `reclamos.resolver`, datos de demo (5 talleres de Mercedes y Luján) y las reglas de negocio como funciones puras (`src/Inspecciones/`: `Fuente`, `Precio`, `Checklist`, `Huella`, `Estados`, `Ranking`) con 20 pruebas unitarias. Explicado en `docs/inspecciones.md` del back | back `dev` | ✅ Base y reglas hechas (B1, B10 y las unitarias de B9). Endpoints B2–B8 en `dev` desde el 08/11 (PR #2 del back) |
+| **Base de las inspecciones:** tablas `taller`, `inspeccion`, `inspeccion_item` y `reclamo` (`schema.sql` + `006-inspecciones.sql`), permiso `reclamos.resolver`, datos de demo (5 talleres de Mercedes y Luján) y las reglas de negocio como funciones puras (`src/Inspecciones/`: `Fuente`, `Precio`, `Checklist`, `Huella`, `Estados`, `Ranking`) con 20 pruebas unitarias. Explicado en `docs/inspecciones.md` del back | back `dev` | ✅ Base y reglas hechas (B1, B10 y las unitarias de B9). Endpoints B2–B8 en `dev` desde el 08/11 (PR #2 del back) |
 | Maquetas: `talleres.html`, `taller.html`, `taller-verificacion.html` (checklist), `verificacion.html`, `verificar-vehiculo.html`, `meta-busqueda*.html` | front `dev` | 🟡 Solo HTML/CSS, sin API. Se reusan |
 
 **El 08/11 se pasaron `feat/inspecciones` y `feat/comparador` (con la rama `scraper` de Taro) a `dev` del back**, con el CI en verde (unitarias + integración) y Render dev ya desplegado. `main` del back todavía no los tiene: va en el próximo `dev` → `main`.
 
-**Falta en la base de Neon (rama `dev`):** correr `migracion-meta-busqueda.sql` y `migracion-inspecciones.sql` (y `demo-inspecciones.sql` para tener los talleres de ejemplo). Sin eso, el código está pero las tablas no, y los endpoints del metabuscador fallan. En `main` se corren las dos migraciones (no la demo) cuando se pase `dev` → `main`.
+**Migraciones (numeradas desde el 08/11, PR #4 del back):** en `AutoCarBackend/database/` cada archivo lleva el orden en que se corre: `001-e4` … `005-roles`, `006-inspecciones` y `007-demo-inspecciones-solo-dev` (solo en Neon dev). En Neon `dev` ya se corrió `006`; en `main` se corre `006` (no la demo) cuando se pase `dev` → `main`. **`migracion-meta-busqueda.sql` ya no existe:** el metabuscador no usa tablas de Neon.
 
-**Cómo se adaptó la rama `scraper` de Taro:** `feat/comparador` (ya en `dev`) sale de su último commit ("meta buscador"), así que tiene todo lo suyo, y **su código no se tocó**: `src/MetaBusqueda/`, el workflow `.github/workflows/scraper.yml` y `bin/importar-autos.php` quedan igual, guardando en Neon. Lo que se sumó encima:
+**Cómo se adaptó la rama `scraper` de Taro:** `feat/comparador` (ya en `dev`) sale de su último commit ("meta buscador"), así que tiene todo lo suyo, y su lógica (comparables, novedades, destacados, reporte) quedó igual. Lo que se sumó encima:
 - **Recolectores con curl** de MercadoLibre, Kavak y Autocosmos (`recolectores/`), que corren en la PC con `diario.bat` y escriben todos el mismo formato común. El de Kavak con curl (`kavak/recolectar.php` + `ExtractorHtml.php`) reemplaza en la práctica a su `kavak/scraper.php` con Playwright, que queda como alternativa; los dos usan su `Normalizador.php`.
 - **El comparador** (`src/Comparador/`) reusa su `Estadistica` (mediana) y su `Normalizador` de Kavak, y guarda un documento por modelo en Firestore (o en archivos en local).
-- Pendiente (M1): que su `Importador` cargue también la salida de MercadoLibre y Autocosmos, y más adelante (opcional) que su metabuscador lea los documentos por modelo en vez de Neon. Detalle en `docs/arquitectura-scraper.md` del back.
+- **08/11 (PR #3 del back): su metabuscador pasó a NoSQL (decisión D4).** Las 6 tablas (`auto_externo`, `busqueda_guardada`, `coincidencia`...) salieron de Neon; ahora son documentos en Firestore: `mercado/{modelo}` con los autos y su historial, `busquedas/{usuario}` y `avisos/{usuario}`. El `Importador` ya carga MercadoLibre, Kavak y Autocosmos (M1 del lado del back). Cambio para el front: el id de un auto externo es texto y el detalle es `GET /api/autos-externos?id=...`. Detalle en `docs/arquitectura-scraper.md` del back, sección 6.
 
 ## 5. Qué falta: las tareas
 
@@ -72,7 +72,7 @@ La base ya está en `dev`: B1, B10 y las pruebas unitarias de B9 (ver la secció
 
 | ID | Tarea | Prioridad | Depende de |
 |---|---|---|---|
-| B1 | ✅ **Migración** `database/migracion-inspecciones.sql` (y lo mismo en `schema.sql`): tablas `taller`, `inspeccion`, `inspeccion_item` y `reclamo`, y el permiso nuevo `reclamos.resolver` para el moderador y el admin. Ver la sección 6 | P1 | — |
+| B1 | ✅ **Migración** `database/006-inspecciones.sql` (y lo mismo en `schema.sql`): tablas `taller`, `inspeccion`, `inspeccion_item` y `reclamo`, y el permiso nuevo `reclamos.resolver` para el moderador y el admin. Ver la sección 6 | P1 | — |
 | B2 | ✅ **Perfil del taller** del mecánico: `GET/PUT /api/mecanico/perfil` (nombre del taller, dirección, localidad, teléfono, precio de la inspección) | P1 | B1 |
 | B3 | ✅ **Ranking público:** `GET /api/mecanicos?localidad=` con puntaje, cantidad de inspecciones firmadas y reclamos que procedieron. Lo usa el pedido y `talleres.html` | P1 | B1 |
 | B4 | ✅ **Pedir una inspección por link:** `POST /api/inspecciones` con `url`, `mecanico_id` y datos opcionales del auto. Detecta el sitio por la URL (MercadoLibre, Kavak, Autocosmos, AutoCar u otro). Aplica las reglas de la sección 7 y calcula el desglose del precio | P1 | B2 |
@@ -81,7 +81,7 @@ La base ya está en `dev`: B1, B10 y las pruebas unitarias de B9 (ver la secció
 | B7 | ✅ **Informe y firma:** `PUT /api/mecanico/inspecciones/{id}/informe` guarda el checklist (se puede editar hasta firmar). `POST /api/mecanico/inspecciones/{id}/firma` exige todos los ítems completos y una conclusión. Guarda el nombre del mecánico y del taller, la fecha y la **huella SHA-256** del informe. Después de firmar, cualquier cambio da 409 | P1 | B6 |
 | B8 | ✅ **Reclamo:** `POST /api/inspecciones/{id}/reclamo` (comprador, hasta 15 días después de la firma, uno por inspección). Admin: `GET /api/admin/reclamos?estado=abierto` y `PATCH /api/admin/reclamos/{id}` para decidir si procede (con la compensación hasta el tope) o no. Si procede, el pago queda "reembolsado" y el ranking se recalcula | P1 | B7 |
 | B9 | ✅ **Pruebas:** unitarias (detectar el sitio por la URL, validar el checklist, calcular el desglose, calcular el ranking) y de integración (el flujo completo de la demo, el vendedor no puede pedir la inspección de su propio auto, el informe firmado no se puede cambiar, otro usuario recibe 404) | P1 | B4–B8 |
-| B10 | ✅ (el historial de inspecciones firmadas, con `bin/demo-historial.php`: PR #7 del back) **Datos de demo:** script `database/demo-inspecciones.sql`, solo para `dev`, con 5 talleres de Mercedes y Luján **marcados como demo** e inspecciones firmadas de ejemplo para que el ranking tenga números | P1 | B1 |
+| B10 | ✅ (el historial de inspecciones firmadas, con `bin/demo-historial.php`: PR #7 del back) **Datos de demo:** script `database/007-demo-inspecciones-solo-dev.sql`, solo para `dev`, con 5 talleres de Mercedes y Luján **marcados como demo** e inspecciones firmadas de ejemplo para que el ranking tenga números | P1 | B1 |
 | B11 | ✅ README del back: endpoints nuevos y reglas de negocio | P1 | B4–B8 |
 
 ### 5.2 Back: metabuscador con todas las fuentes (ramas desde `dev`)
@@ -193,14 +193,14 @@ Cada uno tiene que poder explicar todo en la defensa, pero conviene que cada par
 | Front del metabuscador (F6, F7) | Taro | Va junto con M2 |
 | Talleres reales y alcance (N2, N3) | Todos (uno por taller) | Es lo que más pesa en la defensa del modelo |
 
-## 10. Decisiones abiertas (cerrarlas el lunes)
+## 10. Decisiones (cerradas el 08/11)
 
-| # | Decisión | Propuesta |
+| # | Decisión | Qué se decidió |
 |---|---|---|
 | D1 | Precio de la inspección y reparto | $ 130.000 (77 % para el mecánico, 23 % para AutoCar). Ajustarlo con N2 |
 | D2 | Plazo para reclamar | 15 días |
 | D3 | Tope de la compensación | 3 veces el precio de la inspección |
-| D4 | El metabuscador sigue en **Neon** (como lo hizo Taro) y el comparador en **Firestore**, o todo pasa a Firestore | Para el 30/11, **dejar el metabuscador en Neon** porque ya funciona. Firestore queda para el comparador cuando esté creado el proyecto de Firebase |
+| D4 | ¿El metabuscador sigue en **Neon** o todo lo del scraper pasa a **Firestore**? | **Todo a Firestore (NoSQL)**, como sugirió el profe: comparador y metabuscador. Hecho el 08/11 (PR #3 del back). Neon queda para lo nuestro: usuarios, vehículos, chat, sesiones e inspecciones. Falta crear el proyecto de Firebase |
 | D5 | ¿Quién resuelve los reclamos? | El moderador y el admin (permiso `reclamos.resolver`) |
 
 ## 11. Qué dejamos de lado (y por qué)
