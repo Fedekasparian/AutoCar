@@ -248,3 +248,15 @@
 .alcance summary { cursor:pointer; font-weight:600; }
 .alcance__titulo { font-size:1rem; margin:16px 0 8px; }
 .alcance ul { padding-left:20px; list-style:disc; }
+
+/* Chat conectado a la API (js/paginas/mensajes.js) */
+.conversacion-panel__cuerpo { display:flex; flex-direction:column; flex:1; min-height:0; }
+.conversacion-panel__cabecera #chat-foto, .inbox__item .sin-foto { width:76px; height:56px; border-radius:6px; flex:none; }
+.inbox__item .sin-foto { width:56px; }
+.conversacion-panel__rol { color:var(--marca-gris); font-size:12px; margin-bottom:2px; }
+.inbox__no-leidos { display:inline-grid; place-content:center; min-width:20px; height:20px; padding:0 6px; margin-left:8px; border-radius:10px; background:var(--marca-tinta); color:var(--marca-blanco); font-size:11px; vertical-align:middle; }
+.chat__vacio, .chat__cerrada { padding:0 28px 16px; color:var(--marca-gris); font-size:14px; }
+.conversacion-panel .chat__enviar .campo__error { flex-basis:100%; }
+.conversacion-panel #chat-estado:not([hidden]) { padding:40px 28px; }
+@media(max-width:767px) { .inbox__item .sin-foto { width:60px; height:60px; } }
+.inbox__item[aria-current=page] .sin-foto { background:var(--marca-blanco); }

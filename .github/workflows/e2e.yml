@@ -28,6 +28,12 @@ jobs:
       # Settings → Deployment Protection → Protection Bypass for Automation (en Vercel), guardado como secreto en GitHub.
       VERCEL_AUTOMATION_BYPASS_SECRET: ${{ secrets.VERCEL_AUTOMATION_BYPASS_SECRET }}
       SOLO_HUMO: ${{ github.event.inputs.solo_humo == 'true' || github.event.deployment.environment == 'Production' }}
+      # Cuentas de prueba del entorno dev (Settings → Secrets → Actions). Sin ellas, esos pasos se saltean.
+      E2E_ADMIN_EMAIL: ${{ secrets.E2E_ADMIN_EMAIL }}
+      E2E_ADMIN_PASSWORD: ${{ secrets.E2E_ADMIN_PASSWORD }}
+      E2E_CHAT_VEHICULO_ID: ${{ secrets.E2E_CHAT_VEHICULO_ID }}
+      E2E_CHAT_VENDEDOR_EMAIL: ${{ secrets.E2E_CHAT_VENDEDOR_EMAIL }}
+      E2E_CHAT_VENDEDOR_PASSWORD: ${{ secrets.E2E_CHAT_VENDEDOR_PASSWORD }}
     steps:
       - uses: actions/checkout@v4
         with:
