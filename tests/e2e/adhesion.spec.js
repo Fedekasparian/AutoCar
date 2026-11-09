@@ -80,7 +80,7 @@ test('un mecánico pide sumarse, el admin lo aprueba y aparece en el ranking', a
     });
 });
 
-test('el email de una cuenta que ya existe no sirve para el taller', async ({ page }) => {
+test('logueado no se ve el formulario; después de salir, el email de esa cuenta no sirve para el taller', async ({ page }) => {
     const email = emailNuevo();
     await page.goto(pagina('pages/auth/registro.html'));
     await page.fill('#nombre', 'Persona E2E');
@@ -90,7 +90,13 @@ test('el email de una cuenta que ya existe no sirve para el taller', async ({ pa
     await page.click('#form-registro button[type="submit"]');
     await expect(page).not.toHaveURL(/registro\.html/);
 
+    // Con la sesión personal abierta: el formulario no aparece, solo el aviso y el botón para salir
     await page.goto(pagina('pages/talleres/talleres-adherirse.html'));
+    await expect(page.locator('#form-adhesion')).toBeHidden();
+    await expect(page.locator('#estado-solicitud')).toContainText('aparte de tu cuenta personal');
+    await page.getByRole('button', { name: 'Cerrar sesión' }).click();
+    await expect(page.locator('#form-adhesion')).toBeVisible();
+
     await page.fill('#nombre', 'Taller repetido');
     await page.fill('#cuit', '30-12345678-9');
     await page.fill('#direccion', 'Calle 1 123');
