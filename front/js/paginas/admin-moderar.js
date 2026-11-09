@@ -9,9 +9,16 @@ import { ruta } from '../servicios/rutas.js';
 
 const { el } = vistas;
 const params = new URLSearchParams(window.location.search);
-const ESTADOS_COLA = ['pendiente', 'rechazado', 'disponible'];
+// "incompletas" son pendientes que el vendedor todavía está completando (publicar por partes): no se pueden aprobar.
+// "pendiente" muestra solo las completas, que son las que el moderador tiene que revisar.
+const ESTADOS_COLA = ['pendiente', 'incompletas', 'rechazado', 'disponible'];
 const filtroEstado = ESTADOS_COLA.includes(params.get('estado')) ? params.get('estado') : 'pendiente';
 const filtros = { estado: filtroEstado, page: params.get('page') || '' };
+if (filtroEstado === 'pendiente') filtros.completa = '1';
+if (filtroEstado === 'incompletas') {
+    filtros.estado = 'pendiente';
+    filtros.completa = '0';
+}
 
 const cola = document.getElementById('cola');
 const estado = document.getElementById('estado');
@@ -20,6 +27,7 @@ const aviso = document.getElementById('aviso');
 
 const VACIO = {
     pendiente: 'No hay publicaciones esperando revisión.',
+    incompletas: 'No hay publicaciones a medio cargar.',
     rechazado: 'No hay publicaciones rechazadas.',
     disponible: 'No hay publicaciones aprobadas.',
 };
@@ -52,7 +60,8 @@ function tarjeta(v, detalle) {
         placeholder: v.estado === 'disponible' ? 'Motivo de la baja (lo ve el dueño)' : 'Motivo si se rechaza (lo ve el dueño)',
     });
     const botones = [];
-    if (v.estado !== 'disponible') {
+    // Una incompleta no se aprueba (el back también lo controla): se puede rechazar, por ejemplo si es spam
+    if (v.estado !== 'disponible' && v.completa) {
         const aprobar = el('button', { class: 'boton boton--chico', type: 'button' },
             v.estado === 'rechazado' ? 'Aprobar (revertir rechazo)' : 'Aprobar');
         aprobar.addEventListener('click', () => decidir(v, 'disponible', null, error));
@@ -82,10 +91,15 @@ function tarjeta(v, detalle) {
             sesion.puede('vehiculos.gestionar')
                 ? el('a', { href: ruta(`admin-vehiculo.html?id=${v.id}`) }, el('strong', {}, formato.titulo(v)))
                 : el('strong', {}, formato.titulo(v)),
-            ' · ', formato.precio(v.precio), el('br'),
-            el('span', { class: 'fila__meta' },
-                `${formato.km(v.kilometraje)} · ${formato.combustible(v.combustible)} · ${formato.transmision(v.transmision)}`
-                + (v.localidad ? ` · ${v.localidad}` : ''))),
+            ' · ', v.precio === null ? 'sin precio' : formato.precio(v.precio), el('br'),
+            el('span', { class: 'fila__meta' }, [
+                v.kilometraje === null ? null : formato.km(v.kilometraje),
+                v.combustible ? formato.combustible(v.combustible) : null,
+                v.transmision ? formato.transmision(v.transmision) : null,
+                v.localidad,
+            ].filter(Boolean).join(' · '))),
+        v.completa ? null : el('p', { class: 'campo__ayuda' },
+            `Incompleta: le falta ${v.faltan.join(', ')}. El vendedor la está completando; recién después se puede aprobar.`),
         el('p', { class: 'fila__meta' }, publicador
             ? `Publicó ${publicador.nombre} (${publicador.email})`
             : 'Cargado por el admin (sin dueño)'),

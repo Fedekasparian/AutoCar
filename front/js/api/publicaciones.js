@@ -4,13 +4,24 @@ import { get, post, put, patch, del } from './cliente.js';
 
 const ruta = (id) => `/api/mis-vehiculos/${encodeURIComponent(id)}`;
 
-// Todas las propias menos las eliminadas, con su estado (pendiente, disponible, rechazado, vendido)
-// y motivo_rechazo si el admin la rechazó. → {items}
+// Todas las propias menos las eliminadas, con su estado (pendiente, disponible, rechazado, vendido),
+// motivo_rechazo si el admin la rechazó, y completa / faltan (publicar por partes). → {items}
 export const listar = () => get('/api/mis-vehiculos');
 
-// formulario: FormData con los campos del vehículo y las fotos en 'fotos[]' (máx. 5, JPG/PNG/WebP, 2 MB c/u).
-// Nace 'pendiente' hasta que la apruebe el admin. → {vehiculo} (201), con vehiculo.fotos
+// Una propia con todas sus fotos (para seguir completándola). → {vehiculo} con vehiculo.fotos
+export const detalle = (id) => get(ruta(id));
+
+// Publicar por partes: alcanza con marca, modelo y anio; lo demás y las fotos se pueden mandar después.
+// formulario: FormData (las fotos van en 'fotos[]': máx. 5, JPG/PNG/WebP, 2 MB c/u).
+// Nace 'pendiente'; el moderador recién la puede aprobar cuando está completa (vehiculo.faltan vacío).
+// → {vehiculo} (201), con vehiculo.fotos
 export const crear = (formulario) => post('/api/mis-vehiculos', formulario);
+
+// Agrega fotos (FormData con 'fotos[]') a las que ya tiene, hasta 5 entre todas. → {vehiculo} (201) con fotos
+export const agregarFotos = (id, formulario) => post(`${ruta(id)}/fotos`, formulario);
+
+// Saca una foto (fotoId = el número del final de su ruta /api/fotos/{id}). → {vehiculo} con fotos
+export const eliminarFoto = (id, fotoId) => del(`${ruta(id)}/fotos/${encodeURIComponent(fotoId)}`);
 
 // Cambios parciales en JSON, sin fotos: lo que no se manda queda igual. La publicación vuelve a
 // 'pendiente' para que el admin la revise de nuevo. Una vendida no se edita (409). → {vehiculo}

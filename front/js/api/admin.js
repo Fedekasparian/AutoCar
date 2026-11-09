@@ -42,4 +42,13 @@ export const reclamos = (estado) => get('/api/admin/reclamos', { estado });
 export const resolverReclamo = (id, resolucion) => patch(`/api/admin/reclamos/${encodeURIComponent(id)}`, resolucion);
 
 // → {usuarios, publicaciones, moderacion, chat, ganancias}
+// Solicitudes de "Adherí tu taller" (permiso usuarios.editar). estado: pendiente | aprobado | rechazado
+// → {items: [solicitud]} (la forma está en api/inspecciones.js)
+export const solicitudesTaller = (estado) => get('/api/admin/solicitudes-taller', { estado });
+
+// {aprobar: true} (el usuario pasa a mecánico y el taller entra al ranking) o {aprobar: false, motivo} → {solicitud}.
+// id = el del usuario que la pidió.
+export const resolverSolicitudTaller = (id, resolucion) =>
+    patch(`/api/admin/solicitudes-taller/${encodeURIComponent(id)}`, resolucion);
+
 export const metricas = () => get('/api/admin/metricas');
