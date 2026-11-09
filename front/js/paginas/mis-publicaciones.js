@@ -12,10 +12,42 @@ const lista = document.getElementById('lista');
 const estado = document.getElementById('estado');
 const aviso = document.getElementById('aviso');
 
+// Ventana de confirmación para eliminar (el <dialog> está en mis-publicaciones.html)
+const dialogo = document.getElementById('confirmar-eliminar');
+const botonEliminar = document.getElementById('eliminar-confirmar');
+const errorEliminar = document.getElementById('eliminar-error');
+let aEliminar = null;
+
 function avisar(texto) {
     aviso.textContent = texto;
     aviso.hidden = !texto;
 }
+
+function pedirConfirmacion(v) {
+    aEliminar = v;
+    const datos = [formato.titulo(v), v.precio === null ? null : formato.precio(v.precio)].filter(Boolean);
+    document.getElementById('eliminar-vehiculo').textContent = datos.join(' · ');
+    // A una publicada se le sugiere "Marcar vendida", que es lo que suele querer el vendedor
+    document.getElementById('eliminar-vendida').hidden = v.estado !== 'disponible';
+    errorEliminar.textContent = '';
+    dialogo.showModal();
+}
+
+botonEliminar.addEventListener('click', async () => {
+    if (!aEliminar) return;
+    botonEliminar.disabled = true;
+    try {
+        await api.eliminar(aEliminar.id);
+        dialogo.close();
+        avisar(`Se eliminó ${formato.titulo(aEliminar)}.`);
+        await cargar();
+    } catch (error) {
+        errorEliminar.textContent = error.message;
+        errorEliminar.focus();
+    } finally {
+        botonEliminar.disabled = false;
+    }
+});
 
 const sinTerminar = (v) => v.estado === 'pendiente' && !v.completa;
 
@@ -68,18 +100,7 @@ function acciones(v) {
             }
         }));
     }
-    items.push(boton('Eliminar', async (b) => {
-        if (!window.confirm(`¿Eliminar ${formato.titulo(v)}? No se puede deshacer.`)) return;
-        b.disabled = true;
-        try {
-            await api.eliminar(v.id);
-            avisar(`Se eliminó ${formato.titulo(v)}.`);
-            await cargar();
-        } catch (error) {
-            avisar(error.message);
-            b.disabled = false;
-        }
-    }));
+    items.push(boton('Eliminar', () => pedirConfirmacion(v)));
     return el('ul', { class: 'acciones-fila', role: 'list' }, ...items.map((a) => el('li', {}, a)));
 }
 
