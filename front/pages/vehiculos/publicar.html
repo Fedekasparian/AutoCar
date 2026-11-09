@@ -56,7 +56,11 @@
     </div>
 
     <p class="campo__ayuda" id="faltan" aria-live="polite" hidden></p>
-    <form class="formulario formulario-pasos" id="form-publicar" novalidate>
+    <!-- El formulario arranca oculto: publicar.js lo muestra cuando ya tiene los datos (si se sigue una publicación,
+         después de traerla), así no se ve primero vacío y después lleno. -->
+    <div class="estado" id="estado"></div>
+    <noscript><p class="recuadro">Para publicar necesitás tener JavaScript activado.</p></noscript>
+    <form class="formulario formulario-pasos" id="form-publicar" novalidate hidden>
       <p class="formulario__alerta" role="alert" tabindex="-1"></p>
 
       <!-- Paso 1 -->

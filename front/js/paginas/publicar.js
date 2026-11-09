@@ -23,6 +23,8 @@ const faltanTexto = document.getElementById('faltan');
 const fotos = document.getElementById('fotos');
 const fotosPrevia = document.getElementById('fotos-previa');
 const fotosActuales = document.getElementById('fotos-actuales');
+const estado = document.getElementById('estado');
+const pasosBarra = document.getElementById('pasos');
 
 // Qué campos guarda cada paso (el 3 son las fotos y el 6 es la revisión: no guardan campos)
 const CAMPOS_DE_PASO = [
@@ -183,7 +185,7 @@ terminar.addEventListener('click', () => {
         window.location.assign(ruta('mis-publicaciones.html'));
         return;
     }
-    [form, aviso, faltanTexto, document.getElementById('intro'), document.getElementById('pasos')]
+    [form, aviso, faltanTexto, document.getElementById('intro'), pasosBarra]
         .forEach((elemento) => { elemento.hidden = true; });
     const enviada = document.getElementById('enviada');
     enviada.hidden = false;
@@ -324,29 +326,32 @@ function primerPasoIncompleto(v) {
 }
 
 async function iniciar() {
-    document.getElementById('pasos').hidden = false;
     form.classList.add('con-js');
     pasos.forEach((paso) => paso.setAttribute('tabindex', '-1'));
     mostrarBusca();
 
     const id = new URLSearchParams(window.location.search).get('id');
     if (!id) {
+        pasosBarra.hidden = false;
+        form.hidden = false;
         mostrarPaso(0);
         return;
     }
+    // Pasos y formulario quedan ocultos hasta tener la publicación
+    estado.replaceChildren(vistas.cargando());
     try {
         vehiculo = (await api.detalle(id)).vehiculo;
     } catch (error) {
+        estado.replaceChildren();
         if (error.status === 401) {
             sesion.requerirLogin();
             return;
         }
-        form.hidden = true;
         avisar(error.status === 404 ? 'Esa publicación no existe o no es tuya.' : error.message);
         return;
     }
+    estado.replaceChildren();
     if (vehiculo.estado === 'vendido') {
-        form.hidden = true;
         avisar('Esta publicación ya está vendida: no se puede editar.');
         return;
     }
@@ -362,6 +367,8 @@ async function iniciar() {
     cargarEnElFormulario(vehiculo);
     mostrarFaltan();
     mostrarPaso(primerPasoIncompleto(vehiculo));
+    pasosBarra.hidden = false;
+    form.hidden = false;
 }
 
 if (sesion.requerirLogin()) iniciar();
