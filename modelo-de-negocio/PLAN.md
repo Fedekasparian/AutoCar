@@ -81,7 +81,7 @@ La base ya está en `dev`: B1, B10 y las pruebas unitarias de B9 (ver la secció
 | B7 | ✅ **Informe y firma:** `PUT /api/mecanico/inspecciones/{id}/informe` guarda el checklist (se puede editar hasta firmar). `POST /api/mecanico/inspecciones/{id}/firma` exige todos los ítems completos y una conclusión. Guarda el nombre del mecánico y del taller, la fecha y la **huella SHA-256** del informe. Después de firmar, cualquier cambio da 409 | P1 | B6 |
 | B8 | ✅ **Reclamo:** `POST /api/inspecciones/{id}/reclamo` (comprador, hasta 15 días después de la firma, uno por inspección). Admin: `GET /api/admin/reclamos?estado=abierto` y `PATCH /api/admin/reclamos/{id}` para decidir si procede (con la compensación hasta el tope) o no. Si procede, el pago queda "reembolsado" y el ranking se recalcula | P1 | B7 |
 | B9 | ✅ **Pruebas:** unitarias (detectar el sitio por la URL, validar el checklist, calcular el desglose, calcular el ranking) y de integración (el flujo completo de la demo, el vendedor no puede pedir la inspección de su propio auto, el informe firmado no se puede cambiar, otro usuario recibe 404) | P1 | B4–B8 |
-| B10 | ✅ **Datos de demo:** script `database/007-demo-inspecciones-solo-dev.sql`, solo para `dev`, con 5 talleres de Mercedes y Luján **marcados como demo** e inspecciones firmadas de ejemplo para que el ranking tenga números | P1 | B1 |
+| B10 | ✅ (el historial de inspecciones firmadas, con `bin/demo-historial.php`: PR #7 del back) **Datos de demo:** script `database/007-demo-inspecciones-solo-dev.sql`, solo para `dev`, con 5 talleres de Mercedes y Luján **marcados como demo** e inspecciones firmadas de ejemplo para que el ranking tenga números | P1 | B1 |
 | B11 | ✅ README del back: endpoints nuevos y reglas de negocio | P1 | B4–B8 |
 
 ### 5.2 Back: metabuscador con todas las fuentes (ramas desde `dev`)
@@ -106,16 +106,16 @@ La base ya está en `dev`: B1, B10 y las pruebas unitarias de B9 (ver la secció
 | F6 | ✅ `talleres.html` con el ranking real (sacar los datos de ejemplo y el "plan Oro") | P2 | B3 |
 | F7 | Metabuscador conectado: búsquedas guardadas, resultados y avisos de "nuevo / bajó" | P1 | M2 |
 | F8 | ✅ Sumar las pantallas nuevas a `rutas.js` y a la barra de navegación según los permisos (`sesion.puede(...)`) | P1 | F2–F5 |
-| F9 | Pruebas E2E con Playwright del flujo de la demo (contra `dev`) | P2 | F1–F5 |
+| F9 | ✅ `tests/e2e/inspecciones.spec.js`: pasa en Chromium, Firefox y WebKit. Pruebas E2E con Playwright del flujo de la demo (contra `dev`) | P2 | F1–F5 |
 
 ### 5.4 Negocio y presentación
 
 | ID | Tarea | Prioridad |
 |---|---|---|
 | N1 | PPT v4 y README con el eje nuevo | ✅ Hecho (esta rama) |
-| N2 | **Hablar con 2 o 3 talleres reales de Mercedes o Luján:** cuánto cobrarían una inspección, si aceptan dejar ~23 % y si aceptan responder con la compensación. Anotar las respuestas en el README | P1 |
+| N2 | 🟡 Guion y planilla listos (`entrevista-talleres.md`); faltan las entrevistas. **Hablar con 2 o 3 talleres reales de Mercedes o Luján:** cuánto cobrarían una inspección, si aceptan dejar ~23 % y si aceptan responder con la compensación. Anotar las respuestas en el README | P1 |
 | N3 | ✅ Escribir el **alcance de la inspección** ("qué se considera que se veía") para mostrarlo antes de pagar. Base: la sección 7 | P1 |
-| N4 | Ensayar la demo de la sección 3 con los datos de demo | P1 |
+| N4 | 🟡 Guion listo (`guion-demo.md`); falta ensayar. Ensayar la demo de la sección 3 con los datos de demo | P1 |
 
 ### 5.5 Fase 2: va en la presentación, no se programa ahora (P3)
 
