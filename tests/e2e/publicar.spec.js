@@ -20,7 +20,7 @@ async function ingresar(page, email, password) {
     await expect(page).toHaveURL(/home\.html/);
 }
 
-test('publicar de a poco: guardar el paso 1, salir y terminarla después', async ({ browser }) => {
+test('publicar de a poco: guardar el paso 1, salir, terminarla después y enviarla a revisión', async ({ browser }) => {
     const vendedor = await (await browser.newContext()).newPage();
     const email = emailNuevo();
     const anio = String(1990 + (Date.now() % 30)); // para reconocerla entre otras
@@ -75,7 +75,11 @@ test('publicar de a poco: guardar el paso 1, salir y terminarla después', async
         await vendedor.click('#paso-siguiente');
 
         await expect(vendedor.locator('#completitud')).toContainText('Está completa');
+        await expect(vendedor.locator('#terminar')).toHaveText('Enviar a revisión');
         await vendedor.click('#terminar');
+        await expect(vendedor.locator('#enviada')).toContainText('la enviaste a revisión');
+        await expect(vendedor.locator('#form-publicar')).toBeHidden();
+        await vendedor.click('#ir-a-mis-publicaciones');
         await expect(fila).toContainText('En revisión');
     });
 

@@ -33,11 +33,20 @@
 
   <main id="contenido" class="pantalla pantalla--compacta">
 
-    <!-- Publicar por partes: con el paso 1 (marca, modelo y año) ya se crea la publicación y cada "Guardar y seguir"
-         guarda ese paso (POST /api/mis-vehiculos, después PUT y POST .../fotos). Se puede salir y seguir desde
-         Mis publicaciones. El moderador recién la puede aprobar cuando está completa. Lo arma js/paginas/publicar.js. -->
+    <!-- Publicar por partes: con el paso 1 (marca, modelo y año) ya se crea la publicación y "Siguiente" guarda
+         el paso si cambió algo (POST /api/mis-vehiculos, después PUT y POST .../fotos). Se puede salir y seguir desde
+         Mis publicaciones. En el último paso "Enviar a revisión" muestra que quedó en revisión.
+         El moderador recién la puede aprobar cuando está completa. Lo arma js/paginas/publicar.js. -->
     <p class="recuadro" id="aviso" role="status" hidden></p>
-    <div class="recuadro pila"><p><strong>Cargala de a poco.</strong> Con marca, modelo y año ya queda guardada. Cuando quieras, tocá <strong>Guardar y salir</strong> y terminala después desde <a href="mis-publicaciones.html">Mis publicaciones</a>.</p><p class="suave">La revisamos y la publicamos cuando esté completa.</p></div>
+    <div class="recuadro pila" id="intro"><p><strong>Cargala de a poco.</strong> Con marca, modelo y año ya queda guardada. Cuando quieras, tocá <strong>Terminar después</strong> y seguila desde <a href="mis-publicaciones.html">Mis publicaciones</a>.</p><p class="suave">Al final la enviás a revisión y, si está todo bien, se publica.</p></div>
+
+    <!-- Se muestra al tocar "Enviar a revisión" en el último paso -->
+    <section class="recuadro pila" id="enviada" tabindex="-1" hidden>
+      <h2>Listo, la enviaste a revisión</h2>
+      <p>Un moderador la revisa y, si está todo bien, se publica. Mientras tanto la vas a ver en Mis publicaciones como <strong>En revisión</strong>.</p>
+      <p class="suave">Si necesitás corregir algo, podés editarla desde ahí: sigue en revisión.</p>
+      <a class="boton" href="mis-publicaciones.html" id="ir-a-mis-publicaciones">Ir a mis publicaciones</a>
+    </section>
     <div class="pasos" id="pasos" hidden>
       <p class="pasos__texto" aria-live="polite">
         <span id="pasos-texto">Paso 1 de 6 · Vehículo</span>
@@ -191,7 +200,7 @@
         <!-- data-max: el máximo entre todas. El back vuelve a validar cantidad, tipo y tamaño. -->
         <label class="subir-fotos" for="fotos">
           <strong>+ Agregar fotos</strong>
-          <span class="campo__ayuda" id="fotos-ayuda">Hasta 5 fotos. JPG, PNG o WebP de hasta 2 MB. Se suben al tocar "Guardar y seguir".</span>
+          <span class="campo__ayuda" id="fotos-ayuda">Hasta 5 fotos. JPG, PNG o WebP de hasta 2 MB. Se suben al tocar "Siguiente".</span>
         </label>
         <input class="solo-lector" id="fotos" name="fotos[]" type="file" accept="image/jpeg,image/png,image/webp" multiple data-max="5" data-max-mb="2" aria-describedby="fotos-ayuda fotos-error">
         <span class="campo__error" id="fotos-error"></span>
@@ -257,9 +266,10 @@
 
       <div class="pasos__botones">
         <button class="boton boton--secundario" type="button" id="paso-anterior" hidden>Anterior</button>
-        <button class="boton boton--secundario" type="button" id="guardar-salir">Guardar y salir</button>
-        <button class="boton" type="submit" id="paso-siguiente">Guardar y seguir</button>
-        <a class="boton" id="terminar" href="mis-publicaciones.html" hidden>Ir a mis publicaciones</a>
+        <button class="boton boton--secundario" type="button" id="guardar-salir">Terminar después</button>
+        <button class="boton" type="submit" id="paso-siguiente">Siguiente</button>
+        <!-- El texto lo pone publicar.js: "Enviar a revisión" si está completa, si no "Terminar después" -->
+        <button class="boton" type="button" id="terminar" hidden>Enviar a revisión</button>
       </div>
     </form>
 
