@@ -69,7 +69,7 @@ export function requerirLogin() {
 }
 
 // Permisos de las pantallas de administración (el admin los tiene todos; el moderador, sólo moderar).
-export const PERMISOS_PANEL = ['usuarios.ver', 'vehiculos.moderar', 'vehiculos.gestionar', 'metricas.ver'];
+export const PERMISOS_PANEL = ['usuarios.ver', 'vehiculos.moderar', 'vehiculos.gestionar', 'metricas.ver', 'reclamos.resolver'];
 export const vePanel = () => PERMISOS_PANEL.some(puede);
 
 // Para las pantallas de administración: hace falta alguno de los permisos pedidos (sin argumentos, cualquiera

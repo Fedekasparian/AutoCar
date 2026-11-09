@@ -1,0 +1,20 @@
+{
+  "name": "autocar-front",
+  "private": true,
+  "type": "module",
+  "description": "Front de AutoCar: sitio estático (front/) + middleware de Vercel que reenvía /api al back de cada entorno",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "test": "node --test \"tests/unit/**/*.test.js\"",
+    "test:e2e": "playwright test",
+    "test:humo": "playwright test --grep @humo"
+  },
+  "dependencies": {
+    "@vercel/functions": "^3.10.6"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.64.1"
+  }
+}

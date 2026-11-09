@@ -195,6 +195,10 @@ textarea.campo__input{
 .campo__input[aria-invalid="true"]{
     border-color: var(--color-error);
 }
+/* Dato que viene fijo (por ejemplo, el link del aviso en "Mandale un mecánico"): se ve, pero no se edita */
+.campo__input[readonly]{
+    background: var(--color-suave);
+}
 .campo__ayuda{
     font-size: var(--tam-xs);
     color: var(--color-texto-suave);

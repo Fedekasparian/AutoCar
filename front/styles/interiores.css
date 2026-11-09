@@ -221,3 +221,30 @@
     background:var(--marca-tinta); color:var(--marca-blanco); text-decoration:none; }
 .acceso-admin span { font-size:13px; opacity:.85; }
 .acceso-admin:hover, .acceso-admin:focus-visible { filter:brightness(1.15); }
+
+/* Panel del mecánico (taller.html y taller-verificacion.html) */
+.vista-taller .pantalla,.vista-taller-verificacion .pantalla { max-width:900px; }
+.fila--inspeccion { flex-wrap:wrap; }
+.fila--inspeccion .fila__cuerpo { flex:1 1 280px; min-width:0; }
+.fila--inspeccion .acciones-fila { margin-top:0; }
+.item-checklist { padding:16px 0; border:0; border-bottom:1px solid var(--marca-linea); }
+.item-checklist legend .campo__ayuda { font-weight:400; }
+.huella { font-size:12px; overflow-wrap:anywhere; }
+.vista-pedir-inspeccion .pantalla,.vista-mis-inspecciones .pantalla,.vista-admin-reclamos .pantalla { max-width:900px; }
+.vista-pedir-inspeccion .opciones label .fila__cuerpo { flex:1; min-width:0; }
+.vista-pedir-inspeccion summary { cursor:pointer; font-weight:600; }
+.vista-mis-inspecciones .pantalla > .boton { justify-self:start; }
+
+/* Mecánicos de la red (talleres.html) */
+.vista-talleres .pantalla { max-width:900px; }
+.lista-ranking { counter-reset:ranking; }
+.fila--mecanico { flex-wrap:wrap; counter-increment:ranking; }
+.fila--mecanico::before { content:counter(ranking) "."; font-weight:700; min-width:2ch; align-self:flex-start; }
+.fila--mecanico .fila__cuerpo { flex:1 1 260px; min-width:0; }
+.fila--mecanico .fila__acciones { display:flex; align-items:center; gap:12px; }
+.vista-talleres summary { cursor:pointer; font-weight:600; }
+
+/* Alcance de la inspección (pedir-inspeccion.html y el reclamo de verificacion.html) */
+.alcance summary { cursor:pointer; font-weight:600; }
+.alcance__titulo { font-size:1rem; margin:16px 0 8px; }
+.alcance ul { padding-left:20px; list-style:disc; }

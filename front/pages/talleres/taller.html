@@ -4,11 +4,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Mi taller - AutoCar</title>
-  <meta name="description" content="Panel del taller adherido.">
+  <meta name="description" content="Panel del mecánico: perfil del taller y pedidos de inspección.">
   <link rel="stylesheet" href="../../styles/estilos.css">
   <script src="../../js/tema.js"></script><script src="../../js/barra-admin.js" defer></script><link rel="stylesheet" href="../../styles/componentes.css">
   <link rel="stylesheet" href="../../styles/pantallas.css">
   <link rel="stylesheet" href="../../styles/print.css" media="print">
+  <script src="../../js/validacion.js" defer></script>
+  <script src="../../js/dialogos.js" defer></script>
+  <script type="module" src="../../js/paginas/taller.js"></script>
 <link rel="stylesheet" href="../../styles/identidad.css">
 <link rel="stylesheet" href="../../styles/portada.css">
 <link rel="stylesheet" href="../../styles/interiores.css">
@@ -24,70 +27,112 @@
 <li><a class="barra__enlace" href="../operaciones/mensajes.html"><span class="barra__icono"><svg width="22" height="22" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z"></path></svg></span><span>Mensajes</span></a></li>
 <li><a class="barra__enlace" href="../auth/cuenta.html" aria-current="page"><span class="barra__icono"><svg width="22" height="22" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"></circle><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"></path></svg></span><span>Cuenta</span></a></li>
 </ul></nav><header class="encabezado">
-    <h1>Mi taller <span class="encabezado__subtitulo">Taller San Martín · Mercedes</span>
-</h1>
+    <a class="encabezado__volver" href="../auth/cuenta.html" aria-label="Volver">
+      <svg width="22" height="22" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12H4M4 12l7-7M4 12l7 7"></path></svg>
+    </a>
+    <h1>Mi taller <span class="encabezado__subtitulo" id="taller-subtitulo"></span></h1>
   </header>
-
+  <!-- Permiso verificaciones.realizar (rol mecanico). Lo arma js/paginas/taller.js con
+       GET/PUT /api/mecanico/perfil y GET/PATCH /api/mecanico/inspecciones. -->
   <main id="contenido" class="pantalla">
-    <form class="recuadro pila" action="/taller/codigo" method="post">
-      <label class="campo__etiqueta" for="codigo"><strong>Ingresar código de verificación</strong></label>
-      <div class="buscador">
-        <input class="campo__input" id="codigo" name="codigo" required maxlength="9" autocapitalize="characters" placeholder="Ej: K7Q2-9MXA">
-        <button class="boton" type="submit">Validar</button>
-      </div>
-    </form>
-    <section aria-labelledby="asignados-titulo">
-      <h2 id="asignados-titulo" class="titulo-seccion">Vehículos asignados</h2>
-      <nav class="pestanas" aria-label="Estado">
-        <a class="pestanas__pestana" href="taller.html" aria-current="page">Pendientes (2)</a>
-        <a class="pestanas__pestana" href="taller.html?estado=inspeccion">En inspección (1)</a>
-        <a class="pestanas__pestana" href="#aprobaciones">Aprobaciones (12)</a>
-      </nav>
-      <ul class="lista-filas" role="list">
-      <li>
-        <a class="fila" href="taller-verificacion.html">
-          <img class="fila__miniatura foto-ejemplo" src="../../assets/identidad/corolla.jpg" alt="" loading="lazy"><span class="fila__cuerpo">
-            <span class="fila__titulo">Toyota Corolla 2018</span><br>
-            <span class="fila__meta">AB***12 · Solicitada 12/10 · Plan Oro −25 %</span>
-          </span>
-          <span class="etiqueta etiqueta--borde">Pendiente</span>
-        </a>
-      </li>
-      <li>
-        <a class="fila" href="taller-verificacion.html">
-          <img class="fila__miniatura foto-ejemplo" src="../../assets/identidad/gol.jpg" alt="" loading="lazy"><span class="fila__cuerpo">
-            <span class="fila__titulo">VW Gol 2016</span><br>
-            <span class="fila__meta">AD***34 · Solicitada 13/10 · Plan Plata −15 %</span>
-          </span>
-          <span class="etiqueta etiqueta--borde">Pendiente</span>
-        </a>
-      </li>
-      </ul>
+    <p class="recuadro" id="aviso" role="status" hidden></p>
+
+    <section class="recuadro pila" aria-labelledby="perfil-titulo">
+      <h2 id="perfil-titulo" class="titulo-seccion">Perfil del taller</h2>
+      <p class="campo__ayuda" id="perfil-falta" hidden>Completá el perfil para aparecer en la lista de mecánicos y recibir pedidos de inspección.</p>
+      <dl class="datos" id="perfil-datos" hidden></dl>
+      <button class="boton boton--secundario" type="button" id="editar-perfil">Completar perfil</button>
     </section>
-    <section id="aprobaciones" aria-labelledby="aprobaciones-titulo">
-      <h2 id="aprobaciones-titulo" class="titulo-seccion">Últimas aprobaciones</h2>
-      <ul class="lista-filas" role="list">
-      <li>
-        <a class="fila" href="verificacion.html">
-          <img class="fila__miniatura foto-ejemplo" src="../../assets/identidad/onix.jpg" alt="" loading="lazy"><span class="fila__cuerpo">
-            <span class="fila__titulo">Chevrolet Onix 2019</span><br>
-            <span class="fila__meta">86/100 · Muy bueno · 08/10</span>
-          </span>
-          <span class="etiqueta etiqueta--oscura">Aprobado</span>
-        </a>
-      </li>
-      <li>
-        <a class="fila" href="verificacion.html">
-          <img class="fila__miniatura foto-ejemplo" src="../../assets/identidad/cronos.jpg" alt="" loading="lazy"><span class="fila__cuerpo">
-            <span class="fila__titulo">Fiat Cronos 2021</span><br>
-            <span class="fila__meta">Falla crítica en frenos · 05/10</span>
-          </span>
-          <span class="etiqueta ">Fallas críticas</span>
-        </a>
-      </li>
-      </ul>
+
+    <section aria-labelledby="bandeja-titulo">
+      <h2 id="bandeja-titulo" class="titulo-seccion">Inspecciones</h2>
+      <nav class="pestanas" id="pestanas" aria-label="Estado de las inspecciones">
+        <a class="pestanas__pestana" href="taller.html?estado=pedida" data-estado="pedida">Pedidos</a>
+        <a class="pestanas__pestana" href="taller.html?estado=aceptada" data-estado="aceptada">Por revisar</a>
+        <a class="pestanas__pestana" href="taller.html?estado=firmada" data-estado="firmada">Firmadas</a>
+      </nav>
+      <p class="campo__ayuda" id="ayuda-pestana"></p>
+      <ul class="lista-filas" id="bandeja" role="list"></ul>
+      <div class="estado" id="estado"></div>
     </section>
   </main>
 
+  <!-- PUT /api/mecanico/perfil -->
+  <dialog class="hoja" id="dialogo-perfil" aria-labelledby="perfil-dialogo-titulo">
+    <form class="formulario" id="form-perfil" novalidate>
+      <h2 id="perfil-dialogo-titulo">Perfil del taller</h2>
+      <p class="formulario__alerta" role="alert" tabindex="-1"></p>
+      <div class="campo">
+        <label class="campo__etiqueta" for="perfil-nombre">Nombre del taller</label>
+        <input class="campo__input" id="perfil-nombre" name="nombre" required minlength="2" maxlength="80" aria-describedby="perfil-nombre-error">
+        <span class="campo__error" id="perfil-nombre-error"></span>
+      </div>
+      <div class="campo">
+        <label class="campo__etiqueta" for="perfil-direccion">Dirección</label>
+        <input class="campo__input" id="perfil-direccion" name="direccion" required maxlength="120" autocomplete="address-line1" aria-describedby="perfil-direccion-error">
+        <span class="campo__error" id="perfil-direccion-error"></span>
+      </div>
+      <div class="campos-fila">
+        <div class="campo">
+          <label class="campo__etiqueta" for="perfil-localidad">Localidad</label>
+          <input class="campo__input" id="perfil-localidad" name="localidad" required maxlength="100" placeholder="Mercedes" aria-describedby="perfil-localidad-error">
+          <span class="campo__error" id="perfil-localidad-error"></span>
+        </div>
+        <div class="campo">
+          <label class="campo__etiqueta" for="perfil-telefono">Teléfono</label>
+          <input class="campo__input" id="perfil-telefono" name="telefono" type="tel" required maxlength="30" placeholder="(02324) 15-123456" aria-describedby="perfil-telefono-error">
+          <span class="campo__error" id="perfil-telefono-error"></span>
+        </div>
+      </div>
+      <div class="campo">
+        <label class="campo__etiqueta" for="perfil-precio">Precio de la inspección ($)</label>
+        <input class="campo__input" id="perfil-precio" name="precio_inspeccion" type="number" required min="1000" max="10000000" step="1000" inputmode="numeric" aria-describedby="perfil-precio-ayuda perfil-precio-error">
+        <span class="campo__ayuda" id="perfil-precio-ayuda" aria-live="polite"></span>
+        <span class="campo__error" id="perfil-precio-error"></span>
+      </div>
+      <div class="hoja__acciones">
+        <button class="boton boton--secundario" type="button" data-cerrar>Cancelar</button>
+        <button class="boton" type="submit">Guardar</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- PATCH /api/mecanico/inspecciones/{id} con accion=aceptar -->
+  <dialog class="hoja" id="dialogo-aceptar" aria-labelledby="aceptar-titulo">
+    <form class="formulario" id="form-aceptar" novalidate>
+      <h2 id="aceptar-titulo">Aceptar la inspección</h2>
+      <p class="suave" id="aceptar-auto"></p>
+      <p class="formulario__alerta" role="alert" tabindex="-1"></p>
+      <div class="campo">
+        <label class="campo__etiqueta" for="aceptar-fecha">Día y hora del turno</label>
+        <input class="campo__input" id="aceptar-fecha" name="fecha_turno" type="datetime-local" required aria-describedby="aceptar-fecha-ayuda aceptar-fecha-error">
+        <span class="campo__ayuda" id="aceptar-fecha-ayuda">El comprador la ve en su pedido. El vendedor no sabe quién sos hasta la cita.</span>
+        <span class="campo__error" id="aceptar-fecha-error"></span>
+      </div>
+      <div class="hoja__acciones">
+        <button class="boton boton--secundario" type="button" data-cerrar>Cancelar</button>
+        <button class="boton" type="submit">Aceptar</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- PATCH /api/mecanico/inspecciones/{id} con accion=rechazar -->
+  <dialog class="hoja" id="dialogo-rechazar" aria-labelledby="rechazar-titulo">
+    <form class="formulario" id="form-rechazar" novalidate>
+      <h2 id="rechazar-titulo">Rechazar la inspección</h2>
+      <p class="suave" id="rechazar-auto"></p>
+      <p class="formulario__alerta" role="alert" tabindex="-1"></p>
+      <div class="campo">
+        <label class="campo__etiqueta" for="rechazar-motivo">Motivo</label>
+        <textarea class="campo__input" id="rechazar-motivo" name="motivo" rows="3" required maxlength="300" aria-describedby="rechazar-motivo-ayuda rechazar-motivo-error"></textarea>
+        <span class="campo__ayuda" id="rechazar-motivo-ayuda">Lo ve el comprador. Se le devuelve todo lo que pagó.</span>
+        <span class="campo__error" id="rechazar-motivo-error"></span>
+      </div>
+      <div class="hoja__acciones">
+        <button class="boton boton--secundario" type="button" data-cerrar>Cancelar</button>
+        <button class="boton" type="submit">Rechazar</button>
+      </div>
+    </form>
+  </dialog>
 </body>
 </html>

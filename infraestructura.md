@@ -1,13 +1,13 @@
 # Infraestructura — AutoCar
 
-Bernal Justino · Marino Lautaro · Kasparian Federico · Programación en Ambiente Web · UNLu Mercedes · 2026
+Bernal Justino · Marino Lautaro · Kasparian Federico · Ponti Mateo · Programación en Ambiente Web · UNLu Mercedes · 2026
 
 Este documento registra cómo se organizan los entornos de AutoCar, qué decidimos y por qué. También define los flujos de deploy y de pruebas. Abarca los dos repos:
 
 - **Front:** [AutoCar](https://github.com/Fedekasparian/AutoCar). HTML, CSS y JS nativo, sin build, publicado en Vercel.
 - **Back:** [AutoCarBackend](https://github.com/MateoPonti/AutoCarBackend). API JSON en PHP 8.3 + Apache (Docker), publicada en Render, con PostgreSQL en Neon.
 
-**Estado:** producción ya funciona. El entorno **dev** y los flujos de pruebas de las secciones 4 y 5 están **decididos pero falta implementarlos**. La sección 6 lista lo que queda pendiente.
+**Estado:** producción ya funciona. El código del entorno **dev** y de las pruebas de las secciones 4 y 5 ya está en la rama `dev` de los dos repos. Falta configurar Neon, Render y Vercel: la sección 6 tiene el paso a paso.
 
 ---
 
@@ -16,8 +16,8 @@ Este documento registra cómo se organizan los entornos de AutoCar, qué decidim
 | Entorno | Rama | Front | API | Base de datos | Datos |
 |---|---|---|---|---|---|
 | **Local** | `feature/*` | Live Server · `localhost:5500` | `php -S localhost:8000` | Docker `postgres:17` · `autocar-db` · puerto 5433 | `schema.sql` + `seed.sql` |
-| **Dev** (nuevo) | `dev` | Vercel Preview · `autocar-git-dev-….vercel.app` | Render · [autocarbackend-dev.onrender.com](https://autocarbackend-dev.onrender.com) | Neon · branch `dev` | Copia de producción |
-| **Producción** | `main` | Vercel Production · [autocar-zeta.vercel.app](https://autocar-zeta.vercel.app) | Render · [autocarbackend-1.onrender.com](https://autocarbackend-1.onrender.com) | Neon · branch `main` | Reales |
+| **Dev** (nuevo) | `dev` | Vercel Preview · `autocar-git-dev-….vercel.app` | Render · [autocarbackend-dev.onrender.com](https://autocarbackend-dev.onrender.com) | Neon · **proyecto de dev** (aparte) | De prueba |
+| **Producción** | `main` | Vercel Production · [autocar-zeta.vercel.app](https://autocar-zeta.vercel.app) | Render · [autocarbackend-1.onrender.com](https://autocarbackend-1.onrender.com) | Neon · **proyecto de producción** | Reales |
 
 ```mermaid
 flowchart LR
@@ -36,7 +36,7 @@ flowchart LR
         DC["rama dev<br/>deploy automático"]
         DF["Vercel Preview<br/>autocar-git-dev-….vercel.app"]
         DA["Render<br/>autocarbackend-dev"]
-        DD[("Neon<br/>branch dev")]
+        DD[("Neon<br/>proyecto dev")]
         DC -- "push" --> DF
         DF -- "/api/* → dev" --> DA
         DA -- "sslmode=require" --> DD
@@ -47,7 +47,7 @@ flowchart LR
         PC["rama main<br/>deploy automático"]
         PF["Vercel Production<br/>autocar-zeta.vercel.app"]
         PA["Render<br/>autocarbackend-1"]
-        PD[("Neon<br/>branch main")]
+        PD[("Neon<br/>proyecto main")]
         PC -- "merge" --> PF
         PF -- "/api/* → prod" --> PA
         PA -- "sslmode=require" --> PD
@@ -55,7 +55,6 @@ flowchart LR
 
     LC -- "PR → merge a dev" --> DC
     DC -- "PR dev → main<br/>cuando dev está probado" --> PC
-    PD -. "copia (branch / reset from parent)" .-> DD
     DF -. "HOY: vercel.json fijo<br/>dev escribiría en prod" .-> PA
 
     linkStyle 11 stroke:#c23b2a,stroke-width:2px,color:#c23b2a
@@ -67,7 +66,7 @@ Cada carril es una cadena completa con su front, su API y su base. El código su
 
 | Variable | Local | Dev | Producción | Para qué |
 |---|---|---|---|---|
-| `DB_HOST` | `localhost` | `ep-…-dev.….neon.tech` | `ep-….….neon.tech` | Cada branch de Neon tiene su propio host |
+| `DB_HOST` | `localhost` | `ep-…-dev.….neon.tech` | `ep-….….neon.tech` | Cada proyecto de Neon tiene su propio host |
 | `DB_PORT` | `5433` | `5432` | `5432` | 5433 en local para no chocar con un Postgres instalado |
 | `DB_NAME` | `autocar` | igual que producción | el actual | Neon copia la base con el mismo nombre |
 | `DB_USER` / `DB_PASS` | `autocar` / `autocar` | rol propio de dev | rol de producción | Con un rol aparte, una clave filtrada de dev no abre producción |
@@ -99,17 +98,19 @@ Cada carril es una cadena completa con su front, su API y su base. El código su
 
 **Por qué:** el deploy queda atado a la rama, así que mergear es desplegar. Nadie despliega a mano y lo que está en `main` es siempre lo que se probó en `dev`.
 
-### D3. Una base separada por entorno, con branches de Neon
+### D3. Una base separada por entorno: dos proyectos de Neon
+
+> **Cómo quedó en la práctica (08/11):** en vez de una *branch* `dev` dentro del proyecto de producción, se usan **dos proyectos de Neon separados**, uno para producción y otro para dev, cada uno con su host. Funciona igual para este flujo y es todavía más difícil tocar producción por error. Lo que cambia: los datos de dev no son una copia de producción (no hay *Reset from parent*) y cada migración se corre en el SQL Editor de cada proyecto. Lo que sigue sobre branches (D3 original, paso 1 y el paso 6 de "Resincronizar dev") queda como alternativa.
 
 **Decisión:**
-- Dev usa una **branch `dev` de Neon** creada desde `main`, con host y rol propios.
+- Dev usa **su propio proyecto de Neon** (al principio se pensó como una branch `dev` creada desde `main`), con host y rol propios.
 - Local usa el Postgres de Docker del back (`docker compose up -d`).
-- Las migraciones (`database/migracion-*.sql`) se corren **primero en dev** y en producción recién el día del merge.
+- Las migraciones (`database/NNN-*.sql`, numeradas en el orden en que se corren) se corren **primero en dev** y en producción recién el día del merge.
 
 **Por qué:**
 - Una branch de Neon es una copia instantánea de producción, gratis en el plan actual. Se puede volver a copiar con *Reset from parent*, así que dev siempre tiene datos realistas.
 - Las pruebas pueden crear y borrar publicaciones sin ensuciar datos reales.
-- Ejemplo concreto: `migracion-sesion.sql` cambia el modelo de sesión y no puede llegar a producción antes que el código que la usa.
+- Ejemplo concreto: `004-sesion.sql` cambia el modelo de sesión y no puede llegar a producción antes que el código que la usa.
 
 ### D4. La URL del back sale de una variable de entorno de Vercel
 
@@ -285,11 +286,153 @@ flowchart LR
 
 ## 6. Pendientes para implementar
 
-- [ ] Neon: crear la branch `dev` y un rol propio, y correr `migracion-sesion.sql` sobre ella.
-- [x] Render: crear el Web Service `autocarbackend-dev` ([autocarbackend-dev.onrender.com](https://autocarbackend-dev.onrender.com)) con *Branch: dev* y las variables de la sección 1.
-- [ ] Front: agregar `middleware.js` + `package.json`, sacar `rewrites` de `vercel.json` y cargar `BACKEND_URL` en Vercel para Preview y Production (D4).
-- [ ] Render dev: poner en `FRONT_URL` la URL de rama de Vercel (`autocar-git-dev-….vercel.app`).
-- [ ] GitHub: proteger `main` y `dev` en los dos repos (PR obligatorio + checks).
-- [ ] Back: agregar PHPUnit (`require-dev`), las carpetas `tests/Unit` y `tests/Integration`, y el workflow `.github/workflows/ci.yml` con el service `postgres:17`.
-- [ ] Front: agregar `tests/unit` (`node --test`), `tests/e2e` (Playwright) y su workflow.
-- [ ] Cuando se mergee `dev → main` en el back: borrar `JWT_SECRET` y `JWT_TTL` de Render producción y cargar `SESION_TTL`.
+Estado al 6/11/2026. El código de la infraestructura ya está en `dev` en los dos repos: front PR #7 y back PR #1. Lo que falta es configuración en los paneles de Neon, Render, Vercel y GitHub. El paso a paso está en la sección 6.1.
+
+**Hecho**
+
+- [x] Render: crear el Web Service `autocarbackend-dev` ([autocarbackend-dev.onrender.com](https://autocarbackend-dev.onrender.com)) con *Branch: dev*.
+- [x] Front: `middleware.js` + `package.json`, sin `rewrites` en `vercel.json` (D4). Mergeado a `dev`.
+- [x] Back: PHPUnit (`require-dev`), `tests/Unit`, `tests/Integration` y `.github/workflows/ci.yml` con el service `postgres:17`. Mergeado a `dev`.
+- [x] Front: `tests/unit` (`node --test`), `tests/e2e` (Playwright) y los workflows `ci.yml` y `e2e.yml`. Mergeado a `dev`.
+- [x] GitHub: proteger `main` y `dev` en **AutoCar** (PR con 1 aprobación + check `unitarias`, sin force push ni borrado).
+
+**Falta**
+
+- [x] Neon: base de dev (hecho con un proyecto aparte, no con una branch; ver D3).
+- [ ] Render dev: cargar las variables de la base dev y `FRONT_URL` (paso 2). Hoy `/health` da 200 pero `/api/vehiculos` da 500 porque no tiene base.
+- [ ] Vercel: cargar `BACKEND_URL` para Preview y para Production (paso 3). Sin esa variable, `/api` da 503.
+- [ ] Vercel: resolver la *Deployment Protection* de los Preview (paso 4). Hoy piden login de Vercel, y así el E2E y el docente no pueden entrar a dev.
+- [ ] GitHub: proteger `main` y `dev` en **AutoCarBackend** (paso 5). Lo tiene que hacer MateoPonti, que es el admin.
+- [ ] Render producción: borrar `JWT_SECRET` y `JWT_TTL` y cargar `SESION_TTL` (paso 6). La sesión con `$_SESSION` ya está en `main` del back.
+- [ ] Primer release `dev → main` del front, una vez cargado `BACKEND_URL` en Production (paso 7).
+
+### 6.1 Paso a paso
+
+El orden importa: cada paso necesita el anterior.
+
+#### Paso 1 · Neon: base de dev
+
+> Se terminó haciendo con **un proyecto de Neon aparte** para dev (ver D3). Si se rehace, alcanza con crear el proyecto, correr `schema.sql` y cargar sus datos en Render dev; los pasos de abajo son para la alternativa con branch.
+
+1. Entrar a [console.neon.tech](https://console.neon.tech) y abrir el proyecto de AutoCar.
+2. **Branches → New branch.**
+   - *Name:* `dev`.
+   - *Parent:* `main`.
+   - *Include data up to:* **Current point in time**.
+   - Crear la branch. Queda una copia de producción con su propio host (`ep-…`).
+3. **Roles** (con la branch `dev` seleccionada arriba) **→ New role** → nombre `autocar_dev`. Copiar la contraseña que muestra **una sola vez**.
+4. **SQL Editor**, con la branch `dev` seleccionada. Darle permisos al rol nuevo. Si el nombre de la base no es `neondb`, cambiarlo en el `GRANT CONNECT`:
+   ```sql
+   GRANT CONNECT ON DATABASE neondb TO autocar_dev;
+   GRANT USAGE ON SCHEMA public TO autocar_dev;
+   GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO autocar_dev;
+   GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO autocar_dev;
+   ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO autocar_dev;
+   ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT USAGE, SELECT ON SEQUENCES TO autocar_dev;
+   ```
+5. En el mismo SQL Editor, sobre la branch `dev`, correr las migraciones de `AutoCarBackend/database/`. Hay que copiar y pegar cada archivo completo, en este orden. Todas se pueden volver a correr sin romper nada:
+   1. `001-e4.sql`
+   2. `002-nombres.sql`
+   3. `003-chat.sql`
+   4. `004-sesion.sql`
+   5. `005-roles.sql`
+   6. `006-inspecciones.sql`
+   7. `007-demo-inspecciones-solo-dev.sql` (solo en `dev`: mecánicos de ejemplo)
+   8. `008-separar-version.sql`
+   9. `009-solicitud-taller.sql`
+   10. `010-publicar-por-partes.sql`
+
+   El número del archivo es el orden. Las migraciones nuevas siguen con `011-...`.
+6. Verificar en el SQL Editor (`dev`):
+   ```sql
+   SELECT to_regclass('public.sesion'), to_regclass('public.rol'), to_regclass('public.conversacion');
+   SELECT count(*) FROM vehiculo;
+   ```
+   No tiene que aparecer ningún `NULL`, y la cantidad de vehículos tiene que ser la misma que en producción.
+7. Botón **Connect**, con la branch `dev`, el rol `autocar_dev` y **Connection pooling desactivado**. Anotar el host, la base, el usuario y la contraseña para el paso 2. **No pegarlos en el repo, ni en issues, ni en el chat.**
+
+> Las migraciones ya tienen que estar aplicadas en `main` de Neon, porque producción ya corre el back con roles y sesiones. Para verificarlo, correr la consulta del punto 6 sobre `main`. Si alguna da `NULL`, correr la migración que falta también sobre `main`.
+
+#### Paso 2 · Render: back de dev
+
+1. En [dashboard.render.com](https://dashboard.render.com), abrir el servicio **autocarbackend-dev** → **Environment**.
+2. Cargar o reemplazar estas variables:
+
+   | Variable | Valor |
+   |---|---|
+   | `DB_HOST` | host de la branch `dev` (`ep-…`, el del paso 1.7) |
+   | `DB_PORT` | `5432` |
+   | `DB_NAME` | el de la branch `dev` (el mismo nombre que en producción) |
+   | `DB_USER` | `autocar_dev` |
+   | `DB_PASS` | la contraseña del paso 1.3 |
+   | `DB_SSLMODE` | `require` |
+   | `SESION_TTL` | `7200` |
+   | `FRONT_URL` | `https://autocar-git-dev-autocar4.vercel.app` |
+
+   Si el servicio tiene `JWT_SECRET` o `JWT_TTL`, borrarlas.
+3. **Save, rebuild and deploy.** En **Settings**, confirmar que *Branch* sea `dev` y que *Auto-Deploy* esté en *On Commit*.
+4. Cuando termine el deploy, probar:
+   ```bash
+   curl https://autocarbackend-dev.onrender.com/health          # {"estado":"ok"}
+   curl https://autocarbackend-dev.onrender.com/api/vehiculos   # 200 con "items"
+   ```
+   Si sigue dando 500, mirar **Logs**. Lo más común es una clave mal copiada o el host del pooler (`-pooler`) en lugar del directo.
+
+#### Paso 3 · Vercel: `BACKEND_URL` por entorno
+
+Lo tiene que hacer alguien con acceso al team **autocar4**. Otra opción es sumar al resto como miembros: *Team Settings → Members → Invite*.
+
+1. Entrar a [vercel.com/autocar4/autocar](https://vercel.com/autocar4/autocar) → **Settings → Environment Variables → Add New**.
+2. Primera variable:
+   - *Key:* `BACKEND_URL`.
+   - *Value:* `https://autocarbackend-1.onrender.com`.
+   - *Environments:* solo **Production**.
+   - **Save**.
+3. Segunda variable:
+   - *Key:* `BACKEND_URL`.
+   - *Value:* `https://autocarbackend-dev.onrender.com`.
+   - *Environments:* solo **Preview**, todas las ramas. Así los Preview de `feature/*` también usan el back de dev.
+   - **Save**.
+4. Las variables se leen al desplegar. Hay que ir a **Deployments**, buscar el último deploy de la rama `dev` y elegir **⋯ → Redeploy**.
+5. Probar: `https://autocar-git-dev-autocar4.vercel.app/api/vehiculos` tiene que devolver la lista de vehículos y no `sin_backend`. Si los Preview están protegidos, hacé esta prueba logueado en Vercel o después del paso 4.
+
+#### Paso 4 · Vercel: protección de los Preview
+
+Hoy los Preview responden 302 y mandan al login de Vercel. Elegir una de las dos opciones:
+
+- **A. Dev público.** Es lo más simple si el docente tiene que poder entrar. Ir a *Settings → Deployment Protection → Vercel Authentication* → **Disabled**, o *Only Production Deployments* si está disponible. El E2E no necesita nada más.
+- **B. Dev privado con bypass para el E2E.**
+  1. *Settings → Deployment Protection → Protection Bypass for Automation* → **Add Secret**, y copiar el valor.
+  2. En GitHub, ir a **Fedekasparian/AutoCar → Settings → Secrets and variables → Actions → New repository secret**. Nombre: `VERCEL_AUTOMATION_BYPASS_SECRET`, con el valor del punto anterior.
+  3. `playwright.config.js` ya manda ese header cuando existe el secreto.
+
+Para comprobarlo, ir a **Actions → E2E → Run workflow**. Poner `base_url` = `https://autocar-git-dev-autocar4.vercel.app` y destildar *solo_humo*. Tiene que pasar en Chromium, Firefox y WebKit.
+
+#### Paso 5 · GitHub: proteger las ramas del back
+
+Lo tiene que hacer **MateoPonti**, que es el admin de `MateoPonti/AutoCarBackend`.
+
+1. **Settings → Branches → Add classic branch protection rule**, una regla para `main` y otra para `dev`.
+2. Tildar:
+   - **Require a pull request before merging**, con *Required approvals: 1*.
+   - **Require status checks to pass before merging**, buscando y agregando `pruebas` e `imagen`.
+   - Dejar sin tildar *Allow force pushes* y *Allow deletions*.
+3. **Create.** Con `gh` es lo mismo que se hizo en el front: `gh api -X PUT repos/MateoPonti/AutoCarBackend/branches/<rama>/protection --input proteccion.json`. El archivo `proteccion.json` lleva los checks `pruebas` e `imagen` y `required_approving_review_count: 1`.
+
+#### Paso 6 · Render: limpiar producción
+
+1. Servicio **autocarbackend-1** → **Environment**.
+2. Borrar `JWT_SECRET` y `JWT_TTL`.
+3. Agregar `SESION_TTL` = `7200`.
+4. **Save, rebuild and deploy**.
+5. Hacer la prueba de humo: `GET /health`, y entrar y salir con una cuenta real en [autocar-zeta.vercel.app](https://autocar-zeta.vercel.app/front/index.html).
+
+#### Paso 7 · Primer release del front a producción
+
+Recién después del paso 3, porque sin `BACKEND_URL` en Production, producción da 503 en `/api`:
+
+1. Correr el E2E contra dev (paso 4) y probar a mano: login, publicar un vehículo y el chat.
+2. Subir `VERSION` en una rama, abrir el PR `dev → main` y esperar el check `unitarias` y una aprobación.
+3. Mergear y etiquetar la versión: `git tag vX.Y.Z && git push --tags`.
+4. Vercel despliega Production y el workflow E2E corre solo las pruebas `@humo`. Verificar que [autocar-zeta.vercel.app/api/vehiculos](https://autocar-zeta.vercel.app/api/vehiculos) siga respondiendo.
+5. Si algo falla: Vercel → *Deployments* → deploy anterior → **Promote to Production**.

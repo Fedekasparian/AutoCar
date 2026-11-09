@@ -3,12 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Verificación - AutoCar</title>
-  <meta name="description" content="Inspección del vehículo con el checklist.">
+  <title>Inspección - AutoCar</title>
+  <meta name="description" content="Checklist de la inspección y firma del informe.">
   <link rel="stylesheet" href="../../styles/estilos.css">
   <script src="../../js/tema.js"></script><script src="../../js/barra-admin.js" defer></script><link rel="stylesheet" href="../../styles/componentes.css">
   <link rel="stylesheet" href="../../styles/pantallas.css">
   <link rel="stylesheet" href="../../styles/print.css" media="print">
+  <script src="../../js/validacion.js" defer></script>
+  <script src="../../js/dialogos.js" defer></script>
+  <script type="module" src="../../js/paginas/taller-verificacion.js"></script>
 <link rel="stylesheet" href="../../styles/identidad.css">
 <link rel="stylesheet" href="../../styles/portada.css">
 <link rel="stylesheet" href="../../styles/interiores.css">
@@ -24,58 +27,70 @@
 <li><a class="barra__enlace" href="../operaciones/mensajes.html"><span class="barra__icono"><svg width="22" height="22" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z"></path></svg></span><span>Mensajes</span></a></li>
 <li><a class="barra__enlace" href="../auth/cuenta.html" aria-current="page"><span class="barra__icono"><svg width="22" height="22" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"></circle><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"></path></svg></span><span>Cuenta</span></a></li>
 </ul></nav><header class="encabezado">
-    <a class="encabezado__volver" href="taller.html" aria-label="Volver">
+    <a class="encabezado__volver" id="volver" href="taller.html?estado=aceptada" aria-label="Volver a Mi taller">
       <svg width="22" height="22" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12H4M4 12l7-7M4 12l7 7"></path></svg>
     </a>
-    <h1>Verificación K7Q2</h1>
+    <h1 id="titulo">Inspección</h1>
   </header>
-
+  <!-- Permiso verificaciones.realizar. Lo arma js/paginas/taller-verificacion.js con GET /api/inspecciones/{id},
+       PUT /api/mecanico/inspecciones/{id}/informe (borrador) y POST /api/mecanico/inspecciones/{id}/firma. -->
   <main id="contenido" class="pantalla">
-    <div class="fila">
-      <img class="fila__miniatura foto-ejemplo" src="../../assets/identidad/ranger.jpg" alt="" loading="lazy"><span class="fila__cuerpo"><span class="fila__titulo">Ford Ranger 2020</span><br><span class="fila__meta">AE***56 · Plan Bronce −10 %</span></span>
-    </div>
-    <div class="pasos">
-      <p class="pasos__texto"><span>Paso 3 de 8 · Frenos</span><span>3/8</span></p>
-      <progress class="progreso" max="8" value="3"></progress>
-    </div>
-    <form class="formulario" action="/taller/verificacion/12" method="post">
+    <p class="recuadro" id="aviso" role="status" hidden></p>
+    <div class="estado" id="estado"></div>
+
+    <section class="recuadro pila" id="auto" aria-labelledby="auto-titulo" hidden>
+      <h2 id="auto-titulo" class="titulo-seccion">El auto</h2>
+      <dl class="datos" id="auto-datos"></dl>
+    </section>
+
+    <!-- Informe firmado: sólo lectura -->
+    <section class="recuadro pila" id="firmado" aria-labelledby="firmado-titulo" hidden>
+      <h2 id="firmado-titulo" class="titulo-seccion">Informe firmado</h2>
+      <p id="firmado-conclusion"></p>
+      <p id="firmado-resumen"></p>
+      <ul class="lista-filas" id="firmado-items" role="list"></ul>
+      <dl class="datos" id="firmado-datos"></dl>
+      <p class="campo__ayuda">La huella es el SHA-256 del informe: si alguien lo cambiara, no coincidiría.</p>
+    </section>
+
+    <form class="formulario" id="informe" novalidate hidden>
+      <div class="pasos">
+        <p class="pasos__texto"><span>Checklist</span><span id="progreso-texto">0 de 10</span></p>
+        <progress class="progreso" id="progreso" max="10" value="0"></progress>
+      </div>
+      <p class="campo__ayuda">Marcá los 10 ítems, elegí la conclusión y al final tocá <strong>Firmar informe</strong>. Si no terminás, usá Guardar borrador y seguís después. Respondés por lo que se ve sin desarmar el auto; si un ítem no está OK, contá qué encontraste.</p>
+      <div class="pila" id="items"></div>
+
       <fieldset class="pila">
-        <legend class="campo__etiqueta">
-<strong>Pastillas y discos</strong> <span class="etiqueta">Crítico</span>
-</legend>
-        <div class="segmentado">
-<input type="radio" name="pastillas-y-discos" id="pastillas-y-discos-ok" value="ok" checked><label for="pastillas-y-discos-ok">OK</label><input type="radio" name="pastillas-y-discos" id="pastillas-y-discos-observado" value="observado"><label for="pastillas-y-discos-observado">Observado</label><input type="radio" name="pastillas-y-discos" id="pastillas-y-discos-falla" value="falla"><label for="pastillas-y-discos-falla">Falla</label>
-</div>
+        <legend class="campo__etiqueta"><strong>Conclusión</strong></legend>
+        <div class="segmentado" id="conclusion" aria-describedby="conclusion-error"></div>
+        <span class="campo__error" id="conclusion-error"></span>
       </fieldset>
-      <fieldset class="pila">
-        <legend class="campo__etiqueta"><strong>Líquido de frenos</strong></legend>
-        <div class="segmentado">
-<input type="radio" name="líquido-de-frenos" id="líquido-de-frenos-ok" value="ok"><label for="líquido-de-frenos-ok">OK</label><input type="radio" name="líquido-de-frenos" id="líquido-de-frenos-observado" value="observado" checked><label for="líquido-de-frenos-observado">Observado</label><input type="radio" name="líquido-de-frenos" id="líquido-de-frenos-falla" value="falla"><label for="líquido-de-frenos-falla">Falla</label>
-</div>
-        <label class="solo-lector" for="líquido-de-frenos-comentario">Comentario</label>
-        <input class="campo__input" id="líquido-de-frenos-comentario" name="líquido-de-frenos_comentario" value="Nivel bajo, reponer antes de la entrega">
-      </fieldset>
-      <fieldset class="pila">
-        <legend class="campo__etiqueta">
-<strong>Freno de mano</strong> <span class="etiqueta">Crítico</span>
-</legend>
-        <div class="segmentado">
-<input type="radio" name="freno-de-mano" id="freno-de-mano-ok" value="ok"><label for="freno-de-mano-ok">OK</label><input type="radio" name="freno-de-mano" id="freno-de-mano-observado" value="observado"><label for="freno-de-mano-observado">Observado</label><input type="radio" name="freno-de-mano" id="freno-de-mano-falla" value="falla"><label for="freno-de-mano-falla">Falla</label>
-</div>
-      </fieldset>
-      <fieldset class="pila">
-        <legend class="campo__etiqueta"><strong>ABS y testigos</strong></legend>
-        <div class="segmentado">
-<input type="radio" name="abs-y-testigos" id="abs-y-testigos-ok" value="ok"><label for="abs-y-testigos-ok">OK</label><input type="radio" name="abs-y-testigos" id="abs-y-testigos-observado" value="observado"><label for="abs-y-testigos-observado">Observado</label><input type="radio" name="abs-y-testigos" id="abs-y-testigos-falla" value="falla"><label for="abs-y-testigos-falla">Falla</label>
-</div>
-      </fieldset>
-      <p class="campo__ayuda">Puntaje parcial: 82/100 · lo calcula el sistema.</p>
+      <div class="campo">
+        <label class="campo__etiqueta" for="resumen">Resumen para el comprador (opcional)</label>
+        <textarea class="campo__input" id="resumen" name="resumen" rows="4" maxlength="1000" aria-describedby="resumen-error"></textarea>
+        <span class="campo__error" id="resumen-error"></span>
+      </div>
+
+      <p class="formulario__alerta" role="alert" tabindex="-1"></p>
       <div class="pasos__botones">
-        <a class="boton boton--secundario" href="taller-verificacion.html">Anterior</a>
-        <button class="boton" type="submit">Siguiente</button>
+        <button class="boton boton--secundario" type="button" id="guardar">Guardar borrador</button>
+        <button class="boton" type="submit">Firmar informe</button>
       </div>
     </form>
   </main>
 
+  <dialog class="hoja" id="dialogo-firmar" aria-labelledby="firmar-titulo">
+    <div class="pila">
+      <h2 id="firmar-titulo">Firmar el informe</h2>
+      <p id="firmar-texto"></p>
+      <p class="campo__ayuda">Después de firmar el informe queda cerrado y no se puede cambiar. Si se te pasó algo que se veía, el comprador puede reclamar durante 15 días.</p>
+      <p class="formulario__alerta" id="firmar-error" role="alert" tabindex="-1"></p>
+      <div class="hoja__acciones">
+        <button class="boton boton--secundario" type="button" data-cerrar>Volver</button>
+        <button class="boton" type="button" id="confirmar-firma">Firmar</button>
+      </div>
+    </div>
+  </dialog>
 </body>
 </html>

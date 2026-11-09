@@ -8,6 +8,8 @@ function mostrar(usuario) {
     document.getElementById('usuario-email').textContent = usuario.email;
     // El panel lo ven el admin y el moderador (cada sección según sus permisos)
     document.getElementById('enlace-admin').hidden = !sesion.vePanel();
+    // Los mecánicos de la red (rol mecanico) entran a su panel desde acá
+    document.getElementById('enlace-taller').hidden = !sesion.puede('verificaciones.realizar');
     // Los planes no aplican para el admin: tiene siempre el mejor incluido
     const plan = sesion.planIncluido();
     if (plan) {

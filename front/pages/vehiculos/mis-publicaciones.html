@@ -6,6 +6,8 @@
   <title>Mis publicaciones - AutoCar</title>
   <meta name="description" content="Tus vehículos publicados en AutoCar.">
   <link rel="stylesheet" href="../../styles/estilos.css">
+  <script src="../../js/dialogos.js" defer></script>
+  <script type="module" src="../../js/paginas/mis-publicaciones.js"></script>
   <script src="../../js/tema.js"></script><script src="../../js/barra-admin.js" defer></script><link rel="stylesheet" href="../../styles/componentes.css">
   <link rel="stylesheet" href="../../styles/pantallas.css">
   <link rel="stylesheet" href="../../styles/print.css" media="print">
@@ -27,86 +29,39 @@
     <h1>Mis publicaciones</h1>
   </header>
 
-  <!-- Sólo para planes Uso Portal y Ambas. Con otro plan, en lugar de esto va una invitación a ver los planes. -->
+  <!-- GET /api/mis-vehiculos. Las que están sin terminar (publicar por partes) tienen "Continuar".
+       Lo arma js/paginas/mis-publicaciones.js. -->
   <main id="contenido" class="pantalla pantalla--compacta">
 
-    <section class="cupo" aria-labelledby="cupo-titulo">
-      <h2 id="cupo-titulo" class="solo-lector">Cupo del plan</h2>
-      <p class="cupo__texto">
-        <span><strong>3 de 5</strong> anuncios usados</span>
-        <a href="../info/plan.html">Plan Oro</a>
-      </p>
-      <progress class="progreso" max="5" value="3">3 de 5</progress>
-    </section>
+    <p class="recuadro" id="aviso" role="status" hidden></p>
 
     <a class="boton boton--bloque" href="publicar.html">Publicar vehículo</a>
 
     <a class="recuadro fila" href="../operaciones/propuestas.html">
       <span class="fila__cuerpo">
-        <span class="fila__titulo">Propuestas de canje</span><br>
-        <span class="fila__meta">2 recibidas sin responder</span>
+        <span class="fila__titulo">Propuestas de canje</span>
       </span>
-      <span class="etiqueta etiqueta--oscura">2</span>
     </a>
 
-    <nav class="pestanas" aria-label="Estado de las publicaciones">
-      <a class="pestanas__pestana" href="mis-publicaciones.html" aria-current="page">Activas (2)</a>
-      <a class="pestanas__pestana" href="mis-publicaciones.html?estado=pausadas">Pausadas (1)</a>
-      <a class="pestanas__pestana" href="mis-publicaciones.html?estado=cerradas">Cerradas (1)</a>
-    </nav>
-
-    <ul class="lista-filas" role="list">
-      <li class="publicacion">
-        <img class="publicacion__foto foto-ejemplo" src="../../assets/identidad/corolla.jpg" alt="Imagen ilustrativa de Toyota Corolla 2018" loading="lazy"><div class="publicacion__titulo">
-          <a href="vehiculo.html?id=1">Toyota Corolla 2018</a>
-          <span class="etiqueta etiqueta--borde">Sin verificar</span>
-        </div>
-        <div>
-          <p class="fila__meta">$8.500.000 · 85.000 km · Acepta canje</p>
-          <p class="fila__meta">Publicado el 02/10 · 14 consultas</p>
-          <ul class="acciones-fila" role="list">
-            <li><a href="publicar.html?editar=1">Editar</a></li>
-            <li><a href="tasacion.html">Tasación</a></li>
-            <li><a href="../talleres/verificar-vehiculo.html">Verificar</a></li>
-            <li>
-              <form action="/mis-publicaciones/1/pausar" method="post">
-                <button type="submit">Pausar</button>
-              </form>
-            </li>
-          </ul>
-        </div>
-      </li>
-      <li class="publicacion">
-        <img class="publicacion__foto foto-ejemplo" src="../../assets/identidad/onix.jpg" alt="Imagen ilustrativa de Chevrolet Onix 2019" loading="lazy"><div class="publicacion__titulo">
-          <a href="vehiculo.html?id=4">Chevrolet Onix 2019</a>
-          <span class="etiqueta etiqueta--oscura">Verificado</span>
-        </div>
-        <div>
-          <p class="fila__meta">$4.800.000 · 62.300 km · Acepta canje</p>
-          <p class="fila__meta">Publicado el 25/09 · 31 consultas</p>
-          <ul class="acciones-fila" role="list">
-            <li><a href="publicar.html?editar=4">Editar</a></li>
-            <li><a href="tasacion.html">Tasación</a></li>
-            <li><a href="../talleres/verificacion.html">Ver informe</a></li>
-            <li>
-              <form action="/mis-publicaciones/4/pausar" method="post">
-                <button type="submit">Pausar</button>
-              </form>
-            </li>
-          </ul>
-        </div>
-      </li>
-    </ul>
-
-    <!-- Estado vacío (sin publicaciones activas):
-    <div class="vacio">
-      <p><strong>No tenés publicaciones activas.</strong></p>
-      <p>Publicá tu vehículo para venderlo o canjearlo.</p>
-      <a class="boton" href="publicar.html">Publicar vehículo</a>
-    </div>
-    -->
+    <ul class="lista-filas" id="lista" role="list"></ul>
+    <div class="estado" id="estado"></div>
 
   </main>
+
+  <!-- Confirmación antes de eliminar: DELETE /api/mis-vehiculos/{id} (baja lógica) -->
+  <dialog class="hoja" id="confirmar-eliminar" aria-labelledby="eliminar-titulo">
+    <form class="pila" method="dialog">
+      <h2 id="eliminar-titulo">¿Eliminar esta publicación?</h2>
+      <p id="eliminar-vehiculo"></p>
+      <p class="campo__ayuda">Deja de verse en AutoCar y no la vas a poder recuperar.</p>
+      <p class="campo__ayuda" id="eliminar-vendida" hidden>Si ya la vendiste, conviene usar «Marcar vendida» en vez de eliminarla.</p>
+      <p class="formulario__alerta" id="eliminar-error" role="alert" tabindex="-1"></p>
+      <div class="hoja__acciones">
+        <button class="boton boton--secundario" type="button" data-cerrar>Cancelar</button>
+        <button class="boton" type="button" id="eliminar-confirmar">Eliminar</button>
+      </div>
+    </form>
+  </dialog>
 
 </body>
 </html>

@@ -12,6 +12,7 @@
   <script src="../../js/tema.js"></script><script src="../../js/barra-admin.js" defer></script>
   <link rel="stylesheet" href="../../styles/print.css" media="print">
   <script src="../../js/validacion.js" defer></script>
+  <script type="module" src="../../js/paginas/talleres-adherirse.js"></script>
 <link rel="stylesheet" href="../../styles/portada.css">
 </head>
 <body>
@@ -37,62 +38,82 @@
 <img src="../../assets/identidad/mecanico.jpg" width="1536" height="1024" alt="Mecánico inspeccionando un motor, imagen ilustrativa"><ol class="adhesion__pasos">
 <li>Completá los datos del taller y del responsable.</li>
 <li>Revisamos tu solicitud de adhesión.</li>
-<li>Con la cuenta aprobada, podés sumarte a la red.</li>
-</ol>
-<small class="campo__ayuda">Foto ilustrativa generada con IA.</small></section>
+<li>Con la solicitud aprobada, tu taller aparece en el ranking y ya recibís pedidos de inspección.</li>
+</ol></section>
 
-    <form class="formulario" action="/talleres/adherirse" method="post" data-validar novalidate>
+    <!-- POST /api/solicitudes-taller (sin sesión): crea la cuenta del taller, aparte de la personal.
+         Lo arma js/paginas/talleres-adherirse.js. -->
+    <div class="pila" id="estado-solicitud" hidden></div>
+    <form class="formulario" id="form-adhesion" novalidate>
       <h2>Solicitá la adhesión</h2>
 <p class="campo__ayuda">Todos los campos son obligatorios.</p>
 <p class="formulario__alerta" role="alert" tabindex="-1"></p>
       <div class="campo">
-        <label class="campo__etiqueta" for="nombre_taller">Nombre del taller</label>
-        <input class="campo__input" id="nombre_taller" name="nombre_taller" type="text" placeholder="Ej: Taller San Martín" required aria-describedby="nombre_taller-error">
-        <span class="campo__error" id="nombre_taller-error"></span>
+        <label class="campo__etiqueta" for="nombre">Nombre del taller</label>
+        <input class="campo__input" id="nombre" name="nombre" type="text" placeholder="Ej: Taller San Martín" required minlength="2" maxlength="80" aria-describedby="nombre-error">
+        <span class="campo__error" id="nombre-error"></span>
       </div>
       <div class="campo">
         <label class="campo__etiqueta" for="cuit">CUIT</label>
         <input class="campo__input" id="cuit" name="cuit" type="text" placeholder="30-12345678-9" required pattern="[0-9]{2}-?[0-9]{8}-?[0-9]" data-error-formato="Usá el formato 30-12345678-9." aria-describedby="cuit-error">
         <span class="campo__error" id="cuit-error"></span>
       </div>
+      <div class="campos-fila">
       <div class="campo">
         <label class="campo__etiqueta" for="direccion">Dirección</label>
-        <input class="campo__input" id="direccion" name="direccion" type="text" placeholder="Calle, número y localidad" required aria-describedby="direccion-error">
+        <input class="campo__input" id="direccion" name="direccion" type="text" placeholder="Calle y número" required minlength="3" maxlength="120" aria-describedby="direccion-error">
         <span class="campo__error" id="direccion-error"></span>
+      </div>
+      <div class="campo">
+        <label class="campo__etiqueta" for="localidad">Localidad</label>
+        <input class="campo__input" id="localidad" name="localidad" type="text" placeholder="Ej: Mercedes" required minlength="2" maxlength="100" aria-describedby="localidad-error">
+        <span class="campo__error" id="localidad-error"></span>
+      </div>
       </div>
       <div class="campos-fila">
       <div class="campo">
         <label class="campo__etiqueta" for="telefono">Teléfono</label>
-        <input class="campo__input" id="telefono" name="telefono" type="tel" required aria-describedby="telefono-error">
+        <input class="campo__input" id="telefono" name="telefono" type="tel" required minlength="6" maxlength="30" aria-describedby="telefono-error">
         <span class="campo__error" id="telefono-error"></span>
       </div>
       <div class="campo">
         <label class="campo__etiqueta" for="horarios">Horarios</label>
-        <input class="campo__input" id="horarios" name="horarios" type="text" placeholder="Lun a vie 8 a 18" required aria-describedby="horarios-error">
+        <input class="campo__input" id="horarios" name="horarios" type="text" placeholder="Lun a vie 8 a 18" required minlength="3" maxlength="80" aria-describedby="horarios-error">
         <span class="campo__error" id="horarios-error"></span>
       </div>
       </div>
       <div class="campo">
-        <label class="campo__etiqueta" for="responsable">Nombre del responsable</label>
-        <input class="campo__input" id="responsable" name="responsable" type="text" required aria-describedby="responsable-error">
-        <span class="campo__error" id="responsable-error"></span>
+        <label class="campo__etiqueta" for="precio_inspeccion">Precio de la inspección ($)</label>
+        <input class="campo__input" id="precio_inspeccion" name="precio_inspeccion" type="number" min="1000" max="10000000" step="1000" inputmode="numeric" placeholder="130000" required aria-describedby="precio_inspeccion-ayuda precio_inspeccion-error">
+        <span class="campo__ayuda" id="precio_inspeccion-ayuda">Lo que paga el comprador. AutoCar se queda con el 23 % y el resto es para el taller.</span>
+        <span class="campo__error" id="precio_inspeccion-error"></span>
       </div>
-      <div class="campo">
-        <label class="campo__etiqueta" for="email">Email</label>
-        <input class="campo__input" id="email" name="email" type="email" required aria-describedby="email-error">
-        <span class="campo__error" id="email-error"></span>
-      </div>
-      <div class="campo">
-        <label class="campo__etiqueta" for="password">Contraseña</label>
-        <input class="campo__input" id="password" name="password" type="password" required minlength="8" aria-describedby="password-error">
-        <span class="campo__error" id="password-error"></span>
-      </div>
+      <fieldset class="pila" id="datos-cuenta">
+        <legend class="campo__etiqueta">La cuenta del taller</legend>
+        <p class="campo__ayuda">Es una cuenta aparte de la que usás para comprar o vender: usá un email que no tenga cuenta en AutoCar (por ejemplo, el del taller). Con este email y esta contraseña vas a ingresar a tu panel de mecánico cuando aprobemos la solicitud. Si te la rechazamos, volvé a mandarla con el mismo email y la misma contraseña.</p>
+        <div class="campo">
+          <label class="campo__etiqueta" for="responsable">Nombre del responsable</label>
+          <input class="campo__input" id="responsable" name="responsable" type="text" required minlength="2" maxlength="80" aria-describedby="responsable-error">
+          <span class="campo__error" id="responsable-error"></span>
+        </div>
+        <div class="campo">
+          <label class="campo__etiqueta" for="email">Email</label>
+          <input class="campo__input" id="email" name="email" type="email" required autocomplete="email" aria-describedby="email-error">
+          <span class="campo__error" id="email-error"></span>
+        </div>
+        <div class="campo">
+          <label class="campo__etiqueta" for="password">Contraseña</label>
+          <input class="campo__input" id="password" name="password" type="password" required minlength="8" maxlength="72" autocomplete="new-password" aria-describedby="password-ayuda password-error">
+          <span class="campo__ayuda" id="password-ayuda">Al menos 8 caracteres, con una letra y un número.</span>
+          <span class="campo__error" id="password-error"></span>
+        </div>
+      </fieldset>
       <div class="campo">
         <label class="casilla"><input type="checkbox" id="condiciones" name="condiciones" required aria-describedby="condiciones-error"><span>Acepto las condiciones de adhesión: descuentos por plan y uso del checklist de AutoCar.</span></label>
         <span class="campo__error" id="condiciones-error"></span>
       </div>
       <button class="boton" type="submit">Enviar solicitud</button>
-      <p class="campo__ayuda">La cuenta queda pendiente hasta que la apruebe un administrador.</p>
+      <p class="campo__ayuda">La solicitud queda pendiente hasta que la apruebe un administrador. Mientras tanto no podés ingresar con la cuenta del taller y tu taller no aparece en el ranking.</p>
     </form>
   </main><footer class="pie-marca"><div class="contenedor">
     <div class="pie-marca__fila">
