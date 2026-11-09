@@ -18,7 +18,7 @@ El plan completo del enfoque del mecánico está en [`modelo-de-negocio/PLAN.md`
 - [ ] **Metabuscador** (`meta-busqueda.html`, `meta-busqueda-nueva.html`, `meta-busqueda-resultados.html`): tienen datos de ejemplo y no llaman a la API, aunque el back está completo (`/api/meta-busquedas`). Falta: listar mis búsquedas, crear una con marcas y modelos reales, resultados con el precio de referencia y el botón **"Mandale un mecánico"** en cada auto (que ya existe en `vehiculo.html`). El botón tiene que llevar a `pedir-inspeccion.html?url=<link del aviso>`: así el link queda fijo y el comprador no lo puede cambiar.
 - [ ] **Chat** (`mensajes.html`, `conversacion.html`): `js/paginas/mensajes.js` usa conversaciones de ejemplo. El back ya tiene las 4 rutas: bandeja (`GET /api/conversaciones`), mensajes con `?desde=ultimo_id`, enviar (`POST`) y el botón "Contactar al vendedor" (`POST /api/vehiculos/{id}/conversacion`).
 - [ ] **Planes** (`planes.html`, `plan.html`): maqueta, depende de las suscripciones (abajo).
-- [ ] **Formularios con `action` a rutas que no existen** (`cuenta.html` → `/cuenta`, `contacto.html` → `/contacto`): si se envían dan 404 de Vercel. Conectarlos o avisar "próximamente".
+- [x] ~~**Formularios con `action` a rutas que no existen**~~: ahora llevan `data-proximamente` y `js/proximamente.js` avisa "todavía no está disponible" sin enviar nada (cuenta, contacto, plan, reportar, meta-búsqueda nueva, canje, propuestas, favoritos y verificar-vehículo). Al conectar una pantalla a la API, se le saca el atributo y el script. El chat se conecta aparte.
 
 ## Suscripciones y pagos (no hay nada hecho)
 

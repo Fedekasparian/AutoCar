@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="../../styles/pantallas.css">
   <link rel="stylesheet" href="../../styles/print.css" media="print">
   <script src="../../js/validacion.js" defer></script>
+  <script src="../../js/proximamente.js" defer></script>
 <link rel="stylesheet" href="../../styles/identidad.css">
 <link rel="stylesheet" href="../../styles/portada.css">
 <link rel="stylesheet" href="../../styles/interiores.css">
@@ -32,7 +33,7 @@
   </header>
 
   <main id="contenido" class="pantalla pantalla--compacta">
-    <form class="formulario" action="/meta-busqueda" method="post" data-validar novalidate>
+    <form class="formulario" data-proximamente method="post" data-validar novalidate>
       <p class="formulario__alerta" role="alert" tabindex="-1"></p>
       <!-- Texto libre: el back lo manda al LLM y devuelve los criterios para precargar el formulario.
            El usuario siempre revisa antes de guardar. -->
@@ -40,7 +41,7 @@
         <label class="campo__etiqueta" for="texto"><strong>Describí el auto que buscás</strong></label>
         <textarea class="campo__input" id="texto" name="texto" maxlength="300">Busco un Corolla automático, del 2015 en adelante, que no pase los 9 millones.</textarea>
       </div>
-      <button class="boton boton--secundario" type="submit" formaction="/meta-busqueda/interpretar" formnovalidate>Completar con IA</button>
+      <button class="boton boton--secundario" type="submit" formnovalidate>Completar con IA</button>
       <p class="campo__ayuda">La IA completa los campos. Revisalos antes de guardar.</p>
       <hr>
       <div class="campo">

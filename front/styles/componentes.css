@@ -646,3 +646,9 @@ textarea.campo__input{
         grid-template-columns: repeat(4, minmax(0, 1fr));
     }
 }
+
+/* Aviso que no es un error (por ejemplo, "todavía no está disponible" de js/proximamente.js) */
+.formulario__alerta--info{
+    border-color: var(--color-linea);
+    color: var(--color-texto);
+}
