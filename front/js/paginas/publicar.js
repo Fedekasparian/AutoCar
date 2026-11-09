@@ -1,7 +1,8 @@
 // Publicar vehículo por partes, en 6 pasos. Con el paso 1 (marca, modelo y año) ya se crea la publicación
-// (POST /api/mis-vehiculos) y cada "Guardar y seguir" guarda el paso en el que está (PUT, o POST .../fotos).
-// El vendedor puede salir cuando quiera y seguir desde Mis publicaciones (publicar.html?id=N).
+// (POST /api/mis-vehiculos) y "Siguiente" guarda el paso en el que está (PUT, o POST .../fotos) sólo si cambió algo.
+// El vendedor puede salir cuando quiera ("Terminar después") y seguir desde Mis publicaciones (publicar.html?id=N).
 // La publicación queda pendiente y el moderador recién la puede aprobar cuando está completa (vehiculo.faltan vacío).
+// En el último paso, si está completa, "Enviar a revisión" cierra el formulario y le confirma que quedó en revisión.
 import * as api from '../api/publicaciones.js';
 import { API_URL } from '../api/config.js';
 import * as formato from '../servicios/formato.js';
@@ -42,6 +43,7 @@ const MAX_FOTOS = Number(fotos.dataset.max);
 
 let actual = 0;
 let vehiculo = null; // lo que devolvió la API la última vez (null hasta que se guarda el paso 1)
+const guardado = []; // lo último que se guardó de cada paso, para no volver a guardar si no cambió nada
 
 const urlFoto = (rutaFoto) => API_URL + rutaFoto; // en local la API está en otro puerto
 const idDeFoto = (rutaFoto) => rutaFoto.split('/').pop();
@@ -63,11 +65,19 @@ function mostrarPaso(indice) {
     siguiente.hidden = indice === ultimo;
     guardarSalir.hidden = indice === ultimo;
     terminar.hidden = indice !== ultimo;
+    terminar.textContent = textoDeTerminar();
     document.getElementById('pasos-texto').textContent = `Paso ${indice + 1} de ${pasos.length} · ${pasos[indice].dataset.paso}`;
     document.getElementById('pasos-numero').textContent = `${indice + 1}/${pasos.length}`;
     document.getElementById('pasos-progreso').value = indice + 1;
     if (indice === PASO_REVISION) completarResumen();
     window.scrollTo(0, 0);
+}
+
+// Completa y pendiente: la manda a revisión. Ya publicada sin cambios: "Listo". Si no, la sigue después.
+const paraEnviar = () => vehiculo?.completa && vehiculo.estado === 'pendiente';
+function textoDeTerminar() {
+    if (paraEnviar()) return 'Enviar a revisión';
+    return vehiculo?.estado === 'disponible' ? 'Listo' : 'Terminar después';
 }
 
 function controlesDe(paso) {
@@ -103,7 +113,7 @@ async function crear(datos) {
     const respuesta = await api.crear(formData);
     // La URL pasa a tener el id: si recarga o vuelve, sigue con la misma publicación
     window.history.replaceState(null, '', `?id=${respuesta.vehiculo.id}`);
-    avisar('Listo, ya quedó guardada. Podés seguir ahora o tocar "Guardar y salir" y terminarla después desde Mis publicaciones.');
+    avisar('Listo, ya quedó guardada. Podés seguir ahora o tocar "Terminar después" y seguirla desde Mis publicaciones.');
     return respuesta.vehiculo;
 }
 
@@ -117,20 +127,34 @@ async function subirFotos() {
     return respuesta.vehiculo;
 }
 
+// Anota lo que tiene cada paso ahora como "lo último guardado"
+function recordarGuardado(indice) {
+    guardado[indice] = JSON.stringify(datosDelPaso(indice));
+}
+
+function cambioElPaso(indice) {
+    return JSON.stringify(datosDelPaso(indice)) !== guardado[indice];
+}
+
+// Guarda el paso actual sólo si hay algo nuevo: si no tocó nada, no le pega a la API
 async function guardarPaso() {
     if (actual === PASO_REVISION) return;
     if (actual === PASO_FOTOS) {
+        if (!fotos.files.length) return;
         vehiculo = await subirFotos();
     } else if (!vehiculo) {
         vehiculo = await crear(datosDelPaso(actual));
-    } else {
+    } else if (cambioElPaso(actual)) {
         vehiculo = (await api.actualizar(vehiculo.id, datosDelPaso(actual))).vehiculo;
+    } else {
+        return;
     }
+    recordarGuardado(actual);
     if (vehiculo.fotos) mostrarFotosActuales(vehiculo.fotos);
     mostrarFaltan();
 }
 
-// "Guardar y seguir" es el submit: valida el paso, lo guarda y pasa al siguiente.
+// "Siguiente" es el submit: valida el paso, lo guarda si cambió y pasa al siguiente.
 formularios.alEnviar(form, async () => {
     if (!window.Validacion.validar(controlesDe(pasos[actual]), form)) return;
     await guardarPaso();
@@ -151,6 +175,21 @@ guardarSalir.addEventListener('click', async () => {
 });
 
 anterior.addEventListener('click', () => mostrarPaso(actual - 1));
+
+// Último paso: si está completa la "envía" (ya quedó pendiente para el moderador) y se lo confirma;
+// si no, vuelve a Mis publicaciones.
+terminar.addEventListener('click', () => {
+    if (!paraEnviar()) {
+        window.location.assign(ruta('mis-publicaciones.html'));
+        return;
+    }
+    [form, aviso, faltanTexto, document.getElementById('intro'), document.getElementById('pasos')]
+        .forEach((elemento) => { elemento.hidden = true; });
+    const enviada = document.getElementById('enviada');
+    enviada.hidden = false;
+    enviada.focus();
+    window.scrollTo(0, 0);
+});
 
 // ---------- Modelo: sólo los de la marca elegida ----------
 
@@ -273,6 +312,9 @@ function cargarEnElFormulario(v) {
     if (v.localidad) form.elements.localidad.value = v.localidad;
     mostrarBusca();
     mostrarFotosActuales(v.fotos || []);
+    CAMPOS_DE_PASO.forEach((_, i) => recordarGuardado(i));
+    // Si a un paso le falta algo, se guarda igual (ej.: la localidad viene escrita de entrada pero no está guardada)
+    v.faltan.forEach((cosa) => { guardado[PASO_DE[cosa]] = null; });
 }
 
 // Arranca en el primer paso donde falta algo (si está completa, en el 1)
@@ -307,6 +349,9 @@ async function iniciar() {
         form.hidden = true;
         avisar('Esta publicación ya está vendida: no se puede editar.');
         return;
+    }
+    if (vehiculo.estado === 'pendiente' && vehiculo.completa) {
+        avisar('Esta publicación ya está en revisión. Podés corregirla: sigue en revisión.');
     }
     if (vehiculo.estado === 'disponible') {
         avisar('Esta publicación ya está publicada. Si guardás un cambio, vuelve a revisión y deja de verse hasta que la aprueben.');
