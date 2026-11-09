@@ -116,7 +116,8 @@ test('recorrido de la demo: pedir, aceptar, firmar, reclamar y resolver', async 
         await mecanico.click('#informe button[type="submit"]');
         await mecanico.click('#confirmar-firma');
         await expect(mecanico.locator('#firmado')).toBeVisible();
-        await expect(mecanico.locator('#firmado-datos')).toContainText(/[0-9a-f]{64}/);
+        await expect(mecanico.locator('#firmado-datos')).toContainText(MECANICO.taller);
+        await expect(mecanico.locator('#firmado-datos')).not.toContainText(/[0-9a-f]{64}/); // la huella no se muestra
         await expect(mecanico.locator('#informe')).toBeHidden(); // firmado ya no se edita
     });
 
@@ -124,7 +125,8 @@ test('recorrido de la demo: pedir, aceptar, firmar, reclamar y resolver', async 
         await comprador.goto(pagina(`pages/talleres/verificacion.html?id=${id}`));
         await expect(comprador.locator('#informe')).toBeVisible();
         await expect(comprador.locator('#informe-conclusion')).toContainText('reparos');
-        await expect(comprador.locator('#informe-firma')).toContainText(/[0-9a-f]{64}/);
+        await expect(comprador.locator('#informe-firma')).toContainText(MECANICO.taller);
+        await expect(comprador.locator('#informe-firma')).not.toContainText(/[0-9a-f]{64}/);
         await expect(comprador.locator('#tramites')).toBeVisible();
 
         await expect(comprador.locator('#form-reclamo')).toBeVisible();

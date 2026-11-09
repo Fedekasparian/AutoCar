@@ -24,12 +24,12 @@ export function listaItems(inspeccion) {
     }));
 }
 
-// Quién firmó, cuándo y la huella.
+// Quién firmó y cuándo. La huella (SHA-256) la guarda el back para controlar que el informe no cambió,
+// pero no se muestra en ninguna pantalla.
 export const datosFirma = (i) => filasDatos([
     ['Firmado por', i.firmado_por],
     ['Taller', i.taller_firma],
     ['Fecha', formato.fechaHora(i.firmada_at)],
-    ['Huella', el('code', { class: 'huella' }, i.huella)],
 ]);
 
 // Para el comprador: qué pasa con la inspección y qué sigue, en una línea.
