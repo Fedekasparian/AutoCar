@@ -12,7 +12,7 @@
 <link rel="stylesheet" href="../../styles/identidad.css">
 <link rel="stylesheet" href="../../styles/portada.css">
 <link rel="stylesheet" href="../../styles/interiores.css">
-<script src="../../js/paginas/mensajes.js" defer></script>
+<script type="module" src="../../js/paginas/mensajes.js"></script>
 </head>
 <body class="con-barra vista-mensajes">
 
@@ -31,37 +31,27 @@
   <aside class="inbox__lista" aria-label="Conversaciones">
     <h2>Conversaciones</h2>
     <label class="inbox__buscar"><span class="solo-lector">Buscar conversación</span><input class="campo__input" type="search" id="buscar-conversacion" placeholder="Nombre o vehículo"></label>
-    <ul class="inbox__conversaciones">
-      <li><a class="inbox__item" data-chat="onix" href="conversacion.html?chat=onix" aria-current="page"><img src="../../assets/identidad/onix.jpg" alt=""><div>
-<strong>Martín G.</strong><small>Chevrolet Onix 2019 · 10:31</small><p>¿Lo puedo ver el sábado a la mañana?</p>
-</div></a></li>
-      <li><a class="inbox__item" data-chat="cronos" href="conversacion.html?chat=cronos"><img src="../../assets/identidad/cronos.jpg" alt=""><div>
-<strong>Laura P.</strong><small>Fiat Cronos 2021 · Ayer</small><p>Te mandé la contraoferta.</p>
-</div></a></li>
-      <li><a class="inbox__item" data-chat="corolla" href="conversacion.html?chat=corolla"><img src="../../assets/identidad/corolla.jpg" alt=""><div>
-<strong>Diego R.</strong><small>Toyota Corolla 2018 · Lunes</small><p>Gracias, lo pienso y te aviso.</p>
-</div></a></li>
-    </ul>
-<p class="inbox__vacio" id="sin-conversaciones" role="status" hidden>No hay conversaciones con ese nombre o vehículo.</p>
+    <div id="estado-bandeja"></div>
+    <ul class="inbox__conversaciones" id="conversaciones"></ul>
+    <p class="inbox__vacio" id="sin-conversaciones" role="status" hidden>No hay conversaciones con ese nombre o vehículo.</p>
   </aside>
   <section class="conversacion-panel" aria-labelledby="chat-persona">
-    <header class="conversacion-panel__cabecera"><img id="chat-foto" src="../../assets/identidad/onix.jpg" alt="Chevrolet Onix de ejemplo"><div>
-<h2 id="chat-persona">Martín G.</h2>
-<a id="chat-vehiculo" href="../vehiculos/vehiculo.html?id=4">Chevrolet Onix 2019 · $4.800.000</a>
-</div></header>
-    <ol class="chat" id="chat-historial" aria-label="Mensajes de la conversación">
-      <li class="chat__fecha">Hoy</li>
-      <li class="chat__mensaje">Hola, ¿sigue disponible?<span class="chat__hora">10:12</span>
-</li>
-      <li class="chat__mensaje chat__mensaje--mio">Sí, sigue. ¿Querés verlo?<span class="chat__hora">10:20</span>
-</li>
-      <li class="chat__mensaje">¿Lo puedo ver el sábado a la mañana?<span class="chat__hora">10:31</span>
-</li>
-    </ol>
-    <form class="chat__enviar" action="/mensajes/3" method="post">
-<label class="solo-lector" for="texto">Mensaje</label><input class="campo__input" id="texto" name="texto" required maxlength="1000" placeholder="Escribí un mensaje"><button class="boton" type="submit">Enviar</button>
-</form>
-    <p class="acciones-fila"><a href="proponer-canje.html">Proponer canje</a><a href="../info/reportar.html">Reportar usuario</a></p>
+    <div id="chat-estado"></div>
+    <div class="conversacion-panel__cuerpo" id="chat" hidden>
+      <header class="conversacion-panel__cabecera"><div id="chat-foto"></div><div>
+        <h2 id="chat-persona"></h2>
+        <p class="conversacion-panel__rol" id="chat-rol"></p>
+        <a id="chat-vehiculo" href="../vehiculos/buscar.html"></a>
+      </div></header>
+      <ol class="chat" id="chat-historial" aria-label="Mensajes de la conversación" aria-live="polite"></ol>
+      <p class="chat__vacio" id="chat-sin-mensajes" hidden>Todavía no hay mensajes. Escribí el primero.</p>
+      <form class="chat__enviar" id="chat-form" novalidate>
+        <label class="solo-lector" for="texto">Mensaje</label><input class="campo__input" id="texto" name="texto" required maxlength="1000" autocomplete="off" placeholder="Escribí un mensaje" aria-describedby="texto-error"><button class="boton" type="submit">Enviar</button>
+        <span class="campo__error" id="texto-error" role="alert"></span>
+      </form>
+      <p class="chat__cerrada" id="chat-cerrada" role="status" hidden>La publicación se eliminó: la conversación queda para leer, pero ya no se pueden mandar mensajes.</p>
+      <p class="acciones-fila"><a href="proponer-canje.html">Proponer canje</a><a href="../info/reportar.html">Reportar usuario</a></p>
+    </div>
   </section>
 </main>
 </body>
