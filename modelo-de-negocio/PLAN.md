@@ -113,7 +113,7 @@ La base ya está en `dev`: B1, B10 y las pruebas unitarias de B9 (ver la secció
 | ID | Tarea | Prioridad |
 |---|---|---|
 | N1 | PPT v4 y README con el eje nuevo | ✅ Hecho (esta rama) |
-| N2 | 🟡 Guion y planilla listos (`entrevista-talleres.md`); faltan las entrevistas. **Hablar con 2 o 3 talleres reales de Mercedes o Luján:** cuánto cobrarían una inspección, si aceptan dejar ~23 % y si aceptan responder con la compensación. Anotar las respuestas en el README | P1 |
+| N2 | ⚪ **Opcional (validación para un caso real).** Es un proyecto: los números de D1 y el alcance son supuestos y la demo usa datos de prueba. El guion (`entrevista-talleres.md`) queda como **cómo los validaríamos** con 2 o 3 talleres reales (precio, ~23 % para AutoCar, compensación) y sirve para responder en la defensa de dónde salen los números | P3 |
 | N3 | ✅ Escribir el **alcance de la inspección** ("qué se considera que se veía") para mostrarlo antes de pagar. Base: la sección 7 | P1 |
 | N4 | 🟡 Guion listo (`guion-demo.md`); falta ensayar. Ensayar la demo de la sección 3 con los datos de demo | P1 |
 
@@ -169,7 +169,7 @@ Se muestra en `pedir-inspeccion.html` antes de confirmar (con una casilla obliga
 - **No cubre:** lo que sólo se ve desarmando (interior del motor o de la caja); fallas intermitentes que no aparecen el día de la revisión; lo que se rompa o se desgaste después; los papeles (deudas, multas, prendas, inhibiciones: se le dice al comprador qué trámites pedir); si el precio del aviso es justo.
 - **El reclamo procede** si el problema ya estaba el día de la revisión y se podía ver con el checklist. 15 días desde la firma, un reclamo por inspección, devolución + compensación de hasta 3 veces el precio.
 
-Ajustarlo con lo que digan los talleres en N2.
+Es un supuesto; en un caso real se validaría con talleres (N2, opcional).
 
 ## 8. Calendario
 
@@ -178,7 +178,7 @@ Ajustarlo con lo que digan los talleres en N2.
 | **Lun 09/11** | Presentar la v4 y este plan. Repartir las tareas |
 | **Mié 11/11** (entrega semanal) | B1–B7 en `dev`, y F2 y F4 funcionando aunque sean básicas: se puede pedir, aceptar y firmar una inspección. M1 hecho |
 | **Mié 18/11** | B8, F3, F5 (reclamo y ranking), F1 (botón en el detalle y en el metabuscador), M2 y F7 (metabuscador con ML + Kavak + AutoCar) |
-| **Mié 25/11** | B9, B10 y F9 (pruebas y datos de demo), F6, N2–N4, documentación (README, apuntes, seguridad por capa). **`dev` → `main`** y tag `entrega-final` |
+| **Mié 25/11** | B9, B10 y F9 (pruebas y datos de demo), F6, N3–N4, documentación (README, apuntes, seguridad por capa). **`dev` → `main`** y tag `entrega-final` |
 | **Lun 30/11** | Defensa. Despertar Render antes de empezar |
 
 ## 9. Reparto (propuesta para charlar el lunes)
@@ -191,13 +191,13 @@ Cada uno tiene que poder explicar todo en la defensa, pero conviene que cada par
 | Metabuscador con todas las fuentes (M1–M5) | Taro + Mateo | Taro hizo el metabuscador y Mateo los recolectores |
 | Front de inspecciones (F1–F5, F8) | Fede + Justi | Fede ya conectó las pantallas de admin |
 | Front del metabuscador (F6, F7) | Taro | Va junto con M2 |
-| Talleres reales y alcance (N2, N3) | Todos (uno por taller) | Es lo que más pesa en la defensa del modelo |
+| Alcance (N3) y ensayo de la demo (N4) | Todos | Es lo que más pesa en la defensa del modelo. Las entrevistas a talleres (N2) son opcionales |
 
 ## 10. Decisiones (cerradas el 08/11)
 
 | # | Decisión | Qué se decidió |
 |---|---|---|
-| D1 | Precio de la inspección y reparto | $ 130.000 (77 % para el mecánico, 23 % para AutoCar). Ajustarlo con N2 |
+| D1 | Precio de la inspección y reparto | $ 130.000 (77 % para el mecánico, 23 % para AutoCar). Supuesto; se validaría con talleres reales (N2, opcional) |
 | D2 | Plazo para reclamar | 15 días |
 | D3 | Tope de la compensación | 3 veces el precio de la inspección |
 | D4 | ¿El metabuscador sigue en **Neon** o todo lo del scraper pasa a **Firestore**? | **Todo a Firestore (NoSQL)**, como sugirió el profe: comparador y metabuscador. Hecho el 08/11 (PR #3 del back). Neon queda para lo nuestro: usuarios, vehículos, chat, sesiones e inspecciones. Falta crear el proyecto de Firebase |

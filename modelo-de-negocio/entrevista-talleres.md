@@ -1,6 +1,8 @@
 # N2 · Entrevista a talleres de Mercedes y Luján
 
-Objetivo: validar con 2 o 3 talleres reales los números y las reglas del modelo v4 antes de la defensa del 30/11. Lo que contesten va a la tabla del final y, resumido, al README del modelo de negocio.
+> **Opcional.** AutoCar es un proyecto de la facultad: los números (D1) y el alcance son supuestos y la demo usa datos de prueba. Este guion muestra **cómo los validaríamos en un caso real**. Si el profe pregunta de dónde salen los $ 130.000 o el 77/23, la respuesta es: son supuestos, y así los validaríamos.
+
+Objetivo: validar con 2 o 3 talleres reales los números y las reglas del modelo v4. Lo que contesten iría a la tabla del final y, resumido, al README del modelo de negocio.
 
 **Cómo hacerla**
 
