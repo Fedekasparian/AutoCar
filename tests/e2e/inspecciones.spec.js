@@ -51,7 +51,7 @@ function turnoDeManana() {
 }
 
 test('recorrido de la demo: pedir, aceptar, firmar, reclamar y resolver', async ({ browser }) => {
-    test.setTimeout(240_000); // tres sesiones y, en dev, Render puede estar dormido
+    test.setTimeout(360_000); // tres sesiones (en WebKit local tarda ~3 min) y, en dev, Render puede estar dormido
     const titulo = `E2E Volkswagen Gol ${Date.now()}`;
     const comprador = await (await browser.newContext()).newPage();
     const mecanico = await (await browser.newContext()).newPage();
