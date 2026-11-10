@@ -1,5 +1,7 @@
 // Mi cuenta: datos del usuario (GET /api/me) y salir.
 import * as auth from '../api/auth.js';
+import * as favoritos from '../api/favoritos.js';
+import * as publicaciones from '../api/publicaciones.js';
 import * as sesion from '../servicios/sesion.js';
 import { ruta } from '../servicios/rutas.js';
 
@@ -20,6 +22,21 @@ function mostrar(usuario) {
     if (nombre) nombre.value = usuario.nombre;
 }
 
+// Cantidades reales de favoritos y publicaciones; si no responde, queda el texto genérico
+async function contar() {
+    const plural = (n, uno, varios) => `${n} ${n === 1 ? uno : varios}`;
+    try {
+        const { items } = await favoritos.listar();
+        document.getElementById('cuenta-favoritos').textContent = plural(items.length, 'vehículo guardado', 'vehículos guardados');
+    } catch { /* queda el texto genérico */ }
+    try {
+        const { items } = await publicaciones.listar();
+        const activas = items.filter((v) => v.estado === 'disponible').length;
+        document.getElementById('cuenta-publicaciones').textContent =
+            `${plural(items.length, 'publicación', 'publicaciones')} · ${plural(activas, 'activa', 'activas')}`;
+    } catch { /* queda el texto genérico */ }
+}
+
 // La cookie la borra el back; si no responde, igual se sale en este navegador (la cookie vence sola).
 document.getElementById('salir').addEventListener('click', async () => {
     try {
@@ -32,6 +49,7 @@ document.getElementById('salir').addEventListener('click', async () => {
 });
 
 if (sesion.requerirLogin()) {
+    contar();
     // Primero lo guardado (se ve al instante) y después lo actualizado del servidor, por si cambió el rol.
     mostrar(sesion.usuario());
     auth.me()
