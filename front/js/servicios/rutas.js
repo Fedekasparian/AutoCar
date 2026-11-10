@@ -11,7 +11,6 @@ const PAGINAS = {
     'admin-reclamos.html': 'pages/admin/admin-reclamos.html',
     'admin-talleres.html': 'pages/admin/admin-talleres.html',
     'admin-usuarios.html': 'pages/admin/admin-usuarios.html',
-    'admin-vehiculo.html': 'pages/admin/admin-vehiculo.html',
     'admin-vehiculos.html': 'pages/admin/admin-vehiculos.html',
     'admin.html': 'pages/admin/admin.html',
     'buscar.html': 'pages/vehiculos/buscar.html',

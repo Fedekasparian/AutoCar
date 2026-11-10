@@ -43,10 +43,6 @@ function mostrar(v) {
         $('vehiculo-mecanico-ayuda').hidden = false;
     }
     if (v.estado === 'disponible') $('vehiculo-consultar').hidden = false;
-    if (sesion.puede('vehiculos.gestionar')) {
-        $('vehiculo-editar').href = ruta(`admin-vehiculo.html?id=${v.id}`);
-        $('vehiculo-editar').hidden = false;
-    }
 
     $('vehiculo').hidden = false;
     $('vehiculo-info').hidden = false;
