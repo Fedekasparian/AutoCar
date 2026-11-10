@@ -7,5 +7,8 @@ export const listar = (filtros) => get('/api/vehiculos', filtros);
 // → {vehiculo}
 export const detalle = (id) => get(`/api/vehiculos/${encodeURIComponent(id)}`);
 
-// → {marcas: ['Ford', 'Toyota', ...]}
+// → {marcas: ['Ford', 'Toyota', ...]}: las que tienen autos publicados (para el filtro del catálogo)
 export const marcas = () => get('/api/marcas');
+
+// → {marcas: [{marca: 'Ford', modelos: ['Fiesta', 'Focus', ...]}, ...]}: las que se pueden publicar
+export const marcasModelos = () => get('/api/marcas-modelos');

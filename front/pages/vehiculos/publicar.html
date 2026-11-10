@@ -70,69 +70,16 @@
           <label class="campo__etiqueta" for="marca">Marca</label>
           <select class="campo__input" id="marca" name="marca" required aria-describedby="marca-error">
             <option value="">Seleccionar marca</option>
-            <option>Chevrolet</option>
-            <option>Fiat</option>
-            <option>Ford</option>
-            <option>Honda</option>
-            <option>Nissan</option>
-            <option>Peugeot</option>
-            <option>Renault</option>
-            <option>Toyota</option>
-            <option>Volkswagen</option>
           </select>
           <span class="campo__error" id="marca-error"></span>
         </div>
-        <!-- Los modelos van agrupados por marca; con JavaScript se muestran sólo los de la marca elegida.
+        <!-- Las marcas y los modelos salen de la base (GET /api/marcas-modelos, ver js/paginas/publicar.js): el back
+             solo acepta los de esa lista. Al elegir la marca se cargan sus modelos.
              El modelo va sin la versión ("Corolla", no "Corolla XEi") para que el comparador lo encuentre en otros sitios. -->
         <div class="campo">
           <label class="campo__etiqueta" for="modelo">Modelo</label>
           <select class="campo__input" id="modelo" name="modelo" required aria-describedby="modelo-error">
             <option value="">Seleccionar modelo</option>
-            <optgroup label="Chevrolet">
-              <option>Cruze</option>
-              <option>Onix</option>
-              <option>Tracker</option>
-            </optgroup>
-            <optgroup label="Fiat">
-              <option>Argo</option>
-              <option>Cronos</option>
-              <option>Strada</option>
-            </optgroup>
-            <optgroup label="Ford">
-              <option>EcoSport</option>
-              <option>Fiesta</option>
-              <option>Ka</option>
-              <option>Ranger</option>
-            </optgroup>
-            <optgroup label="Honda">
-              <option>Fit</option>
-            </optgroup>
-            <optgroup label="Nissan">
-              <option>Leaf</option>
-            </optgroup>
-            <optgroup label="Peugeot">
-              <option>2008</option>
-              <option>208</option>
-              <option>Partner</option>
-            </optgroup>
-            <optgroup label="Renault">
-              <option>Duster</option>
-              <option>Kangoo</option>
-              <option>Kwid</option>
-              <option>Sandero</option>
-            </optgroup>
-            <optgroup label="Toyota">
-              <option>Corolla</option>
-              <option>Corolla Cross</option>
-              <option>Etios</option>
-              <option>Hilux</option>
-            </optgroup>
-            <optgroup label="Volkswagen">
-              <option>Amarok</option>
-              <option>Gol</option>
-              <option>Gol Trend</option>
-              <option>Polo</option>
-            </optgroup>
           </select>
           <span class="campo__error" id="modelo-error"></span>
         </div>
