@@ -169,8 +169,18 @@ form.addEventListener('submit', async (evento) => {
     }
 });
 
+// Solo se pide desde el botón "Mandale un mecánico" de un auto: el link llega fijo en ?url= y no se escribe a mano
 if (sesion.requerirLogin()) {
-    document.getElementById('alcance').replaceChildren(bloqueAlcance(true));
-    precargar();
-    cargarMecanicos();
+    if (!params.get('url')) {
+        form.hidden = true;
+        const sinAuto = document.getElementById('sin-auto');
+        sinAuto.replaceChildren(vistas.aviso('Elegí primero el auto.',
+            'Abrí la publicación y tocá "Mandale un mecánico": así el link del aviso queda fijo.',
+            vistas.el('a', { class: 'boton boton--secundario', href: ruta('home.html') }, 'Explorar autos')));
+        sinAuto.hidden = false;
+    } else {
+        document.getElementById('alcance').replaceChildren(bloqueAlcance(true));
+        precargar();
+        cargarMecanicos();
+    }
 }

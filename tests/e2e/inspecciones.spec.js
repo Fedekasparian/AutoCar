@@ -57,23 +57,14 @@ test('recorrido de la demo: pedir, aceptar, firmar, reclamar y resolver', async 
     const mecanico = await (await browser.newContext()).newPage();
     let id;
 
-    await test.step('el comprador elige al mecánico en el ranking y pide la inspección', async () => {
+    await test.step('el comprador llega desde el aviso, elige al mecánico y pide la inspección', async () => {
         await registrar(comprador, 'Comprador E2E');
-        await comprador.goto(pagina('pages/talleres/talleres.html'));
-        const fila = comprador.locator('.fila--mecanico', { hasText: MECANICO.taller });
-        await expect(fila).toBeVisible();
-        await fila.getByRole('link', { name: /^Elegir/ }).click();
-
-        await expect(comprador).toHaveURL(/pedir-inspeccion\.html\?mecanico=\d+/);
-        await expect(comprador.locator('#mecanicos label', { hasText: MECANICO.taller })
-            .locator('input[type="radio"]')).toBeChecked();
+        // Como si viniera del botón "Mandale un mecánico" de un aviso: el link llega fijo
+        const aviso = `https://auto.mercadolibre.com.ar/MLA-${Date.now()}-gol-trend-_JM`;
+        await comprador.goto(pagina(`pages/talleres/pedir-inspeccion.html?url=${encodeURIComponent(aviso)}`));
+        await expect(comprador.locator('#url')).toHaveValue(aviso);
+        await comprador.locator('#mecanicos label', { hasText: MECANICO.taller }).locator('input[type="radio"]').check();
         await expect(comprador.locator('#resumen')).toBeVisible();
-
-        // Un link de un sitio cualquiera no se acepta
-        await comprador.fill('#url', 'https://www.otrositio.com/auto/1');
-        await expect(comprador.locator('#url-error')).toContainText('Por ahora solo inspeccionamos');
-        await comprador.fill('#url', `https://auto.mercadolibre.com.ar/MLA-${Date.now()}-gol-trend-_JM`);
-        await expect(comprador.locator('#url-ayuda')).toContainText('MercadoLibre');
         await comprador.locator('#datos-auto summary').click();
         await comprador.fill('#titulo', titulo);
         await comprador.fill('#localidad', 'Luján');
@@ -193,7 +184,8 @@ test('desde un aviso, el link del auto viene fijo y no se puede cambiar', async 
     await expect(campo).toHaveAttribute('readonly', '');
     await expect(page.locator('#url-ayuda')).toContainText('que estabas mirando');
 
-    // Sin ?url (botón "Mandale un mecánico a otro auto") se sigue pegando a mano
+    // Sin ?url no se puede pedir: hay que entrar desde el auto
     await page.goto(pagina('pages/talleres/pedir-inspeccion.html'));
-    await expect(page.locator('#url')).toBeEditable();
+    await expect(page.locator('#sin-auto')).toContainText('Elegí primero el auto');
+    await expect(page.locator('#pedido')).toBeHidden();
 });

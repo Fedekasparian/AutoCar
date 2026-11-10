@@ -26,9 +26,9 @@ async function cargar() {
     try {
         const { items } = await api.mias();
         lista.replaceChildren(...items.map(fila));
-        const pedir = el('a', { class: 'boton boton--secundario', href: ruta('pedir-inspeccion.html') }, 'Pedir una inspección');
+        const explorar = el('a', { class: 'boton boton--secundario', href: ruta('home.html') }, 'Explorar autos');
         estado.replaceChildren(items.length ? '' : vistas.aviso('Todavía no pediste ninguna inspección.',
-            'Encontrá un auto en cualquier sitio y mandale un mecánico que elegís vos.', pedir));
+            'Abrí la publicación de un auto y tocá "Mandale un mecánico".', explorar));
     } catch (error) {
         if (error.status === 401) {
             sesion.requerirLogin();

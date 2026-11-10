@@ -4,7 +4,6 @@ import * as api from '../api/inspecciones.js';
 import * as formato from '../servicios/formato.js';
 import * as insp from '../servicios/inspecciones.js';
 import * as vistas from '../servicios/vistas.js';
-import { ruta } from '../servicios/rutas.js';
 
 const { el } = vistas;
 const lista = document.getElementById('ranking');
@@ -19,12 +18,7 @@ function filaMecanico(m) {
             el('span', { class: 'fila__meta' }, insp.puntaje(m)), el('br'),
             el('span', { class: 'fila__meta' }, insp.reclamosProcedentes(m))),
         el('span', { class: 'fila__acciones' },
-            el('strong', {}, formato.precio(m.precio_inspeccion)),
-            el('a', {
-                class: 'boton boton--chico',
-                href: ruta(`pedir-inspeccion.html?mecanico=${m.id}`),
-                'aria-label': `Elegir a ${m.mecanico}`,
-            }, 'Elegir')));
+            el('strong', {}, formato.precio(m.precio_inspeccion))));
 }
 
 async function cargar() {
