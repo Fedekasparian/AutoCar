@@ -41,21 +41,34 @@ formularios.alEnviar(document.getElementById('form-perfil'), async (datos) => {
     actualizarUsuario(usuario, 'Guardamos tu nombre.');
 });
 
-const formFoto = document.getElementById('form-foto');
-formularios.alEnviar(formFoto, async () => {
-    const { usuario } = await auth.subirFoto(new FormData(formFoto));
-    formFoto.reset();
-    actualizarUsuario(usuario, 'Subimos tu foto.');
+// Foto de perfil: se toca la foto, se elige una y se sube sola. JPG, PNG o WebP de hasta 2 MB (lo controla el back).
+const entradaFoto = document.getElementById('foto');
+const errorFoto = document.getElementById('foto-error');
+document.getElementById('cambiar-foto').addEventListener('click', () => entradaFoto.click());
+
+entradaFoto.addEventListener('change', async () => {
+    if (!entradaFoto.files.length) return;
+    errorFoto.textContent = '';
+    const datos = new FormData();
+    datos.append('foto', entradaFoto.files[0]);
+    try {
+        const { usuario } = await auth.subirFoto(datos);
+        actualizarUsuario(usuario, 'Subimos tu foto.');
+    } catch (error) {
+        errorFoto.textContent = error.errores?.foto || error.message;
+    }
+    entradaFoto.value = '';
 });
 
 document.getElementById('quitar-foto').addEventListener('click', async (evento) => {
     const boton = evento.currentTarget;
     boton.disabled = true;
+    errorFoto.textContent = '';
     try {
         await auth.borrarFoto();
         actualizarUsuario({ ...sesion.usuario(), foto: null }, 'Quitamos tu foto.');
     } catch (error) {
-        formularios.mostrarError(formFoto, error);
+        errorFoto.textContent = error.message;
     }
     boton.disabled = false;
 });
