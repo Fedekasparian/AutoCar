@@ -146,6 +146,7 @@ async function abrirConversacion(c) {
 
     $('chat-foto').replaceWith(Object.assign(vistas.avatar(c.con, 'avatar--chat'), { id: 'chat-foto' }));
     $('chat-persona').textContent = c.con.nombre;
+    $('chat-reportar').href = ruta(`reportar.html?usuario=${c.con.id}`);
     $('chat-rol').textContent = c.rol === 'vendedor' ? 'Le interesa tu publicación' : 'Vendedor';
     const vehiculo = $('chat-vehiculo');
     vehiculo.textContent = c.vehiculo.titulo;

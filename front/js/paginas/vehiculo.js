@@ -61,6 +61,7 @@ function mostrar(v) {
     if (v.estado === 'disponible') $('vehiculo-consultar').hidden = false;
     if (v.estado === 'disponible') mostrarFavorito();
 
+    $('vehiculo-reportar').href = ruta(`reportar.html?vehiculo=${v.id}`);
     $('vehiculo').hidden = false;
     $('vehiculo-info').hidden = false;
 }

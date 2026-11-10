@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="../../styles/pantallas.css">
   <link rel="stylesheet" href="../../styles/print.css" media="print">
   <script src="../../js/validacion.js" defer></script>
-  <script src="../../js/proximamente.js" defer></script>
+  <script type="module" src="../../js/paginas/reportar.js"></script>
 <link rel="stylesheet" href="../../styles/identidad.css">
 <link rel="stylesheet" href="../../styles/portada.css">
 <link rel="stylesheet" href="../../styles/interiores.css">
@@ -33,16 +33,14 @@
   </header>
 
   <main id="contenido" class="pantalla">
-    <form class="formulario" data-proximamente method="post" data-validar novalidate>
+    <!-- POST /api/reportes (con sesión): js/paginas/reportar.js. Llega con ?vehiculo=N (detalle) o ?usuario=N (chat).
+         Lo revisa el moderador en el panel. -->
+    <div class="estado" id="estado"></div>
+    <p class="recuadro" id="enviado" role="status" hidden>Gracias: el equipo de moderación va a revisar tu reporte.</p>
+    <form class="formulario" id="form-reporte" novalidate hidden>
       <p class="formulario__alerta" role="alert" tabindex="-1"></p>
-      <input type="hidden" name="tipo" value="publicacion">
-      <input type="hidden" name="objetivo_id" value="4">
-      <fieldset class="opciones">
-        <legend class="titulo-seccion">¿Qué pasa con esta publicación?</legend>
-        <label><input type="radio" name="motivo" value="fraude" checked><span>Parece una estafa</span></label>
-        <label><input type="radio" name="motivo" value="datos"><span>Los datos no coinciden con el vehículo</span></label>
-        <label><input type="radio" name="motivo" value="vendido"><span>Ya está vendido</span></label>
-        <label><input type="radio" name="motivo" value="otro"><span>Otro motivo</span></label>
+      <fieldset class="opciones" id="motivos">
+        <legend class="titulo-seccion" id="motivos-titulo">¿Qué pasa?</legend>
       </fieldset>
       <div class="campo">
         <label class="campo__etiqueta" for="detalle">Detalle <span class="suave">(opcional)</span></label>

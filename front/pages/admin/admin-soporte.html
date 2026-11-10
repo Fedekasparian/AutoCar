@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reportes y contacto - AutoCar</title>
+  <meta name="description" content="Reclamos de los compradores sobre inspecciones firmadas: procede o no procede.">
+  <link rel="stylesheet" href="../../styles/estilos.css">
+  <script src="../../js/tema.js"></script><script src="../../js/barra-admin.js" defer></script><link rel="stylesheet" href="../../styles/componentes.css">
+  <link rel="stylesheet" href="../../styles/pantallas.css">
+  <link rel="stylesheet" href="../../styles/print.css" media="print">
+  <script src="../../js/validacion.js" defer></script>
+  <script src="../../js/dialogos.js" defer></script>
+  <script type="module" src="../../js/paginas/admin-soporte.js"></script>
+<link rel="stylesheet" href="../../styles/identidad.css">
+<link rel="stylesheet" href="../../styles/portada.css">
+<link rel="stylesheet" href="../../styles/interiores.css">
+</head>
+<body class="con-barra vista-admin-soporte">
+
+  <a class="saltar" href="#contenido">Saltar al contenido</a>
+
+  <nav class="barra" aria-label="Navegación principal"><a class="barra__marca" href="../../index.html" aria-label="AutoCar, inicio"><span class="marca__simbolo" aria-hidden="true"></span>AutoCar</a><ul class="barra__lista">
+<li><a class="barra__enlace" href="../info/home.html"><span class="barra__icono"><svg width="22" height="22" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-7 9 7M5 10v10h14V10"></path></svg></span><span>Explorar</span></a></li>
+<li><a class="barra__enlace" href="../operaciones/meta-busqueda.html"><span class="barra__icono"><svg width="22" height="22" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"></circle><path d="m16 16 5 5"></path></svg></span><span>Búsquedas</span></a></li>
+<li><a class="barra__enlace" href="../vehiculos/mis-publicaciones.html"><span class="barra__icono"><svg width="22" height="22" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v16M4 12h16"></path></svg></span><span>Publicar</span></a></li>
+<li><a class="barra__enlace" href="../operaciones/mensajes.html"><span class="barra__icono"><svg width="22" height="22" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z"></path></svg></span><span>Mensajes</span></a></li>
+<li><a class="barra__enlace" href="../auth/cuenta.html"><span class="barra__icono"><svg width="22" height="22" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"></circle><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"></path></svg></span><span>Cuenta</span></a></li>
+</ul></nav><header class="encabezado">
+    <a class="encabezado__volver" href="admin.html" aria-label="Volver al panel">
+      <svg width="22" height="22" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12H4M4 12l7-7M4 12l7 7"></path></svg>
+    </a>
+    <h1>Reportes y contacto</h1>
+  </header>
+  <!-- GET/PATCH /api/admin/reportes (vehiculos.moderar) y /api/admin/contactos (usuarios.ver, admin).
+       Lo arma js/paginas/admin-soporte.js; cada sección se ve según los permisos. -->
+  <main id="contenido" class="pantalla">
+    <section class="pila" id="seccion-reportes" aria-labelledby="reportes-titulo" hidden>
+      <h2 id="reportes-titulo" class="titulo-seccion">Reportes</h2>
+      <ul class="lista-filas" role="list" id="reportes"></ul>
+      <div class="estado" id="estado-reportes"></div>
+    </section>
+    <section class="pila" id="seccion-contactos" aria-labelledby="contactos-titulo" hidden>
+      <h2 id="contactos-titulo" class="titulo-seccion">Mensajes de contacto</h2>
+      <ul class="lista-filas" role="list" id="contactos"></ul>
+      <div class="estado" id="estado-contactos"></div>
+    </section>
+  </main>
+
+  <dialog class="hoja" id="dialogo-resolver" aria-labelledby="resolver-titulo">
+    <form class="formulario" id="form-resolver" novalidate>
+      <h2 id="resolver-titulo">Resolver el reclamo</h2>
+      <p class="suave" id="resolver-auto"></p>
+      <p class="formulario__alerta" role="alert" tabindex="-1"></p>
+      <fieldset class="opciones">
+        <legend class="campo__etiqueta">Decisión</legend>
+        <label><input type="radio" name="decision" value="procede" id="decision-procede" required><span>Procede</span></label>
+        <label><input type="radio" name="decision" value="no_procede" id="decision-no"><span>No procede</span></label>
+      </fieldset>
+      <div class="campo" id="campo-compensacion" hidden>
+        <label class="campo__etiqueta" for="compensacion">Compensación ($)</label>
+        <input class="campo__input" id="compensacion" name="compensacion" type="number" min="0" step="1000" inputmode="numeric" aria-describedby="compensacion-ayuda compensacion-error">
+        <span class="campo__ayuda" id="compensacion-ayuda"></span>
+        <span class="campo__error" id="compensacion-error"></span>
+      </div>
+      <div class="campo">
+        <label class="campo__etiqueta" for="respuesta">Respuesta para el comprador</label>
+        <textarea class="campo__input" id="respuesta" name="respuesta" rows="3" required minlength="3" maxlength="1000" aria-describedby="respuesta-error"></textarea>
+        <span class="campo__error" id="respuesta-error"></span>
+      </div>
+      <div class="hoja__acciones">
+        <button class="boton boton--secundario" type="button" data-cerrar>Cancelar</button>
+        <button class="boton" type="submit">Guardar</button>
+      </div>
+    </form>
+  </dialog>
+</body>
+</html>

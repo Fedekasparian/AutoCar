@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="../../styles/pantallas.css">
   <link rel="stylesheet" href="../../styles/print.css" media="print">
   <script src="../../js/validacion.js" defer></script>
-  <script src="../../js/proximamente.js" defer></script>
+  <script type="module" src="../../js/paginas/contacto.js"></script>
 <link rel="stylesheet" href="../../styles/identidad.css">
 <link rel="stylesheet" href="../../styles/portada.css">
 <link rel="stylesheet" href="../../styles/interiores.css"></head>
@@ -32,7 +32,9 @@
   </header>
 
   <main id="contenido" class="pantalla">
-    <form class="formulario" data-proximamente method="post" data-validar novalidate>
+    <!-- POST /api/contacto (público): js/paginas/contacto.js. Lo lee el admin en el panel. -->
+    <p class="recuadro" id="enviado" role="status" hidden>¡Gracias! Recibimos tu mensaje y te vamos a contestar por mail.</p>
+    <form class="formulario" id="form-contacto" novalidate>
       <p class="formulario__alerta" role="alert" tabindex="-1"></p>
       <div class="campo">
         <label class="campo__etiqueta" for="email">Email</label>
@@ -41,7 +43,7 @@
       </div>
       <div class="campo">
         <label class="campo__etiqueta" for="mensaje">Mensaje</label>
-        <textarea class="campo__input" id="mensaje" name="mensaje" required maxlength="1000" aria-describedby="mensaje-error"></textarea>
+        <textarea class="campo__input" id="mensaje" name="mensaje" required minlength="10" maxlength="1000" aria-describedby="mensaje-error"></textarea>
         <span class="campo__error" id="mensaje-error"></span>
       </div>
       <button class="boton" type="submit">Enviar</button>
