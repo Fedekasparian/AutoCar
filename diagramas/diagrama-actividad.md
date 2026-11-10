@@ -313,13 +313,8 @@ flowchart TD
     q_op -- "dar de baja aprobado" --> baja_mod("disponible → rechazado")
     q_op -- "revertir rechazo" --> revertir("rechazado → disponible")
     q_op -- "eliminar" --> eliminar("DELETE: estado = eliminado")
-    q_op -- "editar" --> editar("PUT con los datos corregidos")
 
-    q_tarea -- "alta de vehículo" --> alta("Completar formulario y POST /admin/vehiculos (sin dueño)")
-    alta --> q_val{"¿Validación OK?"}
-    editar --> q_val
-    q_val -- "no (422)" --> corregir("Corregir campos") --> alta
-    q_val -- "sí" --> guardado("Vehículo guardado")
+    %% El panel no crea ni edita vehículos: si algo está mal se rechaza con motivo y lo corrige el dueño
 
     q_tarea -- "talleres" --> f12["Flujo 12: aprobar talleres"]
     q_tarea -- "reportes" --> f14["Flujo 14: resolver reportes"]

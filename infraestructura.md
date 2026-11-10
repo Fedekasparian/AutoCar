@@ -80,7 +80,7 @@ Cada carril es una cadena completa con su front, su API y su base. El código su
 - En dev y producción, en **Render → Environment** de cada servicio.
 - `BACKEND_URL` va en **Vercel → Settings → Environment Variables**, marcada como *Preview* para la rama `dev` o *Production* para `main`.
 
-`JWT_SECRET` y `JWT_TTL` solo existen en `main` del back. La rama `dev` pasó la sesión a `$_SESSION` guardada en la base. Cuando se mergee a `main` hay que borrar esas dos variables de Render y cargar `SESION_TTL`.
+La sesión es `$_SESSION` guardada en la base en los dos entornos: `JWT_SECRET` y `JWT_TTL` ya no se usan.
 
 ---
 
@@ -436,3 +436,9 @@ Recién después del paso 3, porque sin `BACKEND_URL` en Production, producción
 3. Mergear y etiquetar la versión: `git tag vX.Y.Z && git push --tags`.
 4. Vercel despliega Production y el workflow E2E corre solo las pruebas `@humo`. Verificar que [autocar-zeta.vercel.app/api/vehiculos](https://autocar-zeta.vercel.app/api/vehiculos) siga respondiendo.
 5. Si algo falla: Vercel → *Deployments* → deploy anterior → **Promote to Production**.
+
+## Notas (10/11/2026)
+
+- **Render dev tiene que desplegar la rama `dev`** (Settings → Build & Deploy → Branch). El 10/11 apareció en `main` y no tomaba nada de dev. Prueba rápida: `POST /api/admin/vehiculos` sin sesión responde 405 con el código nuevo.
+- **Firestore (NoSQL):** dos proyectos de Firebase, `autocar-dev` y `autocar-9897d` (producción). En Render va `FIRESTORE_CREDENCIALES_JSON` con el contenido del `.json` de la cuenta de servicio; en la PC del scraper, `FIRESTORE_CREDENCIALES` con la ruta (fuera del repo).
+- **Neon:** dos proyectos separados (dev y main). Las migraciones `011` a `015` están corridas en dev y faltan en main (ver `PENDIENTES.md`).
