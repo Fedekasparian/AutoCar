@@ -1,6 +1,7 @@
 // Detalle de un vehículo (vehiculo.html?id=N) con GET /api/vehiculos/{id}.
 import * as vehiculos from '../api/vehiculos.js';
 import * as chat from '../api/chat.js';
+import * as favoritos from '../api/favoritos.js';
 import * as formato from '../servicios/formato.js';
 import * as sesion from '../servicios/sesion.js';
 import * as vistas from '../servicios/vistas.js';
@@ -30,6 +31,20 @@ function mostrar(v) {
     $('dato-combustible').textContent = formato.combustible(v.combustible);
     $('dato-transmision').textContent = formato.transmision(v.transmision);
     $('dato-estado').textContent = formato.estado(v.estado);
+    // Datos que puede no tener (una publicación vieja o el auto sin versión): si faltan, no se muestra el renglón
+    [['version', v.version], ['condicion', v.condicion && formato.condicion(v.condicion)], ['localidad', v.localidad]]
+        .filter(([, valor]) => valor)
+        .forEach(([dato, valor]) => {
+            $(`dato-${dato}`).textContent = valor;
+            $(`dato-${dato}`).hidden = false;
+            $(`dato-${dato}-titulo`).hidden = false;
+        });
+
+    if (v.vendedor) {
+        $('vendedor-nombre').textContent = v.vendedor.nombre;
+        $('vendedor-desde').textContent = `En AutoCar desde ${formato.fecha(v.vendedor.desde)}`;
+        $('vehiculo-vendedor').hidden = false;
+    }
 
     if (v.descripcion) {
         $('vehiculo-descripcion-texto').textContent = v.descripcion;
@@ -43,6 +58,7 @@ function mostrar(v) {
         $('vehiculo-mecanico-ayuda').hidden = false;
     }
     if (v.estado === 'disponible') $('vehiculo-consultar').hidden = false;
+    if (v.estado === 'disponible') mostrarFavorito();
 
     $('vehiculo').hidden = false;
     $('vehiculo-info').hidden = false;
@@ -83,6 +99,44 @@ $('vehiculo-consultar').addEventListener('click', async (evento) => {
         aviso.hidden = false;
         boton.disabled = false;
     }
+});
+
+// ---------- Favorito: guardar o sacar. Sin sesión, pasa por el login y vuelve acá ----------
+
+const botonFavorito = $('vehiculo-favorito');
+const avisoFavorito = $('vehiculo-favorito-aviso');
+
+function pintarFavorito(guardado) {
+    botonFavorito.setAttribute('aria-pressed', String(guardado));
+    botonFavorito.textContent = guardado ? 'Guardado en favoritos' : 'Guardar en favoritos';
+}
+
+async function mostrarFavorito() {
+    botonFavorito.hidden = false;
+    if (!sesion.iniciada()) return;
+    try {
+        const { items } = await favoritos.listar();
+        pintarFavorito(items.some((f) => String(f.id) === id));
+    } catch {
+        // Si no se pudo saber, el botón queda en "Guardar": al tocarlo se guarda igual
+    }
+}
+
+botonFavorito.addEventListener('click', async () => {
+    if (!sesion.requerirLogin()) return;
+    const guardado = botonFavorito.getAttribute('aria-pressed') === 'true';
+    avisoFavorito.hidden = true;
+    botonFavorito.disabled = true;
+    try {
+        if (guardado) await favoritos.sacar(id);
+        else await favoritos.agregar(id);
+        pintarFavorito(!guardado);
+    } catch (error) {
+        // 409: es una publicación propia
+        avisoFavorito.textContent = error.message;
+        avisoFavorito.hidden = false;
+    }
+    botonFavorito.disabled = false;
 });
 
 cargar();

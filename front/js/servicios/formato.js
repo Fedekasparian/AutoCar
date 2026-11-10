@@ -15,12 +15,14 @@ export const TRANSMISIONES = { manual: 'Manual', automatica: 'Automática' };
 export const ESTADOS = {
     pendiente: 'Pendiente', disponible: 'Disponible', rechazado: 'Rechazado', vendido: 'Vendido', eliminado: 'Eliminado',
 };
+export const CONDICIONES = { excelente: 'Excelente', muy_bueno: 'Muy bueno', bueno: 'Bueno', regular: 'Regular' };
 export const ROLES = { usuario: 'Usuario', moderador: 'Moderador', admin: 'Administrador', mecanico: 'Mecánico' };
 export const rol = (valor) => ROLES[valor] || valor;
 
 export const combustible = (valor) => COMBUSTIBLES[valor] || valor;
 export const transmision = (valor) => TRANSMISIONES[valor] || valor;
 export const estado = (valor) => ESTADOS[valor] || valor;
+export const condicion = (valor) => CONDICIONES[valor] || valor;
 
 export const titulo = (v) => `${v.marca} ${v.modelo} ${v.anio}`;
 
