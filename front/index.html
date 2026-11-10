@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="styles/pantallas.css">
 <link rel="stylesheet" href="styles/identidad.css">
 <link rel="stylesheet" href="styles/print.css" media="print">
-<script src="js/tema.js"></script><script src="js/barra-admin.js" defer></script><link rel="stylesheet" href="styles/portada.css">
+<script src="js/tema.js"></script><script src="js/barra-admin.js" defer></script><script type="module" src="js/paginas/portada.js"></script><link rel="stylesheet" href="styles/portada.css">
 </head>
 <body>
 <a class="saltar" href="#contenido">Saltar al contenido</a><header class="marca-nav"><a class="marca" href="index.html" aria-label="AutoCar, inicio"><span class="marca__simbolo" aria-hidden="true"></span>AutoCar</a><nav aria-label="Navegación principal">
@@ -51,36 +51,12 @@
   <button class="boton boton--acento" type="submit">Buscar autos</button>
  </form>
 </section><section class="seccion" aria-labelledby="autos-titulo"><div class="seccion__cabecera">
-<div><h2 id="autos-titulo">Vehículos de ejemplo</h2></div>
+<div><h2 id="autos-titulo">Últimos publicados</h2></div>
 <a class="enlace-flecha" href="pages/info/home.html">Explorar publicaciones</a>
 </div>
-<ul class="grilla-vehiculos" role="list">
-<li><article class="ficha-vehiculo"><img class="ficha-vehiculo__imagen" src="assets/identidad/corolla.jpg" width="1536" height="1024" alt="Imagen ilustrativa de Toyota Corolla" loading="lazy"><div class="ficha-vehiculo__cuerpo">
-<h3 class="ficha-vehiculo__titulo">Toyota Corolla</h3>
-<p class="ficha-vehiculo__lugar">2018 · Mercedes, BA</p>
-<p class="ficha-vehiculo__precio">$8.500.000</p>
-<div class="ficha-vehiculo__pie"><span>Publicación de ejemplo</span></div>
-</div></article></li>
-<li><article class="ficha-vehiculo"><img class="ficha-vehiculo__imagen" src="assets/identidad/sandero.jpg" width="1536" height="1024" alt="Imagen ilustrativa de Renault Sandero" loading="lazy"><div class="ficha-vehiculo__cuerpo">
-<h3 class="ficha-vehiculo__titulo">Renault Sandero</h3>
-<p class="ficha-vehiculo__lugar">2017 · Luján, BA</p>
-<p class="ficha-vehiculo__precio">$6.200.000</p>
-<div class="ficha-vehiculo__pie"><span>Publicación de ejemplo</span></div>
-</div></article></li>
-<li><article class="ficha-vehiculo"><img class="ficha-vehiculo__imagen" src="assets/identidad/cronos.jpg" width="1536" height="1024" alt="Imagen ilustrativa de Fiat Cronos" loading="lazy"><div class="ficha-vehiculo__cuerpo">
-<h3 class="ficha-vehiculo__titulo">Fiat Cronos</h3>
-<p class="ficha-vehiculo__lugar">2021 · Chivilcoy, BA</p>
-<p class="ficha-vehiculo__precio">$11.900.000</p>
-<div class="ficha-vehiculo__pie"><span>Publicación de ejemplo</span></div>
-</div></article></li>
-<li><article class="ficha-vehiculo"><img class="ficha-vehiculo__imagen" src="assets/identidad/onix.jpg" width="1536" height="1024" alt="Imagen ilustrativa de Chevrolet Onix" loading="lazy"><div class="ficha-vehiculo__cuerpo">
-<h3 class="ficha-vehiculo__titulo">Chevrolet Onix</h3>
-<p class="ficha-vehiculo__lugar">2019 · Mercedes, BA</p>
-<p class="ficha-vehiculo__precio">$4.800.000</p>
-<div class="ficha-vehiculo__pie"><span>Publicación de ejemplo</span></div>
-</div></article></li>
-</ul>
-<p class="nota-editorial">Vehículos y precios de ejemplo.</p></section>
+<!-- Los últimos publicados de verdad (GET /api/vehiculos): js/paginas/portada.js -->
+<ul class="grilla-vehiculos" role="list" id="ultimos"></ul>
+</section>
   <section class="taller-banner" aria-labelledby="taller-titulo"><div class="taller-banner__foto"><img src="assets/identidad/mecanico.jpg" alt="Mecánico revisando el motor de un auto, imagen ilustrativa" width="1536" height="1024" loading="lazy"></div>
 <div class="taller-banner__texto">
 <h2 id="taller-titulo">Sumá tu taller a AutoCar</h2>
