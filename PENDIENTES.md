@@ -7,7 +7,7 @@ El plan completo del enfoque del mecánico está en [`modelo-de-negocio/PLAN.md`
 
 ## Hecho el 10/11 (en `dev`, falta pasar a `main`)
 
-Todo entró a `dev` por PR (front #40 a #48, back #17 a #20). **Antes del pase `dev` → `main` hay que correr en Neon main, en orden, las migraciones `011` a `015`** (en Neon dev ya están):
+Todo entró a `dev` por PR (front #40 a #48, back #17 a #20). **Antes del pase `dev` → `main` hay que correr en Neon main, en orden, las migraciones `011` a `016`** (en Neon dev ya están):
 
 | Migración | Qué hace |
 |---|---|
@@ -16,6 +16,7 @@ Todo entró a `dev` por PR (front #40 a #48, back #17 a #20). **Antes del pase `
 | `013-marcas-y-modelos.sql` | Tablas `marca` y `modelo` (62 marcas, ~1.080 modelos del scraper) y clave foránea `vehiculo (marca, modelo)` |
 | `014-foto-de-perfil.sql` | Tabla `usuario_foto` |
 | `015-contacto-y-reportes.sql` | Tablas `contacto` y `reporte` |
+| `016-roles-del-equipo.sql` | El admin sin los permisos del mecánico |
 
 - [x] **El panel solo modera y da de baja:** se sacan crear y editar vehículos (back `POST`/`PUT /api/admin/vehiculos` → 405; front sin `admin-vehiculo.html`). Si algo está mal, el moderador rechaza con motivo y corrige el dueño.
 - [x] **Vendedor obligatorio** en toda publicación (la base lo exige).
@@ -28,6 +29,10 @@ Todo entró a `dev` por PR (front #40 a #48, back #17 a #20). **Antes del pase `
 - [x] **Mi cuenta con cantidades reales** de favoritos y publicaciones (antes "4 vehículos en 2 listas" y "2 activas" fijos).
 - [x] **Metabuscador conectado** a la API, sin datos de ejemplo y sin "Completar con IA".
 - [x] **Chat:** solo la foto de la persona (o su inicial), en círculo.
+- [x] **Roles:** el equipo (admin, moderador) y los talleres no compran ni venden (back 403 con el guard `usuario`); nadie modera su propia publicación; el admin ya no ve "Mi taller". La barra de arriba cambia según el rol (back #24, front #55).
+- [x] **Middleware** (`src/Core/Middleware.php`): los guards de las rutas, antes del controlador (back #22).
+- [x] **Fotos en el catálogo:** se mostraban en gris porque se leía el campo viejo `imagen_url` (#55).
+- [ ] **Pantalla de roles y permisos** para el admin (hoy los permisos de cada rol se cambian en la base).
 - [x] **Scraper:** `diario.bat` con 1 GB de memoria (la corrida completa de MercadoLibre, ~80.000 autos, se quedaba sin memoria al guardar).
 - [ ] **Probar todo junto en dev** (front de dev + `autocarbackend-dev`). Ojo: el servicio de Render dev estaba desplegando `main`; ya se pasó a `dev`.
 
