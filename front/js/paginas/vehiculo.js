@@ -41,6 +41,7 @@ function mostrar(v) {
         });
 
     if (v.vendedor) {
+        $('vendedor-foto').replaceWith(vistas.avatar(v.vendedor));
         $('vendedor-nombre').textContent = v.vendedor.nombre;
         $('vendedor-desde').textContent = `En AutoCar desde ${formato.fecha(v.vendedor.desde)}`;
         $('vehiculo-vendedor').hidden = false;

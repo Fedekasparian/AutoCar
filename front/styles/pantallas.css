@@ -810,3 +810,10 @@ hr{
         grid-template-columns: repeat(4, 1fr);
     }
 }
+
+/* Vendedor en el detalle: foto y nombre en una fila */
+.vendedor{
+    display: flex;
+    align-items: center;
+    gap: var(--esp-3);
+}
