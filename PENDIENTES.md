@@ -7,7 +7,7 @@ El plan completo del enfoque del mecánico está en [`modelo-de-negocio/PLAN.md`
 
 ## Hecho el 10/11 (en `dev`, falta pasar a `main`)
 
-Todo entró a `dev` por PR (front #40 a #48, back #17 a #20). **Antes del pase `dev` → `main` hay que correr en Neon main, en orden, las migraciones `011` a `014`** (en Neon dev ya están):
+Todo entró a `dev` por PR (front #40 a #48, back #17 a #20). **Antes del pase `dev` → `main` hay que correr en Neon main, en orden, las migraciones `011` a `015`** (en Neon dev ya están):
 
 | Migración | Qué hace |
 |---|---|
@@ -15,6 +15,7 @@ Todo entró a `dev` por PR (front #40 a #48, back #17 a #20). **Antes del pase `
 | `012-favoritos.sql` | Tabla `favorito` |
 | `013-marcas-y-modelos.sql` | Tablas `marca` y `modelo` (62 marcas, ~1.080 modelos del scraper) y clave foránea `vehiculo (marca, modelo)` |
 | `014-foto-de-perfil.sql` | Tabla `usuario_foto` |
+| `015-contacto-y-reportes.sql` | Tablas `contacto` y `reporte` |
 
 - [x] **El panel solo modera y da de baja:** se sacan crear y editar vehículos (back `POST`/`PUT /api/admin/vehiculos` → 405; front sin `admin-vehiculo.html`). Si algo está mal, el moderador rechaza con motivo y corrige el dueño.
 - [x] **Vendedor obligatorio** en toda publicación (la base lo exige).
@@ -41,11 +42,11 @@ Todo entró a `dev` por PR (front #40 a #48, back #17 a #20). **Antes del pase `
 ## Front: pantallas que siguen siendo maqueta
 
 - [x] ~~**Metabuscador**~~: conectado el 10/11 (ver arriba).
-- [ ] **Portada** (`index.html`): 4 autos inventados con precios fijos. Sacarlos y mostrar los últimos publicados de verdad.
-- [ ] **Contacto:** `POST /api/contacto` que guarde email y mensaje, y una pantalla "Mensajes de contacto" en el panel del admin.
-- [ ] **Reportar publicación / usuario:** el formulario no envía nada y no existe en el back.
+- [x] ~~**Portada**~~: muestra los últimos 4 publicados de verdad (#52).
+- [x] ~~**Contacto**~~: `POST /api/contacto` y "Reportes y contacto" en el panel (back #21, front #51).
+- [x] ~~**Reportar publicación / usuario**~~: `POST /api/reportes`, desde el detalle y desde el chat; los revisa el moderador (back #21, front #51).
 - [ ] **Canje** (`proponer-canje.html`, `propuestas.html`): maqueta.
-- [ ] **Tasación** (`tasacion.html`): datos inventados. Quedan menciones a IA en planes, legales y la guía de componentes.
+- [x] ~~**Tasación con IA**~~: se sacó (no se va a hacer). En su lugar, el detalle muestra el comparador de precio (#50, #52).
 - [x] ~~**Chat**~~ conectado a la API: bandeja con no leídos, conversación con polling cada 5 s y "Consultar" en `vehiculo.html`. Prueba E2E en `tests/e2e/chat.spec.js` (necesita los secretos `E2E_CHAT_*`).
 - [ ] **Secretos de E2E en GitHub** (Settings → Secrets → Actions), con cuentas de **dev**: `E2E_ADMIN_EMAIL` y `E2E_ADMIN_PASSWORD`; `E2E_CHAT_VEHICULO_ID`, `E2E_CHAT_VENDEDOR_EMAIL` y `E2E_CHAT_VENDEDOR_PASSWORD` (una publicación disponible en Neon dev y la cuenta de su vendedor).
 - [ ] **Planes** (`planes.html`, `plan.html`): maqueta, depende de las suscripciones (abajo).
