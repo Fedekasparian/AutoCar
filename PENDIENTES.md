@@ -3,7 +3,32 @@
 Lista viva de lo que falta. Cuando alguien toma un ítem, pone su nombre; cuando lo termina, lo tacha (`~~así~~`) o lo borra con el PR que lo resuelve.
 El plan completo del enfoque del mecánico está en [`modelo-de-negocio/PLAN.md`](modelo-de-negocio/PLAN.md).
 
-Última actualización: 09/11/2026 (noche, después de la entrega 4).
+Última actualización: 10/11/2026.
+
+## Hecho el 10/11 (en `dev`, falta pasar a `main`)
+
+Todo entró a `dev` por PR (front #40 a #48, back #17 a #20). **Antes del pase `dev` → `main` hay que correr en Neon main, en orden, las migraciones `011` a `014`** (en Neon dev ya están):
+
+| Migración | Qué hace |
+|---|---|
+| `011-vehiculo-con-vendedor.sql` | Toda publicación tiene vendedor (`usuario_id NOT NULL`); los autos sin dueño pasan a `vendedor-demo@autocar.test` |
+| `012-favoritos.sql` | Tabla `favorito` |
+| `013-marcas-y-modelos.sql` | Tablas `marca` y `modelo` (62 marcas, ~1.080 modelos del scraper) y clave foránea `vehiculo (marca, modelo)` |
+| `014-foto-de-perfil.sql` | Tabla `usuario_foto` |
+
+- [x] **El panel solo modera y da de baja:** se sacan crear y editar vehículos (back `POST`/`PUT /api/admin/vehiculos` → 405; front sin `admin-vehiculo.html`). Si algo está mal, el moderador rechaza con motivo y corrige el dueño.
+- [x] **Vendedor obligatorio** en toda publicación (la base lo exige).
+- [x] **Marcas y modelos en la base:** `GET /api/marcas-modelos`; Publicar ya no tiene la lista fija; el back responde 422 y la base rechaza una marca o modelo que no está ("Pepita 21021").
+- [x] **Favoritos reales:** `GET/PUT/DELETE /api/favoritos`, botón en el detalle y `favoritos.html` con datos reales (una sola lista; sin las listas de ejemplo).
+- [x] **Detalle del vehículo:** vendedor (nombre, foto y desde cuándo, sin el email), versión, estado general y ubicación.
+- [x] **Editar perfil:** nombre (`PUT /api/me`) y foto de perfil opcional, que se cambia tocándola (`POST`/`DELETE /api/me/foto`). Se ve en Mi cuenta, en el detalle y en el chat.
+- [x] **Fotos de cualquier tamaño:** se achican en el navegador antes de subirlas (perfil 512 px, publicaciones 1600 px). El back sigue con 2 MB.
+- [x] **Mandale un mecánico solo desde un auto:** sin `?url=` no se puede pedir (el link siempre llega fijo). Se sacó "Mandale un mecánico a otro auto" y "Elegir" del ranking.
+- [x] **Mi cuenta con cantidades reales** de favoritos y publicaciones (antes "4 vehículos en 2 listas" y "2 activas" fijos).
+- [x] **Metabuscador conectado** a la API, sin datos de ejemplo y sin "Completar con IA".
+- [x] **Chat:** solo la foto de la persona (o su inicial), en círculo.
+- [x] **Scraper:** `diario.bat` con 1 GB de memoria (la corrida completa de MercadoLibre, ~80.000 autos, se quedaba sin memoria al guardar).
+- [ ] **Probar todo junto en dev** (front de dev + `autocarbackend-dev`). Ojo: el servicio de Render dev estaba desplegando `main`; ya se pasó a `dev`.
 
 ## Entrega 4
 
@@ -15,7 +40,12 @@ El plan completo del enfoque del mecánico está en [`modelo-de-negocio/PLAN.md`
 
 ## Front: pantallas que siguen siendo maqueta
 
-- [ ] **Metabuscador** (`meta-busqueda.html`, `meta-busqueda-nueva.html`, `meta-busqueda-resultados.html`): tienen datos de ejemplo y no llaman a la API, aunque el back está completo (`/api/meta-busquedas`). Falta: listar mis búsquedas, crear una con marcas y modelos reales, resultados con el precio de referencia y el botón **"Mandale un mecánico"** en cada auto (que ya existe en `vehiculo.html`). El botón tiene que llevar a `pedir-inspeccion.html?url=<link del aviso>`: así el link queda fijo y el comprador no lo puede cambiar.
+- [x] ~~**Metabuscador**~~: conectado el 10/11 (ver arriba).
+- [ ] **Portada** (`index.html`): 4 autos inventados con precios fijos. Sacarlos y mostrar los últimos publicados de verdad.
+- [ ] **Contacto:** `POST /api/contacto` que guarde email y mensaje, y una pantalla "Mensajes de contacto" en el panel del admin.
+- [ ] **Reportar publicación / usuario:** el formulario no envía nada y no existe en el back.
+- [ ] **Canje** (`proponer-canje.html`, `propuestas.html`): maqueta.
+- [ ] **Tasación** (`tasacion.html`): datos inventados. Quedan menciones a IA en planes, legales y la guía de componentes.
 - [x] ~~**Chat**~~ conectado a la API: bandeja con no leídos, conversación con polling cada 5 s y "Consultar" en `vehiculo.html`. Prueba E2E en `tests/e2e/chat.spec.js` (necesita los secretos `E2E_CHAT_*`).
 - [ ] **Secretos de E2E en GitHub** (Settings → Secrets → Actions), con cuentas de **dev**: `E2E_ADMIN_EMAIL` y `E2E_ADMIN_PASSWORD`; `E2E_CHAT_VEHICULO_ID`, `E2E_CHAT_VENDEDOR_EMAIL` y `E2E_CHAT_VENDEDOR_PASSWORD` (una publicación disponible en Neon dev y la cuenta de su vendedor).
 - [ ] **Planes** (`planes.html`, `plan.html`): maqueta, depende de las suscripciones (abajo).
@@ -34,7 +64,7 @@ Hoy no hay tabla de suscripciones ni cobros: los planes son de muestra y las ins
 
 - [ ] **Inspección de un auto que juntó el scraper**: hoy el back acepta cualquier link de MercadoLibre, Kavak, Autocosmos o AutoCar (controla el dominio, no que el auto exista). Cuando haya autos en Firestore: si el link coincide con uno scrapeado, marcar el pedido como "auto verificado en nuestro buscador" y completar solos título, año, km y precio; si no coincide, aceptarlo igual sin la marca.
 
-- [ ] **Cargar los autos del scraper en Firestore** (dev y prod). Hoy el comparador responde `sin_datos`.
+- [ ] **Cargar los autos del scraper en Firestore** (dev y prod). Al 10/11: dev tiene el comparador y el metabuscador con Kavak y Autocosmos del 10/11 (corridas completas); MercadoLibre completo se está corriendo de nuevo. Prod (`autocar-9897d`) se carga cuando dev ande.
 - [ ] **Corrida diaria** del scraper (`diario.bat` en la PC a las 9:00 o GitHub Actions).
 - [ ] **Ranking de mecánicos con números en dev**: `php bin/demo-historial.php` contra Neon dev.
 
