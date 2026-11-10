@@ -652,3 +652,19 @@ textarea.campo__input{
     border-color: var(--color-linea);
     color: var(--color-texto);
 }
+
+/* Foto de perfil (o la inicial si no subió ninguna): detalle del vehículo, chat y Mi cuenta */
+.avatar{
+    display: inline-grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    background: var(--color-suave);
+    font-weight: 700;
+    vertical-align: middle;
+    flex-shrink: 0;
+}
+.avatar--chico{ width: 28px; height: 28px; font-size: var(--tam-xs); margin-right: var(--esp-2); }
+.avatar--grande{ width: 72px; height: 72px; font-size: var(--tam-lg, 1.5rem); }

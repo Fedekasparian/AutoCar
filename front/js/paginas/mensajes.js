@@ -48,7 +48,7 @@ function itemBandeja(c) {
     },
     fotoDe(c.vehiculo),
     el('div', {},
-        el('strong', {}, c.con.nombre,
+        el('strong', {}, vistas.avatar(c.con, 'avatar--chico'), c.con.nombre,
             c.no_leidos > 0
                 ? el('span', { class: 'inbox__no-leidos', 'aria-label': `${c.no_leidos} sin leer` }, String(c.no_leidos))
                 : null),
@@ -150,7 +150,7 @@ async function abrirConversacion(c) {
     });
 
     $('chat-foto').replaceWith(Object.assign(fotoDe(c.vehiculo), { id: 'chat-foto' }));
-    $('chat-persona').textContent = c.con.nombre;
+    $('chat-persona').replaceChildren(vistas.avatar(c.con, 'avatar--chico'), c.con.nombre);
     $('chat-rol').textContent = c.rol === 'vendedor' ? 'Le interesa tu publicación' : 'Vendedor';
     const vehiculo = $('chat-vehiculo');
     vehiculo.textContent = c.vehiculo.titulo;
