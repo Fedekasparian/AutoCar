@@ -70,7 +70,8 @@ Hoy no hay tabla de suscripciones ni cobros: los planes son de muestra y las ins
 
 - [ ] **Inspección de un auto que juntó el scraper**: hoy el back acepta cualquier link de MercadoLibre, Kavak, Autocosmos o AutoCar (controla el dominio, no que el auto exista). Cuando haya autos en Firestore: si el link coincide con uno scrapeado, marcar el pedido como "auto verificado en nuestro buscador" y completar solos título, año, km y precio; si no coincide, aceptarlo igual sin la marca.
 
-- [ ] **Cargar los autos del scraper en Firestore** (dev y prod). Al 10/11: dev tiene el comparador y el metabuscador con Kavak y Autocosmos del 10/11 (corridas completas); MercadoLibre completo se está corriendo de nuevo. Prod (`autocar-9897d`) se carga cuando dev ande.
+- [x] ~~**Cargar los autos del scraper en Firestore dev**~~ (10/11): corridas completas de MercadoLibre (86.395 autos, 958 modelos), Autocosmos (4.750) y Kavak (1.330); comparador con 1.073 modelos. Probado en dev: comparador y metabuscador con datos reales. Arreglos que salieron con datos de este tamaño: commits de Firestore por tamaño (back #26), autos mal cargados que no arruinan la corrida (back #27), `diario.bat` con 1 GB (back #18), etiquetas del metabuscador (front #58).
+- [ ] **Prod (Firestore `autocar-9897d` y Neon main): se carga TODO JUNTO en el pase `dev` → `main`**, no antes. Orden: migraciones `011`–`016` en Neon main → merge `dev` → `main` → cargar Firestore prod con todas las corridas completas desde la del 10/11 → verificar.
 - [ ] **Corrida diaria** del scraper (`diario.bat` en la PC a las 9:00 o GitHub Actions).
 - [ ] **Ranking de mecánicos con números en dev**: `php bin/demo-historial.php` contra Neon dev.
 
