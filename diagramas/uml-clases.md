@@ -462,7 +462,7 @@ classDiagram
 
 ## 3. Clases implementadas en el back-end (PHP)
 
-Arquitectura en capas: `Router` → controladores → modelos (acceso a datos con PDO). Los modelos son clases `final` con métodos estáticos (en UML, subrayados; acá marcados con `$`).
+Arquitectura en capas: `Router` → `Middleware` (guard de la ruta y CSRF) → controladores → modelos (acceso a datos con PDO). Los modelos son clases `final` con métodos estáticos (en UML, subrayados; acá marcados con `$`).
 
 ```mermaid
 classDiagram
@@ -648,4 +648,14 @@ classDiagram
 | `PublicacionController` | `foto` | `GET /api/fotos/{id}` | público (controla visibilidad adentro) |
 | `PublicacionController` | `index` · `crear` · `actualizar` · `cambiarEstado` · `eliminar` | `GET` · `POST /api/mis-vehiculos` · `PUT` · `PATCH …/{id}/estado` · `DELETE /api/mis-vehiculos/{id}` | `auth` + CSRF |
 | `AuthController` | `registro` · `login` · `logout` · `me` | `POST /api/registro` · `POST /api/login` · `POST /api/logout` · `GET /api/me` | público · `me` con `auth` |
-| `AdminVehiculoController` | `index` · `detalle` · `crear` · `actualizar` · `moderar` · `eliminar` | `/api/admin/vehiculos[/{id}[/estado]]` | `admin` + CSRF |
+| `AdminVehiculoController` | `index` · `detalle` · `moderar` · `eliminar` | `/api/admin/vehiculos[/{id}[/estado]]` (sin alta ni edición) | `vehiculos.moderar` / `vehiculos.gestionar` + CSRF |
+| `CatalogoController` | `marcasModelos` | `GET /api/marcas-modelos` | público |
+| `FavoritoController` | `index` · `agregar` · `sacar` | `GET /api/favoritos` · `PUT` · `DELETE /api/favoritos/{id}` | `auth` |
+| `PerfilController` | `actualizar` · `subirFoto` · `borrarFoto` · `foto` | `PUT /api/me` · `POST` · `DELETE /api/me/foto` · `GET /api/usuarios/{id}/foto` | `auth` (la foto, pública) |
+| `SoporteController` | `contactar` · `reportar` · `contactos` · `leerContacto` · `reportes` · `resolverReporte` | `POST /api/contacto` · `POST /api/reportes` · `/api/admin/contactos[/{id}]` · `/api/admin/reportes[/{id}]` | público · `auth` · `usuarios.ver` · `vehiculos.moderar` |
+
+### Agregado el 10/11/2026 (todavía no está dibujado arriba)
+
+- **Tablas nuevas:** `favorito` (usuario + vehículo), `marca` y `modelo` (catálogo de lo que se puede publicar; `vehiculo (marca, modelo)` es clave foránea a `modelo`), `usuario_foto` (foto de perfil, BYTEA), `contacto` y `reporte` (de una publicación **o** de un usuario).
+- **`vehiculo.usuario_id` es obligatorio:** toda publicación tiene un vendedor.
+- **Clases nuevas del back:** `Core\Middleware`, `Catalogo\MarcaModelo`, `Favoritos\Favorito` y `FavoritoController`, `Auth\PerfilController`, `Soporte\SoporteController`.
