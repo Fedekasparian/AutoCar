@@ -60,6 +60,7 @@ function mostrar(v) {
     }
     if (v.estado === 'disponible') $('vehiculo-consultar').hidden = false;
     if (v.estado === 'disponible') mostrarFavorito();
+    if (v.estado === 'disponible') mostrarComparacion(v.id);
 
     $('vehiculo-reportar').href = ruta(`reportar.html?vehiculo=${v.id}`);
     $('vehiculo').hidden = false;
@@ -102,6 +103,21 @@ $('vehiculo-consultar').addEventListener('click', async (evento) => {
         boton.disabled = false;
     }
 });
+
+// ---------- Comparador: si el precio está bien frente a autos parecidos de otros sitios ----------
+
+const ETIQUETAS = { buen_precio: 'Buen precio', en_precio: 'En precio', caro: 'Caro' };
+async function mostrarComparacion(vehiculoId) {
+    try {
+        const { comparacion } = await vehiculos.comparacion(vehiculoId);
+        if (!ETIQUETAS[comparacion.etiqueta]) return; // sin_datos: con pocos autos parecidos no se muestra nada
+        $('comparacion-etiqueta').textContent = ETIQUETAS[comparacion.etiqueta];
+        $('comparacion-texto').textContent = comparacion.texto;
+        $('vehiculo-comparacion').hidden = false;
+    } catch {
+        // Si el comparador no responde, la ficha sigue igual
+    }
+}
 
 // ---------- Favorito: guardar o sacar. Sin sesión, pasa por el login y vuelve acá ----------
 
