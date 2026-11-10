@@ -6,11 +6,10 @@
   <title>Nueva búsqueda - AutoCar</title>
   <meta name="description" content="Guardá una búsqueda y te avisamos cuando aparezca.">
   <link rel="stylesheet" href="../../styles/estilos.css">
-  <script src="../../js/tema.js"></script><script src="../../js/barra-admin.js" defer></script><link rel="stylesheet" href="../../styles/componentes.css">
+  <script src="../../js/tema.js"></script><script src="../../js/barra-admin.js" defer></script><script type="module" src="../../js/paginas/meta-busqueda-nueva.js"></script><link rel="stylesheet" href="../../styles/componentes.css">
   <link rel="stylesheet" href="../../styles/pantallas.css">
   <link rel="stylesheet" href="../../styles/print.css" media="print">
   <script src="../../js/validacion.js" defer></script>
-  <script src="../../js/proximamente.js" defer></script>
 <link rel="stylesheet" href="../../styles/identidad.css">
 <link rel="stylesheet" href="../../styles/portada.css">
 <link rel="stylesheet" href="../../styles/interiores.css">
@@ -32,50 +31,54 @@
     <h1>Nueva búsqueda</h1>
   </header>
 
+  <!-- POST /api/meta-busquedas (js/paginas/meta-busqueda-nueva.js). Las marcas y modelos son los que tienen autos
+       en las fuentes (GET /api/meta-busquedas/marcas). -->
   <main id="contenido" class="pantalla pantalla--compacta">
-    <form class="formulario" data-proximamente method="post" data-validar novalidate>
+    <form class="formulario" id="form-busqueda" novalidate>
       <p class="formulario__alerta" role="alert" tabindex="-1"></p>
-      <!-- Texto libre: el back lo manda al LLM y devuelve los criterios para precargar el formulario.
-           El usuario siempre revisa antes de guardar. -->
       <div class="campo">
-        <label class="campo__etiqueta" for="texto"><strong>Describí el auto que buscás</strong></label>
-        <textarea class="campo__input" id="texto" name="texto" maxlength="300">Busco un Corolla automático, del 2015 en adelante, que no pase los 9 millones.</textarea>
-      </div>
-      <button class="boton boton--secundario" type="submit" formnovalidate>Completar con IA</button>
-      <p class="campo__ayuda">La IA completa los campos. Revisalos antes de guardar.</p>
-      <hr>
-      <div class="campo">
-        <label class="campo__etiqueta" for="marca">Marca <span class="etiqueta">IA</span></label>
-        <select class="campo__input" id="marca" name="marca" required aria-describedby="marca-error"><option value="">Seleccionar marca</option>
-<option selected>Toyota</option>
-<option>Ford</option></select>
+        <label class="campo__etiqueta" for="marca">Marca</label>
+        <select class="campo__input" id="marca" name="marca" required aria-describedby="marca-error"><option value="">Seleccionar marca</option></select>
         <span class="campo__error" id="marca-error"></span>
       </div>
       <div class="campo">
-        <label class="campo__etiqueta" for="modelo">Modelo <span class="etiqueta">IA</span></label>
-        <select class="campo__input" id="modelo" name="modelo"><option value="">Cualquiera</option>
-<option selected>Corolla</option>
-<option>Etios</option></select>
+        <label class="campo__etiqueta" for="modelo">Modelo</label>
+        <select class="campo__input" id="modelo" name="modelo" required aria-describedby="modelo-error"><option value="">Seleccionar modelo</option></select>
+        <span class="campo__error" id="modelo-error"></span>
       </div>
       <div class="campos-fila">
-      <div class="campo">
-        <label class="campo__etiqueta" for="anio_desde">Año desde <span class="etiqueta">IA</span></label>
-        <input class="campo__input" id="anio_desde" name="anio_desde" type="number" value="2015" min="1980" aria-describedby="anio_desde-error">
-        <span class="campo__error" id="anio_desde-error"></span>
+        <div class="campo">
+          <label class="campo__etiqueta" for="anio_desde">Año desde <span class="suave">(opcional)</span></label>
+          <input class="campo__input" id="anio_desde" name="anio_desde" type="number" inputmode="numeric" min="1950" max="2027" aria-describedby="anio_desde-error">
+          <span class="campo__error" id="anio_desde-error"></span>
+        </div>
+        <div class="campo">
+          <label class="campo__etiqueta" for="anio_hasta">Año hasta <span class="suave">(opcional)</span></label>
+          <input class="campo__input" id="anio_hasta" name="anio_hasta" type="number" inputmode="numeric" min="1950" max="2027" aria-describedby="anio_hasta-error">
+          <span class="campo__error" id="anio_hasta-error"></span>
+        </div>
+      </div>
+      <div class="campos-fila">
+        <div class="campo">
+          <label class="campo__etiqueta" for="precio_max">Precio máximo <span class="suave">(opcional)</span></label>
+          <input class="campo__input" id="precio_max" name="precio_max" type="number" inputmode="numeric" min="0" placeholder="12000000" aria-describedby="precio_max-error">
+          <span class="campo__error" id="precio_max-error"></span>
+        </div>
+        <div class="campo">
+          <label class="campo__etiqueta" for="km_max">Km máximo <span class="suave">(opcional)</span></label>
+          <input class="campo__input" id="km_max" name="km_max" type="number" inputmode="numeric" min="0" placeholder="120000" aria-describedby="km_max-error">
+          <span class="campo__error" id="km_max-error"></span>
+        </div>
       </div>
       <div class="campo">
-        <label class="campo__etiqueta" for="anio_hasta">Año hasta</label>
-        <input class="campo__input" id="anio_hasta" name="anio_hasta" type="number" placeholder="Completá este dato" min="1980" aria-describedby="anio_hasta-error">
-        <span class="campo__error" id="anio_hasta-error"></span>
+        <label class="campo__etiqueta" for="transmision">Transmisión <span class="suave">(opcional)</span></label>
+        <select class="campo__input" id="transmision" name="transmision">
+          <option value="">Cualquiera</option>
+          <option value="manual">Manual</option>
+          <option value="automatica">Automática</option>
+        </select>
       </div>
-      </div>
-      <div class="campo">
-        <label class="campo__etiqueta" for="precio_max">Precio máximo <span class="etiqueta">IA</span></label>
-        <input class="campo__input" id="precio_max" name="precio_max" type="number" value="9000000" min="0" aria-describedby="precio_max-error">
-        <span class="campo__error" id="precio_max-error"></span>
-      </div>
-      <button class="boton boton--bloque" type="submit">Guardar y buscar</button>
-      <a class="boton boton--secundario boton--bloque" href="meta-busqueda-resultados.html">Ver estadísticas de mercado</a>
+      <button class="boton" type="submit">Guardar búsqueda</button>
     </form>
   </main>
 

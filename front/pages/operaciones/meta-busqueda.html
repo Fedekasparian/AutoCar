@@ -6,7 +6,7 @@
   <title>Mis intereses - AutoCar</title>
   <meta name="description" content="Seguimiento de tus búsquedas guardadas.">
   <link rel="stylesheet" href="../../styles/estilos.css">
-  <script src="../../js/tema.js"></script><script src="../../js/barra-admin.js" defer></script><link rel="stylesheet" href="../../styles/componentes.css">
+  <script src="../../js/tema.js"></script><script src="../../js/barra-admin.js" defer></script><script type="module" src="../../js/paginas/meta-busqueda.js"></script><link rel="stylesheet" href="../../styles/componentes.css">
   <link rel="stylesheet" href="../../styles/pantallas.css">
   <link rel="stylesheet" href="../../styles/print.css" media="print">
 <link rel="stylesheet" href="../../styles/identidad.css">
@@ -27,39 +27,14 @@
     <h1>Búsquedas guardadas</h1>
   </header>
 
+  <!-- GET /api/meta-busquedas (js/paginas/meta-busqueda.js): las búsquedas guardadas con cuántos autos coinciden
+       y los avisos sin ver. Los autos salen del scraper diario (MercadoLibre, Kavak, Autocosmos) y de AutoCar. -->
   <main id="contenido" class="pantalla pantalla--compacta">
-    <p class="suave">Seguimiento de las búsquedas que marcaste. Te avisamos cuando aparece algo nuevo.</p>
+    <p class="suave">Guardás qué auto buscás y AutoCar lo sigue en MercadoLibre, Kavak, Autocosmos y AutoCar. Cada día te avisa si aparece uno nuevo o baja un precio.</p>
     <a class="boton boton--bloque" href="meta-busqueda-nueva.html">Nueva búsqueda</a>
-    <ul class="pila" role="list">
-      <li>
-        <a class="recuadro fila" href="meta-busqueda-resultados.html">
-          <span class="fila__cuerpo">
-            <span class="fila__titulo">Toyota Corolla · hasta $9.000.000</span><br>
-            <span class="fila__meta">▼ Precio promedio bajó 3 % esta semana · 4 coincidencias nuevas</span>
-          </span>
-          <span aria-hidden="true">›</span>
-        </a>
-      </li>
-      <li>
-        <a class="recuadro fila" href="meta-busqueda-resultados.html">
-          <span class="fila__cuerpo">
-            <span class="fila__titulo">Ford Ranger 2018-2022</span><br>
-            <span class="fila__meta">▲ Precio promedio subió 1,5 % este mes · 2 coincidencias nuevas</span>
-          </span>
-          <span aria-hidden="true">›</span>
-        </a>
-      </li>
-      <li>
-        <a class="recuadro fila" href="meta-busqueda-resultados.html">
-          <span class="fila__cuerpo">
-            <span class="fila__titulo">Cualquier SUV · hasta $12.000.000</span><br>
-            <span class="fila__meta">— Sin cambios significativos</span>
-          </span>
-          <span aria-hidden="true">›</span>
-        </a>
-      </li>
-    </ul>
-    <!-- Sólo para planes Meta-searching y Ambas -->
+    <p class="recuadro" id="aviso" role="status" hidden></p>
+    <ul class="pila" role="list" id="lista"></ul>
+    <div class="estado" id="estado"></div>
   </main>
 
 </body>
