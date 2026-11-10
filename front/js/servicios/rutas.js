@@ -41,7 +41,6 @@ const PAGINAS = {
     'taller.html': 'pages/talleres/taller.html',
     'talleres-adherirse.html': 'pages/talleres/talleres-adherirse.html',
     'talleres.html': 'pages/talleres/talleres.html',
-    'tasacion.html': 'pages/vehiculos/tasacion.html',
     'vehiculo.html': 'pages/vehiculos/vehiculo.html',
     'verificacion.html': 'pages/talleres/verificacion.html',
     'verificar-vehiculo.html': 'pages/talleres/verificar-vehiculo.html',
