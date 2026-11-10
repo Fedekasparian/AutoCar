@@ -259,3 +259,13 @@
 .conversacion-panel #chat-estado:not([hidden]) { padding:40px 28px; }
 @media(max-width:767px) { .inbox__item .sin-foto { width:60px; height:60px; } }
 .inbox__item[aria-current=page] .sin-foto { background:var(--marca-blanco); }
+
+/* Chat: la foto de la persona (o su inicial) es un círculo; las reglas de arriba eran para la foto del auto */
+.inbox__item .avatar,
+.conversacion-panel__cabecera #chat-foto.avatar {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    object-fit: cover;
+    background: var(--marca-tenue);
+}
