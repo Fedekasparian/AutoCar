@@ -14,7 +14,13 @@ function mostrar(usuario) {
     // El panel lo ven el admin y el moderador (cada sección según sus permisos)
     document.getElementById('enlace-admin').hidden = !sesion.vePanel();
     // Los mecánicos de la red (rol mecanico) entran a su panel desde acá
-    document.getElementById('enlace-taller').hidden = !sesion.puede('verificaciones.realizar');
+    document.getElementById('enlace-taller').hidden = usuario.rol !== 'mecanico';
+    // El equipo y los talleres no compran ni venden: sin favoritos, publicaciones ni inspecciones pedidas
+    const compra = usuario.rol === 'usuario';
+    ['favoritos.html', 'mis-publicaciones.html', 'mis-inspecciones.html'].forEach((pagina) => {
+        const fila = document.querySelector(`.lista-filas a[href$="${pagina}"]`)?.closest('li');
+        if (fila) fila.hidden = !compra;
+    });
     // Los planes no aplican para el admin: tiene siempre el mejor incluido
     const plan = sesion.planIncluido();
     if (plan) {
@@ -108,7 +114,7 @@ document.getElementById('salir').addEventListener('click', async () => {
 });
 
 if (sesion.requerirLogin()) {
-    contar();
+    if (sesion.compraYVende()) contar();
     // Primero lo guardado (se ve al instante) y después lo actualizado del servidor, por si cambió el rol.
     mostrar(sesion.usuario());
     auth.me()

@@ -52,6 +52,9 @@ export const csrf = () => leer()?.csrf || null;
 export const usuario = () => leer()?.usuario || null;
 export const iniciada = () => leer() !== null;
 export const esAdmin = () => usuario()?.rol === 'admin';
+// Comprar y vender es de las cuentas personales: el equipo (admin, moderador) y los talleres no (el back da 403).
+// Sin sesión cuenta como que sí: los botones se ven y piden ingresar.
+export const compraYVende = () => !iniciada() || usuario()?.rol === 'usuario';
 // Permisos del rol (vienen en el usuario del login y de /api/me), p. ej. puede('vehiculos.moderar').
 // Sólo sirve para mostrar u ocultar cosas: el back vuelve a controlar el permiso en cada pedido.
 export const puede = (permiso) => (usuario()?.permisos || []).includes(permiso);

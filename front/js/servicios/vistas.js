@@ -19,8 +19,10 @@ export function el(etiqueta, atributos = {}, ...hijos) {
 // Foto del vehículo o el recuadro gris de "sin foto" del maquetado.
 export function imagenVehiculo(v, clase) {
     const titulo = formato.titulo(v);
-    if (!v.imagen_url) return el('div', { class: clase, role: 'img', 'aria-label': `${titulo}, sin foto` });
-    const img = el('img', { class: clase, src: v.imagen_url, alt: titulo, loading: 'lazy' });
+    // La foto subida (v.foto, ruta de la API); imagen_url queda para datos viejos que la tengan
+    const src = v.foto ? API_URL + v.foto : v.imagen_url;
+    if (!src) return el('div', { class: clase, role: 'img', 'aria-label': `${titulo}, sin foto` });
+    const img = el('img', { class: clase, src, alt: titulo, loading: 'lazy' });
     // Si la URL no carga, queda el fondo gris en lugar de la imagen rota.
     img.addEventListener('error', () => img.replaceWith(
         el('div', { class: clase, role: 'img', 'aria-label': `${titulo}, sin foto` })));

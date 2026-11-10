@@ -52,14 +52,16 @@ function mostrar(v) {
         $('vehiculo-descripcion').hidden = false;
     }
     // "Mandale un mecánico": el link de esta publicación ya lleva el id, el back completa los datos del auto
-    if (v.estado === 'disponible') {
+    if (v.estado === 'disponible' && sesion.compraYVende()) {
         const aviso = ruta(`vehiculo.html?id=${v.id}`);
         $('vehiculo-mecanico').href = ruta(`pedir-inspeccion.html?url=${encodeURIComponent(aviso)}`);
         $('vehiculo-mecanico').hidden = false;
         $('vehiculo-mecanico-ayuda').hidden = false;
     }
-    if (v.estado === 'disponible') $('vehiculo-consultar').hidden = false;
-    if (v.estado === 'disponible') mostrarFavorito();
+    if (v.estado === 'disponible' && sesion.compraYVende()) {
+        $('vehiculo-consultar').hidden = false;
+        mostrarFavorito();
+    }
     if (v.estado === 'disponible') mostrarComparacion(v.id);
 
     $('vehiculo-reportar').href = ruta(`reportar.html?vehiculo=${v.id}`);
