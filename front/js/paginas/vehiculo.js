@@ -60,6 +60,7 @@ function mostrar(v) {
     }
     if (v.estado === 'disponible' && sesion.compraYVende()) {
         $('vehiculo-consultar').hidden = false;
+        $('vehiculo-canje').hidden = false;
         mostrarFavorito();
     }
     if (v.estado === 'disponible') mostrarComparacion(v.id);
