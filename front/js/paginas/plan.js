@@ -13,7 +13,7 @@ if (plan) {
         const recuadro = actual.closest('section');
         recuadro.querySelectorAll('.cupo__texto, progress').forEach((n) => n.remove());
         recuadro.querySelector('.campo__ayuda').textContent =
-            `Incluido por ser administrador: anuncios ${plan.anuncios.toLowerCase()}, tasación con IA, canjes, `
+            `Incluido por ser administrador: anuncios ${plan.anuncios.toLowerCase()}, comparador de precios, canjes, `
             + `meta-búsqueda y ${plan.descuento} de descuento en talleres. No se cobra.`;
         document.querySelector('form[action="/cuenta/plan"]')?.remove();
     }
