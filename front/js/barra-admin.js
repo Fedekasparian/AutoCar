@@ -1,11 +1,11 @@
-// Acceso al panel de administración desde cualquier pantalla: si el usuario tiene algún permiso del panel
-// (admin o moderador), agrega "Admin" a la barra de navegación y, en el inicio, un acceso directo arriba.
-// Es un script clásico (como tema.js) para cargarlo igual en todas las páginas. Sólo muestra u oculta:
-// el back vuelve a controlar cada permiso en cada pedido.
+// Barra de navegación según el rol. Es un script clásico (como tema.js) para cargarlo igual en todas las páginas.
+// Sólo muestra u oculta: el back vuelve a controlar cada permiso en cada pedido.
+//   usuario   → la barra del HTML: Explorar · Búsquedas · Publicar · Mensajes · Cuenta
+//   moderador → Explorar · Moderar · Reportes · Reclamos · Cuenta
+//   admin     → Moderar · Usuarios · Estadísticas · Panel · Cuenta (talleres, reportes, reclamos y contacto, en el Panel)
+//   mecanico  → Explorar · Mi taller · Cuenta
+// Las cuentas del equipo y las de los talleres no compran ni venden: no ven Búsquedas, Publicar ni Mensajes.
 (() => {
-    const PERMISOS_PANEL = ['usuarios.ver', 'vehiculos.moderar', 'vehiculos.gestionar', 'metricas.ver', 'reclamos.resolver'];
-    const panel = new URL('../pages/admin/admin.html', document.currentScript.src).href;
-
     let usuario = null;
     try {
         const guardada = JSON.parse(sessionStorage.getItem('autocar.sesion'));
@@ -13,8 +13,18 @@
     } catch {
         // Sin almacenamiento: no hay sesión que mirar.
     }
-    const permisos = usuario?.permisos || [];
-    if (!PERMISOS_PANEL.some((p) => permisos.includes(p))) return;
+    const rol = usuario?.rol;
+    if (!['admin', 'moderador', 'mecanico'].includes(rol)) return;
+
+    const base = document.currentScript.src;
+    const url = (ruta) => new URL(`../pages/${ruta}`, base).href;
+    const ITEMS = {
+        moderador: [['Explorar', 'info/home.html'], ['Moderar', 'admin/admin-moderar.html'],
+            ['Reportes', 'admin/admin-soporte.html'], ['Reclamos', 'admin/admin-reclamos.html']],
+        admin: [['Moderar', 'admin/admin-moderar.html'], ['Usuarios', 'admin/admin-usuarios.html'],
+            ['Estadísticas', 'admin/admin-metricas.html'], ['Panel', 'admin/admin.html']],
+        mecanico: [['Explorar', 'info/home.html'], ['Mi taller', 'talleres/taller.html']],
+    }[rol];
 
     // Ícono de escudo, armado con el DOM (en el proyecto no se usa innerHTML)
     function icono() {
@@ -32,50 +42,40 @@
         return svg;
     }
 
+    function item(texto, href) {
+        const li = document.createElement('li');
+        const a = document.createElement('a');
+        a.className = 'barra__enlace';
+        a.href = href;
+        if (new URL(href).pathname === window.location.pathname) a.setAttribute('aria-current', 'page');
+        const caja = document.createElement('span');
+        caja.className = 'barra__icono';
+        caja.append(icono());
+        const etiqueta = document.createElement('span');
+        etiqueta.textContent = texto;
+        a.append(caja, etiqueta);
+        li.append(a);
+        return li;
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
         const lista = document.querySelector('.barra__lista');
         if (lista) {
-            const enAdmin = window.location.pathname.includes('/pages/admin/');
-            const item = document.createElement('li');
-            const enlace = document.createElement('a');
-            enlace.className = 'barra__enlace';
-            enlace.href = panel;
-            if (enAdmin) enlace.setAttribute('aria-current', 'page');
-            const caja = document.createElement('span');
-            caja.className = 'barra__icono';
-            caja.append(icono());
-            const texto = document.createElement('span');
-            texto.textContent = 'Admin';
-            enlace.append(caja, texto);
-            item.append(enlace);
-            lista.append(item);
+            // Queda solo "Cuenta" de la barra original; el resto lo pone el rol
+            const cuenta = Array.from(lista.children).find((li) => li.querySelector('a[href$="cuenta.html"]'));
+            lista.replaceChildren(...ITEMS.map(([texto, ruta]) => item(texto, url(ruta))), ...(cuenta ? [cuenta] : []));
+            if (lista.querySelectorAll('[aria-current="page"]').length > 1 && cuenta) {
+                cuenta.querySelector('a').removeAttribute('aria-current');
+            }
             lista.classList.add('barra__lista--admin');
-            // En el panel, "Cuenta" deja de figurar como la sección actual
-            if (enAdmin) lista.querySelectorAll('[aria-current="page"]').forEach((a) => a !== enlace && a.removeAttribute('aria-current'));
         }
 
-        // Portada (index.html): enlace en el menú de arriba, antes de "Ingresar"
+        // Portada (index.html): el acceso a lo del rol en el menú de arriba, antes de "Ingresar"
         document.querySelectorAll('.marca-nav nav').forEach((nav) => {
             const enlace = document.createElement('a');
-            enlace.href = panel;
-            enlace.textContent = 'Panel admin';
+            enlace.href = url(rol === 'mecanico' ? 'talleres/taller.html' : 'admin/admin.html');
+            enlace.textContent = rol === 'mecanico' ? 'Mi taller' : 'Panel';
             nav.insertBefore(enlace, nav.querySelector('.nav-ingreso'));
         });
-
-        // Inicio: acceso directo al panel antes del buscador
-        const main = document.querySelector('.vista-home main');
-        if (main) {
-            const acceso = document.createElement('a');
-            acceso.className = 'acceso-admin';
-            acceso.href = panel;
-            const titulo = document.createElement('strong');
-            titulo.textContent = 'Panel de administración';
-            const meta = document.createElement('span');
-            meta.textContent = permisos.includes('usuarios.ver')
-                ? 'Usuarios, moderación, catálogo y métricas'
-                : 'Moderar publicaciones';
-            acceso.append(titulo, meta);
-            main.prepend(acceso);
-        }
     });
 })();
