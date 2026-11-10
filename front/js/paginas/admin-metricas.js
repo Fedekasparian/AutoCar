@@ -55,9 +55,17 @@ function mostrar(m) {
         tarjeta(n(c.conversaciones_30d), 'Nuevas (30 días)'),
         tarjeta(n(c.mensajes_30d), 'Mensajes (30 días)'));
 
-    document.getElementById('ganancias').textContent = m.ganancias.disponible
-        ? formato.precio(m.ganancias.monto)
-        : m.ganancias.motivo;
+    // Lo que dejan las inspecciones (23 % para AutoCar, un tercio de eso al fondo de garantía). Pago simulado.
+    const g = m.ganancias;
+    const firmadas = g.inspecciones?.firmada || 0;
+    llenar('tarjetas-ganancias',
+        tarjeta(formato.precio(g.autocar), 'Ganancia de AutoCar'),
+        tarjeta(formato.precio(g.autocar_30d), 'Ganancia (30 días)'),
+        tarjeta(formato.precio(g.facturado), `Facturado (${n(firmadas)} firmadas)`),
+        tarjeta(formato.precio(g.mecanicos), 'Pagado a mecánicos'),
+        tarjeta(formato.precio(g.fondo.disponible), `Fondo de garantía (usado ${formato.precio(g.fondo.usado)})`),
+        tarjeta(formato.precio(g.retenido), 'Retenido (en curso)'));
+    document.getElementById('ganancias').textContent = g.aclaracion;
     document.getElementById('generado').textContent =
         `Datos al ${new Date(m.generado).toLocaleString('es-AR')}.`;
 }
