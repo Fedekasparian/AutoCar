@@ -13,7 +13,8 @@ const params = new URLSearchParams(window.location.search);
 const id = params.get('id');
 const $ = (idElemento) => document.getElementById(idElemento);
 
-const ETIQUETAS = { buen_precio: 'Buen precio', en_precio: 'En precio', caro: 'Caro' };
+// Valores de Comparables::etiqueta() del back (distintos de los del comparador de una publicación)
+const ETIQUETAS = { barato: 'Buen precio', normal: 'En precio', caro: 'Caro' };
 const dolares = new Intl.NumberFormat('es-AR', { maximumFractionDigits: 0 });
 
 function precio(a) {
@@ -56,9 +57,11 @@ function mostrar(r) {
     $('titulo').textContent = criterios(b);
     document.title = `${b.marca} ${b.modelo} - AutoCar`;
 
-    const ref = r.referencia.find((g) => g.moneda === 'ARS' && g.suficiente);
+    // La referencia en pesos del sitio con más autos (cada sitio trae la suya)
+    const ref = r.referencia.filter((g) => g.moneda === 'ARS' && g.suficiente)
+        .sort((a, b) => b.cantidad - a.cantidad)[0];
     $('referencia').textContent = ref
-        ? `Precio típico: ${formato.precio(ref.mediana)} (la mitad de los autos está entre ${formato.precio(ref.p25)} y ${formato.precio(ref.p75)}).`
+        ? `Precio típico en ${insp.fuente(ref.fuente)}: ${formato.precio(ref.mediana)} (la mitad de ${ref.cantidad} autos está entre ${formato.precio(ref.p25)} y ${formato.precio(ref.p75)}).`
         : 'Todavía no hay suficientes autos para calcular un precio típico.';
     const n = r.novedades;
     $('novedades').textContent = n && n.disponible
