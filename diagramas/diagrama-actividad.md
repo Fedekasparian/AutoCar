@@ -290,7 +290,7 @@ La baja es lógica para no romper las conversaciones y propuestas que referencia
 
 ## 5. Moderación y ABM del administrador
 
-`admin.html`, `admin-vehiculos.html`, `admin-vehiculo.html` → `/api/admin/vehiculos…` (guard `admin`: el rol se consulta en la base en cada pedido)
+`admin.html`, `admin-vehiculos.html` → `/api/admin/vehiculos…` (guard `admin`: el rol se consulta en la base en cada pedido)
 
 ```mermaid
 flowchart TD

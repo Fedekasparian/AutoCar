@@ -5,7 +5,6 @@ import { API_URL } from '../api/config.js';
 import * as formato from '../servicios/formato.js';
 import * as sesion from '../servicios/sesion.js';
 import * as vistas from '../servicios/vistas.js';
-import { ruta } from '../servicios/rutas.js';
 
 const { el } = vistas;
 const params = new URLSearchParams(window.location.search);
@@ -87,10 +86,8 @@ function tarjeta(v, detalle) {
 
     return el('li', { class: 'propuesta pila' },
         el('p', {},
-            // El moderador no edita el catálogo: el enlace a editar sólo aparece si tiene ese permiso
-            sesion.puede('vehiculos.gestionar')
-                ? el('a', { href: ruta(`admin-vehiculo.html?id=${v.id}`) }, el('strong', {}, formato.titulo(v)))
-                : el('strong', {}, formato.titulo(v)),
+            // Nadie del panel edita: si algo está mal, se rechaza con un motivo y lo corrige el dueño
+            el('strong', {}, formato.titulo(v)),
             ' · ', v.precio === null ? 'sin precio' : formato.precio(v.precio), el('br'),
             el('span', { class: 'fila__meta' }, [
                 v.kilometraje === null ? null : formato.km(v.kilometraje),

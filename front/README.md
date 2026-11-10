@@ -30,7 +30,6 @@ El back es una API JSON en PHP ([AutoCarBackend](https://github.com/MateoPonti/A
 | `cuenta.html` | `GET /api/me` | Datos del usuario, enlace de administración (sólo admin) y Salir |
 | `admin.html` | — | Panel de administración (sólo admin) |
 | `admin-vehiculos.html` | `GET /api/admin/vehiculos`, `DELETE /api/admin/vehiculos/{id}` | Listado con vendidos, editar y eliminar |
-| `admin-vehiculo.html` | `POST /api/admin/vehiculos` · `?id=N`: `PUT /api/admin/vehiculos/{id}` | Alta y edición de un vehículo |
 | `pedir-inspeccion.html` | `GET /api/mecanicos`, `POST /api/inspecciones` | "Mandale un mecánico": link del aviso (llega con `?url=` desde el detalle), ranking de mecánicos por localidad, desglose del precio y confirmar (pago simulado) |
 | `mis-inspecciones.html` | `GET /api/mis-inspecciones` | Inspecciones pedidas, con el estado y el paso siguiente |
 | `verificacion.html?id=N` | `GET /api/inspecciones/{id}`, `POST .../cancelar`, `POST .../reclamo` | Detalle para el comprador: turno, cancelar mientras está pedida, informe firmado, trámites para pedir antes de pagar y reclamo dentro de los 15 días |
