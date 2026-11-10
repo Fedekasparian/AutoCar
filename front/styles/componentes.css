@@ -666,5 +666,31 @@ textarea.campo__input{
     vertical-align: middle;
     flex-shrink: 0;
 }
-.avatar--chico{ width: 28px; height: 28px; font-size: var(--tam-xs); margin-right: var(--esp-2); }
-.avatar--grande{ width: 72px; height: 72px; font-size: var(--tam-lg, 1.5rem); }
+.avatar--chat{ width: 56px; height: 56px; font-size: var(--tam-lg, 1.25rem); }
+.avatar--grande{ width: 112px; height: 112px; font-size: 2.5rem; }
+
+/* Mi cuenta: la foto es un botón; al tocarla se elige una nueva */
+.perfil-foto{
+    position: relative;
+    display: inline-block;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: none;
+    cursor: pointer;
+}
+.perfil-foto__editar{
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    display: grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    border: 2px solid var(--color-fondo, #fff);
+    border-radius: 50%;
+    background: var(--marca-tinta, #222);
+    color: #fff;
+    font-size: 16px;
+}
+.perfil-foto:focus-visible{ outline: 3px solid var(--marca-tinta, #222); outline-offset: 3px; }

@@ -31,7 +31,13 @@
 
   <main id="contenido" class="pantalla cuenta-layout">
     <aside class="cuenta-resumen"><section class="recuadro" aria-labelledby="usuario-nombre">
-      <span class="perfil-icono" id="usuario-avatar" aria-hidden="true"><svg width="22" height="22" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"></circle><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"></path></svg></span><h2 id="usuario-nombre"> </h2>
+      <!-- Foto de perfil (opcional): se toca para elegir una nueva y se sube sola (POST /api/me/foto) -->
+      <button class="perfil-foto" type="button" id="cambiar-foto" aria-label="Cambiar foto de perfil">
+        <span id="usuario-avatar"></span><span class="perfil-foto__editar" aria-hidden="true">✎</span>
+      </button>
+      <input id="foto" type="file" accept="image/jpeg,image/png,image/webp" hidden>
+      <p><button class="boton-link" type="button" id="quitar-foto" hidden>Quitar foto</button></p>
+      <p class="campo__error" id="foto-error" role="alert"></p><h2 id="usuario-nombre"> </h2>
       <p class="campo__ayuda" id="usuario-email"></p>
     </section>
     <a class="boton boton--secundario boton--bloque" id="enlace-admin" href="../admin/admin.html" hidden>Panel de administración</a>
@@ -84,8 +90,7 @@
         </a>
       </li>
     </ul>
-    <!-- PUT /api/me (nombre) y POST/DELETE /api/me/foto (foto de perfil, opcional): js/paginas/cuenta.js.
-         La foto se ve en el detalle de tus publicaciones y en el chat. -->
+    <!-- PUT /api/me (nombre): js/paginas/cuenta.js. La foto se cambia tocándola, arriba. -->
     <form class="formulario" id="form-perfil" novalidate>
       <h2 class="titulo-seccion">Datos personales</h2>
       <p class="formulario__alerta" role="alert" tabindex="-1"></p>
@@ -96,20 +101,6 @@
         <span class="campo__error" id="nombre-error"></span>
       </div>
       <button class="boton" type="submit">Guardar cambios</button>
-    </form>
-    <form class="formulario" id="form-foto" novalidate>
-      <h2 class="titulo-seccion">Foto de perfil <span class="suave">(opcional)</span></h2>
-      <p class="formulario__alerta" role="alert" tabindex="-1"></p>
-      <div class="campo">
-        <label class="campo__etiqueta" for="foto">Elegí una foto</label>
-        <input class="campo__input" id="foto" name="foto" type="file" accept="image/jpeg,image/png,image/webp" required aria-describedby="foto-ayuda foto-error">
-        <span class="campo__ayuda" id="foto-ayuda">JPG, PNG o WebP de hasta 2 MB. Se ve en tus publicaciones y en el chat.</span>
-        <span class="campo__error" id="foto-error"></span>
-      </div>
-      <div class="detalle__acciones">
-        <button class="boton" type="submit">Subir foto</button>
-        <button class="boton boton--secundario" type="button" id="quitar-foto" hidden>Quitar foto</button>
-      </div>
     </form>
     </section></main>
 
