@@ -4,6 +4,7 @@ import * as favoritos from '../api/favoritos.js';
 import * as publicaciones from '../api/publicaciones.js';
 import * as formularios from '../servicios/formularios.js';
 import * as vistas from '../servicios/vistas.js';
+import { achicar } from '../servicios/imagenes.js';
 import * as sesion from '../servicios/sesion.js';
 import { ruta } from '../servicios/rutas.js';
 
@@ -41,7 +42,8 @@ formularios.alEnviar(document.getElementById('form-perfil'), async (datos) => {
     actualizarUsuario(usuario, 'Guardamos tu nombre.');
 });
 
-// Foto de perfil: se toca la foto, se elige una y se sube sola. JPG, PNG o WebP de hasta 2 MB (lo controla el back).
+// Foto de perfil: se toca la foto, se elige una y se sube sola. Se recorta en un cuadrado y se achica a 512 px
+// en el navegador, así sirve cualquier foto (aunque pese varios MB).
 const entradaFoto = document.getElementById('foto');
 const errorFoto = document.getElementById('foto-error');
 document.getElementById('cambiar-foto').addEventListener('click', () => entradaFoto.click());
@@ -50,7 +52,13 @@ entradaFoto.addEventListener('change', async () => {
     if (!entradaFoto.files.length) return;
     errorFoto.textContent = '';
     const datos = new FormData();
-    datos.append('foto', entradaFoto.files[0]);
+    try {
+        datos.append('foto', await achicar(entradaFoto.files[0], { lado: 512, cuadrado: true }));
+    } catch {
+        errorFoto.textContent = 'No pudimos leer esa imagen. Elegí una foto JPG, PNG o WebP.';
+        entradaFoto.value = '';
+        return;
+    }
     try {
         const { usuario } = await auth.subirFoto(datos);
         actualizarUsuario(usuario, 'Subimos tu foto.');

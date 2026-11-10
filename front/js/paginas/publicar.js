@@ -5,6 +5,7 @@
 // En el último paso, si está completa, "Enviar a revisión" cierra el formulario y le confirma que quedó en revisión.
 import * as api from '../api/publicaciones.js';
 import * as catalogo from '../api/vehiculos.js';
+import { achicar } from '../servicios/imagenes.js';
 import { API_URL } from '../api/config.js';
 import * as formato from '../servicios/formato.js';
 import * as formularios from '../servicios/formularios.js';
@@ -123,7 +124,9 @@ async function crear(datos) {
 async function subirFotos() {
     if (!fotos.files.length) return vehiculo;
     const formData = new FormData();
-    Array.from(fotos.files).forEach((archivo) => formData.append('fotos[]', archivo));
+    // Se achican antes de subir (lado mayor 1600 px): se puede elegir una foto de cualquier tamaño
+    const achicadas = await Promise.all(Array.from(fotos.files).map((archivo) => achicar(archivo)));
+    achicadas.forEach((archivo) => formData.append('fotos[]', archivo));
     const respuesta = await api.agregarFotos(vehiculo.id, formData);
     fotos.value = '';
     fotosPrevia.replaceChildren();
@@ -250,14 +253,11 @@ let urlsPrevia = [];
 fotos.addEventListener('change', () => {
     const archivos = Array.from(fotos.files);
     const guardadas = vehiculo?.fotos?.length || 0;
-    const maximoBytes = Number(fotos.dataset.maxMb) * 1024 * 1024;
     let error = '';
     if (guardadas + archivos.length > MAX_FOTOS) {
         error = `Podés tener hasta ${MAX_FOTOS} fotos en total (ya hay ${guardadas}).`;
     } else if (archivos.some((a) => !TIPOS.includes(a.type))) {
         error = 'Sólo se aceptan fotos JPG, PNG o WebP.';
-    } else if (archivos.some((a) => a.size > maximoBytes)) {
-        error = `Cada foto puede pesar hasta ${fotos.dataset.maxMb} MB.`;
     }
     fotos.setCustomValidity(error);
     if (error) window.Validacion.mostrar(fotos, error);

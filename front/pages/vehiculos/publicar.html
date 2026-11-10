@@ -150,9 +150,9 @@
         <!-- data-max: el máximo entre todas. El back vuelve a validar cantidad, tipo y tamaño. -->
         <label class="subir-fotos" for="fotos">
           <strong>+ Agregar fotos</strong>
-          <span class="campo__ayuda" id="fotos-ayuda">Hasta 5 fotos. JPG, PNG o WebP de hasta 2 MB. Se suben al tocar "Siguiente".</span>
+          <span class="campo__ayuda" id="fotos-ayuda">Hasta 5 fotos JPG, PNG o WebP, de cualquier tamaño: se achican solas. Se suben al tocar "Siguiente".</span>
         </label>
-        <input class="solo-lector" id="fotos" name="fotos[]" type="file" accept="image/jpeg,image/png,image/webp" multiple data-max="5" data-max-mb="2" aria-describedby="fotos-ayuda fotos-error">
+        <input class="solo-lector" id="fotos" name="fotos[]" type="file" accept="image/jpeg,image/png,image/webp" multiple data-max="5" aria-describedby="fotos-ayuda fotos-error">
         <span class="campo__error" id="fotos-error"></span>
         <ul class="fotos-previa" id="fotos-previa" role="list" aria-label="Fotos elegidas, todavía sin subir"></ul>
       </fieldset>
