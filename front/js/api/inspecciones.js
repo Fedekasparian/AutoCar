@@ -2,7 +2,7 @@
 // Cada uno ve sólo sus inspecciones: el back responde 404 si la inspección es de otro.
 //
 // Una inspección llega así:
-// {id, estado: pedida|aceptada|rechazada|cancelada|firmada, fuente, url, vehiculo_id, titulo, anio, kilometraje,
+// {id, estado: pedida|aceptada|rechazada|cancelada|firmada|no_realizada, fuente, url, vehiculo_id, titulo, anio, kilometraje,
 //  precio_publicado, localidad, fecha_turno, motivo_rechazo, precio, monto_mecanico, monto_autocar, monto_fondo,
 //  pago: retenido|liberado|reembolsado, conclusion, resumen, firmado_por, taller_firma, firmada_at, huella,
 //  created_at, comprador: {id, nombre}, mecanico: {id, nombre, taller, direccion, localidad},
@@ -51,6 +51,11 @@ export const aceptar = (n, fechaTurno) =>
 // Rechazar pide el motivo; al comprador se le devuelve todo. → {inspeccion}
 export const rechazar = (n, motivo) =>
     patch(`/api/mecanico/inspecciones/${id(n)}`, { accion: 'rechazar', motivo });
+
+// Sólo desde "aceptada": fue y no la pudo hacer (por ejemplo, el vendedor no dejó revisar el auto).
+// Pide el motivo; al comprador se le devuelve todo. → {inspeccion}
+export const noRealizada = (n, motivo) =>
+    patch(`/api/mecanico/inspecciones/${id(n)}`, { accion: 'no_realizada', motivo });
 
 // Guarda el checklist (se puede a medias) mientras no esté firmada. {items, conclusion, resumen} → {inspeccion}
 export const guardarInforme = (n, informe) => put(`/api/mecanico/inspecciones/${id(n)}/informe`, informe);
