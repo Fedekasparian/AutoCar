@@ -39,15 +39,31 @@ function avisar(texto) {
 // Las fotos vienen como /api/fotos/ID: publicado, el proxy de Vercel las atiende; en local va el API_URL adelante.
 const urlFoto = (rutaFoto) => API_URL + rutaFoto;
 
-async function decidir(v, nuevoEstado, motivo, error) {
+// Mientras el servidor responde, la tarjeta queda bloqueada: los botones y el motivo no se pueden tocar y el
+// botón elegido dice "Aprobando…" o "Rechazando…". Así no se puede aprobar y rechazar la misma publicación.
+async function decidir(v, nuevoEstado, motivo, error, boton) {
     error.textContent = '';
+    const tarjeta = boton.closest('.moderar');
+    const controles = Array.from(tarjeta.querySelectorAll('button, input'));
+    const textoOriginal = boton.textContent;
+    controles.forEach((c) => { c.disabled = true; });
+    boton.textContent = nuevoEstado === 'disponible' ? 'Aprobando…' : 'Rechazando…';
+    tarjeta.classList.add('moderar--procesando');
+    tarjeta.setAttribute('aria-busy', 'true');
     try {
         await admin.moderar(v.id, nuevoEstado, motivo);
         const textos = { disponible: 'Se aprobó', rechazado: 'Se rechazó' };
         avisar(`${textos[nuevoEstado]} ${formato.titulo(v)}.`);
+        // La tarjeta se va de la cola y después se recarga la lista
+        tarjeta.classList.add('moderar--resuelta');
+        await new Promise((listo) => setTimeout(listo, matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 280));
         await cargar();
     } catch (e) {
         error.textContent = Object.values(e.errores || {})[0] || e.message;
+        controles.forEach((c) => { c.disabled = false; });
+        boton.textContent = textoOriginal;
+        tarjeta.classList.remove('moderar--procesando');
+        tarjeta.removeAttribute('aria-busy');
     }
 }
 
@@ -63,7 +79,7 @@ function tarjeta(v, detalle) {
     if (v.estado !== 'disponible' && v.completa) {
         const aprobar = el('button', { class: 'boton boton--chico', type: 'button' },
             v.estado === 'rechazado' ? 'Aprobar (revertir rechazo)' : 'Aprobar');
-        aprobar.addEventListener('click', () => decidir(v, 'disponible', null, error));
+        aprobar.addEventListener('click', () => decidir(v, 'disponible', null, error, aprobar));
         botones.push(aprobar);
     }
     if (v.estado !== 'rechazado') {
@@ -75,7 +91,7 @@ function tarjeta(v, detalle) {
                 motivo.focus();
                 return;
             }
-            decidir(v, 'rechazado', motivo.value.trim(), error);
+            decidir(v, 'rechazado', motivo.value.trim(), error, rechazar);
         });
         botones.push(rechazar);
     }

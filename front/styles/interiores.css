@@ -221,7 +221,7 @@
 .tabla--angosta { min-width:0; width:100%; }
 .opcion { display:flex; gap:8px; align-items:flex-start; }
 /* Moderar: datos a la izquierda y las fotos grandes a la derecha (en celular, las fotos abajo de los datos) */
-.moderar__cuerpo { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.1fr); gap:28px; align-items:start; }
+.moderar__cuerpo { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,400px); gap:28px; align-items:start; }
 .moderar__datos { gap:14px; min-width:0; }
 .moderar__galeria { display:grid; gap:10px; min-width:0; }
 .moderar__principal { width:100%; aspect-ratio:4/3; object-fit:cover; border-radius:12px; background:var(--marca-tenue); }
@@ -290,3 +290,9 @@
     object-fit: cover;
     background: var(--marca-tenue);
 }
+/* Moderar: mientras se procesa la decisión la tarjeta queda atenuada; al resolverse, se va */
+.moderar { transition:opacity .25s, transform .28s; }
+.moderar--procesando .moderar__cuerpo { opacity:.55; }
+.moderar--procesando .boton:disabled { cursor:progress; }
+.moderar--resuelta { opacity:0; transform:translateX(24px); }
+@media (prefers-reduced-motion: reduce) { .moderar, .moderar--resuelta { transition:none; transform:none; } }
