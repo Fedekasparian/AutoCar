@@ -80,11 +80,11 @@ function tarjeta(v, detalle) {
         botones.push(rechazar);
     }
 
-    const fotos = (detalle?.fotos || []).map((f) =>
-        el('img', { class: 'moderar__foto', src: urlFoto(f), alt: `Foto de ${formato.titulo(v)}`, loading: 'lazy' }));
     const publicador = detalle?.publicador;
 
-    return el('li', { class: 'propuesta pila' },
+    return el('li', { class: 'propuesta pila moderar' },
+        el('div', { class: 'moderar__cuerpo' },
+        el('div', { class: 'moderar__datos pila' },
         el('p', {},
             // Nadie del panel edita: si algo está mal, se rechaza con un motivo y lo corrige el dueño
             el('strong', {}, formato.titulo(v)),
@@ -101,13 +101,33 @@ function tarjeta(v, detalle) {
             ? `Publicó ${publicador.nombre} (${publicador.email})`
             : 'Cargado por el admin (sin dueño)'),
         v.descripcion ? el('p', {}, v.descripcion) : null,
-        v.motivo_rechazo ? el('p', { class: 'campo__ayuda' }, `Motivo del rechazo: ${v.motivo_rechazo}`) : null,
-        fotos.length ? el('div', { class: 'moderar__fotos' }, ...fotos) : el('p', { class: 'suave' }, 'Sin fotos.'),
+        v.motivo_rechazo ? el('p', { class: 'campo__ayuda' }, `Motivo del rechazo: ${v.motivo_rechazo}`) : null),
+        galeria(v, detalle?.fotos || [])),
         v.estado !== 'rechazado'
             ? el('div', { class: 'campo' }, el('label', { class: 'solo-lector', for: idMotivo }, 'Motivo'), motivo)
             : null,
         error,
         el('div', { class: 'hoja__acciones' }, ...botones));
+}
+
+// Fotos grandes a la derecha de los datos: una principal y las miniaturas abajo; tocar una la pasa a principal.
+function galeria(v, fotos) {
+    if (!fotos.length) return el('div', { class: 'moderar__galeria moderar__galeria--vacia' }, el('p', { class: 'suave' }, 'Sin fotos.'));
+    const titulo = formato.titulo(v);
+    const principal = el('img', { class: 'moderar__principal', src: urlFoto(fotos[0]), alt: `Foto 1 de ${titulo}`, loading: 'lazy' });
+    const miniaturas = fotos.length < 2 ? null : el('div', { class: 'moderar__miniaturas' }, ...fotos.map((f, i) => {
+        const boton = el('button', { class: 'moderar__miniatura', type: 'button', 'aria-label': `Ver la foto ${i + 1}`,
+            'aria-pressed': String(i === 0) },
+        el('img', { src: urlFoto(f), alt: '', loading: 'lazy' }));
+        boton.addEventListener('click', () => {
+            principal.src = urlFoto(f);
+            principal.alt = `Foto ${i + 1} de ${titulo}`;
+            miniaturas.querySelectorAll('[aria-pressed]').forEach((b) => b.setAttribute('aria-pressed', String(b === boton)));
+        });
+        return boton;
+    }));
+    return el('div', { class: 'moderar__galeria' }, principal, miniaturas,
+        el('p', { class: 'moderar__contador' }, fotos.length === 1 ? '1 foto' : `${fotos.length} fotos`));
 }
 
 async function cargar() {

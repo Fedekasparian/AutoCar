@@ -5,11 +5,35 @@
 (() => {
     const raiz = document.documentElement;
 
-    // 1. Barra compacta al bajar
+    // 0. Con sesión, el logo lleva a Explorar y no a la portada pública (la de "Ingresar" y "Crear cuenta").
+    //    Se lee lo mismo que barra-admin.js: los datos públicos de la sesión en sessionStorage.
+    let conSesion = false;
+    try {
+        const guardada = JSON.parse(sessionStorage.getItem('autocar.sesion'));
+        conSesion = Boolean(guardada?.usuario) && !(guardada.vence && Date.now() > guardada.vence);
+    } catch {
+        // Sin almacenamiento: no hay sesión que mirar.
+    }
+    if (conSesion) {
+        const explorar = new URL('../pages/info/home.html', document.currentScript.src).href;
+        document.querySelectorAll('a.marca, a.barra__marca').forEach((logo) => {
+            if (/\/index\.html$|\/front\/?$/.test(new URL(logo.href).pathname)) {
+                logo.href = explorar;
+                logo.setAttribute('aria-label', 'AutoCar, explorar vehículos');
+            }
+        });
+    }
+
+    // 1. Barra compacta al bajar.
+    //    Con un solo umbral la barra temblaba: al achicarse, la página sube 16 px, el scroll vuelve a cruzar
+    //    el umbral y la barra se agranda otra vez, en un ciclo. Con dos umbrales separados (se achica pasando
+    //    los 80 px y se agranda recién por debajo de los 16) ese cambio de alto ya no la hace cambiar de estado.
     let pendiente = false;
     const revisarScroll = () => {
         pendiente = false;
-        raiz.classList.toggle('con-scroll', window.scrollY > 8);
+        const y = window.scrollY;
+        if (y > 80) raiz.classList.add('con-scroll');
+        else if (y < 16) raiz.classList.remove('con-scroll');
     };
     window.addEventListener('scroll', () => {
         if (!pendiente) { pendiente = true; requestAnimationFrame(revisarScroll); }
