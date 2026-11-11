@@ -879,3 +879,11 @@ dialog.hoja::backdrop{ background: rgb(11 17 29 / .45); backdrop-filter: blur(2p
     .sitios__franja, .destacado, .resumen-busqueda, .busqueda-guardada__novedades::before{ animation: none; }
 }
 .vista-meta-busqueda .busqueda-guardada .recuadro.fila{ border: 1px solid var(--marca-linea); border-radius: 16px; }
+/* Búsqueda nueva: cuántos autos coinciden hoy (GET /api/meta-busquedas/conteo) */
+.conteo{ display: grid; gap: 2px; margin-bottom: 10px; transition: opacity var(--dur-media); }
+.conteo:empty, .conteo[hidden]{ display: none; }
+.conteo__numero{ font-family: var(--fuente-titulos); font-size: 30px; line-height: 1; color: var(--marca-tinta); }
+.conteo > span:not(.conteo__sitios){ font-weight: 600; }
+.conteo__sitios{ font-size: 13px; color: var(--marca-gris); }
+.conteo--cargando{ opacity: .45; }
+.conteo--cero .conteo__numero{ color: var(--marca-gris); }

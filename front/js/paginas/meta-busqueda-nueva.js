@@ -3,6 +3,7 @@
 import * as api from '../api/metabusqueda.js';
 import { marcasModelos } from '../api/vehiculos.js';
 import * as formularios from '../servicios/formularios.js';
+import * as insp from '../servicios/inspecciones.js';
 import * as sesion from '../servicios/sesion.js';
 import * as vistas from '../servicios/vistas.js';
 import { ruta } from '../servicios/rutas.js';
@@ -68,10 +69,42 @@ function actualizar() {
     if (d.km_max) partes.push(`con menos de ${miles.format(d.km_max)} km`);
     if (d.transmision) partes.push(d.transmision === 'manual' ? 'manual' : 'automático');
     resumen.replaceChildren(
+        cuenta,
         'Vamos a seguir cada ', vistas.el('strong', {}, `${d.marca} ${d.modelo}`),
         partes.length ? ` ${partes.join(', ')}` : '',
         ' en MercadoLibre, Kavak, Autocosmos y AutoCar, y te avisamos si aparece uno nuevo o baja un precio.');
     resumen.hidden = false;
+    pedirConteo(d);
+}
+
+// Cuántos autos coinciden hoy (GET /api/meta-busquedas/conteo), sin guardar. Se pide 400 ms después de la
+// última tecla, y si llega una respuesta vieja (de criterios que ya cambiaron) se descarta.
+const cuenta = vistas.el('span', { class: 'conteo', 'aria-live': 'polite' });
+let espera;
+let ultimoPedido = 0;
+function pedirConteo(d) {
+    clearTimeout(espera);
+    const criterios = Object.fromEntries(Object.entries(d).filter(([, v]) => v !== ''));
+    cuenta.classList.add('conteo--cargando');
+    espera = setTimeout(async () => {
+        const numero = ++ultimoPedido;
+        try {
+            const { autos, por_fuente: porFuente } = await api.conteo(criterios);
+            if (numero !== ultimoPedido) return;
+            const sitios = Object.entries(porFuente).filter(([, n]) => n > 0)
+                .map(([fuente, n]) => `${insp.fuente(fuente)} ${n}`).join(' · ');
+            cuenta.replaceChildren(
+                vistas.el('strong', { class: 'conteo__numero' }, miles.format(autos)),
+                vistas.el('span', {}, autos === 1 ? ' auto coincide hoy' : ' autos coinciden hoy'),
+                sitios ? vistas.el('span', { class: 'conteo__sitios' }, sitios) : null);
+            cuenta.classList.toggle('conteo--cero', autos === 0);
+            cuenta.classList.remove('conteo--cargando');
+            cuenta.hidden = false;
+        } catch {
+            // Sin conteo (por ejemplo, criterios a medio escribir o el back todavía sin este endpoint): solo la frase
+            if (numero === ultimoPedido) cuenta.hidden = true;
+        }
+    }, 400);
 }
 form.addEventListener('input', actualizar);
 form.addEventListener('change', actualizar);
