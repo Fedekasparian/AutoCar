@@ -73,7 +73,7 @@ function mostrar(r) {
     const res = r.resultados;
     $('resultados').replaceChildren(...res.items.map(fila));
     $('estado').replaceChildren(res.items.length ? '' : vistas.aviso('No hay autos con estos filtros.',
-        'Probá con otro sitio o sacá algún criterio de la búsqueda.'));
+        'Probá con otro sitio o sacá algún criterio. La búsqueda queda guardada: si aparece un auto, te avisamos.'));
     $('paginacion').replaceWith(Object.assign(vistas.paginacion(res.pagina, res.paginas), { id: 'paginacion' }));
     $('filtros').hidden = false;
     $('borrar').hidden = false;
