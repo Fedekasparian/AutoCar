@@ -38,15 +38,25 @@
   <main id="contenido" class="pantalla">
     <p class="campo__ayuda">Mecánicos independientes que revisan autos usados <strong>y firman el informe con su nombre</strong>. Si se les pasa algo que se veía, AutoCar te devuelve la plata, te compensa y el mecánico baja en el ranking.</p>
 
-    <div class="campo">
-      <label class="campo__etiqueta" for="filtro-localidad">Localidad del taller</label>
-      <select class="campo__input" id="filtro-localidad">
-        <option value="">Todas</option>
-      </select>
+    <div class="talleres-filtros">
+      <div class="campo">
+        <label class="campo__etiqueta" for="filtro-localidad">Localidad del taller</label>
+        <select class="campo__input" id="filtro-localidad">
+          <option value="">Todas</option>
+        </select>
+      </div>
+  
+      <div class="campo">
+        <label class="campo__etiqueta" for="orden-mecanicos">Ordenar por</label>
+        <select class="campo__input" id="orden-mecanicos">
+          <option value="puntaje">Mejor puntaje</option>
+          <option value="precio">Menor precio</option>
+          <option value="firmadas">Más inspecciones</option>
+        </select>
+      </div>
     </div>
-
     <div id="estado-mecanicos" aria-live="polite"></div>
-    <ol class="lista-filas lista-ranking" id="ranking"></ol>
+    <ol class="talleres-grilla" id="ranking"></ol>
 
     <details class="recuadro" id="como-funciona">
       <summary>Cómo se arma el ranking</summary>

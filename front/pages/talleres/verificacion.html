@@ -45,6 +45,7 @@
     <section class="recuadro pila" id="resumen" aria-labelledby="resumen-titulo" hidden>
       <h2 id="resumen-titulo" class="titulo-seccion">Estado</h2>
       <p id="resumen-estado"></p>
+      <div id="resumen-linea"></div>
       <dl class="datos" id="resumen-datos"></dl>
       <button class="boton boton--secundario" type="button" id="cancelar" hidden>Cancelar la inspección</button>
     </section>
@@ -53,8 +54,9 @@
       <h2 id="informe-titulo" class="titulo-seccion">Informe firmado</h2>
       <p id="informe-conclusion"></p>
       <p id="informe-resumen"></p>
+      <div id="informe-conteo"></div>
       <div id="informe-items"></div>
-      <dl class="datos" id="informe-firma"></dl>
+      <div class="informe-firma"><dl class="datos" id="informe-firma"></dl><div id="informe-sello"></div></div>
       <p class="campo__ayuda">El informe está firmado y cerrado: ya no se puede cambiar.</p>
     </section>
 

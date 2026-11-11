@@ -995,3 +995,133 @@ dialog.hoja::backdrop{ background: rgb(11 17 29 / .45); backdrop-filter: blur(2p
 }
 .chat__esqueleto--mio{ align-self: flex-end; border-radius: 18px 18px 6px 18px; }
 @media (prefers-reduced-motion: reduce){ .chat__esqueleto{ animation: none; } }
+
+/* =====================================================================
+   10. Inspecciones y talleres
+   ===================================================================== */
+:root{ --ok: #2f855a; --observado: #b7791f; --falla: #c53030; }
+@media (prefers-color-scheme: dark){ :root, :root[data-tema]{ --ok: #68d391; --observado: #f6ad55; --falla: #fc8181; } }
+
+/* Etiquetas de resultado y de estado del pedido */
+.resultado--ok{ --tono: var(--ok); }
+.resultado--observado{ --tono: var(--observado); }
+.resultado--falla{ --tono: var(--falla); }
+.resultado--sin{ --tono: var(--marca-gris); }
+.etiqueta.resultado{ border: 0; color: var(--tono); background: color-mix(in srgb, var(--tono) 14%, transparent); font-weight: 700; }
+.etiqueta-insp{ border: 0; font-weight: 700; color: var(--tono, var(--marca-gris)); background: color-mix(in srgb, var(--tono, var(--marca-gris)) 14%, transparent); }
+.etiqueta-insp--pedida{ --tono: #2b6cb0; }
+.etiqueta-insp--aceptada{ --tono: #6b46c1; }
+.etiqueta-insp--firmada{ --tono: var(--ok); }
+.etiqueta-insp--rechazada, .etiqueta-insp--no_realizada{ --tono: var(--falla); }
+.etiqueta-insp--cancelada{ --tono: var(--marca-gris); }
+@media (prefers-color-scheme: dark){ .etiqueta-insp--pedida{ --tono: #63b3ed; } .etiqueta-insp--aceptada{ --tono: #b794f4; } }
+
+/* El informe como un documento: hoja blanca, conclusión grande, ítems con color y el sello de la firma */
+.informe-documento{
+    position: relative; gap: 18px !important; padding: clamp(22px, 4vw, 40px) !important; border-radius: 18px !important;
+    box-shadow: var(--sombra-2); border-top: 6px solid var(--marca-acento) !important;
+}
+#informe-conclusion{ display: flex; flex-wrap: wrap; align-items: center; gap: 10px; color: var(--marca-gris); }
+.conclusion{ padding: 6px 16px; border-radius: 999px; font-family: var(--fuente-titulos); font-size: 18px; font-weight: 700; }
+.conclusion--recomendable{ color: var(--ok); background: color-mix(in srgb, var(--ok) 14%, transparent); }
+.conclusion--con_reparos{ color: var(--observado); background: color-mix(in srgb, var(--observado) 14%, transparent); }
+.conclusion--no_recomendable{ color: var(--falla); background: color-mix(in srgb, var(--falla) 14%, transparent); }
+
+.resumen-items{ display: grid; gap: 6px; }
+.resumen-items__barra{ display: flex; gap: 3px; height: 10px; border-radius: 999px; overflow: hidden; }
+.resumen-items__tramo{ flex: 1 1 0; background: var(--tono); transform-origin: left; animation: rango-crece .8s var(--curva-salida) both; }
+.resumen-items__texto{ margin: 0; font-size: 13px; font-weight: 600; color: var(--marca-gris); }
+
+.items-informe{ display: grid; gap: 8px; }
+.item-informe .fila{
+    display: grid; grid-template-columns: 32px minmax(0, 1fr) auto; align-items: center; gap: 12px;
+    padding: 12px 14px; border: 1px solid var(--marca-linea); border-left: 4px solid var(--tono, var(--marca-linea));
+    border-radius: 12px; background: var(--marca-blanco);
+}
+.item-informe--ok{ --tono: var(--ok); }
+.item-informe--observado{ --tono: var(--observado); }
+.item-informe--falla{ --tono: var(--falla); }
+.item-informe__icono{
+    display: grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; font-weight: 800; font-size: 14px;
+    color: var(--tono, var(--marca-gris)); background: color-mix(in srgb, var(--tono, var(--marca-gris)) 15%, transparent);
+}
+.item-informe .fila__cuerpo{ display: grid; gap: 2px; }
+
+.informe-firma{ display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 20px; padding-top: 16px; border-top: 1px dashed var(--marca-linea); }
+.sello{
+    display: grid; justify-items: center; gap: 2px; padding: 14px 22px; border: 3px double var(--ok); border-radius: 14px;
+    color: var(--ok); transform: rotate(-6deg); text-align: center;
+    animation: sello-entra .6s var(--curva-rebote) .2s both;
+}
+.sello__titulo{ font-family: var(--fuente-titulos); font-size: 20px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; }
+.sello__nombre{ font-size: 13px; font-weight: 700; }
+.sello__fecha{ font-size: 12px; opacity: .85; }
+@keyframes sello-entra{ from{ opacity: 0; transform: rotate(-6deg) scale(1.6); } }
+
+/* Línea de tiempo del pedido */
+.linea-tiempo{ display: flex; margin: 8px 0 0; padding: 0; list-style: none; }
+.linea-tiempo__paso{ position: relative; flex: 1; display: grid; justify-items: center; gap: 4px; text-align: center; padding-top: 2px; }
+.linea-tiempo__paso::before{
+    content: ""; position: absolute; top: 10px; right: 50%; width: 100%; height: 3px; background: var(--marca-linea); z-index: 0;
+}
+.linea-tiempo__paso:first-child::before{ display: none; }
+.linea-tiempo__paso--hecho::before, .linea-tiempo__paso--actual::before, .linea-tiempo__paso--corte::before{ background: var(--ok); }
+.linea-tiempo__paso--corte::before{ background: var(--falla); }
+.linea-tiempo__punto{
+    position: relative; z-index: 1; width: 20px; height: 20px; border-radius: 50%;
+    background: var(--marca-blanco); border: 3px solid var(--marca-linea);
+}
+.linea-tiempo__paso--hecho .linea-tiempo__punto{ background: var(--ok); border-color: var(--ok); }
+.linea-tiempo__paso--actual .linea-tiempo__punto{ border-color: var(--ok); box-shadow: 0 0 0 5px color-mix(in srgb, var(--ok) 22%, transparent); animation: estado-late 1.6s ease-in-out infinite; }
+.linea-tiempo__paso--corte .linea-tiempo__punto{ background: var(--falla); border-color: var(--falla); }
+.linea-tiempo__nombre{ font-size: 13px; font-weight: 700; color: var(--marca-tinta); }
+.linea-tiempo__paso--pendiente .linea-tiempo__nombre{ color: var(--marca-gris); font-weight: 500; }
+.linea-tiempo__paso--corte .linea-tiempo__nombre{ color: var(--falla); }
+.linea-tiempo__detalle{ font-size: 11px; color: var(--marca-gris); }
+.inspeccion-fila{ display: grid; gap: 6px; padding: 16px 18px 18px; margin-bottom: 12px; border: 1px solid var(--marca-linea); border-radius: 16px; background: var(--marca-blanco); box-shadow: var(--sombra-1); }
+.inspeccion-fila > .fila{ padding: 0; border: 0; }
+
+/* Talleres: tarjetas con estrellas, precio y datos */
+.talleres-filtros{ display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 280px)); gap: 12px; }
+.talleres-grilla{ display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; margin: 0; padding: 0; list-style: none; }
+.taller-tarjeta{
+    position: relative; display: grid; gap: 14px; align-content: start; padding: 20px; border: 1px solid var(--marca-linea);
+    border-radius: 18px; background: var(--marca-blanco); box-shadow: var(--sombra-1);
+    transition: box-shadow var(--dur-media) var(--curva-suave), transform var(--dur-media) var(--curva-suave);
+}
+.taller-tarjeta:hover{ box-shadow: var(--sombra-2); transform: translateY(-3px); }
+.taller-tarjeta--primero{ border-color: color-mix(in srgb, var(--marca-acento) 70%, var(--marca-linea)); }
+.taller-tarjeta--primero::after{
+    content: "Mejor puntaje"; position: absolute; top: -10px; right: 16px; padding: 2px 10px; border-radius: 999px;
+    background: var(--marca-acento); color: var(--sobre-acento); font-size: 11px; font-weight: 800;
+}
+.taller-tarjeta__arriba{ display: flex; align-items: center; gap: 12px; }
+.taller-tarjeta__avatar{
+    display: grid; place-items: center; flex: none; width: 48px; height: 48px; border-radius: 14px;
+    background: var(--panel-oscuro); color: var(--marca-acento); font-family: var(--fuente-titulos); font-weight: 800;
+}
+.taller-tarjeta__nombre{ margin: 0; font-size: 17px; }
+.taller-tarjeta__mecanico{ margin: 0; font-size: 13px; color: var(--marca-gris); }
+.taller-tarjeta__puntaje{ display: flex; align-items: center; gap: 8px; }
+.taller-tarjeta__puntaje strong{ font-family: var(--fuente-titulos); font-size: 18px; }
+.taller-tarjeta__nuevo{ border: 0; background: color-mix(in srgb, var(--marca-acento) 20%, transparent); color: var(--marca-tinta); font-weight: 700; }
+.estrellas{
+    --puntaje: 0; position: relative; display: inline-block; font-size: 18px; line-height: 1; letter-spacing: 2px;
+    color: var(--marca-linea);
+}
+.estrellas::before{ content: "★★★★★"; }
+.estrellas::after{
+    content: "★★★★★"; position: absolute; inset: 0; width: calc(var(--puntaje) / 5 * 100%); overflow: hidden;
+    color: #f5b301; white-space: nowrap;
+}
+.taller-tarjeta__datos{ display: grid; gap: 4px; margin: 0; padding: 0; list-style: none; font-size: 13px; color: var(--marca-gris); }
+.taller-tarjeta__datos strong{ color: var(--marca-tinta); }
+.taller-tarjeta__reclamos{ color: var(--falla); font-weight: 600; }
+.taller-tarjeta__pie{ display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-top: 14px; border-top: 1px solid var(--marca-linea); }
+.taller-tarjeta__precio{ display: grid; font-size: 12px; color: var(--marca-gris); }
+.taller-tarjeta__precio strong{ font-family: var(--fuente-titulos); font-size: 20px; color: var(--marca-tinta); }
+
+@media (prefers-reduced-motion: reduce){
+    .sello, .resumen-items__tramo, .linea-tiempo__paso--actual .linea-tiempo__punto{ animation: none; }
+    .taller-tarjeta:hover{ transform: none; }
+}

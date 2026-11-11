@@ -4,7 +4,7 @@ import * as formato from '../servicios/formato.js';
 import * as insp from '../servicios/inspecciones.js';
 import * as sesion from '../servicios/sesion.js';
 import * as vistas from '../servicios/vistas.js';
-import { etiquetaEstado, proximoPaso } from '../servicios/informe.js';
+import { etiquetaEstado, lineaDeTiempo, proximoPaso } from '../servicios/informe.js';
 import { ruta } from '../servicios/rutas.js';
 
 const { el } = vistas;
@@ -12,13 +12,14 @@ const lista = document.getElementById('lista');
 const estado = document.getElementById('estado');
 
 function fila(i) {
-    return el('li', {},
+    return el('li', { class: 'inspeccion-fila' },
         el('a', { class: 'fila', href: ruta(`verificacion.html?id=${i.id}`) },
             el('span', { class: 'fila__cuerpo' },
                 el('span', { class: 'fila__titulo' }, insp.tituloAuto(i)), el('br'),
                 el('span', { class: 'fila__meta' }, `${i.mecanico.taller || i.mecanico.nombre} · ${formato.precio(i.precio)}`), el('br'),
                 el('span', { class: 'fila__meta' }, proximoPaso(i))),
-            etiquetaEstado(i)));
+            etiquetaEstado(i)),
+        lineaDeTiempo(i));
 }
 
 async function cargar() {

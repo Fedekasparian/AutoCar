@@ -36,6 +36,7 @@ function mostrarResumen(i) {
     $('titulo').textContent = insp.tituloAuto(i);
     document.title = `${insp.tituloAuto(i)} · Inspección - AutoCar`;
     $('resumen-estado').replaceChildren(informe.etiquetaEstado(i), ' ', proximoPaso(i));
+    $('resumen-linea').replaceChildren(informe.lineaDeTiempo(i));
     $('resumen-datos').replaceChildren(...informe.filasDatos([
         ['Aviso', el('a', { href: i.url, target: '_blank', rel: 'noopener noreferrer' }, `Ver en ${insp.fuente(i.fuente)}`)],
         ['Mecánico', `${i.mecanico.nombre} · ${i.mecanico.taller || ''}`],
@@ -56,10 +57,13 @@ function mostrarInforme(i) {
     $('informe').hidden = !firmada;
     $('tramites').hidden = !firmada;
     if (!firmada) return;
-    $('informe-conclusion').replaceChildren('Conclusión: ', el('strong', {}, insp.conclusion(i.conclusion)));
+    $('informe-conclusion').replaceChildren('Conclusión del mecánico ', informe.conclusionDestacada(i));
     $('informe-resumen').textContent = i.resumen || '';
     $('informe-resumen').hidden = !i.resumen;
+    $('informe-conteo').replaceChildren(informe.resumenItems(i));
     $('informe-items').replaceChildren(informe.listaItems(i));
+    $('informe-sello').replaceChildren(informe.sello(i));
+    $('informe').classList.add('informe-documento');
     $('informe-firma').replaceChildren(...informe.datosFirma(i));
     $('tramites-lista').replaceChildren(...insp.TRAMITES.map((t) => el('li', {},
         el('a', { class: 'fila', href: t.url, target: '_blank', rel: 'noopener noreferrer' },
