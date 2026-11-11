@@ -117,6 +117,11 @@
 .vista-meta-busqueda .pantalla > .boton { justify-self:start; width:auto; }
 .vista-meta-busqueda .pila { gap:18px; }
 .vista-meta-busqueda .recuadro { border:0; border-left:3px solid var(--marca-tinta); border-radius:0; }
+/* Cada búsqueda guardada con su tachito al costado: gris, y rojo al pasar el mouse o con el teclado */
+.busqueda-guardada { display:flex; align-items:stretch; gap:8px; }
+.busqueda-guardada > .fila { flex:1; min-width:0; }
+.busqueda-guardada__borrar { flex:none; width:48px; display:grid; place-items:center; border:0; border-radius:8px; background:transparent; color:var(--color-texto-suave); cursor:pointer; transition:color .15s, background-color .15s; }
+.busqueda-guardada__borrar:hover,.busqueda-guardada__borrar:focus-visible { color:var(--color-error); background:color-mix(in srgb, var(--color-error) 10%, transparent); }
 .vista-meta-busqueda-resultados .pantalla > .recuadro { background:var(--marca-tenue); }
 /* Cada auto: si no entran al costado (celular), los botones bajan debajo del texto */
 .vista-meta-busqueda-resultados .fila { flex-wrap:wrap; }
