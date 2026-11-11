@@ -24,17 +24,13 @@ test.describe('@humo', () => {
     });
 
     // Un formulario de maqueta no manda nada (no hay ruta en el back): avisa y se queda en la página.
+    // (Contacto ya está conectado a la API: se prueba con "Cambiar de nivel" del plan, que sigue siendo maqueta.)
     test('un formulario de maqueta avisa en lugar de dar 404', async ({ page }) => {
-        await page.goto(pagina('pages/info/contacto.html'));
+        await page.goto(pagina('pages/info/plan.html'));
         const formulario = page.locator('form[data-proximamente]');
         await formulario.locator('[type="submit"]').click();
-        await expect(page.locator('#email-error')).not.toBeEmpty(); // primero valida, como siempre
-
-        await page.fill('#email', 'humo@autocar.test');
-        await page.fill('#mensaje', 'Prueba de humo: no se envía.');
-        await formulario.locator('[type="submit"]').click();
         await expect(formulario.locator('.formulario__alerta')).toContainText('todavía no está disponible');
-        await expect(page).toHaveURL(/contacto\.html$/);
+        await expect(page).toHaveURL(/plan\.html$/);
     });
 
     test('el listado de vehículos se muestra', async ({ page }) => {

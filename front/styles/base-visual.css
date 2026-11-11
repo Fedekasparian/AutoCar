@@ -57,7 +57,7 @@ h2{ letter-spacing: -.02em; }
 .boton, .campo__input, button, input, select, textarea{ font-family: inherit; }
 
 /* ---------- 3. Transiciones entre páginas ---------- */
-@view-transition{ navigation: auto; }
+/* La transición se activa desde js/tema.js, solo en Chromium (en WebKit cuelga la página al navegar). */
 ::view-transition-old(root){
     animation: var(--dur-media) var(--curva-salida) both pagina-sale;
 }
