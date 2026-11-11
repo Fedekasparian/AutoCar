@@ -364,3 +364,153 @@ dialog.hoja::backdrop{ background: rgb(11 17 29 / .45); backdrop-filter: blur(2p
     .grilla-vehiculos--entra > li, .ficha--saliendo, .chip-filtro, .ficha-favorito--late svg{ animation: none; }
     .ficha-esqueleto__imagen, .ficha-esqueleto__linea{ animation: none; }
 }
+
+/* =====================================================================
+   4. Detalle del vehículo
+   ===================================================================== */
+
+/* Galería: foto grande con flechas, contador y botón de pantalla completa */
+.vista-vehiculo .galeria__principal{ overflow: hidden; border-radius: 16px; box-shadow: var(--sombra-2); touch-action: pan-y; }
+.vista-vehiculo .galeria__imagen{ cursor: zoom-in; user-select: none; transition: opacity 120ms linear, transform var(--dur-lenta) var(--curva-suave); }
+.vista-vehiculo .galeria__principal:hover .galeria__imagen{ transform: scale(1.02); }
+.galeria__imagen--cambiando{ opacity: 0; }
+.galeria__boton{
+    position: absolute; z-index: 1; display: grid; place-items: center; width: 44px; height: 44px; padding: 0;
+    border: 0; border-radius: 50%; cursor: pointer; color: var(--marca-tinta);
+    background: rgb(255 255 255 / .86); box-shadow: var(--sombra-2);
+    backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+    transition: opacity var(--dur-media), transform var(--dur-rapida) var(--curva-rebote), background-color var(--dur-rapida);
+}
+.galeria__boton:hover{ background: #fff; transform: scale(1.06); }
+.galeria__boton:active{ transform: scale(.92); }
+.galeria__boton:focus-visible{ outline: none; box-shadow: var(--anillo-foco); }
+.galeria__boton--ampliar{ top: 14px; right: 14px; }
+.galeria__flecha{ top: 50%; margin-top: -22px; }
+.galeria__flecha--anterior{ left: 14px; }
+.galeria__flecha--siguiente{ right: 14px; }
+@media (hover: hover){
+    .galeria__flecha, .galeria__boton--ampliar{ opacity: 0; }
+    .galeria__principal:hover .galeria__boton, .galeria__boton:focus-visible{ opacity: 1; }
+}
+.vista-vehiculo .galeria__contador{
+    right: 14px; bottom: 14px; padding: 4px 12px; border-radius: 999px;
+    background: rgb(19 27 45 / .72); color: #fff; font-size: 13px; font-weight: 600; font-variant-numeric: tabular-nums;
+}
+.vista-vehiculo .galeria__miniaturas{
+    position: relative; display: flex; gap: 10px; overflow-x: auto; scroll-snap-type: x mandatory;
+    padding: 2px 2px 6px; scrollbar-width: thin;
+}
+.vista-vehiculo .galeria__miniaturas li{ flex: 0 0 96px; aspect-ratio: 4 / 3; background: none; scroll-snap-align: start; }
+.galeria__miniatura{
+    width: 100%; height: 100%; padding: 0; border: 2px solid transparent; border-radius: 10px; overflow: hidden; cursor: pointer;
+    background: var(--marca-tenue); opacity: .65;
+    transition: opacity var(--dur-rapida), border-color var(--dur-rapida), transform var(--dur-rapida) var(--curva-rebote);
+}
+.galeria__miniatura img{ display: block; width: 100%; height: 100%; object-fit: cover; }
+.galeria__miniatura:hover{ opacity: 1; transform: translateY(-2px); }
+.galeria__miniatura[aria-current="true"]{ opacity: 1; border-color: var(--marca-acento); }
+.galeria__miniatura:focus-visible{ outline: none; box-shadow: var(--anillo-foco); }
+
+/* Visor a pantalla completa */
+.visor{
+    width: 100vw; max-width: none; height: 100dvh; max-height: none; margin: 0; padding: 0; border: 0;
+    background: transparent; color: #fff; overflow: hidden;
+}
+.visor[open]{ display: grid; place-items: center; animation: visor-entra var(--dur-media) var(--curva-salida); }
+.visor::backdrop{ background: rgb(6 10 20 / .94); backdrop-filter: blur(4px); }
+.visor__imagen{ max-width: min(92vw, 1400px); max-height: 84dvh; object-fit: contain; border-radius: 10px; user-select: none; touch-action: pan-y; }
+.visor__contador{ position: absolute; top: 20px; left: 50%; transform: translateX(-50%); margin: 0; font-weight: 600; font-variant-numeric: tabular-nums; }
+.visor__boton{
+    position: absolute; display: grid; place-items: center; width: 48px; height: 48px; padding: 0; border: 0; border-radius: 50%;
+    background: rgb(255 255 255 / .12); color: #fff; cursor: pointer;
+    transition: background-color var(--dur-rapida), transform var(--dur-rapida) var(--curva-rebote);
+}
+.visor__boton:hover{ background: rgb(255 255 255 / .24); }
+.visor__boton:active{ transform: scale(.9); }
+.visor__boton:focus-visible{ outline: none; box-shadow: var(--anillo-foco); }
+.visor__cerrar{ top: 12px; right: 12px; }
+.visor__flecha{ top: 50%; margin-top: -24px; }
+.visor__flecha--anterior{ left: 16px; }
+.visor__flecha--siguiente{ right: 16px; }
+@keyframes visor-entra{ from{ opacity: 0; transform: scale(.97); } }
+@media (max-width: 767px){ .visor__flecha{ top: auto; bottom: 20px; margin: 0; } }
+
+/* Columna de datos: el precio más grande */
+.vista-vehiculo .detalle__info{ box-shadow: var(--sombra-1); }
+.vista-vehiculo .detalle__precio{ font-size: clamp(30px, 4vw, 40px); letter-spacing: -1px; line-height: 1.1; }
+
+/* Ficha técnica: casillas con ícono */
+.con-barra .datos--iconos{ display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin: 0; }
+.datos--iconos .dato{
+    display: grid; grid-template-columns: 22px minmax(0, 1fr); column-gap: 12px; align-items: center;
+    padding: 12px 14px; border-radius: 12px; background: var(--marca-papel); border: 1px solid var(--marca-linea);
+    transition: border-color var(--dur-rapida), transform var(--dur-rapida) var(--curva-suave);
+}
+.datos--iconos .dato[hidden]{ display: none; }
+.datos--iconos .dato:hover{ border-color: color-mix(in srgb, var(--marca-acento) 60%, var(--marca-linea)); transform: translateY(-1px); }
+.datos--iconos dt{ display: contents; font-size: 12px; color: var(--marca-gris); }
+.datos--iconos .dato__icono{ grid-row: 1 / 3; color: color-mix(in srgb, var(--marca-acento) 55%, var(--marca-tinta)); }
+.datos--iconos dd{ grid-column: 2; margin: 0; font-weight: 650; color: var(--marca-tinta); overflow-wrap: anywhere; }
+@media (min-width: 560px){ .con-barra .datos--iconos{ grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (min-width: 1024px){ .con-barra .datos--iconos{ grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+/* ¿Está bien el precio? Etiqueta con color y barra del mercado */
+.etiqueta--buen_precio{ background: #d6f5e3; color: #17603a; }
+.etiqueta--en_precio{ background: var(--marca-tenue); color: var(--marca-tinta); }
+.etiqueta--caro{ background: #fde3d9; color: #8a2f12; }
+.rango{ display: grid; gap: 8px; padding: 34px 4px 4px; }
+.rango[hidden]{ display: none; }
+.rango__pista{ position: relative; height: 10px; border-radius: 999px; background: var(--marca-tenue); }
+.rango__franja{
+    position: absolute; inset-block: 0; left: var(--desde); width: calc(var(--hasta) - var(--desde)); border-radius: 999px;
+    background: color-mix(in srgb, var(--marca-acento) 55%, var(--marca-tenue));
+    transform-origin: left; animation: rango-crece .8s var(--curva-salida) both;
+}
+.rango__tipico{ position: absolute; top: -4px; bottom: -4px; left: var(--tipico); width: 2px; margin-left: -1px; background: var(--marca-tinta); opacity: .5; }
+.rango__este{
+    position: absolute; top: 50%; left: var(--este); width: 18px; height: 18px; margin: -9px 0 0 -9px; border-radius: 50%;
+    background: var(--marca-tinta); border: 3px solid var(--marca-blanco); box-shadow: var(--sombra-2);
+    animation: rango-marca .9s var(--curva-rebote) .25s both;
+}
+.rango__este--buen_precio{ background: #1f8a52; }
+.rango__este--caro{ background: #c2410c; }
+.rango__globo{
+    position: absolute; bottom: 22px; left: 50%; transform: translateX(-50%); white-space: nowrap;
+    padding: 2px 8px; border-radius: 6px; background: inherit; color: #fff; font-size: 11px; font-weight: 700;
+}
+.rango__escala{ display: flex; justify-content: space-between; gap: 8px; margin: 0; font-size: 12px; color: var(--marca-gris); font-variant-numeric: tabular-nums; }
+.rango__escala span:nth-child(2){ color: var(--marca-tinta); font-weight: 600; }
+.rango__ahorro{ justify-self: start; margin: 4px 0 0; padding: 4px 12px; border-radius: 999px; background: #d6f5e3; color: #17603a; font-size: 13px; font-weight: 700; }
+@keyframes rango-crece{ from{ transform: scaleX(0); } }
+@keyframes rango-marca{ from{ left: 0; opacity: 0; } }
+
+/* Celular: barra con precio y "Consultar" arriba de las pestañas */
+.barra-accion{ display: none; }
+@media (max-width: 1023px){
+    .barra-accion{
+        position: fixed; left: 12px; right: 12px; bottom: calc(var(--alto-barra) + 16px + env(safe-area-inset-bottom)); z-index: 20;
+        display: flex; align-items: center; justify-content: space-between; gap: 12px;
+        padding: 10px 10px 10px 18px; border-radius: 18px;
+        background: color-mix(in srgb, var(--marca-blanco) 88%, transparent); border: 1px solid var(--marca-linea);
+        box-shadow: var(--sombra-3); backdrop-filter: blur(14px) saturate(1.4); -webkit-backdrop-filter: blur(14px) saturate(1.4);
+        opacity: 0; transform: translateY(24px); pointer-events: none; visibility: hidden;
+        transition: opacity var(--dur-media) var(--curva-suave), transform var(--dur-media) var(--curva-salida), visibility 0s var(--dur-media);
+    }
+    .barra-accion--visible{ opacity: 1; transform: none; pointer-events: auto; visibility: visible; transition-delay: 0s; }
+    .barra-accion__texto{ display: grid; margin: 0; min-width: 0; }
+    .barra-accion__texto strong{ font-family: var(--fuente-titulos); font-size: 19px; color: var(--marca-tinta); }
+    .barra-accion__texto span{ overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 12px; color: var(--marca-gris); }
+}
+
+@media (prefers-color-scheme: dark){
+    .galeria__boton{ background: rgb(19 27 45 / .78); color: #fff; }
+    .galeria__boton:hover{ background: rgb(19 27 45 / .95); }
+    .etiqueta--buen_precio, .rango__ahorro{ background: #12392a; color: #8ee6b4; }
+    .etiqueta--caro{ background: #47200f; color: #ffb795; }
+}
+@media (prefers-reduced-motion: reduce){
+    .rango__franja, .rango__este, .visor[open]{ animation: none; }
+    .vista-vehiculo .galeria__principal:hover .galeria__imagen{ transform: none; }
+}
+.rango__pista--este-inicio .rango__globo{ left: -4px; transform: none; }
+.rango__pista--este-fin .rango__globo{ left: auto; right: -4px; transform: none; }

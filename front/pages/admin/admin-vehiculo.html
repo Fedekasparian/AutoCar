@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vehículo · Administración - AutoCar</title>
+  <meta name="description" content="Alta o modificación de un vehículo.">
+  <link rel="stylesheet" href="../../styles/estilos.css">
+  <script src="../../js/tema.js"></script><script src="../../js/barra-admin.js" defer></script><link rel="stylesheet" href="../../styles/componentes.css">
+  <link rel="stylesheet" href="../../styles/pantallas.css">
+  <link rel="stylesheet" href="../../styles/print.css" media="print">
+  <script src="../../js/validacion.js" defer></script>
+  <script type="module" src="../../js/paginas/admin-vehiculo.js"></script>
+<link rel="stylesheet" href="../../styles/identidad.css">
+<link rel="stylesheet" href="../../styles/portada.css">
+<link rel="stylesheet" href="../../styles/interiores.css"></head>
+<body class="con-barra vista-admin-vehiculo">
+
+  <a class="saltar" href="#contenido">Saltar al contenido</a>
+
+  <nav class="barra" aria-label="Navegación principal"><a class="barra__marca" href="../../index.html" aria-label="AutoCar, inicio"><span class="marca__simbolo" aria-hidden="true"></span>AutoCar</a><ul class="barra__lista">
+<li><a class="barra__enlace" href="../info/home.html"><span class="barra__icono"><svg width="22" height="22" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-7 9 7M5 10v10h14V10"></path></svg></span><span>Explorar</span></a></li>
+<li><a class="barra__enlace" href="../operaciones/meta-busqueda.html"><span class="barra__icono"><svg width="22" height="22" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"></circle><path d="m16 16 5 5"></path></svg></span><span>Búsquedas</span></a></li>
+<li><a class="barra__enlace" href="../vehiculos/mis-publicaciones.html"><span class="barra__icono"><svg width="22" height="22" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v16M4 12h16"></path></svg></span><span>Publicar</span></a></li>
+<li><a class="barra__enlace" href="../operaciones/mensajes.html"><span class="barra__icono"><svg width="22" height="22" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z"></path></svg></span><span>Mensajes</span></a></li>
+<li><a class="barra__enlace" href="../auth/cuenta.html" aria-current="page"><span class="barra__icono"><svg width="22" height="22" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"></circle><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"></path></svg></span><span>Cuenta</span></a></li>
+</ul></nav><header class="encabezado">
+    <a class="encabezado__volver" href="admin-vehiculos.html" aria-label="Volver">
+      <svg width="22" height="22" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12H4M4 12l7-7M4 12l7 7"></path></svg>
+    </a>
+    <h1 id="titulo">Nuevo vehículo</h1>
+  </header>
+
+  <!-- Sólo rol admin. admin-vehiculo.html = alta (POST /api/admin/vehiculos);
+       admin-vehiculo.html?id=N = edición (PUT /api/admin/vehiculos/N, con el objeto completo).
+       Las reglas de los campos son las mismas que valida el back (Vehiculo::validar). -->
+  <main id="contenido" class="pantalla">
+    <div class="estado" id="estado"></div>
+
+    <form class="formulario" id="form-vehiculo" novalidate>
+      <p class="formulario__alerta" role="alert" tabindex="-1"></p>
+
+      <div class="campos-fila">
+        <div class="campo">
+          <label class="campo__etiqueta" for="marca">Marca</label>
+          <select class="campo__input" id="marca" name="marca" required aria-describedby="marca-error">
+            <option value="">Seleccionar marca</option>
+            <option>Chevrolet</option>
+            <option>Fiat</option>
+            <option>Ford</option>
+            <option>Honda</option>
+            <option>Nissan</option>
+            <option>Peugeot</option>
+            <option>Renault</option>
+            <option>Toyota</option>
+            <option>Volkswagen</option>
+          </select>
+          <span class="campo__error" id="marca-error"></span>
+        </div>
+        <div class="campo">
+          <label class="campo__etiqueta" for="modelo">Modelo</label>
+          <select class="campo__input" id="modelo" name="modelo" required aria-describedby="modelo-error">
+            <option value="">Seleccionar modelo</option>
+            <optgroup label="Chevrolet">
+              <option>Cruze</option>
+              <option>Onix</option>
+              <option>Tracker</option>
+            </optgroup>
+            <optgroup label="Fiat">
+              <option>Argo</option>
+              <option>Cronos</option>
+              <option>Strada</option>
+            </optgroup>
+            <optgroup label="Ford">
+              <option>EcoSport</option>
+              <option>Fiesta</option>
+              <option>Ka</option>
+              <option>Ranger</option>
+            </optgroup>
+            <optgroup label="Honda">
+              <option>Fit</option>
+            </optgroup>
+            <optgroup label="Nissan">
+              <option>Leaf</option>
+            </optgroup>
+            <optgroup label="Peugeot">
+              <option>2008</option>
+              <option>208</option>
+              <option>Partner</option>
+            </optgroup>
+            <optgroup label="Renault">
+              <option>Duster</option>
+              <option>Kangoo</option>
+              <option>Kwid</option>
+              <option>Sandero</option>
+            </optgroup>
+            <optgroup label="Toyota">
+              <option>Corolla</option>
+              <option>Corolla Cross</option>
+              <option>Etios</option>
+              <option>Hilux</option>
+            </optgroup>
+            <optgroup label="Volkswagen">
+              <option>Amarok</option>
+              <option>Gol</option>
+              <option>Gol Trend</option>
+              <option>Polo</option>
+            </optgroup>
+          </select>
+          <span class="campo__error" id="modelo-error"></span>
+        </div>
+      </div>
+
+      <!-- Misma lista que publicar.html. El modelo va sin la versión, que va en su propio campo. -->
+      <div class="campo">
+        <label class="campo__etiqueta" for="version">Versión <span class="suave">(opcional)</span></label>
+        <input class="campo__input" id="version" name="version" maxlength="60" placeholder="1.8 XEI">
+      </div>
+
+      <div class="campos-fila">
+        <div class="campo">
+          <label class="campo__etiqueta" for="anio">Año</label>
+          <input class="campo__input" id="anio" name="anio" type="number" inputmode="numeric" min="1950" step="1" required aria-describedby="anio-error">
+          <span class="campo__error" id="anio-error"></span>
+        </div>
+        <div class="campo">
+          <label class="campo__etiqueta" for="kilometraje">Kilometraje</label>
+          <input class="campo__input" id="kilometraje" name="kilometraje" type="number" inputmode="numeric" min="0" max="2000000" step="1" required aria-describedby="kilometraje-error">
+          <span class="campo__error" id="kilometraje-error"></span>
+        </div>
+      </div>
+
+      <div class="campo">
+        <label class="campo__etiqueta" for="precio">Precio ($)</label>
+        <input class="campo__input" id="precio" name="precio" type="number" inputmode="decimal" min="0.01" max="999999999.99" step="0.01" required aria-describedby="precio-error">
+        <span class="campo__error" id="precio-error"></span>
+      </div>
+
+      <div class="campos-fila">
+        <div class="campo">
+          <label class="campo__etiqueta" for="combustible">Combustible</label>
+          <select class="campo__input" id="combustible" name="combustible" required aria-describedby="combustible-error">
+            <option value="">Elegí</option>
+            <option value="nafta">Nafta</option>
+            <option value="diesel">Diésel</option>
+            <option value="gnc">GNC</option>
+            <option value="hibrido">Híbrido</option>
+            <option value="electrico">Eléctrico</option>
+          </select>
+          <span class="campo__error" id="combustible-error"></span>
+        </div>
+        <div class="campo">
+          <label class="campo__etiqueta" for="transmision">Transmisión</label>
+          <select class="campo__input" id="transmision" name="transmision" required aria-describedby="transmision-error">
+            <option value="">Elegí</option>
+            <option value="manual">Manual</option>
+            <option value="automatica">Automática</option>
+          </select>
+          <span class="campo__error" id="transmision-error"></span>
+        </div>
+      </div>
+
+      <div class="campo">
+        <label class="campo__etiqueta" for="estado-vehiculo">Estado</label>
+        <select class="campo__input" id="estado-vehiculo" name="estado" aria-describedby="estado-vehiculo-error">
+          <option value="disponible">Disponible</option>
+          <option value="pendiente">Pendiente (en revisión)</option>
+          <option value="rechazado">Rechazado</option>
+          <option value="vendido">Vendido</option>
+        </select>
+        <span class="campo__error" id="estado-vehiculo-error"></span>
+      </div>
+
+      <div class="campo">
+        <label class="campo__etiqueta" for="imagen_url">URL de la foto (opcional)</label>
+        <input class="campo__input" id="imagen_url" name="imagen_url" type="url" maxlength="255" placeholder="https://…" aria-describedby="imagen_url-error">
+        <span class="campo__error" id="imagen_url-error"></span>
+      </div>
+
+      <div class="campo">
+        <label class="campo__etiqueta" for="descripcion">Descripción (opcional)</label>
+        <textarea class="campo__input" id="descripcion" name="descripcion" maxlength="2000" rows="5" aria-describedby="descripcion-error"></textarea>
+        <span class="campo__error" id="descripcion-error"></span>
+      </div>
+
+      <button class="boton" type="submit">Guardar</button>
+    </form>
+  </main>
+
+</body>
+</html>
