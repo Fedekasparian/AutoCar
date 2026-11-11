@@ -12,6 +12,7 @@ function vacio() {
     estado.replaceChildren(vistas.aviso('Todavía no guardaste vehículos.',
         'Tocá el corazón de una publicación para guardarla acá.',
         vistas.el('a', { class: 'boton boton--secundario', href: ruta('home.html') }, 'Explorar autos')));
+    estado.firstChild.classList.add('vacio--ilustrado', 'vacio--corazon');
 }
 
 // Al sacar un favorito desde acá, la ficha se va de la lista
