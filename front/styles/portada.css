@@ -45,3 +45,76 @@
     .busqueda-principal label { font-size:12px; }
 }
 @media print { .portada-auto__escena { min-height:340px; } .busqueda-principal { display:none; } }
+
+/* ===== Portada viva (rediseño nov. 2026). Para volver atrás alcanza con revertir su commit. ===== */
+/* Título que entra palabra por palabra, ceja y acciones */
+.portada-auto__texto .portada-auto__ceja { max-width:none; margin:0 0 16px; font-size:12px; font-weight:600; letter-spacing:.14em; text-transform:uppercase; color:var(--marca-acento); animation:portada-aparece var(--dur-lenta) var(--curva-suave) both; }
+.portada-auto h1 .linea { display:block; }
+.portada-auto h1 .palabra { display:inline-block; animation:palabra-entra .75s var(--curva-suave) both; animation-delay:calc(var(--i) * 90ms + 120ms); }
+.portada-auto__texto > p:not(.portada-auto__ceja) { max-width:380px; animation:portada-aparece var(--dur-lenta) var(--curva-suave) .55s both; }
+.portada-auto__acciones { display:flex; flex-wrap:wrap; gap:8px 28px; animation:portada-aparece var(--dur-lenta) var(--curva-suave) .7s both; }
+@keyframes palabra-entra { from { opacity:0; transform:translateY(.45em); filter:blur(6px); } }
+@keyframes portada-aparece { from { opacity:0; transform:translateY(10px); } }
+
+/* Luz aqua que se mueve lento detrás del texto */
+.portada-auto__escena::after { content:''; position:absolute; inset:-30% 40% -30% -20%; z-index:-1; pointer-events:none;
+  background:radial-gradient(closest-side, rgb(105 230 216 / .28), transparent 70%);
+  animation:luz-deriva 16s ease-in-out infinite alternate; }
+@keyframes luz-deriva { from { transform:translate(-6%, 8%) scale(1); } to { transform:translate(10%, -6%) scale(1.15); } }
+
+/* Paralaje del auto al bajar (solo navegadores con animaciones por scroll; el resto lo ve quieto) */
+@supports (animation-timeline: scroll()) {
+  @media (min-width:768px) {
+    .portada-auto__foto { animation:paralaje linear both; animation-timeline:scroll(root); animation-range:0 640px; }
+    @keyframes paralaje { from { transform:scale(1.08); } to { transform:translateY(22px) scale(1.08); } }
+  }
+}
+
+/* Cifras reales con contador */
+.cifras { margin-top:28px; }
+.cifras__lista { display:grid; grid-template-columns:repeat(4, minmax(0,1fr)); gap:1px; padding:0; list-style:none; border:1px solid var(--marca-linea); border-radius:14px; overflow:hidden; background:var(--marca-linea); }
+.cifras__lista li { display:grid; align-content:start; gap:6px; padding:22px 24px; background:var(--marca-blanco); }
+.cifras__lista strong { font-family:var(--fuente-titulos); font-size:clamp(28px,3vw,40px); line-height:1; letter-spacing:-.03em; font-variant-numeric:tabular-nums; color:var(--marca-tinta); }
+.cifras__lista span { font-size:13px; color:var(--marca-gris); line-height:1.4; }
+.cifras:not([hidden]) { animation:portada-aparece var(--dur-lenta) var(--curva-suave) both; }
+
+/* Cómo funciona: tres pasos con íconos que se dibujan */
+.como-funciona { padding-top:12px; }
+.como-funciona .seccion__cabecera p { margin-top:10px; color:var(--marca-gris); }
+.pasos-portada { display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:20px; padding:0; list-style:none; counter-reset:paso; }
+.pasos-portada__paso { position:relative; display:grid; align-content:start; gap:10px; padding:28px; border:1px solid var(--marca-linea); border-radius:14px; background:var(--marca-blanco);
+  transition:transform var(--dur-media) var(--curva-suave), box-shadow var(--dur-media) var(--curva-suave), border-color var(--dur-media) var(--curva-suave); }
+.pasos-portada__paso:hover { transform:translateY(-4px); box-shadow:var(--sombra-2); }
+/* Línea que une los pasos en escritorio */
+.pasos-portada__paso:not(:last-child)::after { content:''; position:absolute; top:52px; right:-21px; width:22px; height:2px; background:var(--marca-acento); }
+.pasos-portada__icono { width:52px; height:52px; padding:10px; margin-bottom:6px; border-radius:14px; background:var(--marca-tenue); color:var(--marca-tinta); }
+.pasos-portada__numero { font-size:12px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--marca-gris); }
+.pasos-portada h3 { font-size:21px; letter-spacing:-.02em; }
+.pasos-portada p { font-size:15px; line-height:1.6; color:var(--marca-gris); }
+/* Con JS, los trazos se dibujan cuando la sección entra en pantalla (sin JS se ven completos) */
+.js-anima .pasos-portada__icono :is(path, circle) { stroke-dasharray:1; stroke-dashoffset:1; }
+.js-anima .como-funciona.visible .pasos-portada__icono :is(path, circle) { stroke-dashoffset:0; transition:stroke-dashoffset 1.1s var(--curva-suave); }
+.js-anima .como-funciona.visible .pasos-portada__paso:nth-child(2) :is(path, circle) { transition-delay:.25s; }
+.js-anima .como-funciona.visible .pasos-portada__paso:nth-child(3) :is(path, circle) { transition-delay:.5s; }
+
+/* Secciones que aparecen al bajar (solo con JS; sin JS están visibles) */
+.js-anima [data-revelar] { opacity:0; transform:translateY(24px); transition:opacity .7s var(--curva-suave), transform .7s var(--curva-suave); }
+.js-anima [data-revelar].visible { opacity:1; transform:none; }
+
+@media (max-width:900px) {
+  .cifras__lista { grid-template-columns:repeat(2, minmax(0,1fr)); }
+  .pasos-portada { grid-template-columns:1fr; gap:14px; }
+  .pasos-portada__paso:not(:last-child)::after { top:auto; bottom:-15px; right:auto; left:52px; width:2px; height:16px; }
+}
+@media (max-width:767px) {
+  .portada-auto__texto .portada-auto__ceja { margin-bottom:10px; font-size:11px; }
+  .portada-auto__acciones { margin-top:10px; }
+  .cifras { margin-top:16px; }
+  .cifras__lista li { padding:16px; }
+  .pasos-portada__paso { padding:22px; }
+}
+@media (prefers-reduced-motion:reduce) {
+  .portada-auto__escena::after, .portada-auto__foto { animation:none; }
+  .js-anima [data-revelar] { opacity:1; transform:none; }
+  .js-anima .pasos-portada__icono :is(path, circle) { stroke-dashoffset:0; }
+}

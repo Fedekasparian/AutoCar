@@ -35,10 +35,13 @@
  <div class="portada-auto__escena">
   <img class="portada-auto__foto" src="assets/identidad/hero-v3.jpg" width="1536" height="1024" fetchpriority="high" alt="Dos autos junto a un camino; imagen ilustrativa">
   <div class="portada-auto__texto">
-<h1 id="hero-titulo">Encontrá tu <span>próximo auto.</span>
-</h1>
-<p>Comprá, vendé o canjeá entre particulares.</p>
+<p class="portada-auto__ceja">Con informe firmado por un mecánico</p>
+<h1 id="hero-titulo"><span class="linea"><span class="palabra" style="--i:0">Encontrá</span> <span class="palabra" style="--i:1">tu</span></span> <span class="linea"><span class="palabra" style="--i:2">próximo</span> <span class="palabra" style="--i:3">auto.</span></span></h1>
+<p>Compará precios de varios sitios y, antes de pagar, mandale un mecánico que lo revise y firme el informe.</p>
+<div class="portada-auto__acciones">
+<a href="#como-funciona">Cómo funciona</a>
 <a href="pages/auth/registro.html">Publicar mi auto</a>
+</div>
 </div>
  </div>
  <form class="busqueda-principal" action="pages/info/home.html" method="get" role="search">
@@ -54,14 +57,50 @@
 </div>
   <button class="boton boton--acento" type="submit">Buscar autos</button>
  </form>
-</section><section class="seccion" aria-labelledby="autos-titulo"><div class="seccion__cabecera">
+</section>
+<!-- Cifras reales (GET /api/vehiculos y GET /api/mecanicos): se muestra cuando llegan los datos, js/paginas/portada.js -->
+<section class="cifras" id="cifras" aria-label="AutoCar en números" hidden>
+ <ul class="cifras__lista" role="list">
+  <li><strong data-cifra="publicaciones">0</strong><span>publicaciones activas</span></li>
+  <li><strong data-cifra="mecanicos">0</strong><span>mecánicos en la red</span></li>
+  <li><strong data-cifra="firmadas">0</strong><span>inspecciones firmadas</span></li>
+  <li><strong>3</strong><span>sitios comparados: MercadoLibre, Kavak y Autocosmos</span></li>
+ </ul>
+</section>
+<section class="seccion" aria-labelledby="autos-titulo" data-revelar><div class="seccion__cabecera">
 <div><h2 id="autos-titulo">Últimos publicados</h2></div>
 <a class="enlace-flecha" href="pages/info/home.html">Explorar publicaciones</a>
 </div>
 <!-- Los últimos publicados de verdad (GET /api/vehiculos): js/paginas/portada.js -->
 <ul class="grilla-vehiculos" role="list" id="ultimos"></ul>
 </section>
-  <section class="taller-banner" aria-labelledby="taller-titulo"><div class="taller-banner__foto"><img src="assets/identidad/mecanico.jpg" alt="Mecánico revisando el motor de un auto, imagen ilustrativa" width="1536" height="1024" loading="lazy"></div>
+<section class="seccion como-funciona" id="como-funciona" aria-labelledby="como-titulo" data-revelar>
+ <div class="seccion__cabecera">
+  <div><h2 id="como-titulo">Cómo funciona</h2><p>Comprar un usado sin sorpresas, en tres pasos.</p></div>
+  <a class="enlace-flecha" href="pages/talleres/talleres.html">Ver los mecánicos de la red</a>
+ </div>
+ <ol class="pasos-portada" role="list">
+  <li class="pasos-portada__paso">
+   <svg class="pasos-portada__icono" width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="21" cy="21" r="11" pathLength="1"></circle><path d="m29.5 29.5 9 9" pathLength="1"></path><path d="M16 23.5l3.5-5 3 3.5 3-5" pathLength="1"></path></svg>
+   <span class="pasos-portada__numero">Paso 1</span>
+   <h3>Buscá y compará</h3>
+   <p>Encontrás el auto y te mostramos si el precio está bien frente a MercadoLibre, Kavak y Autocosmos.</p>
+  </li>
+  <li class="pasos-portada__paso">
+   <svg class="pasos-portada__icono" width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M30 8a8 8 0 0 0-9.6 10.4L8.8 30a3.4 3.4 0 0 0 4.8 4.8l11.6-11.6A8 8 0 0 0 35.6 13.6l-5 5-4.6-1.6-1.6-4.6z" pathLength="1"></path><path d="M30 33l4 4 8-8" pathLength="1"></path></svg>
+   <span class="pasos-portada__numero">Paso 2</span>
+   <h3>Mandale un mecánico</h3>
+   <p>Elegís un taller de la red por su puntaje y su precio. Va a ver el auto con el vendedor, antes de que pagues.</p>
+  </li>
+  <li class="pasos-portada__paso">
+   <svg class="pasos-portada__icono" width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 6h17l8 8v28H12z" pathLength="1"></path><path d="M18 18h10M18 24h14" pathLength="1"></path><path d="M18 34c2-3 3-3 4 0s2 3 4 0 3-2 5 0" pathLength="1"></path></svg>
+   <span class="pasos-portada__numero">Paso 3</span>
+   <h3>Recibí el informe firmado</h3>
+   <p>Diez puntos revisados y la firma del mecánico. Si pasó algo por alto, tenés 15 días para reclamar.</p>
+  </li>
+ </ol>
+</section>
+  <section class="taller-banner" aria-labelledby="taller-titulo" data-revelar><div class="taller-banner__foto"><img src="assets/identidad/mecanico.jpg" alt="Mecánico revisando el motor de un auto, imagen ilustrativa" width="1536" height="1024" loading="lazy"></div>
 <div class="taller-banner__texto">
 <h2 id="taller-titulo">Sumá tu taller a AutoCar</h2>
 <p>Ofrecé revisiones mecánicas a quienes compran o venden un vehículo. Completá la solicitud para adherir tu taller.</p>
