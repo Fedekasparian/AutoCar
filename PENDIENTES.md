@@ -5,9 +5,22 @@ El plan completo del enfoque del mecánico está en [`modelo-de-negocio/PLAN.md`
 
 Última actualización: 11/11/2026.
 
-## Hecho el 10/11 (en `dev`, falta pasar a `main`)
+## Pedido de la cátedra para la entrega final (mapa de capas del 10/11)
 
-Todo entró a `dev` por PR (front #40 a #66, back #17 a #34). **Antes del pase `dev` → `main` hay que correr en Neon main, en orden, las migraciones `011` a `019`** (en Neon dev ya están todas):
+En orden, de adentro hacia afuera. Las ideas A y B se piden **las dos** (puntos 3 y 4); en la integración real (punto 5) alcanza con **una** de las tres opciones.
+
+- [x] ~~**1. Circuito usable en producción**~~: talleres aprobados e inspecciones en Neon main (11/11). Falta que el ranking tenga historia (ver "Datos y scraper").
+- [x] ~~**2. Los dos invariantes**~~: un solo pedido en curso por comprador y aviso, y moderación con el estado leído (back, migración `020`).
+- [ ] **3. Idea A, costo total del auto**: 3 presupuestos por cada arreglo que marca el informe y bloque "Costo total". Reglas: el taller que inspeccionó nunca recibe el pedido; el total suma el presupuesto vigente más barato de cada ítem. Con datos de prueba alcanza.
+- [ ] **4. Idea B, fallas típicas por modelo**: cada falla con su origen (internet, mecánicos, medido), el voto del mecánico que cambia su estado y la inspección que actualiza el porcentaje; no se muestra con menos de 20. Misma clave de modelo que el comparador.
+- [ ] **5. Una integración real andando** (una de tres): crawler de fallas con IA, corrida diaria del scraper sin la PC (hay workflow en GitHub Actions, pero las dos corridas fallaron), o Mercado Pago en sandbox. Con la clave fuera del código.
+- [ ] **6. Metabuscador adentro o afuera**: si queda, autos cargados en prod, botón del mecánico en cada resultado y aviso de cambio de precio.
+- [ ] **7. Fondo de garantía**: saldo que suma con cada inspección, del que salen las compensaciones, con el descuento al mecánico.
+- [ ] **8. Maquetas afuera y `PLAN.md` al día**: quedan canje, planes y verificar vehículo; el `PLAN.md` todavía dice que A y B son "fase 2".
+
+## Hecho el 10/11 (ya en `main` desde el 11/11)
+
+Todo entró a `dev` por PR (front #40 a #66, back #17 a #34) y pasó a `main` el 11/11. **Verificado el 11/11 con una consulta de solo lectura: Neon main y Neon dev tienen corridas todas las migraciones, de la `001` a la `020`.** La próxima nueva es la `021`.
 
 | Migración | Qué hace |
 |---|---|
@@ -20,8 +33,10 @@ Todo entró a `dev` por PR (front #40 a #66, back #17 a #34). **Antes del pase `
 | `017-modelos-nuevos.sql` | 7 marcas y 46 modelos más para Publicar (solo agrega) |
 | `018-inspeccion-no-realizada.sql` | Estado `no_realizada` de una inspección (el mecánico fue y no la pudo hacer) |
 | `019-marca-unica.sql` | La base no acepta la misma marca escrita distinto ("DS" y "Ds") |
+| `020-seguridad.sql` | Un solo pedido de inspección en curso por comprador y aviso, y tabla `login_intento` (5 intentos cada 15 minutos) |
 
 - [x] ~~**Correr la `019` en Neon dev**~~ (11/11).
+- [x] ~~**Correr `011`–`020` en Neon main**~~ (verificado el 11/11).
 
 - [x] **El panel solo modera y da de baja:** se sacan crear y editar vehículos (back `POST`/`PUT /api/admin/vehiculos` → 405; front sin `admin-vehiculo.html`). Si algo está mal, el moderador rechaza con motivo y corrige el dueño.
 - [x] **Vendedor obligatorio** en toda publicación (la base lo exige).
@@ -83,9 +98,11 @@ Hoy no hay tabla de suscripciones ni cobros: los planes son de muestra y las ins
 - [ ] **Inspección de un auto que juntó el scraper**: hoy el back acepta cualquier link de MercadoLibre, Kavak, Autocosmos o AutoCar (controla el dominio, no que el auto exista). Ya hay autos en Firestore dev: si el link coincide con uno scrapeado, marcar el pedido como "auto verificado en nuestro buscador" y completar solos título, año, km y precio; si no coincide, aceptarlo igual sin la marca.
 
 - [x] ~~**Cargar los autos del scraper en Firestore dev**~~ (10/11): corridas completas de MercadoLibre (86.395 autos, 958 modelos), Autocosmos (4.750) y Kavak (1.330); comparador con 1.073 modelos. Probado en dev: comparador y metabuscador con datos reales. Arreglos que salieron con datos de este tamaño: commits de Firestore por tamaño (back #26), autos mal cargados que no arruinan la corrida (back #27), `diario.bat` con 1 GB (back #18), etiquetas del metabuscador (front #58).
-- [ ] **Prod (Firestore `autocar-9897d` y Neon main): se carga TODO JUNTO en el pase `dev` → `main`**, no antes. Orden: migraciones `011`–`019` en Neon main → merge `dev` → `main` → cargar Firestore prod con todas las corridas completas desde la del 10/11 → verificar.
+- [x] ~~**Neon main**~~: migraciones `011`–`020` corridas y `dev` → `main` mergeado (11/11).
+- [x] ~~**Talleres de demo en producción**~~ (11/11): 5 talleres aprobados (`*@autocar.test`: Acosta, Benítez, Gómez, Medina, Ferreyra), 3 compradores y 15 inspecciones firmadas, 3 por mecánico. Ya se puede pedir una inspección sobre la URL pública. Son distintos de los de la `007`, que sigue solo en dev.
+- [ ] **Firestore prod (`autocar-9897d`)**: cargar todas las corridas completas desde la del 10/11 y verificar el metabuscador en producción (no revisado al 11/11).
 - [ ] **Corrida diaria** del scraper (`diario.bat` en la PC a las 9:00 o GitHub Actions). El `.env` de la PC necesita `MARCAS_URL` (ver `.env.example` del back) para filtrar las marcas que no están en el catálogo.
-- [ ] **Ranking de mecánicos con números en dev**: `php bin/demo-historial.php` contra Neon dev.
+- [ ] **Ranking con historia, en dev y en prod**: hoy en prod los 5 tienen 3 firmadas, 5,0 y ningún reclamo, así que en la demo nadie baja en el ranking. `bin/demo-historial.php` busca los emails de la `007` (`mecanicoN@demo.autocar.com.ar`): en dev anda pero todavía no se corrió; en prod falla porque esos usuarios no existen. Para prod hay que adaptarlo a los talleres `*@autocar.test` o cargar un par de reclamos desde el sitio.
 
 ## Presentación y defensa
 
