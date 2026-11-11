@@ -7,7 +7,7 @@ El plan completo del enfoque del mecánico está en [`modelo-de-negocio/PLAN.md`
 
 ## Hecho el 10/11 (en `dev`, falta pasar a `main`)
 
-Todo entró a `dev` por PR (front #40 a #48, back #17 a #20). **Antes del pase `dev` → `main` hay que correr en Neon main, en orden, las migraciones `011` a `017`** (en Neon dev ya están):
+Todo entró a `dev` por PR (front #40 a #48, back #17 a #20). **Antes del pase `dev` → `main` hay que correr en Neon main, en orden, las migraciones `011` a `019`** (en Neon dev están hasta la `018`; la `019` falta también en dev):
 
 | Migración | Qué hace |
 |---|---|
@@ -18,6 +18,8 @@ Todo entró a `dev` por PR (front #40 a #48, back #17 a #20). **Antes del pase `
 | `015-contacto-y-reportes.sql` | Tablas `contacto` y `reporte` |
 | `016-roles-del-equipo.sql` | El admin sin los permisos del mecánico |
 | `017-modelos-nuevos.sql` | 7 marcas y 46 modelos más para Publicar (solo agrega) |
+| `018-inspeccion-no-realizada.sql` | Estado `no_realizada` de una inspección (el mecánico fue y no la pudo hacer) |
+| `019-marca-unica.sql` | La base no acepta la misma marca escrita distinto ("DS" y "Ds") |
 
 - [x] **El panel solo modera y da de baja:** se sacan crear y editar vehículos (back `POST`/`PUT /api/admin/vehiculos` → 405; front sin `admin-vehiculo.html`). Si algo está mal, el moderador rechaza con motivo y corrige el dueño.
 - [x] **Vendedor obligatorio** en toda publicación (la base lo exige).
@@ -73,7 +75,11 @@ Hoy no hay tabla de suscripciones ni cobros: los planes son de muestra y las ins
 - [ ] **Inspección de un auto que juntó el scraper**: hoy el back acepta cualquier link de MercadoLibre, Kavak, Autocosmos o AutoCar (controla el dominio, no que el auto exista). Cuando haya autos en Firestore: si el link coincide con uno scrapeado, marcar el pedido como "auto verificado en nuestro buscador" y completar solos título, año, km y precio; si no coincide, aceptarlo igual sin la marca.
 
 - [x] ~~**Cargar los autos del scraper en Firestore dev**~~ (10/11): corridas completas de MercadoLibre (86.395 autos, 958 modelos), Autocosmos (4.750) y Kavak (1.330); comparador con 1.073 modelos. Probado en dev: comparador y metabuscador con datos reales. Arreglos que salieron con datos de este tamaño: commits de Firestore por tamaño (back #26), autos mal cargados que no arruinan la corrida (back #27), `diario.bat` con 1 GB (back #18), etiquetas del metabuscador (front #58).
-- [ ] **Prod (Firestore `autocar-9897d` y Neon main): se carga TODO JUNTO en el pase `dev` → `main`**, no antes. Orden: migraciones `011`–`017` en Neon main → merge `dev` → `main` → cargar Firestore prod con todas las corridas completas desde la del 10/11 → verificar.
+- [ ] **Prod (Firestore `autocar-9897d` y Neon main): se carga TODO JUNTO en el pase `dev` → `main`**, no antes. Orden: migraciones `011`–`019` en Neon main → merge `dev` → `main` → cargar Firestore prod con todas las corridas completas desde la del 10/11 → verificar.
+- [x] **Marcas con un solo nombre** (10/11 noche): "DS"/"Ds"/"D.S.", "Citroën"/"Citroen", "KIA"/"Kia"... salen como una sola marca en el metabuscador (back #29), "DS3" y "DS 3" son el mismo modelo (back #32, Firestore dev ya corregido) y la base no acepta una marca repetida con otra escritura (back #31, migración 019).
+- [x] **Marcas que no están en el catálogo** (back #33): el importador no carga esos autos y lo avisa en la salida; `php bin/importar-autos.php --revisar-marcas archivo.json` los lista con su link para ver si es una marca nueva o un error del que publicó. Lee el catálogo de `MARCAS_URL` (la API del back de cada entorno).
+- [x] **Inspección que no se pudo hacer** (back #30, front #63, migración 018): si el vendedor no deja revisar el auto, el mecánico la marca con el motivo y se le devuelve todo al comprador.
+- [x] **Resultados del metabuscador en celular** (front #62): los botones de cada auto bajan debajo del texto.
 - [ ] **Corrida diaria** del scraper (`diario.bat` en la PC a las 9:00 o GitHub Actions).
 - [ ] **Ranking de mecánicos con números en dev**: `php bin/demo-historial.php` contra Neon dev.
 
