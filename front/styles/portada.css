@@ -57,6 +57,7 @@
 @keyframes portada-aparece { from { opacity:0; transform:translateY(10px); } }
 
 /* Luz aqua que se mueve lento detrás del texto */
+.portada-auto__escena { overflow:hidden; }
 .portada-auto__escena::after { content:''; position:absolute; inset:-30% 40% -30% -20%; z-index:-1; pointer-events:none;
   background:radial-gradient(closest-side, rgb(105 230 216 / .28), transparent 70%);
   animation:luz-deriva 16s ease-in-out infinite alternate; }
@@ -66,7 +67,7 @@
 @supports (animation-timeline: scroll()) {
   @media (min-width:768px) {
     .portada-auto__foto { animation:paralaje linear both; animation-timeline:scroll(root); animation-range:0 640px; }
-    @keyframes paralaje { from { transform:scale(1.08); } to { transform:translateY(22px) scale(1.08); } }
+    @keyframes paralaje { from { transform:scale(1.08); } to { transform:translateY(16px) scale(1.08); } }
   }
 }
 
