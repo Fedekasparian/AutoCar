@@ -116,13 +116,19 @@ const filtros = $('filtros');
     });
 });
 
-$('borrar').addEventListener('click', async () => {
-    if (!window.confirm('¿Borrar esta búsqueda y sus avisos?')) return;
+// "Borrar esta búsqueda" abre #dialogo-borrar (data-abrir); acá se confirma
+$('confirmar-borrar').addEventListener('click', async (evento) => {
+    const boton = evento.currentTarget;
+    boton.disabled = true;
+    boton.textContent = 'Borrando…';
+    $('borrar-error').textContent = '';
     try {
         await api.eliminar(id);
         window.location.assign(ruta('meta-busqueda.html?borrada=1'));
     } catch (error) {
-        $('estado').replaceChildren(vistas.avisoDeError(error));
+        $('borrar-error').textContent = error.message;
+        boton.disabled = false;
+        boton.textContent = 'Borrar';
     }
 });
 
