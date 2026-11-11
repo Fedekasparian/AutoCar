@@ -240,3 +240,127 @@ dialog.hoja::backdrop{ background: rgb(11 17 29 / .45); backdrop-filter: blur(2p
 @media (prefers-reduced-motion: reduce){
     .barra__pildora{ transition: none; }
 }
+
+/* =====================================================================
+   3. Catálogo (Explorar, Buscar, Favoritos y "Últimos publicados")
+   ===================================================================== */
+
+/* Fichas: el pie con localidad y caja; el li es la referencia del corazón */
+.grilla-vehiculos > li{ position: relative; }
+.ficha-vehiculo__pie span:empty{ display: none; }
+.ficha-vehiculo__pie span:first-child::before{
+    content: ""; display: inline-block; width: 7px; height: 7px; margin-right: 6px; border-radius: 50%;
+    background: var(--marca-acento); vertical-align: 1px;
+}
+
+/* Entran escalonadas al llegar los datos */
+.grilla-vehiculos--entra > li{ animation: ficha-entra var(--dur-lenta) var(--curva-salida) both; animation-delay: calc(min(var(--n, 0), 11) * 45ms); }
+@keyframes ficha-entra{ from{ opacity: 0; transform: translateY(14px); } }
+.ficha--saliendo{ animation: ficha-sale var(--dur-media) var(--curva-suave) forwards; }
+@keyframes ficha-sale{ to{ opacity: 0; transform: scale(.94); } }
+
+/* Esqueletos: el mismo tamaño que una ficha, con un brillo que la recorre */
+.ficha-esqueleto{
+    display: grid; gap: 10px; align-content: start; padding-bottom: 20px;
+    border: 1px solid var(--marca-linea); border-radius: 14px; overflow: hidden; background: var(--marca-blanco);
+}
+.ficha-esqueleto__imagen, .ficha-esqueleto__linea{
+    display: block; background: linear-gradient(100deg, var(--marca-tenue) 30%, color-mix(in srgb, var(--marca-tenue) 40%, var(--marca-blanco)) 50%, var(--marca-tenue) 70%);
+    background-size: 300% 100%; animation: esqueleto-brillo 1.4s linear infinite;
+}
+.ficha-esqueleto__imagen{ aspect-ratio: 1.48; margin-bottom: 8px; }
+.ficha-esqueleto__linea{ height: 12px; margin-inline: 20px; border-radius: 6px; }
+.ficha-esqueleto__linea--precio{ height: 20px; width: 45%; }
+.ficha-esqueleto__linea--corta{ width: 55%; }
+@keyframes esqueleto-brillo{ from{ background-position: 100% 0; } to{ background-position: -50% 0; } }
+
+/* Corazón de favorito, arriba a la derecha de la foto */
+.ficha-favorito{
+    position: absolute; top: 10px; right: 10px; z-index: 1;
+    display: grid; place-items: center; width: 40px; height: 40px; padding: 0;
+    border: 0; border-radius: 50%; cursor: pointer;
+    background: rgb(255 255 255 / .88); color: var(--marca-tinta);
+    box-shadow: var(--sombra-1);
+    backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+    transition: transform var(--dur-rapida) var(--curva-rebote), background-color var(--dur-rapida);
+}
+.ficha-favorito svg{ fill: transparent; stroke: currentColor; stroke-width: 1.9; stroke-linejoin: round; transition: fill var(--dur-rapida), stroke var(--dur-rapida); }
+.ficha-favorito:hover{ transform: scale(1.08); background: #fff; }
+.ficha-favorito:active{ transform: scale(.9); }
+.ficha-favorito:focus-visible{ outline: none; box-shadow: var(--anillo-foco); }
+.ficha-favorito[aria-pressed="true"] svg{ fill: #e5484d; stroke: #e5484d; }
+.ficha-favorito:disabled{ cursor: progress; }
+.ficha-favorito--late svg{ animation: corazon-late .5s var(--curva-rebote); }
+@keyframes corazon-late{ 30%{ transform: scale(1.35); } 60%{ transform: scale(.92); } }
+
+/* Aviso flotante ("Guardado en favoritos"), arriba de la barra de pestañas en celular */
+.aviso-flotante{
+    position: fixed; left: 50%; bottom: calc(96px + env(safe-area-inset-bottom)); z-index: 30;
+    margin: 0; padding: 10px 18px; border-radius: 999px; max-width: calc(100% - 32px);
+    background: var(--panel-oscuro); color: var(--sobre-panel); font-size: 14px; font-weight: 500;
+    box-shadow: var(--sombra-3); pointer-events: none;
+    opacity: 0; transform: translate(-50%, 12px);
+    transition: opacity var(--dur-media) var(--curva-suave), transform var(--dur-media) var(--curva-salida);
+}
+.aviso-flotante:empty{ display: none; }
+.aviso-flotante--visible{ opacity: 1; transform: translate(-50%, 0); }
+@media (min-width: 1100px){ .aviso-flotante{ bottom: 32px; } }
+
+/* Chips de los filtros aplicados */
+.filtros-activos{ display: flex; flex-wrap: wrap; gap: 8px; margin: -4px 0 4px; padding: 0; list-style: none; }
+.chip-filtro{
+    display: inline-flex; align-items: center; gap: 8px; min-height: 34px; padding: 6px 8px 6px 14px;
+    border: 1px solid color-mix(in srgb, var(--marca-acento) 55%, var(--marca-linea));
+    border-radius: 999px; background: color-mix(in srgb, var(--marca-acento) 16%, var(--marca-blanco));
+    color: var(--marca-tinta); font-size: 13px; font-weight: 600; text-decoration: none;
+    animation: chip-entra var(--dur-media) var(--curva-rebote) both;
+    transition: background-color var(--dur-rapida), border-color var(--dur-rapida);
+}
+.chip-filtro__cruz{
+    display: grid; place-items: center; width: 22px; height: 22px; border-radius: 50%;
+    background: color-mix(in srgb, var(--marca-tinta) 10%, transparent); font-size: 15px; line-height: 1;
+    transition: background-color var(--dur-rapida), transform var(--dur-rapida) var(--curva-rebote);
+}
+.chip-filtro:hover{ border-color: var(--marca-tinta); }
+.chip-filtro:hover .chip-filtro__cruz{ background: var(--marca-tinta); color: var(--marca-blanco); transform: rotate(90deg); }
+.chip-filtro--limpiar{ background: transparent; border-color: transparent; color: var(--marca-gris); padding-inline: 10px; text-decoration: underline; text-underline-offset: 3px; }
+.chip-filtro--limpiar:hover{ border-color: transparent; color: var(--marca-tinta); }
+@keyframes chip-entra{ from{ opacity: 0; transform: scale(.85); } }
+
+/* Filtros rápidos de Explorar: selects tipo píldora */
+.filtros-rapidos .campo__input{ border-radius: 999px; transition: border-color var(--dur-rapida), box-shadow var(--dur-rapida), background-color var(--dur-rapida); }
+@media (min-width: 768px){ .filtros-rapidos{ grid-template-columns: repeat(3, minmax(0, 250px)); max-width: none; } }
+.filtros-rapidos .campo__input:hover{ border-color: var(--marca-tinta); }
+.filtros-rapidos .campo__input:has(option:checked:not([value=""])){
+    border-color: color-mix(in srgb, var(--marca-acento) 70%, var(--marca-tinta));
+    background-color: color-mix(in srgb, var(--marca-acento) 14%, var(--marca-blanco));
+    font-weight: 600;
+}
+
+/* Buscar en escritorio: los filtros en un panel fijo a la izquierda y los resultados a la derecha */
+@media (min-width: 1100px){
+    .vista-buscar #contenido{
+        display: grid; grid-template-columns: 300px minmax(0, 1fr); column-gap: 32px; align-items: start; max-width: 1328px;
+    }
+    .vista-buscar #contenido > *{ grid-column: 2; }
+    .vista-buscar #contenido > .buscador{ grid-column: 1 / -1; }
+    .vista-buscar #contenido > details.recuadro{
+        grid-column: 1; grid-row: 2 / span 5; position: sticky; top: 88px;
+        box-shadow: var(--sombra-1);
+    }
+    .vista-buscar details.recuadro > summary{ pointer-events: none; list-style: none; margin-bottom: 8px; font-family: var(--fuente-titulos); }
+    .vista-buscar details.recuadro > summary::-webkit-details-marker{ display: none; }
+    .vista-buscar details.recuadro .campos-fila{ grid-template-columns: 1fr; }
+    .vista-buscar details.recuadro .formulario{ padding: 0; border: 0; background: none; }
+    .vista-buscar details.recuadro .boton{ width: 100%; }
+    .vista-buscar .grilla-vehiculos{ grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+@media (prefers-color-scheme: dark){
+    .ficha-favorito{ background: rgb(19 27 45 / .78); color: #fff; }
+    .ficha-favorito:hover{ background: rgb(19 27 45 / .92); }
+}
+@media (prefers-reduced-motion: reduce){
+    .grilla-vehiculos--entra > li, .ficha--saliendo, .chip-filtro, .ficha-favorito--late svg{ animation: none; }
+    .ficha-esqueleto__imagen, .ficha-esqueleto__linea{ animation: none; }
+}

@@ -51,7 +51,22 @@ export function fichaVehiculo(v) {
                 el('span', { class: 'ficha-vehiculo__precio' }, formato.precio(v.precio)),
                 el('span', { class: 'ficha-vehiculo__titulo' }, formato.titulo(v)),
                 el('span', { class: 'ficha-vehiculo__lugar' },
-                    `${formato.km(v.kilometraje)} · ${formato.combustible(v.combustible)}`))));
+                    `${formato.km(v.kilometraje)} · ${formato.combustible(v.combustible)}`),
+                v.localidad || v.transmision
+                    ? el('span', { class: 'ficha-vehiculo__pie' },
+                        el('span', {}, v.localidad || ''),
+                        el('span', {}, v.transmision ? formato.transmision(v.transmision) : ''))
+                    : null)));
+}
+
+// Fichas grises con brillo mientras carga el listado: ocupan el mismo lugar que las de verdad, así la página
+// no salta cuando llegan. Son decorativas (aria-hidden); el "Cargando…" para lectores de pantalla va aparte.
+export function esqueletoFichas(cantidad = 6) {
+    return Array.from({ length: cantidad }, () => el('li', { class: 'ficha-esqueleto', 'aria-hidden': 'true' },
+        el('span', { class: 'ficha-esqueleto__imagen' }),
+        el('span', { class: 'ficha-esqueleto__linea ficha-esqueleto__linea--precio' }),
+        el('span', { class: 'ficha-esqueleto__linea' }),
+        el('span', { class: 'ficha-esqueleto__linea ficha-esqueleto__linea--corta' })));
 }
 
 // Paginación con enlaces ?page=N que conservan los demás filtros de la URL.

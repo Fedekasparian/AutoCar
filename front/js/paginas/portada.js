@@ -4,6 +4,7 @@
 // - las secciones que aparecen al bajar y los íconos de "Cómo funciona" que se dibujan.
 import * as vehiculos from '../api/vehiculos.js';
 import * as inspecciones from '../api/inspecciones.js';
+import * as corazones from '../servicios/corazones.js';
 import * as vistas from '../servicios/vistas.js';
 
 const sinMovimiento = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -40,7 +41,10 @@ async function mostrarUltimos() {
     const grilla = document.getElementById('ultimos');
     try {
         const { items, total } = await vehiculos.listar({});
-        if (items.length) grilla.replaceChildren(...items.slice(0, 4).map(vistas.fichaVehiculo));
+        if (items.length) {
+            grilla.replaceChildren(...items.slice(0, 4).map(vistas.fichaVehiculo));
+            corazones.poner(grilla, items.slice(0, 4));
+        }
         else grilla.closest('section').hidden = true;
         return total ?? items.length;
     } catch {

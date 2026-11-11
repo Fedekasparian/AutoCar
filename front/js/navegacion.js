@@ -7,19 +7,23 @@
 
     // 0. Con sesión, el logo lleva a Explorar y no a la portada pública (la de "Ingresar" y "Crear cuenta").
     //    Se lee lo mismo que barra-admin.js: los datos públicos de la sesión en sessionStorage.
-    let conSesion = false;
+    //    El admin no tiene "Explorar" en su barra: su logo lleva a Moderar, su primera pestaña.
+    let usuario = null;
     try {
         const guardada = JSON.parse(sessionStorage.getItem('autocar.sesion'));
-        conSesion = Boolean(guardada?.usuario) && !(guardada.vence && Date.now() > guardada.vence);
+        if (guardada?.usuario && !(guardada.vence && Date.now() > guardada.vence)) usuario = guardada.usuario;
     } catch {
         // Sin almacenamiento: no hay sesión que mirar.
     }
-    if (conSesion) {
-        const explorar = new URL('../pages/info/home.html', document.currentScript.src).href;
+    if (usuario) {
+        const [ruta, etiqueta] = usuario.rol === 'admin'
+            ? ['../pages/admin/admin-moderar.html', 'AutoCar, moderar publicaciones']
+            : ['../pages/info/home.html', 'AutoCar, explorar vehículos'];
+        const destino = new URL(ruta, document.currentScript.src).href;
         document.querySelectorAll('a.marca, a.barra__marca').forEach((logo) => {
             if (/\/index\.html$|\/front\/?$/.test(new URL(logo.href).pathname)) {
-                logo.href = explorar;
-                logo.setAttribute('aria-label', 'AutoCar, explorar vehículos');
+                logo.href = destino;
+                logo.setAttribute('aria-label', etiqueta);
             }
         });
     }
