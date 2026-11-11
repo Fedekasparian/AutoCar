@@ -30,7 +30,6 @@ El back es una API JSON en PHP ([AutoCarBackend](https://github.com/MateoPonti/A
 | `cuenta.html` | `GET /api/me` | Datos del usuario, enlace de administración (sólo admin) y Salir |
 | `admin.html` | — | Panel de administración (sólo admin) |
 | `admin-vehiculos.html` | `GET /api/admin/vehiculos`, `DELETE /api/admin/vehiculos/{id}` | Listado con vendidos, editar y eliminar |
-| `admin-vehiculo.html` | `POST /api/admin/vehiculos` · `?id=N`: `PUT /api/admin/vehiculos/{id}` | Alta y edición de un vehículo |
 | `pedir-inspeccion.html` | `GET /api/mecanicos`, `POST /api/inspecciones` | "Mandale un mecánico": link del aviso (llega con `?url=` desde el detalle), ranking de mecánicos por localidad, desglose del precio y confirmar (pago simulado) |
 | `mis-inspecciones.html` | `GET /api/mis-inspecciones` | Inspecciones pedidas, con el estado y el paso siguiente |
 | `verificacion.html?id=N` | `GET /api/inspecciones/{id}`, `POST .../cancelar`, `POST .../reclamo` | Detalle para el comprador: turno, cancelar mientras está pedida, informe firmado, trámites para pedir antes de pagar y reclamo dentro de los 15 días |
@@ -42,41 +41,40 @@ Las páginas que piden sesión mandan a `login.html` si no hay sesión iniciada.
 
 ### Pantallas que siguen siendo maqueta
 
-El resto de las pantallas todavía no tiene ruta en la API, así que muestran datos de ejemplo:
+Al 10/11/2026 casi todo usa la API (favoritos, publicar, mis publicaciones, metabuscador, chat, perfil, inspecciones, talleres, contacto, reportar y el panel). Siguen con datos de ejemplo:
 
-- favoritos, mis publicaciones, publicar, tasación y canje;
-- meta-búsqueda, mensajes y plan;
-- talleres y verificación del lado del comprador (el panel del mecánico ya está conectado);
-- reportar, contacto y legales.
+- **canje** (`proponer-canje.html`, `propuestas.html`): solo existe la marca "acepta canje" de la publicación;
+- **planes** (`planes.html`, `plan.html`): dependen de las suscripciones, que no están hechas;
+- **mapa** (`mapa.html`) y **verificar-vehiculo** (`verificar-vehiculo.html`, flujo viejo: hoy se usa "Mandale un mecánico").
 
-Por la misma razón, el detalle de vehículo todavía no tiene las partes de verificación, tasación, ubicación, publicador ni favoritos. Ese maquetado está en la historia de git y en `guia.html`.
+La lista viva está en [`../PENDIENTES.md`](../PENDIENTES.md).
 
 | Página | Ruta futura | Pantalla |
 |---|---|---|
 | `index.html` | `/` | Landing pública |
 | `planes.html` | `/planes` | Planes y precios |
-| `favoritos.html` | `/cuenta/favoritos` | Favoritos organizados en listas |
+| `favoritos.html` | `/cuenta/favoritos` | Favoritos (`GET /api/favoritos`); se guardan desde el detalle |
 | `mis-publicaciones.html` | `/mis-publicaciones` | Publicaciones propias con el cupo del plan |
 | `publicar.html` | `/mis-publicaciones/nueva` | Publicar vehículo en 6 pasos |
-| `tasacion.html` | `/mis-publicaciones/:id/tasacion` | Tasación con IA |
 | `propuestas.html` | `/mis-publicaciones/propuestas` | Propuestas de canje recibidas y enviadas |
 | `proponer-canje.html` | `/vehiculo/:id/proponer-canje` | Proponer un canje |
 | `mapa.html` | `/mapa` | Mapa de vehículos |
 | `meta-busqueda.html` | `/meta-busqueda` | Mis intereses (búsquedas guardadas) |
-| `meta-busqueda-nueva.html` | `/meta-busqueda/nueva` | Nueva búsqueda con texto libre e IA |
-| `meta-busqueda-resultados.html` | `/meta-busqueda/:id` | Coincidencias y estadísticas de mercado |
+| `meta-busqueda-nueva.html` | `/meta-busqueda/nueva` | Nueva búsqueda: marca, modelo, años, precio, km y transmisión |
+| `meta-busqueda-resultados.html` | `/meta-busqueda/:id` | Autos de MercadoLibre, Kavak, Autocosmos y AutoCar, precio típico y "Mandale un mecánico" |
 | `mensajes.html` | `/mensajes` | Conversaciones |
 | `conversacion.html` | `/mensajes/:id` | Conversación |
 | `plan.html` | `/cuenta/plan` | Plan activo y cambio de nivel |
-| `talleres.html` | `/talleres` | Mecánicos de la red: ranking público (`GET /api/mecanicos`), filtro por localidad y "Elegir" → pedir inspección |
+| `talleres.html` | `/talleres` | Mecánicos de la red: ranking público (`GET /api/mecanicos`) y filtro por localidad. El mecánico se pide desde un auto |
 | `verificar-vehiculo.html` | `/mis-publicaciones/:id/verificar` | Código para verificar en el taller |
 | `verificacion.html` | `/verificacion/:id` | Informe de verificación |
 | `talleres-adherirse.html` | `/talleres/adherirse` | Alta de un taller |
 | `taller.html` | `/taller` | Panel del mecánico |
 | `taller-verificacion.html` | `/taller/verificacion/:id` | Inspección con el checklist |
 | `legales.html` | `/legales` | Términos y privacidad |
-| `contacto.html` | `/ayuda/contacto` | Contacto |
-| `reportar.html` | `/reportes/nuevo` | Reportar publicación o usuario |
+| `contacto.html` | `/ayuda/contacto` | Contacto (`POST /api/contacto`, sin cuenta) |
+| `reportar.html` | `/reportes/nuevo` | Reportar publicación (`?vehiculo=N`) o usuario (`?usuario=N`) |
+| `admin-soporte.html` | `/admin/soporte` | Panel: reportes (moderador) y mensajes de contacto (admin) |
 | `guia.html` | — | Guía de componentes e índice de todas las pantallas (sólo de referencia) |
 
 ## Cómo levantarlo en local

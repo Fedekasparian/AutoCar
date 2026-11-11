@@ -70,70 +70,16 @@
           <label class="campo__etiqueta" for="marca">Marca</label>
           <select class="campo__input" id="marca" name="marca" required aria-describedby="marca-error">
             <option value="">Seleccionar marca</option>
-            <option>Chevrolet</option>
-            <option>Fiat</option>
-            <option>Ford</option>
-            <option>Honda</option>
-            <option>Nissan</option>
-            <option>Peugeot</option>
-            <option>Renault</option>
-            <option>Toyota</option>
-            <option>Volkswagen</option>
           </select>
           <span class="campo__error" id="marca-error"></span>
         </div>
-        <!-- Los modelos van agrupados por marca; con JavaScript se muestran sólo los de la marca elegida.
-             La misma lista está en admin/admin-vehiculo.html: si se cambia una, cambiar la otra.
+        <!-- Las marcas y los modelos salen de la base (GET /api/marcas-modelos, ver js/paginas/publicar.js): el back
+             solo acepta los de esa lista. Al elegir la marca se cargan sus modelos.
              El modelo va sin la versión ("Corolla", no "Corolla XEi") para que el comparador lo encuentre en otros sitios. -->
         <div class="campo">
           <label class="campo__etiqueta" for="modelo">Modelo</label>
           <select class="campo__input" id="modelo" name="modelo" required aria-describedby="modelo-error">
             <option value="">Seleccionar modelo</option>
-            <optgroup label="Chevrolet">
-              <option>Cruze</option>
-              <option>Onix</option>
-              <option>Tracker</option>
-            </optgroup>
-            <optgroup label="Fiat">
-              <option>Argo</option>
-              <option>Cronos</option>
-              <option>Strada</option>
-            </optgroup>
-            <optgroup label="Ford">
-              <option>EcoSport</option>
-              <option>Fiesta</option>
-              <option>Ka</option>
-              <option>Ranger</option>
-            </optgroup>
-            <optgroup label="Honda">
-              <option>Fit</option>
-            </optgroup>
-            <optgroup label="Nissan">
-              <option>Leaf</option>
-            </optgroup>
-            <optgroup label="Peugeot">
-              <option>2008</option>
-              <option>208</option>
-              <option>Partner</option>
-            </optgroup>
-            <optgroup label="Renault">
-              <option>Duster</option>
-              <option>Kangoo</option>
-              <option>Kwid</option>
-              <option>Sandero</option>
-            </optgroup>
-            <optgroup label="Toyota">
-              <option>Corolla</option>
-              <option>Corolla Cross</option>
-              <option>Etios</option>
-              <option>Hilux</option>
-            </optgroup>
-            <optgroup label="Volkswagen">
-              <option>Amarok</option>
-              <option>Gol</option>
-              <option>Gol Trend</option>
-              <option>Polo</option>
-            </optgroup>
           </select>
           <span class="campo__error" id="modelo-error"></span>
         </div>
@@ -204,9 +150,9 @@
         <!-- data-max: el máximo entre todas. El back vuelve a validar cantidad, tipo y tamaño. -->
         <label class="subir-fotos" for="fotos">
           <strong>+ Agregar fotos</strong>
-          <span class="campo__ayuda" id="fotos-ayuda">Hasta 5 fotos. JPG, PNG o WebP de hasta 2 MB. Se suben al tocar "Siguiente".</span>
+          <span class="campo__ayuda" id="fotos-ayuda">Hasta 5 fotos JPG, PNG o WebP, de cualquier tamaño: se achican solas. Se suben al tocar "Siguiente".</span>
         </label>
-        <input class="solo-lector" id="fotos" name="fotos[]" type="file" accept="image/jpeg,image/png,image/webp" multiple data-max="5" data-max-mb="2" aria-describedby="fotos-ayuda fotos-error">
+        <input class="solo-lector" id="fotos" name="fotos[]" type="file" accept="image/jpeg,image/png,image/webp" multiple data-max="5" aria-describedby="fotos-ayuda fotos-error">
         <span class="campo__error" id="fotos-error"></span>
         <ul class="fotos-previa" id="fotos-previa" role="list" aria-label="Fotos elegidas, todavía sin subir"></ul>
       </fieldset>
@@ -217,7 +163,7 @@
         <div class="campo">
           <label class="campo__etiqueta" for="precio">Precio en pesos</label>
           <input class="campo__input" id="precio" name="precio" type="number" inputmode="numeric" min="100000" max="999999999" step="1" placeholder="8500000" aria-describedby="precio-ayuda precio-error">
-          <span class="campo__ayuda" id="precio-ayuda">Después de publicar podés pedir la tasación con IA para comparar.</span>
+          <span class="campo__ayuda" id="precio-ayuda">En la publicación vas a ver si el precio está bien frente a autos parecidos de otros sitios.</span>
           <span class="campo__error" id="precio-error"></span>
         </div>
         <label class="casilla">

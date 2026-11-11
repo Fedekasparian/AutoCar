@@ -3,6 +3,7 @@
 // después se muestra sólo para leer, con el firmante y la fecha.
 import * as api from '../api/inspecciones.js';
 import * as formato from '../servicios/formato.js';
+import * as formularios from '../servicios/formularios.js';
 import * as informe from '../servicios/informe.js';
 import * as insp from '../servicios/inspecciones.js';
 import * as sesion from '../servicios/sesion.js';
@@ -227,12 +228,28 @@ function mostrarFirmado(i) {
     document.getElementById('firmado').hidden = false;
 }
 
+// ---------- No se pudo hacer ----------
+
+const formNoRealizada = document.getElementById('form-no-realizada');
+
+formularios.alEnviar(formNoRealizada, async ({ motivo }) => {
+    inspeccion = (await api.noRealizada(id, motivo)).inspeccion;
+    document.getElementById('dialogo-no-realizada').close();
+    sinGuardar = false;
+    form.hidden = true;
+    mostrarAuto(inspeccion);
+    estado.replaceChildren(vistas.aviso(insp.estado(inspeccion.estado), MENSAJES_ESTADO.no_realizada,
+        el('a', { class: 'boton boton--secundario', href: ruta('taller.html') }, 'Ir a Mi taller')));
+    window.scrollTo({ top: 0 });
+});
+
 // ---------- Inicio ----------
 
 const MENSAJES_ESTADO = {
     pedida: 'Todavía no aceptaste este pedido. Aceptalo desde Mi taller, con la fecha del turno, para cargar el checklist.',
     rechazada: 'Rechazaste este pedido. Al comprador se le devolvió lo que pagó.',
     cancelada: 'El comprador canceló este pedido.',
+    no_realizada: 'Marcaste que no la pudiste hacer. Al comprador se le devolvió lo que pagó.',
 };
 
 async function iniciar() {

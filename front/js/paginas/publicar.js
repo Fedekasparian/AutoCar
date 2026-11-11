@@ -4,6 +4,8 @@
 // La publicación queda pendiente y el moderador recién la puede aprobar cuando está completa (vehiculo.faltan vacío).
 // En el último paso, si está completa, "Enviar a revisión" cierra el formulario y le confirma que quedó en revisión.
 import * as api from '../api/publicaciones.js';
+import * as catalogo from '../api/vehiculos.js';
+import { achicar } from '../servicios/imagenes.js';
 import { API_URL } from '../api/config.js';
 import * as formato from '../servicios/formato.js';
 import * as formularios from '../servicios/formularios.js';
@@ -122,7 +124,9 @@ async function crear(datos) {
 async function subirFotos() {
     if (!fotos.files.length) return vehiculo;
     const formData = new FormData();
-    Array.from(fotos.files).forEach((archivo) => formData.append('fotos[]', archivo));
+    // Se achican antes de subir (lado mayor 1600 px): se puede elegir una foto de cualquier tamaño
+    const achicadas = await Promise.all(Array.from(fotos.files).map((archivo) => achicar(archivo)));
+    achicadas.forEach((archivo) => formData.append('fotos[]', archivo));
     const respuesta = await api.agregarFotos(vehiculo.id, formData);
     fotos.value = '';
     fotosPrevia.replaceChildren();
@@ -193,17 +197,24 @@ terminar.addEventListener('click', () => {
     window.scrollTo(0, 0);
 });
 
-// ---------- Modelo: sólo los de la marca elegida ----------
+// ---------- Marca y modelo: la lista sale de la base (GET /api/marcas-modelos) ----------
 
 const marca = form.elements.marca;
 const modelo = form.elements.modelo;
+let modelosPorMarca = new Map();
+
+async function cargarMarcas() {
+    const { marcas } = await catalogo.marcasModelos();
+    modelosPorMarca = new Map(marcas.map((m) => [m.marca, m.modelos]));
+    marca.replaceChildren(vistas.el('option', { value: '' }, 'Seleccionar marca'),
+        ...marcas.map((m) => vistas.el('option', {}, m.marca)));
+}
+
+// Sólo los modelos de la marca elegida
 function filtrarModelos() {
-    Array.from(modelo.querySelectorAll('optgroup')).forEach((grupo) => {
-        const otra = marca.value !== '' && grupo.label !== marca.value;
-        grupo.hidden = otra;
-        grupo.disabled = otra;
-    });
-    if (modelo.selectedOptions[0]?.parentElement.disabled) modelo.value = '';
+    const modelos = modelosPorMarca.get(marca.value) || [];
+    modelo.replaceChildren(vistas.el('option', { value: '' }, 'Seleccionar modelo'),
+        ...modelos.map((nombre) => vistas.el('option', {}, nombre)));
 }
 marca.addEventListener('change', filtrarModelos);
 
@@ -242,14 +253,11 @@ let urlsPrevia = [];
 fotos.addEventListener('change', () => {
     const archivos = Array.from(fotos.files);
     const guardadas = vehiculo?.fotos?.length || 0;
-    const maximoBytes = Number(fotos.dataset.maxMb) * 1024 * 1024;
     let error = '';
     if (guardadas + archivos.length > MAX_FOTOS) {
         error = `Podés tener hasta ${MAX_FOTOS} fotos en total (ya hay ${guardadas}).`;
     } else if (archivos.some((a) => !TIPOS.includes(a.type))) {
         error = 'Sólo se aceptan fotos JPG, PNG o WebP.';
-    } else if (archivos.some((a) => a.size > maximoBytes)) {
-        error = `Cada foto puede pesar hasta ${fotos.dataset.maxMb} MB.`;
     }
     fotos.setCustomValidity(error);
     if (error) window.Validacion.mostrar(fotos, error);
@@ -329,6 +337,13 @@ async function iniciar() {
     form.classList.add('con-js');
     pasos.forEach((paso) => paso.setAttribute('tabindex', '-1'));
     mostrarBusca();
+
+    try {
+        await cargarMarcas();
+    } catch (error) {
+        avisar(`No pudimos cargar las marcas y modelos: ${error.message}`);
+        return;
+    }
 
     const id = new URLSearchParams(window.location.search).get('id');
     if (!id) {

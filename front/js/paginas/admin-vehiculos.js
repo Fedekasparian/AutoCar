@@ -1,4 +1,4 @@
-// Administración: listado de vehículos con editar y eliminar.
+// Administración: listado de vehículos con eliminar. El panel no crea ni edita: cada publicación la corrige su dueño.
 import * as admin from '../api/admin.js';
 import * as formato from '../servicios/formato.js';
 import * as sesion from '../servicios/sesion.js';
@@ -20,7 +20,7 @@ const botonBaja = document.getElementById('baja-confirmar');
 const errorBaja = document.getElementById('baja-error');
 let aEliminar = null;
 
-// Mensaje que deja el formulario al guardar (admin-vehiculo.html → ?guardado=1) o la baja.
+// Mensaje después de una baja.
 function avisar(texto) {
     aviso.textContent = texto;
     aviso.hidden = !texto;
@@ -41,7 +41,6 @@ function fila(v) {
         el('td', {}, formato.estado(v.estado)),
         el('td', {},
             el('ul', { class: 'acciones-fila', role: 'list' },
-                el('li', {}, el('a', { href: ruta(`admin-vehiculo.html?id=${v.id}`) }, 'Editar')),
                 el('li', {}, eliminar))));
 }
 
@@ -83,6 +82,5 @@ botonBaja.addEventListener('click', async () => {
 
 if (sesion.requerirPermiso('vehiculos.gestionar')) {
     document.getElementById('q').value = filtros.q;
-    if (params.has('guardado')) avisar('Los cambios se guardaron.');
     cargar();
 }

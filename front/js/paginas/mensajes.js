@@ -3,7 +3,6 @@
 // conversacion.html sólo el panel (interiores.css).
 // Los mensajes nuevos llegan por polling: cada 5 segundos se piden los que tienen id mayor al último visto.
 import * as chat from '../api/chat.js';
-import { API_URL } from '../api/config.js';
 import * as sesion from '../servicios/sesion.js';
 import * as vistas from '../servicios/vistas.js';
 import { ruta } from '../servicios/rutas.js';
@@ -36,17 +35,13 @@ const conversacionUrl = (c) => ruta(`conversacion.html?id=${c.id}`);
 
 // ---------- Bandeja ----------
 
-function fotoDe(vehiculo, clase) {
-    if (!vehiculo.foto) return el('div', { class: `${clase || ''} sin-foto`.trim(), role: 'img', 'aria-label': 'Sin foto' });
-    return el('img', { class: clase || null, src: API_URL + vehiculo.foto, alt: '', loading: 'lazy' });
-}
-
 function itemBandeja(c) {
     const enlace = el('a', {
         class: 'inbox__item', href: conversacionUrl(c), 'data-conversacion': c.id,
         'aria-current': estado.actual && estado.actual.id === c.id ? 'page' : null,
     },
-    fotoDe(c.vehiculo),
+    // La foto de la persona con la que hablás (o su inicial); el auto va como texto debajo del nombre
+    vistas.avatar(c.con, 'avatar--chat'),
     el('div', {},
         el('strong', {}, c.con.nombre,
             c.no_leidos > 0
@@ -149,8 +144,9 @@ async function abrirConversacion(c) {
         else a.removeAttribute('aria-current');
     });
 
-    $('chat-foto').replaceWith(Object.assign(fotoDe(c.vehiculo), { id: 'chat-foto' }));
+    $('chat-foto').replaceWith(Object.assign(vistas.avatar(c.con, 'avatar--chat'), { id: 'chat-foto' }));
     $('chat-persona').textContent = c.con.nombre;
+    $('chat-reportar').href = ruta(`reportar.html?usuario=${c.con.id}`);
     $('chat-rol').textContent = c.rol === 'vendedor' ? 'Le interesa tu publicación' : 'Vendedor';
     const vehiculo = $('chat-vehiculo');
     vehiculo.textContent = c.vehiculo.titulo;

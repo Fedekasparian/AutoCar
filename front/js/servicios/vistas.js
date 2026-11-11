@@ -1,6 +1,8 @@
 // Piezas de HTML que se arman con los datos de la API. Todo se crea con el DOM (textContent),
 // así nada de lo que viene del servidor se interpreta como HTML.
-import * as formato from './formato.js';
+import { API_URL } from '../api/config.js';
+import * as formato from './formato.js';
+
 import { ruta } from './rutas.js';
 
 // Crea un elemento: el('span', {class: 'x'}, 'texto', otroNodo)
@@ -17,11 +19,23 @@ export function el(etiqueta, atributos = {}, ...hijos) {
 // Foto del vehículo o el recuadro gris de "sin foto" del maquetado.
 export function imagenVehiculo(v, clase) {
     const titulo = formato.titulo(v);
-    if (!v.imagen_url) return el('div', { class: clase, role: 'img', 'aria-label': `${titulo}, sin foto` });
-    const img = el('img', { class: clase, src: v.imagen_url, alt: titulo, loading: 'lazy' });
+    // La foto subida (v.foto, ruta de la API); imagen_url queda para datos viejos que la tengan
+    const src = v.foto ? API_URL + v.foto : v.imagen_url;
+    if (!src) return el('div', { class: clase, role: 'img', 'aria-label': `${titulo}, sin foto` });
+    const img = el('img', { class: clase, src, alt: titulo, loading: 'lazy' });
     // Si la URL no carga, queda el fondo gris en lugar de la imagen rota.
     img.addEventListener('error', () => img.replaceWith(
         el('div', { class: clase, role: 'img', 'aria-label': `${titulo}, sin foto` })));
+    return img;
+}
+
+// Foto de perfil de una persona ({nombre, foto}); sin foto (o si no carga), un círculo con su inicial.
+export function avatar(persona, clase = '') {
+    const inicial = () => el('span', { class: `avatar ${clase}`, 'aria-hidden': 'true' },
+        (persona.nombre || '?').trim().charAt(0).toUpperCase());
+    if (!persona.foto) return inicial();
+    const img = el('img', { class: `avatar ${clase}`, src: API_URL + persona.foto, alt: `Foto de ${persona.nombre}` });
+    img.addEventListener('error', () => img.replaceWith(inicial()));
     return img;
 }
 
@@ -71,7 +85,16 @@ export function aviso(titulo, texto, accion) {
         accion || null);
 }
 
-export const cargando = () => aviso('Cargando…', 'Si el servidor estaba dormido puede tardar hasta un minuto.');
+// "Cargando…" y, solo si a los 5 segundos sigue en pantalla, la aclaración del servidor dormido (Render Free se
+// duerme sin uso y tarda en despertar). Así una carga normal no muestra un aviso que no corresponde.
+const ESPERA_DORMIDO = 5000;
+export function cargando() {
+    const nodo = aviso('Cargando…');
+    setTimeout(() => {
+        if (nodo.isConnected) nodo.append(el('p', {}, 'El servidor estaba dormido: puede tardar hasta un minuto en despertar.'));
+    }, ESPERA_DORMIDO);
+    return nodo;
+}
 
 export function avisoDeError(error) {
     const reintentar = el('button', { class: 'boton boton--secundario', type: 'button' }, 'Reintentar');

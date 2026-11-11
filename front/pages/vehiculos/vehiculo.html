@@ -32,9 +32,9 @@
     <h1>Detalle</h1>
   </header>
 
-  <!-- Los datos los completa js/paginas/vehiculo.js con GET /api/vehiculos/{id} (vehiculo.html?id=N).
-       Verificación, tasación, ubicación, publicador y favoritos todavía no están en la API:
-       el maquetado de esas partes está en la historia de git y en guia.html. -->
+  <!-- Los datos los completa js/paginas/vehiculo.js con GET /api/vehiculos/{id} (vehiculo.html?id=N):
+       ficha, vendedor (solo nombre y desde cuándo está) y favorito (PUT/DELETE /api/favoritos/{id}).
+       El sello de "verificado por un mecánico" todavía no está en la API. -->
   <main id="contenido" class="pantalla detalle">
 
     <div class="estado" id="estado"></div>
@@ -51,6 +51,8 @@
         <p class="detalle__precio" id="vehiculo-precio"></p>
         <p class="suave" id="vehiculo-resumen"></p>
         <p id="vehiculo-vendido" hidden><span class="etiqueta etiqueta--oscura">Vendido</span></p>
+        <button class="boton boton--secundario" type="button" id="vehiculo-favorito" aria-pressed="false" hidden>Guardar en favoritos</button>
+        <p class="campo__ayuda" id="vehiculo-favorito-aviso" role="status" hidden></p>
       </section>
 
       <section aria-labelledby="ficha-titulo">
@@ -60,6 +62,8 @@
 <dd id="dato-marca"></dd>
           <dt>Modelo</dt>
 <dd id="dato-modelo"></dd>
+          <dt id="dato-version-titulo" hidden>Versión</dt>
+<dd id="dato-version" hidden></dd>
           <dt>Año</dt>
 <dd id="dato-anio"></dd>
           <dt>Kilometraje</dt>
@@ -68,9 +72,25 @@
 <dd id="dato-combustible"></dd>
           <dt>Transmisión</dt>
 <dd id="dato-transmision"></dd>
+          <dt id="dato-condicion-titulo" hidden>Estado general</dt>
+<dd id="dato-condicion" hidden></dd>
+          <dt id="dato-localidad-titulo" hidden>Ubicación</dt>
+<dd id="dato-localidad" hidden></dd>
           <dt>Estado</dt>
 <dd id="dato-estado"></dd>
         </dl>
+      </section>
+
+      <section class="pila" aria-labelledby="precio-titulo" id="vehiculo-comparacion" hidden>
+        <h2 id="precio-titulo" class="titulo-seccion">¿Está bien el precio?</h2>
+        <p><span class="etiqueta" id="comparacion-etiqueta"></span> <span id="comparacion-texto"></span></p>
+        <p class="campo__ayuda">Frente a autos parecidos de MercadoLibre, Kavak y Autocosmos. Son precios publicados, no de venta.</p>
+      </section>
+
+      <section class="pila" aria-labelledby="vendedor-titulo" id="vehiculo-vendedor" hidden>
+        <h2 id="vendedor-titulo" class="titulo-seccion">Vendedor</h2>
+        <p class="vendedor"><span id="vendedor-foto"></span>
+          <span><strong id="vendedor-nombre"></strong><br><span class="suave" id="vendedor-desde"></span></span></p>
       </section>
 
       <section class="pila" aria-labelledby="descripcion-titulo" id="vehiculo-descripcion" hidden>
@@ -82,11 +102,10 @@
       <p class="campo__ayuda" id="vehiculo-mecanico-ayuda" hidden>Un mecánico independiente que elegís vos lo revisa y firma el informe con su nombre.</p>
       <div class="detalle__acciones">
         <button class="boton" type="button" id="vehiculo-consultar" hidden>Consultar</button>
-        <a class="boton boton--secundario" href="../operaciones/proponer-canje.html">Proponer canje</a>
+        <a class="boton boton--secundario" id="vehiculo-canje" href="../operaciones/proponer-canje.html" hidden>Proponer canje</a>
       </div>
       <p class="campo__ayuda" id="vehiculo-consultar-aviso" role="status" hidden></p>
-      <a class="boton boton--secundario boton--bloque" id="vehiculo-editar" hidden>Editar (administración)</a>
-      <a class="detalle__reportar" href="../info/reportar.html">Reportar publicación</a>
+      <a class="detalle__reportar" id="vehiculo-reportar" href="../info/reportar.html">Reportar publicación</a>
 
     </div>
   </main>

@@ -652,3 +652,45 @@ textarea.campo__input{
     border-color: var(--color-linea);
     color: var(--color-texto);
 }
+
+/* Foto de perfil (o la inicial si no subió ninguna): detalle del vehículo, chat y Mi cuenta */
+.avatar{
+    display: inline-grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    background: var(--color-suave);
+    font-weight: 700;
+    vertical-align: middle;
+    flex-shrink: 0;
+}
+.avatar--chat{ width: 56px; height: 56px; font-size: var(--tam-lg, 1.25rem); }
+.avatar--grande{ width: 112px; height: 112px; font-size: 2.5rem; }
+
+/* Mi cuenta: la foto es un botón; al tocarla se elige una nueva */
+.perfil-foto{
+    position: relative;
+    display: inline-block;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: none;
+    cursor: pointer;
+}
+.perfil-foto__editar{
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    display: grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    border: 2px solid var(--color-fondo, #fff);
+    border-radius: 50%;
+    background: var(--marca-tinta, #222);
+    color: #fff;
+    font-size: 16px;
+}
+.perfil-foto:focus-visible{ outline: 3px solid var(--marca-tinta, #222); outline-offset: 3px; }

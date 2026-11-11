@@ -28,6 +28,7 @@ export const ESTADOS = {
     rechazada: 'Rechazada',
     cancelada: 'Cancelada',
     firmada: 'Firmada',
+    no_realizada: 'No se pudo hacer',
 };
 export const FUENTES = {
     mercadolibre: 'MercadoLibre',

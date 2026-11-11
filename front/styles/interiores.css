@@ -117,7 +117,17 @@
 .vista-meta-busqueda .pantalla > .boton { justify-self:start; width:auto; }
 .vista-meta-busqueda .pila { gap:18px; }
 .vista-meta-busqueda .recuadro { border:0; border-left:3px solid var(--marca-tinta); border-radius:0; }
+/* Cada búsqueda guardada con su tachito al costado: gris, y rojo al pasar el mouse o con el teclado */
+.busqueda-guardada { display:flex; align-items:stretch; gap:8px; }
+.busqueda-guardada > .fila { flex:1; min-width:0; }
+.busqueda-guardada__borrar { flex:none; width:48px; display:grid; place-items:center; border:0; border-radius:8px; background:transparent; color:var(--color-texto-suave); cursor:pointer; transition:color .15s, background-color .15s; }
+.busqueda-guardada__borrar:hover,.busqueda-guardada__borrar:focus-visible { color:var(--color-error); background:color-mix(in srgb, var(--color-error) 10%, transparent); }
 .vista-meta-busqueda-resultados .pantalla > .recuadro { background:var(--marca-tenue); }
+/* Cada auto: si no entran al costado (celular), los botones bajan debajo del texto */
+.vista-meta-busqueda-resultados .fila { flex-wrap:wrap; }
+.vista-meta-busqueda-resultados .fila__cuerpo { flex:1 1 260px; }
+.vista-meta-busqueda-resultados .fila__acciones { display:flex; flex-wrap:wrap; align-items:center; gap:12px 20px; }
+.vista-meta-busqueda-resultados #borrar { justify-self:start; width:auto; }
 .vista-talleres .mapa,.vista-mapa .mapa { width:100%; min-width:0; height:360px; min-height:0; }
 .vista-admin .resumen-admin { border-bottom:1px solid var(--marca-linea); padding-bottom:28px; gap:24px; }
 .vista-admin .resumen-admin .recuadro { background:transparent; border:0; padding:0; }
@@ -259,3 +269,13 @@
 .conversacion-panel #chat-estado:not([hidden]) { padding:40px 28px; }
 @media(max-width:767px) { .inbox__item .sin-foto { width:60px; height:60px; } }
 .inbox__item[aria-current=page] .sin-foto { background:var(--marca-blanco); }
+
+/* Chat: la foto de la persona (o su inicial) es un círculo; las reglas de arriba eran para la foto del auto */
+.inbox__item .avatar,
+.conversacion-panel__cabecera #chat-foto.avatar {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    object-fit: cover;
+    background: var(--marca-tenue);
+}
