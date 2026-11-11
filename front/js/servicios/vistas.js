@@ -85,7 +85,16 @@ export function aviso(titulo, texto, accion) {
         accion || null);
 }
 
-export const cargando = () => aviso('Cargando…', 'Si el servidor estaba dormido puede tardar hasta un minuto.');
+// "Cargando…" y, solo si a los 5 segundos sigue en pantalla, la aclaración del servidor dormido (Render Free se
+// duerme sin uso y tarda en despertar). Así una carga normal no muestra un aviso que no corresponde.
+const ESPERA_DORMIDO = 5000;
+export function cargando() {
+    const nodo = aviso('Cargando…');
+    setTimeout(() => {
+        if (nodo.isConnected) nodo.append(el('p', {}, 'El servidor estaba dormido: puede tardar hasta un minuto en despertar.'));
+    }, ESPERA_DORMIDO);
+    return nodo;
+}
 
 export function avisoDeError(error) {
     const reintentar = el('button', { class: 'boton boton--secundario', type: 'button' }, 'Reintentar');
