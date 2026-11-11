@@ -173,3 +173,70 @@ dialog.hoja::backdrop{ background: rgb(11 17 29 / .45); backdrop-filter: blur(2p
     *, *::before, *::after{ animation-duration: 1ms !important; animation-iteration-count: 1 !important; }
     a.ficha-vehiculo:hover, a.ficha-vehiculo:hover .ficha-vehiculo__imagen, .boton:active{ transform: none; }
 }
+
+/* ---------- 6. Navegación (sección 2 del rediseño) ---------- */
+/* Barra de vidrio: deja ver el contenido detrás, borroso */
+.con-barra .barra, .marca-nav{
+    background: color-mix(in srgb, var(--marca-blanco) 80%, transparent);
+    -webkit-backdrop-filter: blur(14px) saturate(1.5);
+    backdrop-filter: blur(14px) saturate(1.5);
+    transition: height var(--dur-media) var(--curva-suave), min-height var(--dur-media) var(--curva-suave),
+                padding var(--dur-media) var(--curva-suave), box-shadow var(--dur-media) var(--curva-suave),
+                border-color var(--dur-media) var(--curva-suave);
+}
+.marca-nav{ position: sticky; top: 0; z-index: 25; background: color-mix(in srgb, var(--marca-papel) 80%, transparent); }
+.marca, .barra__marca{ transition: font-size var(--dur-media) var(--curva-suave); }
+
+/* Píldora que se desliza entre los links (escritorio) */
+.barra__pildora{
+    position: absolute; top: 50%; left: 0; z-index: 0;
+    border-radius: 9px;
+    background: var(--marca-tenue);
+    opacity: 0;
+    pointer-events: none;
+    transition: transform var(--dur-media) var(--curva-suave), width var(--dur-media) var(--curva-suave),
+                opacity var(--dur-rapida) linear, background-color var(--dur-rapida) linear;
+}
+.barra__pildora--quieta{ transition: none; }
+.barra__pildora--hover{ background: color-mix(in srgb, var(--marca-tenue) 65%, transparent); }
+.barra--con-pildora .barra__lista{ position: relative; z-index: 1; }
+.barra--con-pildora .barra__marca{ position: relative; z-index: 1; }
+@media (min-width: 1100px){
+    /* La píldora reemplaza al fondo fijo del link activo y al del hover */
+    .con-barra .barra--con-pildora .barra__enlace,
+    .con-barra .barra--con-pildora .barra__enlace:hover,
+    .con-barra .barra--con-pildora .barra__enlace[aria-current=page]{ background: transparent; }
+    .con-barra .barra__enlace{ transition: color var(--dur-rapida) linear; }
+    .con-barra .barra__enlace:hover{ color: var(--marca-tinta); }
+    .con-barra .barra__icono svg{ transition: transform var(--dur-media) var(--curva-rebote); }
+    .con-barra .barra__enlace:hover .barra__icono svg{ transform: translateY(-1px) scale(1.08); }
+
+    /* Al bajar: más baja y con sombra */
+    .con-scroll .con-barra .barra{ height: 64px; box-shadow: var(--sombra-2); border-bottom-color: transparent; }
+    .con-scroll .con-barra .barra__marca{ font-size: 24px; }
+}
+.con-scroll .marca-nav{ min-height: 68px; padding-block: 10px; box-shadow: var(--sombra-2); border-bottom-color: transparent; }
+.con-scroll .marca-nav .marca{ font-size: 26px; }
+
+/* Celular: barra de pestañas abajo, la actual con una píldora aqua detrás del ícono */
+@media (max-width: 1099px){
+    .barra__pildora{ display: none; }
+    .con-barra .barra{ box-shadow: 0 -8px 24px -16px rgb(19 27 45 / .25); }
+    .con-barra .barra__enlace[aria-current=page]{ box-shadow: none; color: var(--marca-tinta); }
+    .con-barra .barra__icono{
+        width: 56px; height: 30px; border-radius: 999px;
+        transition: background-color var(--dur-media) var(--curva-suave), transform var(--dur-media) var(--curva-rebote);
+    }
+    .con-barra .barra__enlace[aria-current=page] .barra__icono{
+        background: var(--marca-acento); color: var(--sobre-acento);
+        animation: pildora-entra var(--dur-lenta) var(--curva-rebote) both;
+    }
+    .con-barra .barra__enlace:active .barra__icono{ transform: scale(.88); }
+    @keyframes pildora-entra{ from{ transform: scaleX(.4); opacity: .3; } }
+}
+@media (prefers-color-scheme: dark){
+    .con-barra .barra__enlace[aria-current=page]{ color: var(--marca-tinta); }
+}
+@media (prefers-reduced-motion: reduce){
+    .barra__pildora{ transition: none; }
+}
