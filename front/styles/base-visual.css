@@ -472,7 +472,7 @@ dialog.hoja::backdrop{ background: rgb(11 17 29 / .45); backdrop-filter: blur(2p
     background: var(--marca-tinta); border: 3px solid var(--marca-blanco); box-shadow: var(--sombra-2);
     animation: rango-marca .9s var(--curva-rebote) .25s both;
 }
-.rango__este--buen_precio{ background: #1f8a52; }
+.rango__este--buen_precio{ background: #18733f; }
 .rango__este--caro{ background: #c2410c; }
 .rango__globo{
     position: absolute; bottom: 22px; left: 50%; transform: translateX(-50%); white-space: nowrap;
@@ -944,7 +944,7 @@ dialog.hoja::backdrop{ background: rgb(11 17 29 / .45); backdrop-filter: blur(2p
 .conversacion-panel .chat__mensaje--mio{ border-radius: 18px 18px 6px 18px; }
 .conversacion-panel .chat__mensaje--seguido{ margin-top: -8px; border-top-left-radius: 6px; }
 .conversacion-panel .chat__mensaje--mio.chat__mensaje--seguido{ border-top-left-radius: 18px; border-top-right-radius: 6px; }
-.conversacion-panel .chat__hora{ justify-self: end; margin: 0; font-size: 11px; opacity: .75; font-variant-numeric: tabular-nums; }
+.conversacion-panel .chat__hora{ justify-self: end; margin: 0; font-size: 11px; color: var(--marca-gris); font-variant-numeric: tabular-nums; }
 .chat__mensaje--nuevo{ animation: burbuja-entra var(--dur-media) var(--curva-rebote) both; transform-origin: bottom left; }
 .chat__mensaje--mio.chat__mensaje--nuevo{ transform-origin: bottom right; }
 @keyframes burbuja-entra{ from{ opacity: 0; transform: translateY(10px) scale(.92); } }
@@ -999,7 +999,7 @@ dialog.hoja::backdrop{ background: rgb(11 17 29 / .45); backdrop-filter: blur(2p
 /* =====================================================================
    10. Inspecciones y talleres
    ===================================================================== */
-:root{ --ok: #2f855a; --observado: #b7791f; --falla: #c53030; }
+:root{ --ok: #1f6b45; --observado: #86560c; --falla: #a32626; }
 @media (prefers-color-scheme: dark){ :root, :root[data-tema]{ --ok: #68d391; --observado: #f6ad55; --falla: #fc8181; } }
 
 /* Etiquetas de resultado y de estado del pedido */
@@ -1009,7 +1009,7 @@ dialog.hoja::backdrop{ background: rgb(11 17 29 / .45); backdrop-filter: blur(2p
 .resultado--sin{ --tono: var(--marca-gris); }
 .etiqueta.resultado{ border: 0; color: var(--tono); background: color-mix(in srgb, var(--tono) 14%, transparent); font-weight: 700; }
 .etiqueta-insp{ border: 0; font-weight: 700; color: var(--tono, var(--marca-gris)); background: color-mix(in srgb, var(--tono, var(--marca-gris)) 14%, transparent); }
-.etiqueta-insp--pedida{ --tono: #2b6cb0; }
+.etiqueta-insp--pedida{ --tono: #1f5592; }
 .etiqueta-insp--aceptada{ --tono: #6b46c1; }
 .etiqueta-insp--firmada{ --tono: var(--ok); }
 .etiqueta-insp--rechazada, .etiqueta-insp--no_realizada{ --tono: var(--falla); }
