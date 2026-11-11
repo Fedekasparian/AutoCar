@@ -57,6 +57,8 @@
         <span id="pasos-numero">1/6</span>
       </p>
       <progress class="progreso" id="pasos-progreso" max="6" value="1"></progress>
+      <!-- Los seis pasos como puntos (decorativo: el texto de arriba ya dice en qué paso está). Lo arma publicar.js -->
+      <ol class="pasos__puntos" id="pasos-puntos" aria-hidden="true"></ol>
     </div>
 
     <p class="campo__ayuda" id="faltan" aria-live="polite" hidden></p>
@@ -152,13 +154,15 @@
         <!-- Las que ya están guardadas, con un botón para sacarlas -->
         <ul class="fotos-previa" id="fotos-actuales" role="list" aria-label="Fotos guardadas"></ul>
         <!-- data-max: el máximo entre todas. El back vuelve a validar cantidad, tipo y tamaño. -->
-        <label class="subir-fotos" for="fotos">
-          <strong>+ Agregar fotos</strong>
-          <span class="campo__ayuda" id="fotos-ayuda">Hasta 5 fotos JPG, PNG o WebP, de cualquier tamaño: se achican solas. Se suben al tocar "Siguiente".</span>
+        <label class="subir-fotos" for="fotos" id="zona-fotos">
+          <svg class="subir-fotos__icono" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3M12 4v11M7.5 8.5 12 4l4.5 4.5"></path></svg>
+          <strong>Arrastrá las fotos acá o tocá para elegirlas</strong>
+          <span class="campo__ayuda" id="fotos-ayuda">Hasta 5 fotos JPG, PNG o WebP, de cualquier tamaño: se achican solas. La primera es la portada. Se suben al tocar "Siguiente".</span>
         </label>
         <input class="solo-lector" id="fotos" name="fotos[]" type="file" accept="image/jpeg,image/png,image/webp" multiple data-max="5" aria-describedby="fotos-ayuda fotos-error">
         <span class="campo__error" id="fotos-error"></span>
         <ul class="fotos-previa" id="fotos-previa" role="list" aria-label="Fotos elegidas, todavía sin subir"></ul>
+        <div class="subiendo" id="fotos-subiendo" role="status" hidden><span class="subiendo__barra"></span><span id="fotos-subiendo-texto"></span></div>
       </fieldset>
 
       <!-- Paso 4 -->
@@ -197,6 +201,8 @@
       <!-- Paso 6: con JavaScript se completa el resumen con lo cargado en los pasos anteriores -->
       <fieldset class="paso" data-paso="Revisión">
         <legend>Revisión</legend>
+        <!-- La ficha tal como se va a ver en Explorar (la arma publicar.js) -->
+        <div class="resumen-ficha" id="resumen-ficha"></div>
         <dl class="datos" id="resumen">
           <dt>Vehículo</dt>
 <dd data-resumen="marca modelo anio version">—</dd>
@@ -226,6 +232,13 @@
         <button class="boton" type="button" id="terminar" hidden>Enviar a revisión</button>
       </div>
     </form>
+
+    <!-- Escritorio: la ficha se va armando al lado mientras se completan los pasos (la arma publicar.js) -->
+    <aside class="vista-previa" id="vista-previa" aria-labelledby="vista-previa-titulo" hidden>
+      <h2 class="vista-previa__titulo" id="vista-previa-titulo">Así se va a ver</h2>
+      <div id="vista-previa-ficha"></div>
+      <p class="campo__ayuda">Es la ficha que van a ver en Explorar. Se actualiza mientras escribís.</p>
+    </aside>
 
   </main>
 

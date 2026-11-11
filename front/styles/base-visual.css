@@ -514,3 +514,132 @@ dialog.hoja::backdrop{ background: rgb(11 17 29 / .45); backdrop-filter: blur(2p
 }
 .rango__pista--este-inicio .rango__globo{ left: -4px; transform: none; }
 .rango__pista--este-fin .rango__globo{ left: auto; right: -4px; transform: none; }
+
+/* =====================================================================
+   5. Publicar
+   ===================================================================== */
+
+/* Escritorio: el formulario a la izquierda y la ficha que se va armando a la derecha */
+@media (min-width: 1100px){
+    .vista-publicar #contenido{
+        display: grid; grid-template-columns: minmax(0, 800px) 320px; column-gap: 40px; align-items: start;
+        max-width: 1200px;
+    }
+    .vista-publicar #contenido > *{ grid-column: 1; }
+    .vista-publicar #contenido > .vista-previa{ grid-column: 2; grid-row: 1 / span 8; position: sticky; top: 96px; }
+}
+.vista-previa{ display: none; }
+@media (min-width: 1100px){ .vista-previa:not([hidden]){ display: grid; gap: 12px; } }
+.vista-previa__titulo{ margin: 0; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--marca-gris); }
+.ficha-vehiculo--previa{ box-shadow: var(--sombra-2); }
+.ficha-vehiculo--previa .ficha-vehiculo__cuerpo > *{ transition: color var(--dur-media); }
+.ficha-vehiculo__imagen--vacia{
+    display: grid; place-items: center; width: 100%; aspect-ratio: 1.48; color: var(--marca-gris); font-size: 13px;
+    background: repeating-linear-gradient(135deg, var(--marca-tenue) 0 12px, color-mix(in srgb, var(--marca-tenue) 60%, var(--marca-blanco)) 12px 24px);
+}
+.ficha-vehiculo__precio--falta{ color: var(--marca-gris); font-size: 18px !important; }
+.resumen-ficha{ max-width: 340px; }
+.resumen-ficha:empty{ display: none; }
+
+/* Puntos de los pasos, con la línea que se va llenando */
+.pasos__puntos{
+    --avance: 0;
+    position: relative; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); margin: 6px 0 0; padding: 0; list-style: none;
+}
+.pasos__puntos::before, .pasos__puntos::after{
+    content: ""; position: absolute; top: 15px; left: calc(100% / 12); height: 3px; border-radius: 3px;
+}
+.pasos__puntos::before{ right: calc(100% / 12); background: var(--marca-linea); }
+.pasos__puntos::after{
+    width: calc((100% - 100% / 6) * var(--avance)); background: var(--marca-acento);
+    transition: width var(--dur-lenta) var(--curva-salida);
+}
+.pasos__punto{ position: relative; z-index: 1; display: grid; justify-items: center; gap: 6px; text-align: center; }
+.pasos__marca{
+    display: grid; place-items: center; width: 32px; height: 32px; border-radius: 50%;
+    background: var(--marca-blanco); border: 2px solid var(--marca-linea); color: var(--marca-gris);
+    font-size: 13px; font-weight: 700;
+    transition: background-color var(--dur-media), border-color var(--dur-media), color var(--dur-media), transform var(--dur-media) var(--curva-rebote);
+}
+.pasos__nombre{ font-size: 11px; line-height: 1.2; color: var(--marca-gris); }
+.pasos__punto--hecho .pasos__marca{ background: var(--marca-acento); border-color: var(--marca-acento); color: var(--sobre-acento); font-size: 0; }
+.pasos__punto--hecho .pasos__marca::after{ content: "✓"; font-size: 15px; }
+.pasos__punto--actual .pasos__marca{ border-color: var(--marca-tinta); background: var(--marca-tinta); color: var(--marca-blanco); transform: scale(1.12); box-shadow: 0 0 0 5px color-mix(in srgb, var(--marca-acento) 35%, transparent); }
+.pasos__punto--actual .pasos__nombre{ color: var(--marca-tinta); font-weight: 650; }
+/* Con los puntos, la barra de progreso queda solo para lectores de pantalla y navegadores sin CSS */
+.vista-publicar .pasos .progreso{ position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+@media (max-width: 599px){
+    .pasos__nombre{ display: none; }
+    .pasos__punto--actual .pasos__nombre{ display: none; }
+}
+
+/* El paso entra deslizándose según hacia dónde se va */
+.paso--adelante{ animation: paso-adelante var(--dur-lenta) var(--curva-salida); }
+.paso--atras{ animation: paso-atras var(--dur-lenta) var(--curva-salida); }
+@keyframes paso-adelante{ from{ opacity: 0; transform: translateX(28px); } }
+@keyframes paso-atras{ from{ opacity: 0; transform: translateX(-28px); } }
+
+/* Campo bien cargado: borde verde y un tilde */
+.campo--ok{ position: relative; }
+.campo--ok > .campo__input{ border-color: #2f9e65; }
+.campo--ok > .campo__input:not(select){ padding-right: 40px; }
+.campo--ok > input.campo__input{ background-image: url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 24 24%27 fill=%27none%27 stroke=%27%232f9e65%27 stroke-width=%273%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27%3E%3Cpath d=%27M5 12.5l4.5 4.5L19 7.5%27/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; background-size: 18px; }
+@keyframes tilde-entra{ from{ opacity: 0; transform: scale(.4); } }
+
+/* Recuadro para soltar fotos */
+.vista-publicar .subir-fotos{
+    gap: 8px; padding: 36px 24px; border: 2px dashed var(--marca-linea); border-radius: 16px;
+    transition: border-color var(--dur-rapida), background-color var(--dur-rapida), transform var(--dur-media) var(--curva-rebote);
+}
+.vista-publicar .subir-fotos:hover{ border-color: var(--marca-tinta); }
+.subir-fotos__icono{ color: color-mix(in srgb, var(--marca-acento) 55%, var(--marca-tinta)); transition: transform var(--dur-media) var(--curva-rebote); }
+.subir-fotos:hover .subir-fotos__icono{ transform: translateY(-3px); }
+.subir-fotos--activa{
+    border-color: var(--marca-acento) !important; transform: scale(1.01);
+    background: color-mix(in srgb, var(--marca-acento) 14%, var(--marca-blanco)) !important;
+}
+.subir-fotos--activa .subir-fotos__icono{ transform: translateY(-6px) scale(1.1); }
+.subir-fotos:has(+ #fotos:focus-visible){ box-shadow: var(--anillo-foco); }
+
+/* Miniaturas: guardadas y nuevas, con "Portada", "Primera" y la cruz para sacarla */
+.vista-publicar .fotos-previa{ grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 12px; }
+.vista-publicar .fotos-previa:empty{ display: none; }
+.vista-publicar .fotos-previa li{ position: relative; aspect-ratio: 4 / 3; border-radius: 12px; box-shadow: var(--sombra-1); animation: chip-entra var(--dur-media) var(--curva-rebote) both; }
+.fotos-previa__nueva{ cursor: grab; }
+.fotos-previa__nueva--moviendo{ opacity: .4; }
+.fotos-previa__portada{
+    position: absolute; left: 8px; bottom: 8px; padding: 2px 8px; border-radius: 999px;
+    background: var(--marca-acento); color: var(--sobre-acento); font-size: 11px; font-weight: 700;
+}
+.fotos-previa__sacar, .fotos-previa__primera{
+    position: absolute; top: 6px; border: 0; cursor: pointer; color: #fff; background: rgb(19 27 45 / .72);
+    transition: background-color var(--dur-rapida), transform var(--dur-rapida) var(--curva-rebote);
+}
+.fotos-previa__sacar{ right: 6px; width: 28px; height: 28px; padding: 0; border-radius: 50%; font-size: 18px; line-height: 1; }
+.fotos-previa__primera{ left: 6px; padding: 3px 8px; border-radius: 999px; font-size: 11px; font-weight: 600; }
+.fotos-previa__sacar:hover{ background: #c2410c; transform: scale(1.1); }
+.fotos-previa__primera:hover{ background: var(--marca-tinta); }
+.fotos-previa__sacar:focus-visible, .fotos-previa__primera:focus-visible{ outline: none; box-shadow: var(--anillo-foco); }
+.fotos-previa__nueva::after{
+    content: "Nueva"; position: absolute; right: 8px; bottom: 8px; padding: 1px 6px; border-radius: 6px;
+    background: rgb(255 255 255 / .88); color: #131b2d; font-size: 10px; font-weight: 700;
+}
+
+/* Subiendo: barra que avanza sin fin mientras se preparan y suben las fotos */
+.subiendo{ display: grid; gap: 8px; font-size: 14px; color: var(--marca-gris); }
+.subiendo[hidden]{ display: none; }
+.subiendo__barra{ position: relative; height: 6px; border-radius: 999px; overflow: hidden; background: var(--marca-tenue); }
+.subiendo__barra::after{
+    content: ""; position: absolute; inset-block: 0; width: 40%; border-radius: inherit; background: var(--marca-acento);
+    animation: subiendo 1.1s var(--curva-suave) infinite;
+}
+@keyframes subiendo{ from{ left: -40%; } to{ left: 100%; } }
+
+@media (prefers-color-scheme: dark){
+    .campo--ok > .campo__input{ border-color: #4cc38a; }
+    .pasos__marca{ background: var(--marca-papel); }
+}
+@media (prefers-reduced-motion: reduce){
+    .paso--adelante, .paso--atras, .vista-publicar .fotos-previa li{ animation: none; }
+    .subiendo__barra::after{ animation-duration: 3s; }
+}
