@@ -111,6 +111,35 @@ export function cargando() {
     return nodo;
 }
 
+// Aviso flotante abajo de la pantalla ("Guardado en favoritos", "Se aprobó…"). Uno solo por página.
+let avisoFlotanteNodo;
+let avisoFlotanteTiempo;
+export function avisoFlotante(texto) {
+    if (!avisoFlotanteNodo) {
+        avisoFlotanteNodo = el('p', { class: 'aviso-flotante', role: 'status' });
+        document.body.append(avisoFlotanteNodo);
+    }
+    avisoFlotanteNodo.textContent = texto;
+    avisoFlotanteNodo.classList.remove('aviso-flotante--visible');
+    void avisoFlotanteNodo.offsetWidth; // reinicia la animación si llega otro aviso seguido
+    avisoFlotanteNodo.classList.add('aviso-flotante--visible');
+    clearTimeout(avisoFlotanteTiempo);
+    avisoFlotanteTiempo = setTimeout(() => avisoFlotanteNodo.classList.remove('aviso-flotante--visible'), 3200);
+}
+
+// Cuenta de 0 al valor en ~1 s (desacelerando). formatear convierte el número en el texto a mostrar.
+export function contarHasta(nodo, valor, formatear = String) {
+    const final = formatear(valor);
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches || !valor) { nodo.textContent = final; return; }
+    const inicio = performance.now();
+    const paso = (ahora) => {
+        const t = Math.min(1, (ahora - inicio) / 1000);
+        nodo.textContent = t < 1 ? formatear(Math.round(valor * (1 - (1 - t) ** 3))) : final;
+        if (t < 1) requestAnimationFrame(paso);
+    };
+    requestAnimationFrame(paso);
+}
+
 export function avisoDeError(error) {
     const reintentar = el('button', { class: 'boton boton--secundario', type: 'button' }, 'Reintentar');
     reintentar.addEventListener('click', () => window.location.reload());

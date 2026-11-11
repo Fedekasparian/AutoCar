@@ -22,7 +22,6 @@ if (filtroEstado === 'incompletas') {
 const cola = document.getElementById('cola');
 const estado = document.getElementById('estado');
 const total = document.getElementById('resultados-total');
-const aviso = document.getElementById('aviso');
 
 const VACIO = {
     pendiente: 'No hay publicaciones esperando revisión.',
@@ -30,11 +29,6 @@ const VACIO = {
     rechazado: 'No hay publicaciones rechazadas.',
     disponible: 'No hay publicaciones aprobadas.',
 };
-
-function avisar(texto) {
-    aviso.textContent = texto;
-    aviso.hidden = !texto;
-}
 
 // Las fotos vienen como /api/fotos/ID: publicado, el proxy de Vercel las atiende; en local va el API_URL adelante.
 const urlFoto = (rutaFoto) => API_URL + rutaFoto;
@@ -53,7 +47,7 @@ async function decidir(v, nuevoEstado, motivo, error, boton) {
     try {
         await admin.moderar(v.id, nuevoEstado, motivo);
         const textos = { disponible: 'Se aprobó', rechazado: 'Se rechazó' };
-        avisar(`${textos[nuevoEstado]} ${formato.titulo(v)}.`);
+        vistas.avisoFlotante(`${textos[nuevoEstado]} ${formato.titulo(v)}.`);
         // La tarjeta se va de la cola y después se recarga la lista
         tarjeta.classList.add('moderar--resuelta');
         await new Promise((listo) => setTimeout(listo, matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 280));

@@ -5,7 +5,7 @@
 import * as favoritos from '../api/favoritos.js';
 import * as formato from './formato.js';
 import * as sesion from './sesion.js';
-import { el } from './vistas.js';
+import { avisoFlotante as avisar, el } from './vistas.js';
 
 const NS = 'http://www.w3.org/2000/svg';
 
@@ -17,21 +17,6 @@ function icono() {
     path.setAttribute('d', 'M12 20.5s-7.5-4.6-9.2-9.4C1.6 7.6 4 4.5 7.3 4.5c2 0 3.6 1.1 4.7 2.8 1.1-1.7 2.7-2.8 4.7-2.8 3.3 0 5.7 3.1 4.5 6.6-1.7 4.8-9.2 9.4-9.2 9.4z');
     svg.append(path);
     return svg;
-}
-
-// Un solo aviso flotante para toda la página (por ejemplo, "es tu publicación")
-let aviso;
-function avisar(texto) {
-    if (!aviso) {
-        aviso = el('p', { class: 'aviso-flotante', role: 'status' });
-        document.body.append(aviso);
-    }
-    aviso.textContent = texto;
-    aviso.classList.remove('aviso-flotante--visible');
-    void aviso.offsetWidth; // reinicia la animación si llega otro aviso seguido
-    aviso.classList.add('aviso-flotante--visible');
-    clearTimeout(avisar.temporizador);
-    avisar.temporizador = setTimeout(() => aviso.classList.remove('aviso-flotante--visible'), 3200);
 }
 
 function pintar(boton, v, guardado) {

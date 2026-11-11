@@ -1125,3 +1125,82 @@ dialog.hoja::backdrop{ background: rgb(11 17 29 / .45); backdrop-filter: blur(2p
     .sello, .resumen-items__tramo, .linea-tiempo__paso--actual .linea-tiempo__punto{ animation: none; }
     .taller-tarjeta:hover{ transform: none; }
 }
+
+/* =====================================================================
+   11. Panel de administración y métricas
+   ===================================================================== */
+
+/* Indicadores: tarjetas con el número grande y una franja de color arriba */
+.con-barra .resumen-admin{ display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 12px; margin: 0; padding: 0; list-style: none; }
+.con-barra .resumen-admin > li.recuadro, .vista-admin .resumen-admin .recuadro{
+    position: relative; display: grid; gap: 4px; align-content: start; padding: 18px 18px 16px !important;
+    border: 1px solid var(--marca-linea) !important; border-radius: 16px !important; background: var(--marca-blanco) !important;
+    box-shadow: var(--sombra-1); overflow: hidden;
+    animation: ficha-entra var(--dur-lenta) var(--curva-salida) both;
+}
+.resumen-admin > li:nth-child(2){ animation-delay: 50ms; }
+.resumen-admin > li:nth-child(3){ animation-delay: 100ms; }
+.resumen-admin > li:nth-child(4){ animation-delay: 150ms; }
+.resumen-admin > li:nth-child(5){ animation-delay: 200ms; }
+.resumen-admin > li:nth-child(6){ animation-delay: 250ms; }
+.resumen-admin > li::before{ content: ""; position: absolute; inset: 0 0 auto; height: 4px; background: var(--marca-acento); }
+.resumen-admin strong{ font-family: var(--fuente-titulos); font-size: clamp(24px, 2.4vw, 32px); line-height: 1.1; letter-spacing: -.5px; color: var(--marca-tinta); font-variant-numeric: tabular-nums; }
+.resumen-admin span{ font-size: 13px; color: var(--marca-gris); }
+.resumen-admin__alerta::before{ background: #d97706 !important; }
+.resumen-admin__alerta strong{ color: #b45309; }
+@media (prefers-color-scheme: dark){ .resumen-admin__alerta strong{ color: #f6ad55; } }
+
+/* Gráficos de barras horizontales (una sola serie: un solo color, el número escrito al lado) */
+:root{ --serie-1: #1f9e8f; --serie-2: #3b5bdb; --serie-3: #d97706; }
+@media (prefers-color-scheme: dark){ :root, :root[data-tema]{ --serie-1: #25a092; --serie-2: #6d8cf5; --serie-3: #cc7f22; } }
+.grafico{ margin: 0; padding: 18px 20px; border: 1px solid var(--marca-linea); border-radius: 16px; background: var(--marca-blanco); }
+.grafico[hidden]{ display: none; }
+.grafico__titulo{ margin-bottom: 14px; font-weight: 700; color: var(--marca-tinta); }
+.graficos-fila{ display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 14px; }
+.barras{ display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
+.barras__fila{ display: grid; grid-template-columns: minmax(90px, 140px) minmax(0, 1fr) 56px; align-items: center; gap: 12px; font-size: 14px; }
+.barras__nombre{ color: var(--marca-tinta); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.barras__barra{ position: relative; height: 14px; }
+.barras__barra::before{
+    content: ""; position: absolute; inset: 0 auto 0 0; width: max(var(--largo), 4px); border-radius: 0 4px 4px 0;
+    background: var(--serie-1); transform-origin: left;
+    animation: rango-crece .8s var(--curva-salida) both; animation-delay: calc(var(--n, 0) * 60ms);
+}
+.barras__fila:hover .barras__barra::before{ filter: brightness(1.12); }
+.barras__valor{ text-align: right; font-weight: 700; color: var(--marca-tinta); font-variant-numeric: tabular-nums; }
+.barras__vacio{ color: var(--marca-gris); font-size: 14px; }
+
+/* Reparto de lo facturado: barra apilada con 2px de separación y la leyenda con montos */
+.reparto__barra{ display: flex; gap: 2px; height: 22px; border-radius: 6px; overflow: hidden; }
+.reparto__tramo{ flex: 1 1 0; min-width: 4px; transform-origin: left; animation: rango-crece .9s var(--curva-salida) both; }
+.reparto--mecanicos{ background: var(--serie-1); }
+.reparto--autocar{ background: var(--serie-2); }
+.reparto--fondo{ background: var(--serie-3); }
+.reparto__leyenda{ display: grid; gap: 8px; margin: 14px 0 0; padding: 0; list-style: none; }
+.reparto__leyenda li{ display: grid; grid-template-columns: 12px minmax(0, 1fr) auto 48px; align-items: center; gap: 10px; font-size: 14px; color: var(--marca-tinta); }
+.reparto__muestra{ width: 12px; height: 12px; border-radius: 3px; }
+.reparto__leyenda strong{ font-variant-numeric: tabular-nums; }
+.reparto__porcentaje{ text-align: right; color: var(--marca-gris); font-variant-numeric: tabular-nums; }
+
+/* Panel: secciones como filas con ícono en una caja de color */
+.vista-admin .lista-filas .fila .fila__miniatura{ display: grid; place-items: center; border-radius: 12px; background: color-mix(in srgb, var(--marca-acento) 18%, var(--marca-blanco)); color: var(--marca-tinta); }
+.vista-admin .lista-filas .fila{ transition: background-color var(--dur-rapida); }
+.vista-admin .lista-filas .fila:hover{ background: var(--marca-papel); }
+.vista-admin .lista-filas .fila > span:last-child{ transition: transform var(--dur-media) var(--curva-rebote); }
+.vista-admin .lista-filas .fila:hover > span:last-child{ transform: translateX(4px); }
+
+@media (prefers-reduced-motion: reduce){
+    .resumen-admin > li, .barras__barra::before, .reparto__tramo{ animation: none !important; }
+}
+.resumen-admin__dinero strong{ font-size: clamp(20px, 1.9vw, 26px); }
+.con-barra .resumen-admin{ grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
+.vista-admin-metricas #metricas{ gap: 36px; }
+.vista-admin-metricas #metricas > section{ display: grid; gap: 14px; }
+.vista-admin-metricas #metricas > section > .titulo-seccion{ margin: 0; }
+@media (max-width: 599px){
+    .con-barra .resumen-admin{ grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+    .resumen-admin > li.recuadro{ padding: 14px !important; }
+    .resumen-admin strong{ font-size: 22px; }
+    .resumen-admin__dinero strong{ font-size: 17px; }
+    .barras__fila{ grid-template-columns: minmax(80px, 110px) minmax(0, 1fr) 40px; gap: 8px; }
+}
