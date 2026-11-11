@@ -1,0 +1,175 @@
+/* AutoCar - base visual (rediseño de noviembre 2026).
+   Se carga ÚLTIMA en todas las páginas: pisa lo de identidad.css sin tocarlo.
+   1. Tipografía: Sora en títulos, marca y precios; Inter en el texto.
+   2. Variables de movimiento y de sombras, para que todo se mueva y se eleve igual.
+   3. Transiciones entre páginas (View Transitions API; si el navegador no la tiene, carga como siempre).
+   4. Micro-interacciones comunes: botones, campos, fichas, enlaces.
+   5. Modo oscuro según el sistema operativo (prefers-color-scheme), sobre las mismas variables. */
+
+/* ---------- 1 y 2. Variables ---------- */
+:root{
+    --fuente: "Inter", "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;
+    --fuente-titulos: "Sora", "Inter", "Segoe UI", system-ui, sans-serif;
+
+    /* Movimiento */
+    --dur-rapida: 150ms;
+    --dur-media: 260ms;
+    --dur-lenta: 480ms;
+    --curva-suave: cubic-bezier(.2, .7, .2, 1);
+    --curva-salida: cubic-bezier(.4, 0, 1, 1);
+    --curva-rebote: cubic-bezier(.34, 1.56, .64, 1);
+
+    /* Elevación: 1 = apoyado, 2 = flotando (hover), 3 = encima de todo (hojas, menús) */
+    --sombra-1: 0 1px 2px rgb(19 27 45 / .06), 0 1px 1px rgb(19 27 45 / .04);
+    --sombra-2: 0 10px 24px -10px rgb(19 27 45 / .22), 0 2px 6px rgb(19 27 45 / .06);
+    --sombra-3: 0 24px 60px -16px rgb(19 27 45 / .35), 0 6px 16px rgb(19 27 45 / .08);
+    --anillo-foco: 0 0 0 4px rgb(105 230 216 / .45);
+
+    /* Paneles oscuros de marca (portada, ingreso): siempre oscuros, también en modo claro */
+    --panel-oscuro: #131b2d;
+    --sobre-panel: #ffffff;
+    --sobre-acento: #131b2d;
+}
+
+/* ---------- 1. Tipografía ---------- */
+html{
+    font-family: var(--fuente);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+}
+body{ font-family: var(--fuente); }
+h1, h2, h3, h4,
+.marca, .barra__marca, .acceso-relato__titulo,
+.ficha-vehiculo__precio, .detalle__precio, .plan__precio strong{
+    font-family: var(--fuente-titulos);
+}
+h1, h2, h3{ text-wrap: balance; }
+p{ text-wrap: pretty; }
+/* Sora es más ancha que la letra anterior: se cierra un poco el interletrado de los títulos grandes */
+h1{ letter-spacing: -.025em; }
+h2{ letter-spacing: -.02em; }
+/* Precios, kilómetros, puntajes y tablas: números del mismo ancho, así se alinean */
+.ficha-vehiculo__precio, .detalle__precio, .plan__precio, .tabla, .ficha-vehiculo__pie,
+[class*="precio"], [class*="puntaje"], [class*="contador"]{
+    font-variant-numeric: tabular-nums;
+}
+.boton, .campo__input, button, input, select, textarea{ font-family: inherit; }
+
+/* ---------- 3. Transiciones entre páginas ---------- */
+@view-transition{ navigation: auto; }
+::view-transition-old(root){
+    animation: var(--dur-media) var(--curva-salida) both pagina-sale;
+}
+::view-transition-new(root){
+    animation: var(--dur-lenta) var(--curva-suave) both pagina-entra;
+}
+/* La barra y la cabecera quedan quietas: solo cambia el contenido */
+.barra{ view-transition-name: barra; }
+.marca-nav{ view-transition-name: cabecera; }
+@keyframes pagina-sale{ to{ opacity: 0; transform: translateY(-6px); } }
+@keyframes pagina-entra{ from{ opacity: 0; transform: translateY(10px); } }
+
+/* ---------- 4. Micro-interacciones ---------- */
+.boton{
+    transition: background-color var(--dur-rapida) var(--curva-suave),
+                border-color var(--dur-rapida) var(--curva-suave),
+                color var(--dur-rapida) var(--curva-suave),
+                box-shadow var(--dur-media) var(--curva-suave),
+                transform var(--dur-rapida) var(--curva-suave);
+}
+.boton:hover{ box-shadow: var(--sombra-2); }
+.boton:active{ transform: scale(.98); box-shadow: var(--sombra-1); }
+.boton--secundario:hover{ box-shadow: none; }
+.boton--acento{ color: var(--sobre-acento); }
+
+.campo__input{
+    transition: border-color var(--dur-rapida) var(--curva-suave),
+                box-shadow var(--dur-media) var(--curva-suave),
+                background-color var(--dur-rapida) var(--curva-suave);
+}
+.campo__input:focus{ box-shadow: var(--anillo-foco); outline: none; }
+.campo__input:focus-visible{ outline: none; }
+
+/* Fichas de vehículo: se elevan y la foto se acerca un poco */
+.ficha-vehiculo{
+    transition: box-shadow var(--dur-media) var(--curva-suave),
+                transform var(--dur-media) var(--curva-suave),
+                border-color var(--dur-media) var(--curva-suave);
+}
+a.ficha-vehiculo:hover{
+    transform: translateY(-4px);
+    box-shadow: var(--sombra-2);
+    border-color: var(--marca-linea);
+}
+.ficha-vehiculo__imagen{ transition: transform var(--dur-lenta) var(--curva-suave); }
+a.ficha-vehiculo:hover .ficha-vehiculo__imagen{ transform: scale(1.04); }
+
+/* Enlaces de navegación: el subrayado crece desde la izquierda */
+.marca-nav nav a:not(.boton), .pie-marca nav a{
+    text-decoration: none;
+    background: linear-gradient(currentColor, currentColor) 0 100% / 0 1.5px no-repeat;
+    transition: background-size var(--dur-media) var(--curva-suave);
+}
+.marca-nav nav a:not(.boton):hover, .pie-marca nav a:hover,
+.marca-nav [aria-current="page"]{
+    text-decoration: none !important;
+    background-size: 100% 1.5px;
+}
+
+/* Hojas y menús: misma sombra en todos */
+.con-barra .hoja, .menu-publico nav{ box-shadow: var(--sombra-3); }
+dialog.hoja[open]{ animation: hoja-entra var(--dur-media) var(--curva-suave); }
+dialog.hoja::backdrop{ background: rgb(11 17 29 / .45); backdrop-filter: blur(2px); }
+@keyframes hoja-entra{ from{ opacity: 0; transform: translateY(16px) scale(.98); } }
+
+/* Selección de texto con el color de la marca */
+::selection{ background: rgb(105 230 216 / .45); color: inherit; }
+
+/* ---------- 5. Modo oscuro ---------- */
+@media (prefers-color-scheme: dark){
+    :root, :root[data-tema]{
+        color-scheme: dark;
+        --marca-tinta: #e6eef1;
+        --marca-papel: #0b111d;
+        --marca-blanco: #131c2c;
+        --marca-tenue: #1b2638;
+        --marca-linea: #2a374b;
+        --marca-gris: #a3b4c2;
+        --marca-acento: #69e6d8;
+        --marca-hover: #8aeee3;
+        --marca-error: #ff8f94;
+        --marca-exito: #74d6a4;
+        --marca-aviso: #f0c36a;
+        --color-placeholder: #8292a3;
+        --color-borde: #5d6e82;
+        --color-principal-oscuro: #ffffff;
+        --color-error: var(--marca-error);
+
+        --panel-oscuro: #16223a;
+        --sombra-1: 0 1px 2px rgb(0 0 0 / .4);
+        --sombra-2: 0 12px 28px -10px rgb(0 0 0 / .6), 0 2px 6px rgb(0 0 0 / .3);
+        --sombra-3: 0 28px 64px -16px rgb(0 0 0 / .75);
+    }
+    /* Paneles de marca: siguen oscuros con letra blanca */
+    .hero, .acceso-relato, .portada-auto__escena{ background: var(--panel-oscuro); color: var(--sobre-panel); }
+    .acceso-relato .acceso-relato__titulo{ color: var(--sobre-panel); }
+    .hero__busqueda input{ color: #131b2d; }
+    /* Lo que va sobre el aqua lleva letra oscura */
+    .conversacion-panel .chat__mensaje--mio{ color: var(--sobre-acento); }
+    .perfil-foto__editar, .perfil-foto button{ color: var(--marca-blanco); }
+    /* Grises fijos que quedaban de los wireframes */
+    .pestanas__pestana, .landing-barra__enlaces a, .portada p, .pasos__texto, .campo__etiqueta{ color: var(--marca-gris); }
+    .plan-resumen{ background: var(--marca-blanco); }
+    .portada, .subir-fotos{ border-color: var(--marca-linea); }
+    .barra__icono{ color: var(--marca-tinta); }
+    img{ filter: brightness(.94); }
+    .marca__simbolo, .barra__marca{ filter: none; }
+}
+
+/* ---------- Movimiento reducido ---------- */
+@media (prefers-reduced-motion: reduce){
+    @view-transition{ navigation: none; }
+    *, *::before, *::after{ animation-duration: 1ms !important; animation-iteration-count: 1 !important; }
+    a.ficha-vehiculo:hover, a.ficha-vehiculo:hover .ficha-vehiculo__imagen, .boton:active{ transform: none; }
+}
