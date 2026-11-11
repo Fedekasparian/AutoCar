@@ -42,3 +42,31 @@ Lo que ya trae el sitio:
 - **Formularios**: cada campo con `label`, errores asociados con `aria-describedby` y anunciados con `role="alert"`, ayuda con `aria-live`.
 - **Responsive**: diseño pensado desde el celular (`meta viewport` y estilos que se adaptan al ancho).
 - **Contraste**: revisado con axe en el tema por defecto (aqua). Hay hoja de impresión (`print.css`).
+
+## Revisión después del rediseño visual (11/11/2026, rama `feat/visual-base`)
+
+**HTML (Nu Html Checker):** 0 errores en las 40 páginas. Se corrigieron:
+
+- `index.html`: el atributo `pathLength` va en un `<path>` (el validador no lo acepta en `<circle>`).
+- `mensajes.html` y `conversacion.html`: el encabezado del chat arranca con el texto "Conversación" en vez de vacío.
+
+**CSS (Jigsaw):** `interiores.css` sin errores. En `base-visual.css` y `portada.css` el validador marca propiedades nuevas que todavía no reconoce:
+
+- transiciones entre páginas: `@view-transition` y `view-transition-name`;
+- animación con el scroll: `animation-timeline` y `animation-range`.
+
+Son mejoras progresivas: un navegador que no las conoce las ignora y la página funciona igual.
+
+**Accesibilidad (axe, WCAG 2.1 A y AA):** 0 violaciones en 22 páginas, revisadas en **tema claro y oscuro**: las públicas, las de usuario (publicaciones, búsquedas, chat, inspecciones) y las de admin (panel, métricas, moderar). Se corrigió el contraste de:
+
+- las etiquetas de estado de las inspecciones (verde, ámbar y azul más oscuros);
+- el cartel "Este auto" de la barra de precios;
+- la hora de los mensajes del chat.
+
+Los gráficos de Métricas son listas (`<ul>`) con el nombre y el número escritos: se leen igual con lector de pantalla y sin ver los colores.
+
+**Pruebas E2E (Playwright) contra la vista previa de la rama, que usa el back de dev:**
+
+- Chromium y Firefox: todas pasan.
+- WebKit: se colgaba ("Page crashed") al navegar con la transición entre páginas activa. Ahora la transición se activa solo en Chromium (desde `js/tema.js`).
+- Se omiten las pruebas que necesitan credenciales de admin o vendedor (`E2E_ADMIN_*`, `E2E_VENDEDOR_*`).
