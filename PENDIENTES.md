@@ -3,11 +3,11 @@
 Lista viva de lo que falta. Cuando alguien toma un ítem, pone su nombre; cuando lo termina, lo tacha (`~~así~~`) o lo borra con el PR que lo resuelve.
 El plan completo del enfoque del mecánico está en [`modelo-de-negocio/PLAN.md`](modelo-de-negocio/PLAN.md).
 
-Última actualización: 10/11/2026.
+Última actualización: 11/11/2026.
 
 ## Hecho el 10/11 (en `dev`, falta pasar a `main`)
 
-Todo entró a `dev` por PR (front #40 a #48, back #17 a #20). **Antes del pase `dev` → `main` hay que correr en Neon main, en orden, las migraciones `011` a `019`** (en Neon dev están hasta la `018`; la `019` falta también en dev):
+Todo entró a `dev` por PR (front #40 a #66, back #17 a #34). **Antes del pase `dev` → `main` hay que correr en Neon main, en orden, las migraciones `011` a `019`** (en Neon dev están hasta la `018`):
 
 | Migración | Qué hace |
 |---|---|
@@ -20,6 +20,8 @@ Todo entró a `dev` por PR (front #40 a #48, back #17 a #20). **Antes del pase `
 | `017-modelos-nuevos.sql` | 7 marcas y 46 modelos más para Publicar (solo agrega) |
 | `018-inspeccion-no-realizada.sql` | Estado `no_realizada` de una inspección (el mecánico fue y no la pudo hacer) |
 | `019-marca-unica.sql` | La base no acepta la misma marca escrita distinto ("DS" y "Ds") |
+
+- [ ] **Correr la `019` en Neon dev** (SQL Editor): `CREATE UNIQUE INDEX IF NOT EXISTS marca_nombre_unico ON marca (lower(nombre));`
 
 - [x] **El panel solo modera y da de baja:** se sacan crear y editar vehículos (back `POST`/`PUT /api/admin/vehiculos` → 405; front sin `admin-vehiculo.html`). Si algo está mal, el moderador rechaza con motivo y corrige el dueño.
 - [x] **Vendedor obligatorio** en toda publicación (la base lo exige).
@@ -36,6 +38,11 @@ Todo entró a `dev` por PR (front #40 a #48, back #17 a #20). **Antes del pase `
 - [x] **Middleware** (`src/Core/Middleware.php`): los guards de las rutas, antes del controlador (back #22).
 - [x] **Fotos en el catálogo:** se mostraban en gris porque se leía el campo viejo `imagen_url` (#55).
 - [x] **Ganancias de las inspecciones** en Estadísticas (pago simulado): ganancia de AutoCar, facturado, mecánicos, fondo y retenido (back #28, front #60).
+- [x] **Marcas con un solo nombre** (10/11 noche): "DS"/"Ds"/"D.S.", "Citroën"/"Citroen", "KIA"/"Kia"... salen como una sola marca en el metabuscador (back #29), "DS3" y "DS 3" son el mismo modelo (back #32, Firestore dev ya corregido) y la base no acepta una marca repetida con otra escritura (back #31, migración 019).
+- [x] **Marcas que no están en el catálogo** (back #33): el importador no carga esos autos y lo avisa en la salida; `php bin/importar-autos.php --revisar-marcas archivo.json` los lista con su link para ver si es una marca nueva o un error del que publicó. Lee el catálogo de `MARCAS_URL` (la API del back de cada entorno).
+- [x] **Inspección que no se pudo hacer** (back #30, front #63, migración 018): si el vendedor no deja revisar el auto, el mecánico la marca con el motivo y se le devuelve todo al comprador.
+- [x] **Resultados del metabuscador en celular** (front #62): los botones de cada auto bajan debajo del texto.
+- [x] **Borrar búsquedas guardadas** (front #65 y #66): con un cuadro de confirmación del sitio (antes `confirm()` del navegador, el único que había) y desde la lista, con un tachito que se pone rojo al pasar el mouse.
 - [ ] **Pantalla de roles y permisos** para el admin (hoy los permisos de cada rol se cambian en la base).
 - [x] **Scraper:** `diario.bat` con 1 GB de memoria (la corrida completa de MercadoLibre, ~80.000 autos, se quedaba sin memoria al guardar).
 - [ ] **Probar todo junto en dev** (front de dev + `autocarbackend-dev`). Ojo: el servicio de Render dev estaba desplegando `main`; ya se pasó a `dev`.
@@ -47,6 +54,7 @@ Todo entró a `dev` por PR (front #40 a #48, back #17 a #20). **Antes del pase `
 - [x] ~~**Documento de seguridad por capa**~~: [`Entrega_4/seguridad-por-capa.md`](Entrega_4/seguridad-por-capa.md). Quedan sus pendientes (§ 6): rate limiting, usuario de Neon con privilegios mínimos, concurrencia al moderar.
 - [x] ~~**Validación W3C y accesibilidad**~~: 41 páginas sin errores y 0 violaciones de WCAG A/AA, en [`Entrega_4/validacion-w3c-y-accesibilidad.md`](Entrega_4/validacion-w3c-y-accesibilidad.md).
 - [x] ~~**E2E en Firefox y WebKit**~~: `playwright.config.js` corre los tres navegadores y el workflow los instala. Inspecciones pasó en los tres (local) y humo en los tres (producción).
+- [ ] **El workflow E2E nunca se disparó solo**: está armado para correr cuando Vercel termina un deploy (`deployment_status`), pero en Actions no hay ninguna corrida. Hoy las E2E corren a mano (`npm run test:e2e` o Actions → E2E → Run workflow). Revisar si Vercel manda ese evento al repo. Render no corre pruebas: solo construye la imagen (el `.dockerignore` deja afuera `tests/`).
 
 ## Front: pantallas que siguen siendo maqueta
 
@@ -59,7 +67,7 @@ Todo entró a `dev` por PR (front #40 a #48, back #17 a #20). **Antes del pase `
 - [x] ~~**Chat**~~ conectado a la API: bandeja con no leídos, conversación con polling cada 5 s y "Consultar" en `vehiculo.html`. Prueba E2E en `tests/e2e/chat.spec.js` (necesita los secretos `E2E_CHAT_*`).
 - [ ] **Secretos de E2E en GitHub** (Settings → Secrets → Actions), con cuentas de **dev**: `E2E_ADMIN_EMAIL` y `E2E_ADMIN_PASSWORD`; `E2E_CHAT_VEHICULO_ID`, `E2E_CHAT_VENDEDOR_EMAIL` y `E2E_CHAT_VENDEDOR_PASSWORD` (una publicación disponible en Neon dev y la cuenta de su vendedor).
 - [ ] **Planes** (`planes.html`, `plan.html`): maqueta, depende de las suscripciones (abajo).
-- [x] ~~**Formularios con `action` a rutas que no existen**~~: ahora llevan `data-proximamente` y `js/proximamente.js` avisa "todavía no está disponible" sin enviar nada (cuenta, contacto, plan, reportar, meta-búsqueda nueva, canje, propuestas, favoritos y verificar-vehículo). Al conectar una pantalla a la API, se le saca el atributo y el script. El chat se conecta aparte.
+- [x] ~~**Formularios con `action` a rutas que no existen**~~: ahora llevan `data-proximamente` y `js/proximamente.js` avisa "todavía no está disponible" sin enviar nada. Al 11/11 quedan en `plan.html`, `proponer-canje.html`, `propuestas.html` y `verificar-vehiculo.html` (el resto ya está conectado). Al conectar una pantalla a la API, se le saca el atributo y el script. El chat se conecta aparte.
 
 ## Suscripciones y pagos (no hay nada hecho)
 
@@ -72,15 +80,11 @@ Hoy no hay tabla de suscripciones ni cobros: los planes son de muestra y las ins
 
 ## Datos y scraper
 
-- [ ] **Inspección de un auto que juntó el scraper**: hoy el back acepta cualquier link de MercadoLibre, Kavak, Autocosmos o AutoCar (controla el dominio, no que el auto exista). Cuando haya autos en Firestore: si el link coincide con uno scrapeado, marcar el pedido como "auto verificado en nuestro buscador" y completar solos título, año, km y precio; si no coincide, aceptarlo igual sin la marca.
+- [ ] **Inspección de un auto que juntó el scraper**: hoy el back acepta cualquier link de MercadoLibre, Kavak, Autocosmos o AutoCar (controla el dominio, no que el auto exista). Ya hay autos en Firestore dev: si el link coincide con uno scrapeado, marcar el pedido como "auto verificado en nuestro buscador" y completar solos título, año, km y precio; si no coincide, aceptarlo igual sin la marca.
 
 - [x] ~~**Cargar los autos del scraper en Firestore dev**~~ (10/11): corridas completas de MercadoLibre (86.395 autos, 958 modelos), Autocosmos (4.750) y Kavak (1.330); comparador con 1.073 modelos. Probado en dev: comparador y metabuscador con datos reales. Arreglos que salieron con datos de este tamaño: commits de Firestore por tamaño (back #26), autos mal cargados que no arruinan la corrida (back #27), `diario.bat` con 1 GB (back #18), etiquetas del metabuscador (front #58).
 - [ ] **Prod (Firestore `autocar-9897d` y Neon main): se carga TODO JUNTO en el pase `dev` → `main`**, no antes. Orden: migraciones `011`–`019` en Neon main → merge `dev` → `main` → cargar Firestore prod con todas las corridas completas desde la del 10/11 → verificar.
-- [x] **Marcas con un solo nombre** (10/11 noche): "DS"/"Ds"/"D.S.", "Citroën"/"Citroen", "KIA"/"Kia"... salen como una sola marca en el metabuscador (back #29), "DS3" y "DS 3" son el mismo modelo (back #32, Firestore dev ya corregido) y la base no acepta una marca repetida con otra escritura (back #31, migración 019).
-- [x] **Marcas que no están en el catálogo** (back #33): el importador no carga esos autos y lo avisa en la salida; `php bin/importar-autos.php --revisar-marcas archivo.json` los lista con su link para ver si es una marca nueva o un error del que publicó. Lee el catálogo de `MARCAS_URL` (la API del back de cada entorno).
-- [x] **Inspección que no se pudo hacer** (back #30, front #63, migración 018): si el vendedor no deja revisar el auto, el mecánico la marca con el motivo y se le devuelve todo al comprador.
-- [x] **Resultados del metabuscador en celular** (front #62): los botones de cada auto bajan debajo del texto.
-- [ ] **Corrida diaria** del scraper (`diario.bat` en la PC a las 9:00 o GitHub Actions).
+- [ ] **Corrida diaria** del scraper (`diario.bat` en la PC a las 9:00 o GitHub Actions). El `.env` de la PC necesita `MARCAS_URL` (ver `.env.example` del back) para filtrar las marcas que no están en el catálogo.
 - [ ] **Ranking de mecánicos con números en dev**: `php bin/demo-historial.php` contra Neon dev.
 
 ## Presentación y defensa
