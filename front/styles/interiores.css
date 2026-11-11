@@ -118,6 +118,10 @@
 .vista-meta-busqueda .pila { gap:18px; }
 .vista-meta-busqueda .recuadro { border:0; border-left:3px solid var(--marca-tinta); border-radius:0; }
 .vista-meta-busqueda-resultados .pantalla > .recuadro { background:var(--marca-tenue); }
+/* Cada auto: si no entran al costado (celular), los botones bajan debajo del texto */
+.vista-meta-busqueda-resultados .fila { flex-wrap:wrap; }
+.vista-meta-busqueda-resultados .fila__cuerpo { flex:1 1 260px; }
+.vista-meta-busqueda-resultados .fila__acciones { display:flex; flex-wrap:wrap; align-items:center; gap:12px 20px; }
 .vista-talleres .mapa,.vista-mapa .mapa { width:100%; min-width:0; height:360px; min-height:0; }
 .vista-admin .resumen-admin { border-bottom:1px solid var(--marca-linea); padding-bottom:28px; gap:24px; }
 .vista-admin .resumen-admin .recuadro { background:transparent; border:0; padding:0; }
