@@ -7,7 +7,7 @@ El plan completo del enfoque del mecánico está en [`modelo-de-negocio/PLAN.md`
 
 ## Hecho el 10/11 (en `dev`, falta pasar a `main`)
 
-Todo entró a `dev` por PR (front #40 a #66, back #17 a #34). **Antes del pase `dev` → `main` hay que correr en Neon main, en orden, las migraciones `011` a `019`** (en Neon dev están hasta la `018`):
+Todo entró a `dev` por PR (front #40 a #66, back #17 a #34). **Antes del pase `dev` → `main` hay que correr en Neon main, en orden, las migraciones `011` a `019`** (en Neon dev ya están todas):
 
 | Migración | Qué hace |
 |---|---|
@@ -21,7 +21,7 @@ Todo entró a `dev` por PR (front #40 a #66, back #17 a #34). **Antes del pase `
 | `018-inspeccion-no-realizada.sql` | Estado `no_realizada` de una inspección (el mecánico fue y no la pudo hacer) |
 | `019-marca-unica.sql` | La base no acepta la misma marca escrita distinto ("DS" y "Ds") |
 
-- [ ] **Correr la `019` en Neon dev** (SQL Editor): `CREATE UNIQUE INDEX IF NOT EXISTS marca_nombre_unico ON marca (lower(nombre));`
+- [x] ~~**Correr la `019` en Neon dev**~~ (11/11).
 
 - [x] **El panel solo modera y da de baja:** se sacan crear y editar vehículos (back `POST`/`PUT /api/admin/vehiculos` → 405; front sin `admin-vehiculo.html`). Si algo está mal, el moderador rechaza con motivo y corrige el dueño.
 - [x] **Vendedor obligatorio** en toda publicación (la base lo exige).
