@@ -1,5 +1,7 @@
-// Nueva búsqueda (meta-busqueda-nueva.html) con POST /api/meta-busquedas. Marca y modelo de los que hay autos.
+// Nueva búsqueda (meta-busqueda-nueva.html) con POST /api/meta-busquedas. Marca y modelo del catálogo de la base
+// (GET /api/marcas-modelos, la misma lista que Publicar): no depende de que el scraper ya haya cargado autos.
 import * as api from '../api/metabusqueda.js';
+import { marcasModelos } from '../api/vehiculos.js';
 import * as formularios from '../servicios/formularios.js';
 import * as sesion from '../servicios/sesion.js';
 import * as vistas from '../servicios/vistas.js';
@@ -18,7 +20,7 @@ marca.addEventListener('change', filtrarModelos);
 
 async function cargarMarcas() {
     try {
-        const { marcas } = await api.marcas();
+        const { marcas } = await marcasModelos();
         modelosPorMarca = new Map(marcas.map((m) => [m.marca, m.modelos]));
         marca.replaceChildren(vistas.el('option', { value: '' }, 'Seleccionar marca'),
             ...marcas.map((m) => vistas.el('option', {}, m.marca)));
