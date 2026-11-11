@@ -40,7 +40,13 @@
     <div class="estado" id="estado"></div>
     <section class="pila" id="resumen" hidden aria-label="Resumen de la búsqueda">
       <p class="recuadro" id="referencia"></p>
+      <!-- Precio típico de cada sitio en una misma escala (lo arma js/paginas/meta-busqueda-resultados.js) -->
+      <div class="sitios" id="sitios" hidden></div>
       <p class="suave" id="novedades"></p>
+      <!-- Nuevos, bajaron y ya no están, como cifras (cuando hay dos corridas para comparar) -->
+      <ul class="novedades" id="novedades-cifras" role="list" hidden></ul>
+      <!-- Mejor relación precio-km, el más barato y el menos usado -->
+      <ul class="destacados" id="destacados" role="list" aria-label="Destacados" hidden></ul>
       <p class="campo__ayuda" id="aclaracion"></p>
     </section>
     <form class="campos-fila" id="filtros" hidden>

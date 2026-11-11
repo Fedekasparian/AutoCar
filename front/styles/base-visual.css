@@ -744,3 +744,138 @@ dialog.hoja::backdrop{ background: rgb(11 17 29 / .45); backdrop-filter: blur(2p
     .lista-filas--entra > li, .avance__barra, .vacio--ilustrado::before, .etiqueta-estado--revision::before{ animation: none; }
     .vista-mis-publicaciones .publicacion:hover{ transform: none; }
 }
+
+/* =====================================================================
+   8. Búsquedas guardadas (metabuscador)
+   ===================================================================== */
+
+/* Colores de cada sitio (solo el nombre en una pastilla: no se usan logos de otras marcas) */
+:root{ --sitio-mercadolibre: #f5d90a; --sitio-kavak: #2f5bea; --sitio-autocosmos: #e4572e; --sitio-autocar: #69e6d8; --sitio-otro: #94a3b8; }
+.sitio{
+    display: inline-flex; align-items: center; gap: 6px; padding: 2px 10px 2px 8px; border-radius: 999px;
+    font-size: 12px; font-weight: 700; color: var(--marca-tinta);
+    background: color-mix(in srgb, var(--color-sitio, var(--sitio-otro)) 18%, var(--marca-blanco));
+}
+.sitio::before{ content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--color-sitio, var(--sitio-otro)); }
+.sitio--mercadolibre, .sitio-color--mercadolibre{ --color-sitio: var(--sitio-mercadolibre); }
+.sitio--kavak, .sitio-color--kavak{ --color-sitio: var(--sitio-kavak); }
+.sitio--autocosmos, .sitio-color--autocosmos{ --color-sitio: var(--sitio-autocosmos); }
+.sitio--autocar, .sitio-color--autocar{ --color-sitio: var(--sitio-autocar); }
+
+/* Lista: cada búsqueda como tarjeta, con chips, la cantidad grande y las novedades */
+.busqueda-guardada .recuadro.fila{
+    display: grid; grid-template-columns: minmax(0, 1fr) auto auto; align-items: center; gap: 16px;
+    padding: 20px 64px 20px 22px; border-radius: 16px; box-shadow: var(--sombra-1);
+    transition: box-shadow var(--dur-media) var(--curva-suave), transform var(--dur-media) var(--curva-suave), border-color var(--dur-media);
+}
+.busqueda-guardada .recuadro.fila:hover{ box-shadow: var(--sombra-2); transform: translateY(-2px); border-color: color-mix(in srgb, var(--marca-acento) 60%, var(--marca-linea)); }
+.busqueda-guardada .fila__titulo{ display: flex; flex-wrap: wrap; align-items: center; gap: 10px; font-family: var(--fuente-titulos); font-size: 19px; }
+.busqueda-guardada__chips{ display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.chip-criterio{ padding: 3px 10px; border-radius: 999px; background: var(--marca-tenue); color: var(--marca-tinta); font-size: 12px; font-weight: 600; }
+.busqueda-guardada__novedades{
+    display: inline-flex; align-items: center; gap: 6px; padding: 2px 10px; border-radius: 999px;
+    background: var(--marca-acento); color: var(--sobre-acento); font-family: var(--fuente); font-size: 12px; font-weight: 700;
+}
+.busqueda-guardada__novedades::before{ content: ""; width: 7px; height: 7px; border-radius: 50%; background: currentColor; animation: estado-late 1.4s ease-in-out infinite; }
+.busqueda-guardada__cantidad{ display: grid; justify-items: center; font-size: 12px; color: var(--marca-gris); line-height: 1.1; }
+.busqueda-guardada__cantidad strong{ font-family: var(--fuente-titulos); font-size: 28px; color: var(--marca-tinta); font-variant-numeric: tabular-nums; }
+.busqueda-guardada__flecha{ font-size: 26px; color: var(--marca-gris); transition: transform var(--dur-media) var(--curva-rebote); }
+.busqueda-guardada .recuadro.fila:hover .busqueda-guardada__flecha{ transform: translateX(4px); color: var(--marca-tinta); }
+@media (max-width: 599px){
+    .busqueda-guardada .recuadro.fila{ grid-template-columns: minmax(0, 1fr) auto; padding-right: 56px; }
+    .busqueda-guardada__flecha{ display: none; }
+}
+.vacio--lupa::before{
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 160 120' fill='none'%3E%3Cellipse cx='76' cy='108' rx='50' ry='6' fill='%2369e6d8' opacity='.25'/%3E%3Ccircle cx='68' cy='52' r='34' fill='%23e3edef' stroke='%23131b2d' stroke-width='3'/%3E%3Cpath d='M93 77l26 24' stroke='%23131b2d' stroke-width='9' stroke-linecap='round'/%3E%3Cpath d='M50 58l10-12 10 8 12-16' stroke='%2369e6d8' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+
+/* Resultados: precio típico de cada sitio en la misma escala */
+.sitios{ display: grid; gap: 12px; padding: 20px; border: 1px solid var(--marca-linea); border-radius: 16px; background: var(--marca-blanco); }
+.sitios[hidden]{ display: none; }
+.sitios__titulo{ margin: 0; font-weight: 700; color: var(--marca-tinta); }
+.sitios__fila{ display: grid; grid-template-columns: 130px minmax(0, 1fr) 120px; align-items: center; gap: 14px; }
+.sitios__fila .sitio{ justify-self: start; }
+.sitios__pista{ position: relative; height: 10px; border-radius: 999px; background: var(--marca-tenue); }
+.sitios__franja{
+    position: absolute; inset-block: 0; left: var(--desde); width: calc(var(--hasta) - var(--desde)); border-radius: 999px;
+    background: color-mix(in srgb, var(--color-sitio) 70%, var(--marca-tenue));
+    transform-origin: left; animation: rango-crece .8s var(--curva-salida) both;
+}
+.sitios__mediana{ position: absolute; top: -4px; bottom: -4px; left: var(--mediana); width: 3px; margin-left: -1.5px; border-radius: 2px; background: var(--marca-tinta); }
+.sitios__valor{ text-align: right; font-weight: 700; font-variant-numeric: tabular-nums; }
+@media (max-width: 599px){
+    .sitios__fila{ grid-template-columns: minmax(0, 1fr) auto; row-gap: 6px; }
+    .sitios__pista{ grid-column: 1 / -1; grid-row: 2; }
+}
+
+/* Novedades como cifras */
+.novedades{ display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin: 0; padding: 0; list-style: none; }
+.novedades[hidden]{ display: none; }
+.novedades__cifra{ display: grid; gap: 2px; padding: 14px 16px; border-radius: 14px; background: var(--marca-blanco); border: 1px solid var(--marca-linea); }
+.novedades__cifra strong{ font-family: var(--fuente-titulos); font-size: 28px; line-height: 1; }
+.novedades__cifra span{ font-size: 13px; color: var(--marca-gris); }
+.novedades__cifra--nuevos strong{ color: #2f855a; }
+.novedades__cifra--bajaron strong{ color: #2b6cb0; }
+.novedades__cifra--retirados strong{ color: var(--marca-gris); }
+
+/* Destacados: tres tarjetas arriba de la lista */
+.destacados{ display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 14px; margin: 0; padding: 0; list-style: none; }
+.destacados[hidden]{ display: none; }
+.destacado{
+    position: relative; display: grid; gap: 6px; align-content: start; padding: 20px; border-radius: 16px;
+    background: var(--marca-blanco); border: 1px solid var(--marca-linea); box-shadow: var(--sombra-1); overflow: hidden;
+    animation: ficha-entra var(--dur-lenta) var(--curva-salida) both;
+}
+.destacado:nth-child(2){ animation-delay: 80ms; }
+.destacado:nth-child(3){ animation-delay: 160ms; }
+.destacado::before{ content: ""; position: absolute; inset: 0 0 auto; height: 4px; background: var(--marca-linea); }
+.destacado--mejor_relacion{ border-color: color-mix(in srgb, var(--marca-acento) 70%, var(--marca-linea)); box-shadow: var(--sombra-2); }
+.destacado--mejor_relacion::before{ background: var(--marca-acento); }
+.destacado__titulo{ font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--marca-gris); }
+.destacado--mejor_relacion .destacado__titulo::before{ content: "★ "; color: color-mix(in srgb, var(--marca-acento) 50%, var(--marca-tinta)); }
+.destacado__precio{ font-family: var(--fuente-titulos); font-size: 26px; letter-spacing: -.5px; }
+.destacado__auto{ font-weight: 600; }
+.destacado__explicacion{ font-size: 13px; color: var(--marca-gris); }
+.destacado__pie{ display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; margin-top: 8px; }
+
+/* Cada resultado como tarjeta con el sitio arriba y el precio destacado */
+.resultado.fila{
+    padding: 18px 20px; margin-bottom: 10px; border: 1px solid var(--marca-linea); border-radius: 14px;
+    background: var(--marca-blanco); transition: box-shadow var(--dur-media), border-color var(--dur-media);
+}
+.resultado.fila:hover{ box-shadow: var(--sombra-2); border-color: color-mix(in srgb, var(--marca-acento) 50%, var(--marca-linea)); }
+.resultado .fila__cuerpo{ display: grid; gap: 4px; }
+.resultado__arriba{ display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 2px; }
+.resultado__precio{ display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 4px; }
+.resultado__precio strong{ font-family: var(--fuente-titulos); font-size: 20px; }
+
+/* Ordenar y sitio en una fila */
+.vista-meta-busqueda-resultados #filtros{ padding: 14px 16px; border-radius: 14px; background: var(--marca-tenue); }
+
+/* Búsqueda nueva: atajos de precio y km, y la frase de lo que se va a seguir */
+.atajos{ display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.atajo{
+    padding: 4px 12px; border: 1px solid var(--marca-linea); border-radius: 999px; background: var(--marca-blanco);
+    color: var(--marca-tinta); font: inherit; font-size: 13px; font-weight: 600; cursor: pointer;
+    transition: background-color var(--dur-rapida), border-color var(--dur-rapida), transform var(--dur-rapida) var(--curva-rebote);
+}
+.atajo:hover{ border-color: var(--marca-tinta); }
+.atajo:active{ transform: scale(.94); }
+.atajo:focus-visible{ outline: none; box-shadow: var(--anillo-foco); }
+.atajo[aria-pressed="true"]{ background: var(--marca-acento); border-color: var(--marca-acento); color: var(--sobre-acento); }
+.resumen-busqueda{
+    margin: 0; padding: 16px 18px; border-radius: 14px; border-left: 4px solid var(--marca-acento);
+    background: color-mix(in srgb, var(--marca-acento) 12%, var(--marca-blanco)); color: var(--marca-tinta); line-height: 1.5;
+    animation: ficha-entra var(--dur-media) var(--curva-salida);
+}
+.resumen-busqueda[hidden]{ display: none; }
+
+@media (prefers-color-scheme: dark){
+    .sitio{ color: #fff; background: color-mix(in srgb, var(--color-sitio, var(--sitio-otro)) 26%, transparent); }
+    .novedades__cifra--nuevos strong{ color: #68d391; }
+    .novedades__cifra--bajaron strong{ color: #63b3ed; }
+}
+@media (prefers-reduced-motion: reduce){
+    .sitios__franja, .destacado, .resumen-busqueda, .busqueda-guardada__novedades::before{ animation: none; }
+}
+.vista-meta-busqueda .busqueda-guardada .recuadro.fila{ border: 1px solid var(--marca-linea); border-radius: 16px; }
