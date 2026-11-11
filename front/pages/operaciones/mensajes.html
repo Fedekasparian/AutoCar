@@ -50,7 +50,7 @@
       <ol class="chat" id="chat-historial" aria-label="Mensajes de la conversación" aria-live="polite"></ol>
       <p class="chat__vacio" id="chat-sin-mensajes" hidden>Todavía no hay mensajes. Escribí el primero.</p>
       <form class="chat__enviar" id="chat-form" novalidate>
-        <label class="solo-lector" for="texto">Mensaje</label><input class="campo__input" id="texto" name="texto" required maxlength="1000" autocomplete="off" placeholder="Escribí un mensaje" aria-describedby="texto-error"><button class="boton" type="submit">Enviar</button>
+        <label class="solo-lector" for="texto">Mensaje</label><input class="campo__input" id="texto" name="texto" required maxlength="1000" autocomplete="off" placeholder="Escribí un mensaje" aria-describedby="texto-error"><button class="boton chat__boton-enviar" type="submit"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12 20 4l-5 16-3.5-6.5z"></path><path d="M11.5 13.5 20 4"></path></svg><span>Enviar</span></button>
         <span class="campo__error" id="texto-error" role="alert"></span>
       </form>
       <p class="chat__cerrada" id="chat-cerrada" role="status" hidden>La publicación se eliminó: la conversación queda para leer, pero ya no se pueden mandar mensajes.</p>

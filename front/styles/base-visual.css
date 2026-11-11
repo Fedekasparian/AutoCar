@@ -887,3 +887,103 @@ dialog.hoja::backdrop{ background: rgb(11 17 29 / .45); backdrop-filter: blur(2p
 .conteo__sitios{ font-size: 13px; color: var(--marca-gris); }
 .conteo--cargando{ opacity: .45; }
 .conteo--cero .conteo__numero{ color: var(--marca-gris); }
+
+/* =====================================================================
+   9. Mensajes y chat: pantalla completa
+   ===================================================================== */
+
+/* La bandeja y el chat ocupan todo el alto debajo de la cabecera; el historial scrollea adentro.
+   --inbox-arriba lo calcula js/paginas/mensajes.js (dónde empieza la caja) */
+.vista-mensajes, .vista-conversacion{ padding-bottom: 0 !important; }
+.con-barra .pantalla.inbox{
+    width: calc(100% - 32px); max-width: 1680px; margin: 0 auto 16px;
+    height: calc(100dvh - var(--inbox-arriba, 180px) - 16px); min-height: 460px;
+    border-radius: 18px; box-shadow: var(--sombra-2);
+}
+.inbox__lista{ display: flex; flex-direction: column; min-height: 0; overflow: hidden; padding-bottom: 0; }
+.inbox__conversaciones{ flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain; }
+.conversacion-panel{ min-height: 0; }
+.conversacion-panel__cuerpo{ min-height: 0; }
+.conversacion-panel .chat{
+    flex: 1; min-height: 0 !important; overflow-y: auto; overscroll-behavior: contain; scroll-behavior: smooth;
+    gap: 14px; padding: 24px clamp(20px, 4vw, 56px); margin: 0;
+}
+@media (min-width: 1200px){ .con-barra .pantalla.inbox{ grid-template-columns: 360px minmax(0, 1fr); } }
+
+/* Bandeja: avatar redondo, nombre en negrita y punto aqua si hay mensajes sin leer */
+.inbox__item{ position: relative; align-items: center; border-top: 0; border-bottom: 1px solid var(--marca-linea); transition: background-color var(--dur-rapida); }
+.inbox__item .avatar, .inbox__item img{ width: 52px !important; height: 52px !important; border-radius: 50% !important; }
+.inbox__item[aria-current=page]{ box-shadow: inset 4px 0 var(--marca-acento); }
+.inbox__item--no-leido strong{ font-weight: 800; }
+.inbox__item--no-leido p{ color: var(--marca-tinta); font-weight: 600; }
+.inbox__no-leidos{ background: var(--marca-acento) !important; color: var(--sobre-acento) !important; font-weight: 800; animation: chip-entra var(--dur-media) var(--curva-rebote); }
+
+/* Cabecera del chat y la publicación fija arriba */
+.conversacion-panel__cabecera{ padding: 16px clamp(20px, 3vw, 32px); }
+.conversacion-panel__cabecera .avatar, .conversacion-panel__cabecera #chat-foto{ width: 48px !important; height: 48px !important; border-radius: 50% !important; }
+.conversacion-panel__cabecera #chat-vehiculo{ display: none; } /* la publicación va en la tarjeta de abajo */
+.chat-auto{
+    display: flex; align-items: center; gap: 12px; padding: 10px clamp(20px, 3vw, 32px);
+    background: color-mix(in srgb, var(--marca-blanco) 90%, transparent); border-bottom: 1px solid var(--marca-linea);
+    backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+    color: var(--marca-tinta); text-decoration: none; transition: background-color var(--dur-rapida);
+}
+.chat-auto:hover{ background: var(--marca-tenue); }
+.chat-auto__foto{ flex: none; width: 56px; height: 42px; border-radius: 8px; object-fit: cover; background: var(--marca-tenue); }
+.chat-auto__texto{ display: grid; min-width: 0; }
+.chat-auto__texto strong{ font-size: 14px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.chat-auto__texto span{ font-size: 12px; color: var(--marca-gris); }
+.chat-auto__flecha{ margin-left: auto; font-size: 22px; color: var(--marca-gris); transition: transform var(--dur-media) var(--curva-rebote); }
+.chat-auto:hover .chat-auto__flecha{ transform: translateX(3px); }
+
+/* Burbujas */
+.conversacion-panel .chat__mensaje{
+    display: grid; gap: 4px; max-width: min(72%, 620px); padding: 10px 14px 8px; border-radius: 18px 18px 18px 6px;
+    font-size: 15px; box-shadow: var(--sombra-1); overflow-wrap: anywhere;
+}
+.conversacion-panel .chat__mensaje--mio{ border-radius: 18px 18px 6px 18px; }
+.conversacion-panel .chat__mensaje--seguido{ margin-top: -8px; border-top-left-radius: 6px; }
+.conversacion-panel .chat__mensaje--mio.chat__mensaje--seguido{ border-top-left-radius: 18px; border-top-right-radius: 6px; }
+.conversacion-panel .chat__hora{ justify-self: end; margin: 0; font-size: 11px; opacity: .75; font-variant-numeric: tabular-nums; }
+.chat__mensaje--nuevo{ animation: burbuja-entra var(--dur-media) var(--curva-rebote) both; transform-origin: bottom left; }
+.chat__mensaje--mio.chat__mensaje--nuevo{ transform-origin: bottom right; }
+@keyframes burbuja-entra{ from{ opacity: 0; transform: translateY(10px) scale(.92); } }
+.chat__mensaje--enviando{ opacity: .6; }
+
+/* Separador de día como pastilla que queda arriba al scrollear */
+.chat__fecha{ align-self: center; padding: 4px 0 !important; }
+.chat__fecha span{
+    display: inline-block; padding: 4px 12px; border-radius: 999px; font-size: 12px; font-weight: 600;
+    background: color-mix(in srgb, var(--marca-blanco) 85%, transparent); color: var(--marca-gris);
+    box-shadow: var(--sombra-1); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+}
+
+/* Campo para escribir: tipo píldora con el botón redondo */
+.conversacion-panel .chat__enviar{ display: flex; align-items: center; gap: 10px; padding: 14px clamp(16px, 3vw, 28px); }
+.conversacion-panel .chat__enviar input{ flex: 1; min-height: 48px; border-radius: 999px; padding-inline: 20px; background: var(--marca-papel); }
+.chat__boton-enviar{ display: inline-flex; align-items: center; gap: 8px; min-height: 48px; border-radius: 999px; padding-inline: 20px; }
+.chat__boton-enviar svg{ transition: transform var(--dur-media) var(--curva-rebote); }
+.chat__boton-enviar:hover svg{ transform: translate(2px, -2px) rotate(-8deg); }
+.conversacion-panel .acciones-fila{ padding-bottom: 12px; }
+
+/* Celular: la conversación llena la pantalla entre la cabecera y las pestañas */
+@media (max-width: 767px){
+    .con-barra .pantalla.inbox{ width: 100%; margin: 0; border-radius: 0; box-shadow: none; height: auto; min-height: 0; }
+    .vista-conversacion .pantalla.inbox{
+        display: flex !important; flex-direction: column;
+        height: calc(100dvh - var(--inbox-arriba, 120px) - var(--alto-barra) - env(safe-area-inset-bottom));
+    }
+    .vista-conversacion .conversacion-panel{ flex: 1; min-height: 0 !important; }
+    .vista-mensajes .inbox__conversaciones{ overflow: visible; }
+    .conversacion-panel .chat{ padding: 16px 14px; }
+    .conversacion-panel .chat__mensaje{ max-width: 85%; }
+    .chat__boton-enviar{ width: 48px; padding: 0; justify-content: center; }
+    .chat__boton-enviar span{ position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+}
+
+@media (prefers-reduced-motion: reduce){
+    .chat__mensaje--nuevo, .inbox__no-leidos{ animation: none; }
+    .conversacion-panel .chat{ scroll-behavior: auto; }
+}
+/* Texto oscuro sobre el aqua también en modo oscuro (ahí --marca-tinta es claro) */
+.conversacion-panel .chat__mensaje--mio, .conversacion-panel .chat__mensaje--mio .chat__hora{ color: var(--sobre-acento); }
