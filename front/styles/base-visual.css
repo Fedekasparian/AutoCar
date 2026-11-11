@@ -987,3 +987,11 @@ dialog.hoja::backdrop{ background: rgb(11 17 29 / .45); backdrop-filter: blur(2p
 }
 /* Texto oscuro sobre el aqua también en modo oscuro (ahí --marca-tinta es claro) */
 .conversacion-panel .chat__mensaje--mio, .conversacion-panel .chat__mensaje--mio .chat__hora{ color: var(--sobre-acento); }
+/* Chat: burbujas grises mientras llegan los mensajes de la conversación elegida */
+.chat__esqueleto{
+    align-self: flex-start; width: var(--ancho, 50%); height: 44px; border-radius: 18px 18px 18px 6px;
+    background: linear-gradient(100deg, var(--marca-tenue) 30%, color-mix(in srgb, var(--marca-tenue) 40%, var(--marca-blanco)) 50%, var(--marca-tenue) 70%);
+    background-size: 300% 100%; animation: esqueleto-brillo 1.4s linear infinite;
+}
+.chat__esqueleto--mio{ align-self: flex-end; border-radius: 18px 18px 6px 18px; }
+@media (prefers-reduced-motion: reduce){ .chat__esqueleto{ animation: none; } }

@@ -169,20 +169,61 @@ async function abrirConversacion(c) {
 
     $('chat-foto').replaceWith(Object.assign(vistas.avatar(c.con, 'avatar--chat'), { id: 'chat-foto' }));
     $('chat-persona').textContent = c.con.nombre;
-    $('chat-reportar').href = ruta(`reportar.html?usuario=${c.con.id}`);
+    // "Reportar usuario" de la cabecera (en mensajes.html no está: ahí va abajo, en las acciones)
+    const reportar = $('chat-reportar');
+    if (reportar) reportar.href = ruta(`reportar.html?usuario=${c.con.id}`);
     $('chat-rol').textContent = c.rol === 'vendedor' ? 'Le interesa tu publicación' : 'Vendedor';
     const vehiculo = $('chat-vehiculo');
     vehiculo.textContent = c.vehiculo.titulo;
     vehiculo.href = ruta(`vehiculo.html?id=${c.vehiculo.id}`);
     mostrarAuto(c);
-    $('chat-historial').replaceChildren();
+    $('chat-historial').replaceChildren(...esqueletoChat());
+    $('chat-sin-mensajes').hidden = true;
     $('chat-estado').hidden = true;
     $('chat').hidden = false;
     marcarCerrada(c.abierta);
 
+    estado.pidiendo = null; // lo que se estaba pidiendo era de la conversación anterior
     await traerNuevos();
+    if (estado.actual !== c) return; // mientras cargaba eligió otra
+    $('chat-historial').querySelectorAll('.chat__esqueleto').forEach((n) => n.remove());
+    $('chat-historial').scrollTop = $('chat-historial').scrollHeight;
     c.no_leidos = 0;
     mostrarBandeja();
+}
+
+function esqueletoChat() {
+    return [['', 46], ['--mio', 34], ['', 58], ['--mio', 40]].map(([lado, ancho]) =>
+        el('li', { class: `chat__esqueleto chat__esqueleto${lado}`, 'aria-hidden': 'true', style: `--ancho:${ancho}%` }));
+}
+
+// Elegir otra conversación en la bandeja cambia solo el panel: sin recargar la página. La URL pasa a
+// conversacion.html?id=N (así se puede recargar o compartir) y "atrás" vuelve a la anterior.
+// En el celular cada página muestra una sola cosa (la bandeja o el chat): ahí el link navega normal.
+const panelVisible = () => getComputedStyle(document.querySelector('.conversacion-panel')).display !== 'none';
+
+function conectarBandeja() {
+    $('conversaciones').addEventListener('click', (evento) => {
+        const enlace = evento.target.closest('[data-conversacion]');
+        if (!enlace || evento.ctrlKey || evento.metaKey || evento.shiftKey || evento.button !== 0 || !panelVisible()) return;
+        evento.preventDefault();
+        const c = estado.conversaciones.find((x) => x.id === Number(enlace.dataset.conversacion));
+        if (!c || c === estado.actual) return;
+        window.history.pushState({ conversacion: c.id }, '', conversacionUrl(c));
+        abrirConversacion(c).catch((e) => avisoDelPanel('No se pudo cargar.', e.message));
+        $('texto').focus({ preventScroll: true });
+    });
+    window.addEventListener('popstate', () => {
+        const id = Number(new URLSearchParams(window.location.search).get('id')) || null;
+        const c = id ? estado.conversaciones.find((x) => x.id === id) : null;
+        if (c) {
+            abrirConversacion(c).catch((e) => avisoDelPanel('No se pudo cargar.', e.message));
+        } else {
+            estado.actual = null;
+            document.querySelectorAll('[data-conversacion]').forEach((a) => a.removeAttribute('aria-current'));
+            avisoDelPanel('Elegí una conversación.', null, false);
+        }
+    });
 }
 
 function conectarEnvio() {
@@ -263,6 +304,7 @@ async function iniciar() {
     document.fonts?.ready.then(ajustarAlto);
     $('buscar-conversacion').addEventListener('input', filtrar);
     conectarEnvio();
+    conectarBandeja();
 
     $('estado-bandeja').replaceChildren(vistas.cargando());
     try {
