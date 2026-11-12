@@ -7,6 +7,12 @@ export function datosDe(formulario) {
     const datos = {};
     Array.from(formulario.elements).forEach((control) => {
         if (!control.name || control.disabled || control.type === 'submit') return;
+        // De un grupo de radios va solo el elegido ('' si no eligió ninguno): sin esto quedaba el valor del último
+        if (control.type === 'radio') {
+            if (control.checked) datos[control.name] = control.value;
+            else if (!(control.name in datos)) datos[control.name] = '';
+            return;
+        }
         datos[control.name] = control.type === 'checkbox' ? control.checked : control.value.trim();
     });
     return datos;

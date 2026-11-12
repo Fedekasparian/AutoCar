@@ -6,14 +6,18 @@
   <title>Métricas · Administración - AutoCar</title>
   <meta name="description" content="Métricas de AutoCar: usuarios, publicaciones, moderación y chat.">
   <link rel="stylesheet" href="../../styles/estilos.css">
-  <script src="../../js/tema.js"></script><script src="../../js/barra-admin.js" defer></script><link rel="stylesheet" href="../../styles/componentes.css">
+  <script src="../../js/tema.js"></script><script src="../../js/barra-admin.js" defer></script><script src="../../js/navegacion.js" defer></script><link rel="stylesheet" href="../../styles/componentes.css">
   <link rel="stylesheet" href="../../styles/pantallas.css">
   <link rel="stylesheet" href="../../styles/print.css" media="print">
   <script src="../../js/dialogos.js" defer></script>
   <script type="module" src="../../js/paginas/admin-metricas.js"></script>
 <link rel="stylesheet" href="../../styles/identidad.css">
 <link rel="stylesheet" href="../../styles/portada.css">
-<link rel="stylesheet" href="../../styles/interiores.css"></head>
+<link rel="stylesheet" href="../../styles/interiores.css"><link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Sora:wght@600;700;800&amp;display=swap">
+<link rel="stylesheet" href="../../styles/base-visual.css">
+</head>
 <body class="con-barra vista-admin-metricas">
 
   <a class="saltar" href="#contenido">Saltar al contenido</a>
@@ -37,24 +41,14 @@
       <section aria-labelledby="m-usuarios">
         <h2 class="titulo-seccion" id="m-usuarios">Usuarios</h2>
         <ul class="resumen-admin" role="list" id="tarjetas-usuarios"></ul>
-        <div class="tabla-desplazable" role="region" aria-label="Usuarios por rol" tabindex="0">
-          <table class="tabla tabla--angosta"><caption class="solo-lector">Usuarios por rol</caption>
-            <thead><tr><th scope="col">Rol</th><th scope="col">Usuarios</th></tr></thead>
-            <tbody id="tabla-roles"></tbody></table>
-        </div>
+        <figure class="grafico"><figcaption class="grafico__titulo">Usuarios por rol</figcaption><ul class="barras" id="barras-roles" role="list"></ul></figure>
       </section>
       <section aria-labelledby="m-publicaciones">
         <h2 class="titulo-seccion" id="m-publicaciones">Publicaciones</h2>
         <ul class="resumen-admin" role="list" id="tarjetas-publicaciones"></ul>
-        <div class="tabla-desplazable" role="region" aria-label="Publicaciones por estado" tabindex="0">
-          <table class="tabla tabla--angosta"><caption class="solo-lector">Publicaciones por estado</caption>
-            <thead><tr><th scope="col">Estado</th><th scope="col">Publicaciones</th></tr></thead>
-            <tbody id="tabla-estados"></tbody></table>
-        </div>
-        <div class="tabla-desplazable" role="region" aria-label="Marcas más publicadas" tabindex="0">
-          <table class="tabla tabla--angosta"><caption class="solo-lector">Marcas más publicadas</caption>
-            <thead><tr><th scope="col">Marca más publicada</th><th scope="col">Publicaciones</th></tr></thead>
-            <tbody id="tabla-marcas"></tbody></table>
+        <div class="graficos-fila">
+          <figure class="grafico"><figcaption class="grafico__titulo">Publicaciones por estado</figcaption><ul class="barras" id="barras-estados" role="list"></ul></figure>
+          <figure class="grafico"><figcaption class="grafico__titulo">Marcas más publicadas</figcaption><ul class="barras" id="barras-marcas" role="list"></ul></figure>
         </div>
       </section>
       <section aria-labelledby="m-moderacion">
@@ -68,6 +62,7 @@
       <section aria-labelledby="m-ganancias">
         <h2 class="titulo-seccion" id="m-ganancias">Ganancias de las inspecciones</h2>
         <ul class="resumen-admin" role="list" id="tarjetas-ganancias"></ul>
+        <figure class="grafico" id="reparto-figura" hidden><figcaption class="grafico__titulo">Cómo se reparte lo facturado</figcaption><div id="reparto"></div></figure>
         <p class="campo__ayuda" id="ganancias"></p>
       </section>
       <p class="campo__ayuda" id="generado"></p>

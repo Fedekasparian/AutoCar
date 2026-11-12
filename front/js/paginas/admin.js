@@ -3,17 +3,19 @@
 import * as admin from '../api/admin.js';
 import * as formato from '../servicios/formato.js';
 import * as sesion from '../servicios/sesion.js';
+import * as vistas from '../servicios/vistas.js';
 
 const numero = new Intl.NumberFormat('es-AR');
 
 async function resumen() {
     try {
         const m = await admin.metricas();
-        document.getElementById('r-usuarios').textContent = numero.format(m.usuarios.activos);
-        document.getElementById('r-publicaciones').textContent = numero.format(m.publicaciones.total);
-        document.getElementById('r-pendientes').textContent = numero.format(m.moderacion.pendientes);
-        document.getElementById('r-mensajes').textContent = numero.format(m.chat.mensajes_30d);
         document.getElementById('resumen').hidden = false;
+        [['r-usuarios', m.usuarios.activos], ['r-publicaciones', m.publicaciones.total],
+            ['r-pendientes', m.moderacion.pendientes], ['r-mensajes', m.chat.mensajes_30d]]
+            .forEach(([id, valor]) => vistas.contarHasta(document.getElementById(id), valor, (x) => numero.format(x)));
+        // Si hay publicaciones esperando, la tarjeta se destaca
+        document.getElementById('r-pendientes').closest('li').classList.toggle('resumen-admin__alerta', m.moderacion.pendientes > 0);
         const meta = document.getElementById('meta-pendientes');
         if (meta && m.moderacion.pendientes) {
             meta.textContent = m.moderacion.pendientes === 1

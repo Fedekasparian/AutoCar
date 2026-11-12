@@ -6,13 +6,17 @@
   <title>Nueva búsqueda - AutoCar</title>
   <meta name="description" content="Guardá una búsqueda y te avisamos cuando aparezca.">
   <link rel="stylesheet" href="../../styles/estilos.css">
-  <script src="../../js/tema.js"></script><script src="../../js/barra-admin.js" defer></script><script type="module" src="../../js/paginas/meta-busqueda-nueva.js"></script><link rel="stylesheet" href="../../styles/componentes.css">
+  <script src="../../js/tema.js"></script><script src="../../js/barra-admin.js" defer></script><script src="../../js/navegacion.js" defer></script><script type="module" src="../../js/paginas/meta-busqueda-nueva.js"></script><link rel="stylesheet" href="../../styles/componentes.css">
   <link rel="stylesheet" href="../../styles/pantallas.css">
   <link rel="stylesheet" href="../../styles/print.css" media="print">
   <script src="../../js/validacion.js" defer></script>
 <link rel="stylesheet" href="../../styles/identidad.css">
 <link rel="stylesheet" href="../../styles/portada.css">
 <link rel="stylesheet" href="../../styles/interiores.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Sora:wght@600;700;800&amp;display=swap">
+<link rel="stylesheet" href="../../styles/base-visual.css">
 </head>
 <body class="con-barra vista-meta-busqueda-nueva">
 
@@ -78,6 +82,8 @@
           <option value="automatica">Automática</option>
         </select>
       </div>
+      <!-- Lo que se va a seguir, en una frase que se arma mientras se eligen los filtros (meta-busqueda-nueva.js) -->
+      <p class="resumen-busqueda" id="resumen-busqueda" aria-live="polite" hidden></p>
       <button class="boton" type="submit">Guardar búsqueda</button>
     </form>
   </main>

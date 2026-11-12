@@ -9,11 +9,15 @@
   <link rel="stylesheet" href="../../styles/componentes.css">
   <link rel="stylesheet" href="../../styles/pantallas.css">
   <link rel="stylesheet" href="../../styles/identidad.css">
-  <script src="../../js/tema.js"></script><script src="../../js/barra-admin.js" defer></script>
+  <script src="../../js/tema.js"></script><script src="../../js/barra-admin.js" defer></script><script src="../../js/navegacion.js" defer></script>
   <link rel="stylesheet" href="../../styles/print.css" media="print">
   <script type="module" src="../../js/paginas/catalogo.js"></script>
 <link rel="stylesheet" href="../../styles/portada.css">
 <link rel="stylesheet" href="../../styles/interiores.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Sora:wght@600;700;800&amp;display=swap">
+<link rel="stylesheet" href="../../styles/base-visual.css">
 </head>
 <body class="con-barra vista-home">
 
@@ -42,6 +46,7 @@
 
     <!-- Filtros rápidos: se aplican sobre esta misma página (GET). Las marcas las carga js/paginas/catalogo.js -->
     <form action="home.html" method="get">
+      <input type="hidden" name="q">
       <fieldset class="filtros-rapidos">
         <legend class="solo-lector">Filtros rápidos</legend>
         <label class="solo-lector" for="f-marca">Marca</label>

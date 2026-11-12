@@ -2,7 +2,9 @@
 import * as vehiculos from '../api/vehiculos.js';
 import * as chat from '../api/chat.js';
 import * as favoritos from '../api/favoritos.js';
+import { API_URL } from '../api/config.js';
 import * as formato from '../servicios/formato.js';
+import * as galeria from '../servicios/galeria.js';
 import * as sesion from '../servicios/sesion.js';
 import * as vistas from '../servicios/vistas.js';
 
@@ -16,7 +18,10 @@ function mostrar(v) {
     const titulo = formato.titulo(v);
     document.title = `${titulo} - AutoCar`;
 
-    $('vehiculo-foto').append(vistas.imagenVehiculo(v, 'galeria__imagen'));
+    // Todas las fotos subidas (la primera es la de portada); sin fotos, el recuadro gris de siempre
+    const fotos = (v.fotos?.length ? v.fotos : [v.foto]).filter(Boolean).map((f) => API_URL + f);
+    if (fotos.length) galeria.armar($('vehiculo'), $('vehiculo-foto'), fotos, titulo);
+    else $('vehiculo-foto').append(vistas.imagenVehiculo(v, 'galeria__imagen'));
     $('vehiculo-foto-texto').textContent = `Foto del ${titulo}`;
 
     $('vehiculo-titulo').textContent = titulo;
@@ -36,8 +41,7 @@ function mostrar(v) {
         .filter(([, valor]) => valor)
         .forEach(([dato, valor]) => {
             $(`dato-${dato}`).textContent = valor;
-            $(`dato-${dato}`).hidden = false;
-            $(`dato-${dato}-titulo`).hidden = false;
+            $(`dato-${dato}-fila`).hidden = false;
         });
 
     if (v.vendedor) {
@@ -62,6 +66,7 @@ function mostrar(v) {
         $('vehiculo-consultar').hidden = false;
         $('vehiculo-canje').hidden = false;
         mostrarFavorito();
+        barraDeAccion(v);
     }
     if (v.estado === 'disponible') mostrarComparacion(v.id);
 
@@ -116,10 +121,64 @@ async function mostrarComparacion(vehiculoId) {
         if (!ETIQUETAS[comparacion.etiqueta]) return; // sin_datos: con pocos autos parecidos no se muestra nada
         $('comparacion-etiqueta').textContent = ETIQUETAS[comparacion.etiqueta];
         $('comparacion-texto').textContent = comparacion.texto;
+        $('comparacion-etiqueta').classList.add(`etiqueta--${comparacion.etiqueta}`);
+        if (comparacion.mercado) rango(comparacion);
         $('vehiculo-comparacion').hidden = false;
     } catch {
         // Si el comparador no responde, la ficha sigue igual
     }
+}
+
+// Barra de precios del mercado: de la más barata a la más cara, la franja de los precios típicos
+// (del 25 % al 75 %), una marca en el precio típico y otra en el de este auto.
+function rango(c) {
+    const { minimo, maximo, p25, p75, mediana } = c.mercado;
+    const desde = Math.min(minimo, c.precio);
+    const hasta = Math.max(maximo, c.precio);
+    if (!(hasta > desde)) return;
+    const pos = (valor) => `${(((valor - desde) / (hasta - desde)) * 100).toFixed(1)}%`;
+    const { el } = vistas;
+    const pista = el('div', { class: 'rango__pista', 'aria-hidden': 'true' },
+        el('span', { class: 'rango__franja' }),
+        el('span', { class: 'rango__tipico' }),
+        el('span', { class: `rango__este rango__este--${c.etiqueta}` }, el('span', { class: 'rango__globo' }, 'Este auto')));
+    // Cerca de los bordes, el cartel "Este auto" se alinea hacia adentro para no salirse de la tarjeta
+    const lugar = (c.precio - desde) / (hasta - desde);
+    if (lugar < 0.12) pista.classList.add('rango__pista--este-inicio');
+    if (lugar > 0.88) pista.classList.add('rango__pista--este-fin');
+    pista.style.setProperty('--desde', pos(p25));
+    pista.style.setProperty('--hasta', pos(p75));
+    pista.style.setProperty('--tipico', pos(mediana));
+    pista.style.setProperty('--este', pos(c.precio));
+    $('comparacion-rango').replaceChildren(
+        pista,
+        el('p', { class: 'rango__escala' },
+            el('span', {}, formato.precio(desde)),
+            el('span', {}, `Típico ${formato.precio(mediana)}`),
+            el('span', {}, formato.precio(hasta))),
+        c.ahorro > 0 ? el('p', { class: 'rango__ahorro' }, `${formato.precio(c.ahorro)} menos que el precio típico`) : null);
+    $('comparacion-rango').hidden = false;
+}
+
+// Celular: cuando los botones de la ficha quedan fuera de la pantalla, aparece abajo una barra con el precio
+// y "Consultar" (toca el mismo botón de la ficha). En escritorio no se muestra: la columna ya está a la vista.
+function barraDeAccion(v) {
+    if (!('IntersectionObserver' in window)) return;
+    const consultar = $('vehiculo-consultar');
+    const { el } = vistas;
+    const boton = el('button', { class: 'boton boton--acento', type: 'button', tabindex: '-1' }, 'Consultar');
+    boton.addEventListener('click', () => consultar.click());
+    const barra = el('div', { class: 'barra-accion', 'aria-hidden': 'true' },
+        el('p', { class: 'barra-accion__texto' }, el('strong', {}, formato.precio(v.precio)), el('span', {}, formato.titulo(v))),
+        boton);
+    document.body.append(barra);
+    // Aparece solo cuando los botones de verdad quedaron más abajo (todavía no se llegó a ellos)
+    new IntersectionObserver(([entrada]) => {
+        const visible = !entrada.isIntersecting && entrada.boundingClientRect.top > 0;
+        barra.classList.toggle('barra-accion--visible', visible);
+        barra.setAttribute('aria-hidden', String(!visible));
+        boton.tabIndex = visible ? 0 : -1;
+    }).observe(consultar.closest('.detalle__acciones'));
 }
 
 // ---------- Favorito: guardar o sacar. Sin sesión, pasa por el login y vuelve acá ----------

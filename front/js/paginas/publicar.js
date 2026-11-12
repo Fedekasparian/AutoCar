@@ -59,7 +59,28 @@ function avisar(texto) {
 
 // ---------- Pasos ----------
 
+// Los seis puntos de arriba: hechos, el actual y los que faltan
+function armarPuntos() {
+    document.getElementById('pasos-puntos').replaceChildren(...pasos.map((paso, i) =>
+        el('li', { class: 'pasos__punto' }, el('span', { class: 'pasos__marca' }, String(i + 1)),
+            el('span', { class: 'pasos__nombre' }, paso.dataset.paso))));
+}
+
+function marcarPuntos(indice) {
+    document.querySelectorAll('.pasos__punto').forEach((punto, i) => {
+        punto.classList.toggle('pasos__punto--hecho', i < indice);
+        punto.classList.toggle('pasos__punto--actual', i === indice);
+    });
+    document.getElementById('pasos-puntos').style.setProperty('--avance', String(indice / (pasos.length - 1)));
+}
+
 function mostrarPaso(indice) {
+    // El paso nuevo entra desde la derecha si se avanza y desde la izquierda si se vuelve
+    const direccion = indice >= actual ? 'adelante' : 'atras';
+    pasos[indice].classList.remove('paso--adelante', 'paso--atras');
+    void pasos[indice].offsetWidth;
+    pasos[indice].classList.add(`paso--${direccion}`);
+    marcarPuntos(indice);
     actual = indice;
     const ultimo = pasos.length - 1;
     pasos.forEach((paso, i) => {
@@ -123,14 +144,23 @@ async function crear(datos) {
 
 async function subirFotos() {
     if (!fotos.files.length) return vehiculo;
-    const formData = new FormData();
-    // Se achican antes de subir (lado mayor 1600 px): se puede elegir una foto de cualquier tamaño
-    const achicadas = await Promise.all(Array.from(fotos.files).map((archivo) => achicar(archivo)));
-    achicadas.forEach((archivo) => formData.append('fotos[]', archivo));
-    const respuesta = await api.agregarFotos(vehiculo.id, formData);
-    fotos.value = '';
-    fotosPrevia.replaceChildren();
-    return respuesta.vehiculo;
+    const subiendo = document.getElementById('fotos-subiendo');
+    const texto = document.getElementById('fotos-subiendo-texto');
+    const cantidad = fotos.files.length;
+    subiendo.hidden = false;
+    try {
+        const formData = new FormData();
+        // Se achican antes de subir (lado mayor 1600 px): se puede elegir una foto de cualquier tamaño
+        texto.textContent = cantidad === 1 ? 'Preparando la foto…' : `Preparando ${cantidad} fotos…`;
+        const achicadas = await Promise.all(Array.from(fotos.files).map((archivo) => achicar(archivo)));
+        achicadas.forEach((archivo) => formData.append('fotos[]', archivo));
+        texto.textContent = cantidad === 1 ? 'Subiendo la foto…' : `Subiendo ${cantidad} fotos…`;
+        const respuesta = await api.agregarFotos(vehiculo.id, formData);
+        ponerNuevas([]);
+        return respuesta.vehiculo;
+    } finally {
+        subiendo.hidden = true;
+    }
 }
 
 // Anota lo que tiene cada paso ahora como "lo último guardado"
@@ -229,9 +259,11 @@ aceptaCanje.addEventListener('change', mostrarBusca);
 
 // ---------- Fotos ----------
 
+const portada = () => el('span', { class: 'fotos-previa__portada' }, 'Portada');
+
 function mostrarFotosActuales(rutas) {
     fotosActuales.replaceChildren(...rutas.map((rutaFoto, i) => {
-        const sacar = el('button', { class: 'boton-link', type: 'button' }, 'Sacar');
+        const sacar = el('button', { class: 'fotos-previa__sacar', type: 'button', 'aria-label': `Sacar la foto ${i + 1}` }, '×');
         sacar.addEventListener('click', async () => {
             sacar.disabled = true;
             try {
@@ -243,31 +275,136 @@ function mostrarFotosActuales(rutas) {
                 sacar.disabled = false;
             }
         });
-        return el('li', {}, el('img', { src: urlFoto(rutaFoto), alt: `Foto ${i + 1} guardada` }), sacar);
+        return el('li', {}, el('img', { src: urlFoto(rutaFoto), alt: `Foto ${i + 1} guardada` }), i === 0 ? portada() : null, sacar);
     }));
+    actualizarVistaPrevia();
 }
 
-// Controla cantidad (entre las guardadas y las nuevas), tipo y tamaño, y muestra la vista previa
+// Fotos nuevas (todavía sin subir). Se pueden sumar en varias tandas, arrastrándolas o eligiéndolas, sacar una
+// o pasarla a primera. La lista manda: el <input type="file"> se rearma con ella, así "Siguiente" sube eso.
 const TIPOS = ['image/jpeg', 'image/png', 'image/webp'];
+let nuevas = [];
 let urlsPrevia = [];
-fotos.addEventListener('change', () => {
-    const archivos = Array.from(fotos.files);
-    const guardadas = vehiculo?.fotos?.length || 0;
-    let error = '';
-    if (guardadas + archivos.length > MAX_FOTOS) {
-        error = `Podés tener hasta ${MAX_FOTOS} fotos en total (ya hay ${guardadas}).`;
-    } else if (archivos.some((a) => !TIPOS.includes(a.type))) {
-        error = 'Sólo se aceptan fotos JPG, PNG o WebP.';
+
+function ponerNuevas(lista) {
+    nuevas = lista;
+    try {
+        const transferencia = new DataTransfer();
+        nuevas.forEach((archivo) => transferencia.items.add(archivo));
+        fotos.files = transferencia.files;
+    } catch {
+        // Navegador sin DataTransfer: queda lo último elegido en el input
     }
-    fotos.setCustomValidity(error);
+    mostrarNuevas();
+}
+
+function mover(desde, hasta) {
+    const lista = [...nuevas];
+    const [archivo] = lista.splice(desde, 1);
+    lista.splice(hasta, 0, archivo);
+    ponerNuevas(lista);
+}
+
+function mostrarNuevas() {
+    urlsPrevia.forEach((url) => URL.revokeObjectURL(url));
+    urlsPrevia = nuevas.map((a) => URL.createObjectURL(a));
+    const sinGuardadas = !(vehiculo?.fotos?.length);
+    fotosPrevia.replaceChildren(...urlsPrevia.map((url, i) => {
+        const sacar = el('button', { class: 'fotos-previa__sacar', type: 'button', 'aria-label': `Sacar la foto nueva ${i + 1}` }, '×');
+        sacar.addEventListener('click', () => ponerNuevas(nuevas.filter((_, n) => n !== i)));
+        const primera = i === 0 ? null : el('button', { class: 'fotos-previa__primera', type: 'button',
+            'aria-label': `Pasar la foto nueva ${i + 1} a primera` }, 'Primera');
+        primera?.addEventListener('click', () => mover(i, 0));
+        // Arrastrar una foto sobre otra la pone en ese lugar (con mouse; con teclado o en celular, "Primera")
+        const li = el('li', { draggable: 'true', class: 'fotos-previa__nueva' },
+            el('img', { src: url, alt: `Foto nueva ${i + 1}`, draggable: 'false' }),
+            i === 0 && sinGuardadas ? portada() : null, primera, sacar);
+        li.addEventListener('dragstart', (e) => { e.dataTransfer.setData('text/x-foto', String(i)); li.classList.add('fotos-previa__nueva--moviendo'); });
+        li.addEventListener('dragend', () => li.classList.remove('fotos-previa__nueva--moviendo'));
+        li.addEventListener('dragover', (e) => { if (e.dataTransfer.types.includes('text/x-foto')) e.preventDefault(); });
+        li.addEventListener('drop', (e) => {
+            const desde = e.dataTransfer.getData('text/x-foto');
+            if (desde === '') return;
+            e.preventDefault();
+            e.stopPropagation();
+            mover(Number(desde), i);
+        });
+        return li;
+    }));
+    actualizarVistaPrevia();
+}
+
+// Suma archivos a las nuevas: descarta los que no son fotos y los que pasan del máximo, y avisa por qué
+function agregarFotos(archivos) {
+    const guardadas = vehiculo?.fotos?.length || 0;
+    const lugar = MAX_FOTOS - guardadas - nuevas.length;
+    const validos = archivos.filter((a) => TIPOS.includes(a.type));
+    const entran = validos.slice(0, Math.max(0, lugar));
+    let error = '';
+    if (validos.length < archivos.length) error = 'Sólo se aceptan fotos JPG, PNG o WebP.';
+    if (entran.length < validos.length) error = `Podés tener hasta ${MAX_FOTOS} fotos en total: agregamos las que entraban.`;
     if (error) window.Validacion.mostrar(fotos, error);
     else window.Validacion.limpiar(fotos);
+    fotos.setCustomValidity('');
+    ponerNuevas([...nuevas, ...entran]);
+}
 
-    urlsPrevia.forEach((url) => URL.revokeObjectURL(url));
-    urlsPrevia = error ? [] : archivos.map((a) => URL.createObjectURL(a));
-    fotosPrevia.replaceChildren(...urlsPrevia.map((url, i) =>
-        el('li', {}, el('img', { src: url, alt: `Foto nueva ${i + 1}` }))));
+fotos.addEventListener('change', () => {
+    // El input ya trae solo lo recién elegido; se suma a lo que había
+    const elegidas = Array.from(fotos.files).filter((a) => !nuevas.includes(a));
+    agregarFotos(elegidas);
 });
+
+// Arrastrar y soltar sobre el recuadro
+const zonaFotos = document.getElementById('zona-fotos');
+['dragenter', 'dragover'].forEach((tipo) => zonaFotos.addEventListener(tipo, (e) => {
+    if (!e.dataTransfer.types.includes('Files')) return;
+    e.preventDefault();
+    zonaFotos.classList.add('subir-fotos--activa');
+}));
+['dragleave', 'drop'].forEach((tipo) => zonaFotos.addEventListener(tipo, () => zonaFotos.classList.remove('subir-fotos--activa')));
+zonaFotos.addEventListener('drop', (e) => {
+    if (!e.dataTransfer.files.length) return;
+    e.preventDefault();
+    agregarFotos(Array.from(e.dataTransfer.files));
+});
+
+// ---------- Validación en el momento: el campo bien cargado se marca en verde ----------
+
+function marcarCampo(control) {
+    const campo = control.closest('.campo');
+    if (!campo || control.type === 'file' || control.type === 'checkbox' || control.type === 'radio') return;
+    campo.classList.toggle('campo--ok', Boolean(control.value) && control.checkValidity());
+}
+form.addEventListener('input', (e) => { marcarCampo(e.target); actualizarVistaPrevia(); });
+form.addEventListener('change', (e) => { marcarCampo(e.target); actualizarVistaPrevia(); });
+
+// ---------- Vista previa: la ficha como se va a ver en Explorar ----------
+
+function fichaPrevia() {
+    const d = formularios.datosDe(form);
+    const foto = vehiculo?.fotos?.[0] ? urlFoto(vehiculo.fotos[0]) : urlsPrevia[0];
+    const titulo = [d.marca, d.modelo, d.anio].filter(Boolean).join(' ') || 'Tu vehículo';
+    const detalle = [d.kilometraje ? formato.km(d.kilometraje) : null, d.combustible ? formato.combustible(d.combustible) : null]
+        .filter(Boolean).join(' · ');
+    return el('div', { class: 'ficha-vehiculo ficha-vehiculo--previa' },
+        foto
+            ? el('img', { class: 'ficha-vehiculo__imagen', src: foto, alt: '' })
+            : el('div', { class: 'ficha-vehiculo__imagen ficha-vehiculo__imagen--vacia' }, 'Sin fotos todavía'),
+        el('div', { class: 'ficha-vehiculo__cuerpo' },
+            el('span', { class: `ficha-vehiculo__precio${d.precio ? '' : ' ficha-vehiculo__precio--falta'}` },
+                d.precio ? formato.precio(d.precio) : 'Precio a definir'),
+            el('span', { class: 'ficha-vehiculo__titulo' }, titulo),
+            el('span', { class: 'ficha-vehiculo__lugar' }, detalle || 'Kilometraje y combustible'),
+            el('span', { class: 'ficha-vehiculo__pie' },
+                el('span', {}, d.localidad || ''),
+                el('span', {}, d.transmision ? formato.transmision(d.transmision) : ''))));
+}
+
+function actualizarVistaPrevia() {
+    document.getElementById('vista-previa-ficha').replaceChildren(fichaPrevia());
+    if (actual === PASO_REVISION) document.getElementById('resumen-ficha').replaceChildren(fichaPrevia());
+}
 
 // ---------- Revisión ----------
 
@@ -288,6 +425,7 @@ function valorLegible(nombre) {
 }
 
 function completarResumen() {
+    document.getElementById('resumen-ficha').replaceChildren(fichaPrevia());
     form.querySelectorAll('[data-resumen]').forEach((dato) => {
         const contenido = dato.dataset.resumen.split(' ').map(valorLegible).filter(Boolean).join(' · ');
         dato.textContent = contenido || '—';
@@ -336,6 +474,7 @@ function primerPasoIncompleto(v) {
 async function iniciar() {
     form.classList.add('con-js');
     pasos.forEach((paso) => paso.setAttribute('tabindex', '-1'));
+    armarPuntos();
     mostrarBusca();
 
     try {
@@ -346,10 +485,13 @@ async function iniciar() {
     }
 
     const id = new URLSearchParams(window.location.search).get('id');
+    const vistaPrevia = document.getElementById('vista-previa');
     if (!id) {
         pasosBarra.hidden = false;
         form.hidden = false;
+        vistaPrevia.hidden = false;
         mostrarPaso(0);
+        actualizarVistaPrevia();
         return;
     }
     // Pasos y formulario quedan ocultos hasta tener la publicación
@@ -384,6 +526,9 @@ async function iniciar() {
     mostrarPaso(primerPasoIncompleto(vehiculo));
     pasosBarra.hidden = false;
     form.hidden = false;
+    vistaPrevia.hidden = false;
+    form.querySelectorAll('input, select, textarea').forEach(marcarCampo);
+    actualizarVistaPrevia();
 }
 
 if (sesion.requerirLogin()) iniciar();

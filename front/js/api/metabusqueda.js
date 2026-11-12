@@ -21,3 +21,6 @@ export const eliminar = (busquedaId) => del(`/api/meta-busquedas/${id(busquedaId
 
 // Marca como vistos los avisos de esa búsqueda → null (204)
 export const marcarVistos = (busquedaId) => post(`/api/meta-busquedas/${id(busquedaId)}/avisos/vistos`);
+
+// criterios: los mismos que crear(), sin guardar nada → {autos, por_fuente: {mercadolibre: n, ...}}
+export const conteo = (criterios) => get('/api/meta-busquedas/conteo', criterios);

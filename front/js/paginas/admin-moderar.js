@@ -22,7 +22,6 @@ if (filtroEstado === 'incompletas') {
 const cola = document.getElementById('cola');
 const estado = document.getElementById('estado');
 const total = document.getElementById('resultados-total');
-const aviso = document.getElementById('aviso');
 
 const VACIO = {
     pendiente: 'No hay publicaciones esperando revisión.',
@@ -31,23 +30,34 @@ const VACIO = {
     disponible: 'No hay publicaciones aprobadas.',
 };
 
-function avisar(texto) {
-    aviso.textContent = texto;
-    aviso.hidden = !texto;
-}
-
 // Las fotos vienen como /api/fotos/ID: publicado, el proxy de Vercel las atiende; en local va el API_URL adelante.
 const urlFoto = (rutaFoto) => API_URL + rutaFoto;
 
-async function decidir(v, nuevoEstado, motivo, error) {
+// Mientras el servidor responde, la tarjeta queda bloqueada: los botones y el motivo no se pueden tocar y el
+// botón elegido dice "Aprobando…" o "Rechazando…". Así no se puede aprobar y rechazar la misma publicación.
+async function decidir(v, nuevoEstado, motivo, error, boton) {
     error.textContent = '';
+    const tarjeta = boton.closest('.moderar');
+    const controles = Array.from(tarjeta.querySelectorAll('button, input'));
+    const textoOriginal = boton.textContent;
+    controles.forEach((c) => { c.disabled = true; });
+    boton.textContent = nuevoEstado === 'disponible' ? 'Aprobando…' : 'Rechazando…';
+    tarjeta.classList.add('moderar--procesando');
+    tarjeta.setAttribute('aria-busy', 'true');
     try {
         await admin.moderar(v.id, nuevoEstado, motivo);
         const textos = { disponible: 'Se aprobó', rechazado: 'Se rechazó' };
-        avisar(`${textos[nuevoEstado]} ${formato.titulo(v)}.`);
+        vistas.avisoFlotante(`${textos[nuevoEstado]} ${formato.titulo(v)}.`);
+        // La tarjeta se va de la cola y después se recarga la lista
+        tarjeta.classList.add('moderar--resuelta');
+        await new Promise((listo) => setTimeout(listo, matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 280));
         await cargar();
     } catch (e) {
         error.textContent = Object.values(e.errores || {})[0] || e.message;
+        controles.forEach((c) => { c.disabled = false; });
+        boton.textContent = textoOriginal;
+        tarjeta.classList.remove('moderar--procesando');
+        tarjeta.removeAttribute('aria-busy');
     }
 }
 
@@ -63,7 +73,7 @@ function tarjeta(v, detalle) {
     if (v.estado !== 'disponible' && v.completa) {
         const aprobar = el('button', { class: 'boton boton--chico', type: 'button' },
             v.estado === 'rechazado' ? 'Aprobar (revertir rechazo)' : 'Aprobar');
-        aprobar.addEventListener('click', () => decidir(v, 'disponible', null, error));
+        aprobar.addEventListener('click', () => decidir(v, 'disponible', null, error, aprobar));
         botones.push(aprobar);
     }
     if (v.estado !== 'rechazado') {
@@ -75,16 +85,16 @@ function tarjeta(v, detalle) {
                 motivo.focus();
                 return;
             }
-            decidir(v, 'rechazado', motivo.value.trim(), error);
+            decidir(v, 'rechazado', motivo.value.trim(), error, rechazar);
         });
         botones.push(rechazar);
     }
 
-    const fotos = (detalle?.fotos || []).map((f) =>
-        el('img', { class: 'moderar__foto', src: urlFoto(f), alt: `Foto de ${formato.titulo(v)}`, loading: 'lazy' }));
     const publicador = detalle?.publicador;
 
-    return el('li', { class: 'propuesta pila' },
+    return el('li', { class: 'propuesta pila moderar' },
+        el('div', { class: 'moderar__cuerpo' },
+        el('div', { class: 'moderar__datos pila' },
         el('p', {},
             // Nadie del panel edita: si algo está mal, se rechaza con un motivo y lo corrige el dueño
             el('strong', {}, formato.titulo(v)),
@@ -101,13 +111,33 @@ function tarjeta(v, detalle) {
             ? `Publicó ${publicador.nombre} (${publicador.email})`
             : 'Cargado por el admin (sin dueño)'),
         v.descripcion ? el('p', {}, v.descripcion) : null,
-        v.motivo_rechazo ? el('p', { class: 'campo__ayuda' }, `Motivo del rechazo: ${v.motivo_rechazo}`) : null,
-        fotos.length ? el('div', { class: 'moderar__fotos' }, ...fotos) : el('p', { class: 'suave' }, 'Sin fotos.'),
+        v.motivo_rechazo ? el('p', { class: 'campo__ayuda' }, `Motivo del rechazo: ${v.motivo_rechazo}`) : null),
+        galeria(v, detalle?.fotos || [])),
         v.estado !== 'rechazado'
             ? el('div', { class: 'campo' }, el('label', { class: 'solo-lector', for: idMotivo }, 'Motivo'), motivo)
             : null,
         error,
         el('div', { class: 'hoja__acciones' }, ...botones));
+}
+
+// Fotos grandes a la derecha de los datos: una principal y las miniaturas abajo; tocar una la pasa a principal.
+function galeria(v, fotos) {
+    if (!fotos.length) return el('div', { class: 'moderar__galeria moderar__galeria--vacia' }, el('p', { class: 'suave' }, 'Sin fotos.'));
+    const titulo = formato.titulo(v);
+    const principal = el('img', { class: 'moderar__principal', src: urlFoto(fotos[0]), alt: `Foto 1 de ${titulo}`, loading: 'lazy' });
+    const miniaturas = fotos.length < 2 ? null : el('div', { class: 'moderar__miniaturas' }, ...fotos.map((f, i) => {
+        const boton = el('button', { class: 'moderar__miniatura', type: 'button', 'aria-label': `Ver la foto ${i + 1}`,
+            'aria-pressed': String(i === 0) },
+        el('img', { src: urlFoto(f), alt: '', loading: 'lazy' }));
+        boton.addEventListener('click', () => {
+            principal.src = urlFoto(f);
+            principal.alt = `Foto ${i + 1} de ${titulo}`;
+            miniaturas.querySelectorAll('[aria-pressed]').forEach((b) => b.setAttribute('aria-pressed', String(b === boton)));
+        });
+        return boton;
+    }));
+    return el('div', { class: 'moderar__galeria' }, principal, miniaturas,
+        el('p', { class: 'moderar__contador' }, fotos.length === 1 ? '1 foto' : `${fotos.length} fotos`));
 }
 
 async function cargar() {

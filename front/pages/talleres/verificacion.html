@@ -6,7 +6,7 @@
   <title>Inspección - AutoCar</title>
   <meta name="description" content="Estado de la inspección, informe firmado por el mecánico y reclamo.">
   <link rel="stylesheet" href="../../styles/estilos.css">
-  <script src="../../js/tema.js"></script><script src="../../js/barra-admin.js" defer></script><link rel="stylesheet" href="../../styles/componentes.css">
+  <script src="../../js/tema.js"></script><script src="../../js/barra-admin.js" defer></script><script src="../../js/navegacion.js" defer></script><link rel="stylesheet" href="../../styles/componentes.css">
   <link rel="stylesheet" href="../../styles/pantallas.css">
   <link rel="stylesheet" href="../../styles/print.css" media="print">
   <script src="../../js/validacion.js" defer></script>
@@ -15,6 +15,10 @@
 <link rel="stylesheet" href="../../styles/identidad.css">
 <link rel="stylesheet" href="../../styles/portada.css">
 <link rel="stylesheet" href="../../styles/interiores.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Sora:wght@600;700;800&amp;display=swap">
+<link rel="stylesheet" href="../../styles/base-visual.css">
 </head>
 <body class="con-barra vista-verificacion">
 
@@ -41,6 +45,7 @@
     <section class="recuadro pila" id="resumen" aria-labelledby="resumen-titulo" hidden>
       <h2 id="resumen-titulo" class="titulo-seccion">Estado</h2>
       <p id="resumen-estado"></p>
+      <div id="resumen-linea"></div>
       <dl class="datos" id="resumen-datos"></dl>
       <button class="boton boton--secundario" type="button" id="cancelar" hidden>Cancelar la inspección</button>
     </section>
@@ -49,8 +54,9 @@
       <h2 id="informe-titulo" class="titulo-seccion">Informe firmado</h2>
       <p id="informe-conclusion"></p>
       <p id="informe-resumen"></p>
+      <div id="informe-conteo"></div>
       <div id="informe-items"></div>
-      <dl class="datos" id="informe-firma"></dl>
+      <div class="informe-firma"><dl class="datos" id="informe-firma"></dl><div id="informe-sello"></div></div>
       <p class="campo__ayuda">El informe está firmado y cerrado: ya no se puede cambiar.</p>
     </section>
 
