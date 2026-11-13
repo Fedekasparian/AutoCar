@@ -115,8 +115,8 @@ async function consultar() {
         botonConsultar.disabled = false;
     }
 }
-const botonConsultar = boton('Consultar', consultar);
-const avisoConsultar = el('p', { class: 'campo__ayuda', role: 'status', hidden: true });
+const botonConsultar = boton('Consultar', consultar, 'boton', 'vehiculo-consultar');
+const avisoConsultar = el('p', { class: 'campo__ayuda', id: 'vehiculo-consultar-aviso', role: 'status', hidden: true });
 
 // ---------- Comparador: si el precio está bien frente a autos parecidos de otros sitios ----------
 
@@ -187,9 +187,9 @@ function barraDeAccion(v) {
 // ---------- Favorito: guardar o sacar. Sin sesión, pasa por el login y vuelve acá ----------
 
 // El botón y su aviso los crea el JS (no están en vehiculo.html); mostrarFavorito() los pone debajo del precio.
-const botonFavorito = boton('Guardar en favoritos', guardarOSacar, 'boton boton--secundario');
+const botonFavorito = boton('Guardar en favoritos', guardarOSacar, 'boton boton--secundario', 'vehiculo-favorito');
 botonFavorito.setAttribute('aria-pressed', 'false');
-const avisoFavorito = el('p', { class: 'campo__ayuda', role: 'status', hidden: true });
+const avisoFavorito = el('p', { class: 'campo__ayuda', id: 'vehiculo-favorito-aviso', role: 'status', hidden: true });
 
 function pintarFavorito(guardado) {
     botonFavorito.setAttribute('aria-pressed', String(guardado));

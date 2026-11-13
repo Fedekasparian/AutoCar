@@ -20,9 +20,9 @@ const pasos = Array.from(form.querySelectorAll('.paso'));
 // En publicar.html está sólo "Siguiente" (el submit del formulario). "Anterior", "Terminar después" y el botón
 // del último paso los crea el JS; mostrarPaso() decide cuáles se ven en cada paso.
 const siguiente = document.getElementById('paso-siguiente');
-const anterior = boton('Anterior', null, 'boton boton--secundario');
-const guardarSalir = boton('Terminar después', null, 'boton boton--secundario');
-const terminar = boton('Enviar a revisión'); // el texto lo pone mostrarPaso: "Enviar a revisión" o "Terminar después"
+const anterior = boton('Anterior', null, 'boton boton--secundario', 'paso-anterior');
+const guardarSalir = boton('Terminar después', null, 'boton boton--secundario', 'guardar-salir');
+const terminar = boton('Enviar a revisión', null, 'boton', 'terminar'); // el texto lo pone mostrarPaso: "Enviar a revisión" o "Terminar después"
 anterior.hidden = true;
 terminar.hidden = true;
 siguiente.before(anterior, guardarSalir);

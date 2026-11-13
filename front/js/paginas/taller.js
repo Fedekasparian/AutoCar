@@ -129,7 +129,7 @@ formularios.alEnviar(formPerfil, async (datos) => {
 
 formPerfil.elements.precio_inspeccion.addEventListener('input', describirPrecio);
 // "Completar perfil" / "Editar perfil", al final del recuadro del perfil
-const botonPerfil = boton('Completar perfil', abrirPerfil, 'boton boton--secundario');
+const botonPerfil = boton('Completar perfil', abrirPerfil, 'boton boton--secundario', 'editar-perfil');
 document.getElementById('perfil-datos').after(botonPerfil);
 
 // ---------- Bandeja ----------
