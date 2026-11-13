@@ -162,13 +162,14 @@ const botonGuardar = boton('Guardar borrador', async () => {
     botonGuardar.disabled = true;
     if (await guardar(false)) avisar('Se guardó el borrador. Podés seguir después.');
     botonGuardar.disabled = false;
-}, 'boton boton--secundario');
+}, 'boton boton--secundario', 'guardar');
 form.querySelector('.pasos__botones').prepend(botonGuardar);
 
 // Confirmación de la firma (la ventana la arma acciones.js)
 const pedirFirma = confirmacion({
     titulo: 'Firmar el informe',
     confirmar: 'Firmar',
+    id: 'confirmar-firma',
     volver: 'Volver',
     detalle: (conclusion) => [
         el('p', {}, `Vas a firmar con tu nombre, ${sesion.usuario()?.nombre || ''}, un informe "${conclusion}" sobre ${insp.tituloAuto(inspeccion)}.`),

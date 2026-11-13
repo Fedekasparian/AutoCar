@@ -146,9 +146,7 @@ function mostrar(r) {
     $('filtros').hidden = false;
     // Al final de la página, "Borrar esta búsqueda" (una sola vez, aunque se vuelva a mostrar el reporte)
     if (!$('borrar')) {
-        const borrar = boton('Borrar esta búsqueda', () => pedirBorrar(), 'boton boton--secundario');
-        borrar.id = 'borrar';
-        $('paginacion').after(borrar);
+        $('paginacion').after(boton('Borrar esta búsqueda', () => pedirBorrar(), 'boton boton--secundario', 'borrar'));
     }
 }
 

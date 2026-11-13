@@ -126,7 +126,7 @@ const pedirCancelar = confirmacion({
 });
 
 // Se agrega al final del recuadro "Estado" en mostrarResumen
-const botonCancelar = boton('Cancelar la inspección', () => pedirCancelar(), 'boton boton--secundario');
+const botonCancelar = boton('Cancelar la inspección', () => pedirCancelar(), 'boton boton--secundario', 'cancelar');
 
 // ---------- Inicio ----------
 

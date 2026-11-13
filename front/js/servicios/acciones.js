@@ -4,9 +4,10 @@
 // Cada página busca el nodo donde va la acción, crea el botón y lo inserta.
 import { el } from './vistas.js';
 
-// Botón de acción: boton('Guardar en favoritos', guardar, 'boton boton--secundario')
-export function boton(texto, alHacerClic, clase = 'boton') {
-    const nodo = el('button', { class: clase, type: 'button' }, texto);
+// Botón de acción: boton('Guardar en favoritos', guardar, 'boton boton--secundario', 'vehiculo-favorito').
+// El id es opcional: lo usan las pruebas E2E para encontrar el botón.
+export function boton(texto, alHacerClic, clase = 'boton', id = null) {
+    const nodo = el('button', { class: clase, type: 'button', id }, texto);
     if (alHacerClic) nodo.addEventListener('click', alHacerClic);
     return nodo;
 }
@@ -50,7 +51,8 @@ function hoja(titulo, contenido) {
 // "¿Seguro que…?": devuelve abrir(elegido). detalle(elegido) da los párrafos que se ven abajo del título;
 // hacer(elegido) es la acción. Si hacer falla, el error queda en la ventana; si sale bien, la ventana se cierra.
 // const pedirBorrar = confirmacion({ titulo: '¿Borrar esta búsqueda?', confirmar: 'Borrar', detalle, hacer });
-export function confirmacion({ titulo, confirmar, volver = 'Cancelar', detalle = () => [], hacer }) {
+// id (opcional) es el del botón que confirma.
+export function confirmacion({ titulo, confirmar, volver = 'Cancelar', detalle = () => [], hacer, id = null }) {
     const error = cajaDeError();
     const aceptar = boton(confirmar, async () => {
         aceptar.disabled = true;
@@ -65,7 +67,7 @@ export function confirmacion({ titulo, confirmar, volver = 'Cancelar', detalle =
             aceptar.disabled = false;
             aceptar.textContent = confirmar;
         }
-    });
+    }, 'boton', id);
     const dialogo = hoja(titulo, el('div', { class: 'pila' },
         error,
         el('div', { class: 'hoja__acciones' },

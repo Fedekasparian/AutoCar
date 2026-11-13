@@ -57,9 +57,9 @@ formularios.alEnviar(document.getElementById('form-perfil'), async (datos) => {
 // y "Quitar foto" los crea el JS.
 const errorFoto = document.getElementById('foto-error');
 const entradaFoto = el('input', { id: 'foto', type: 'file', accept: 'image/jpeg,image/png,image/webp', hidden: true });
-const cambiarFoto = boton('', () => entradaFoto.click(), 'perfil-foto');
+const cambiarFoto = boton('', () => entradaFoto.click(), 'perfil-foto', 'cambiar-foto');
 cambiarFoto.setAttribute('aria-label', 'Cambiar foto de perfil');
-const quitarFoto = boton('Quitar foto', borrarFoto, 'boton-link');
+const quitarFoto = boton('Quitar foto', borrarFoto, 'boton-link', 'quitar-foto');
 quitarFoto.hidden = true;
 const fotoActual = document.getElementById('usuario-avatar');
 fotoActual.replaceWith(cambiarFoto);
@@ -124,7 +124,7 @@ async function salir() {
     sesion.cerrar();
     window.location.assign(ruta('index.html'));
 }
-document.querySelector('.cuenta-resumen').append(boton('Salir', salir, 'boton boton--secundario boton--bloque'));
+document.querySelector('.cuenta-resumen').append(boton('Salir', salir, 'boton boton--secundario boton--bloque', 'salir'));
 
 if (sesion.requerirLogin()) {
     if (sesion.compraYVende()) contar();
