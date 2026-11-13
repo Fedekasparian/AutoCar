@@ -7,6 +7,7 @@ import * as sesion from '../servicios/sesion.js';
 import * as vistas from '../servicios/vistas.js';
 import { criterios } from '../servicios/metabusqueda.js';
 import { ruta } from '../servicios/rutas.js';
+import { boton, confirmacion } from '../servicios/acciones.js';
 
 const { el } = vistas;
 const params = new URLSearchParams(window.location.search);
@@ -143,7 +144,12 @@ function mostrar(r) {
         'Probá con otro sitio o sacá algún criterio. La búsqueda queda guardada: si aparece un auto, te avisamos.'));
     $('paginacion').replaceWith(Object.assign(vistas.paginacion(res.pagina, res.paginas), { id: 'paginacion' }));
     $('filtros').hidden = false;
-    $('borrar').hidden = false;
+    // Al final de la página, "Borrar esta búsqueda" (una sola vez, aunque se vuelva a mostrar el reporte)
+    if (!$('borrar')) {
+        const borrar = boton('Borrar esta búsqueda', () => pedirBorrar(), 'boton boton--secundario');
+        borrar.id = 'borrar';
+        $('paginacion').after(borrar);
+    }
 }
 
 function noEncontrada() {
@@ -183,20 +189,16 @@ const filtros = $('filtros');
     });
 });
 
-// "Borrar esta búsqueda" abre #dialogo-borrar (data-abrir); acá se confirma
-$('confirmar-borrar').addEventListener('click', async (evento) => {
-    const boton = evento.currentTarget;
-    boton.disabled = true;
-    boton.textContent = 'Borrando…';
-    $('borrar-error').textContent = '';
-    try {
+// Confirmación de "Borrar esta búsqueda" (la ventana la arma acciones.js)
+const pedirBorrar = confirmacion({
+    titulo: '¿Borrar esta búsqueda?',
+    confirmar: 'Borrar',
+    volver: 'Volver',
+    detalle: () => [el('p', {}, 'Dejás de recibir avisos de autos nuevos y bajas de precio. Los autos siguen en los sitios: podés volver a buscarlos cuando quieras.')],
+    hacer: async () => {
         await api.eliminar(id);
         window.location.assign(ruta('meta-busqueda.html?borrada=1'));
-    } catch (error) {
-        $('borrar-error').textContent = error.message;
-        boton.disabled = false;
-        boton.textContent = 'Borrar';
-    }
+    },
 });
 
 if (sesion.requerirLogin()) cargar();

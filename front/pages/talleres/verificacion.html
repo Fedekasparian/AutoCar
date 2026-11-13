@@ -10,7 +10,6 @@
   <link rel="stylesheet" href="../../styles/pantallas.css">
   <link rel="stylesheet" href="../../styles/print.css" media="print">
   <script src="../../js/validacion.js" defer></script>
-  <script src="../../js/dialogos.js" defer></script>
   <script type="module" src="../../js/paginas/verificacion.js"></script>
 <link rel="stylesheet" href="../../styles/identidad.css">
 <link rel="stylesheet" href="../../styles/portada.css">
@@ -47,7 +46,6 @@
       <p id="resumen-estado"></p>
       <div id="resumen-linea"></div>
       <dl class="datos" id="resumen-datos"></dl>
-      <button class="boton boton--secundario" type="button" id="cancelar" hidden>Cancelar la inspección</button>
     </section>
 
     <section class="recuadro pila" id="informe" aria-labelledby="informe-titulo" hidden>
@@ -90,16 +88,5 @@
     </section>
   </main>
 
-  <dialog class="hoja" id="dialogo-cancelar" aria-labelledby="cancelar-titulo">
-    <div class="pila">
-      <h2 id="cancelar-titulo">Cancelar la inspección</h2>
-      <p>El mecánico todavía no la aceptó. Si la cancelás, te devolvemos todo lo que pagaste.</p>
-      <p class="formulario__alerta" id="cancelar-error" role="alert" tabindex="-1"></p>
-      <div class="hoja__acciones">
-        <button class="boton boton--secundario" type="button" data-cerrar>Volver</button>
-        <button class="boton" type="button" id="confirmar-cancelar">Cancelar inspección</button>
-      </div>
-    </div>
-  </dialog>
 </body>
 </html>

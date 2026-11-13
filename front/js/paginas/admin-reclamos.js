@@ -8,6 +8,7 @@ import * as sesion from '../servicios/sesion.js';
 import * as vistas from '../servicios/vistas.js';
 import { filasDatos } from '../servicios/informe.js';
 import { ruta } from '../servicios/rutas.js';
+import { campo, formularioEnHoja } from '../servicios/acciones.js';
 
 const { el } = vistas;
 const ESTADOS = ['abierto', 'procede', 'no_procede'];
@@ -17,8 +18,27 @@ const estadoActual = ESTADOS.includes(pedido) ? pedido : 'abierto';
 const lista = document.getElementById('lista');
 const estado = document.getElementById('estado');
 const aviso = document.getElementById('aviso');
-const dialogo = document.getElementById('dialogo-resolver');
-const form = document.getElementById('form-resolver');
+// La ventana para resolver la arma el JS (no está en admin-reclamos.html)
+const opcion = (valor, id, texto, requerido) => el('label', {},
+    el('input', { type: 'radio', name: 'decision', value: valor, id, required: requerido }), el('span', {}, texto));
+const resolverAuto = el('p', { class: 'suave' });
+const filaCompensacion = campo('Compensación ($)',
+    el('input', { id: 'compensacion', name: 'compensacion', type: 'number', min: 0, step: 1000, inputmode: 'numeric' }), '');
+const { dialogo, formulario: form } = formularioEnHoja({
+    titulo: 'Resolver el reclamo',
+    id: 'form-resolver',
+    enviar: 'Guardar',
+    campos: [
+        resolverAuto,
+        el('fieldset', { class: 'opciones' },
+            el('legend', { class: 'campo__etiqueta' }, 'Decisión'),
+            opcion('procede', 'decision-procede', 'Procede', true),
+            opcion('no_procede', 'decision-no', 'No procede', false)),
+        filaCompensacion,
+        campo('Respuesta para el comprador',
+            el('textarea', { id: 'respuesta', name: 'respuesta', rows: 3, required: true, minlength: 3, maxlength: 1000 })),
+    ],
+});
 const campoCompensacion = form.elements.compensacion;
 let elegido = null;
 
@@ -93,7 +113,7 @@ async function cargar() {
 
 function alternarCompensacion() {
     const procede = form.elements.decision.value === 'procede';
-    document.getElementById('campo-compensacion').hidden = !procede;
+    filaCompensacion.hidden = !procede;
     campoCompensacion.required = procede;
     campoCompensacion.disabled = !procede;
 }
@@ -101,7 +121,7 @@ function alternarCompensacion() {
 function abrir(r) {
     elegido = r;
     form.reset();
-    document.getElementById('resolver-auto').textContent = `${insp.tituloAuto(r.inspeccion)} · ${r.descripcion}`;
+    resolverAuto.textContent = `${insp.tituloAuto(r.inspeccion)} · ${r.descripcion}`;
     campoCompensacion.max = r.tope;
     document.getElementById('compensacion-ayuda').textContent =
         `Además se le devuelven ${formato.precio(r.inspeccion.precio)}. Compensación máxima: ${formato.precio(r.tope)} (3 veces el precio).`;

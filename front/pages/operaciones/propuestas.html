@@ -7,10 +7,10 @@
   <meta name="description" content="Propuestas de canje recibidas y enviadas.">
   <link rel="stylesheet" href="../../styles/estilos.css">
   <script src="../../js/tema.js"></script><script src="../../js/barra-admin.js" defer></script><script src="../../js/navegacion.js" defer></script><link rel="stylesheet" href="../../styles/componentes.css">
-  <script src="../../js/proximamente.js" defer></script>
+  <script src="../../js/validacion.js" defer></script>
   <link rel="stylesheet" href="../../styles/pantallas.css">
   <link rel="stylesheet" href="../../styles/print.css" media="print">
-  <script src="../../js/dialogos.js" defer></script>
+  <script type="module" src="../../js/paginas/propuestas.js"></script>
 <link rel="stylesheet" href="../../styles/identidad.css">
 <link rel="stylesheet" href="../../styles/portada.css">
 <link rel="stylesheet" href="../../styles/interiores.css">
@@ -58,11 +58,7 @@
             </div>
           </div>
           <p class="canje__diferencia">Diferencia: <strong>vos pagás $700.000</strong></p>
-          <div class="propuesta__acciones">
-            <form data-proximamente method="post"><button class="boton boton--chico" type="submit">Aceptar</button></form>
-            <button class="boton boton--secundario boton--chico" type="button" data-abrir="contraoferta">Contraofertar</button>
-            <form data-proximamente method="post"><button class="boton boton--secundario boton--chico" type="submit">Rechazar</button></form>
-          </div>
+          <div class="propuesta__acciones"></div>
         </div>
       </li>
       <li>
@@ -84,25 +80,6 @@
         </div>
       </li>
     </ul>
-
-    <dialog class="hoja" id="contraoferta" aria-labelledby="contraoferta-titulo">
-      <form class="pila" data-proximamente method="post">
-        <h2 id="contraoferta-titulo">Contraofertar</h2>
-        <fieldset class="opciones">
-          <legend class="campo__etiqueta">¿Quién paga la diferencia?</legend>
-          <label><input type="radio" name="quien_paga" value="yo" checked><span>Pago yo</span></label>
-          <label><input type="radio" name="quien_paga" value="otro"><span>Me pagan a mí</span></label>
-        </fieldset>
-        <div class="campo">
-          <label class="campo__etiqueta" for="monto">Monto de la diferencia</label>
-          <input class="campo__input" id="monto" name="diferencia" type="number" inputmode="numeric" min="0" step="1000" value="500000" required>
-        </div>
-        <div class="hoja__acciones">
-          <button class="boton boton--secundario" type="button" data-cerrar>Cancelar</button>
-          <button class="boton" type="submit">Enviar</button>
-        </div>
-      </form>
-    </dialog>
   </main>
 
 </body>

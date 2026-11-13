@@ -8,6 +8,7 @@ import * as insp from '../servicios/inspecciones.js';
 import * as sesion from '../servicios/sesion.js';
 import * as vistas from '../servicios/vistas.js';
 import { ruta } from '../servicios/rutas.js';
+import { boton, campo, formularioEnHoja } from '../servicios/acciones.js';
 
 const { el } = vistas;
 const PESTANAS = ['pedida', 'aceptada', 'firmada'];
@@ -18,13 +19,49 @@ const aviso = document.getElementById('aviso');
 const lista = document.getElementById('bandeja');
 const estado = document.getElementById('estado');
 
-const dialogoPerfil = document.getElementById('dialogo-perfil');
-const formPerfil = document.getElementById('form-perfil');
+// Las tres ventanas (perfil, aceptar y rechazar) las arma el JS: no están en taller.html
+const { dialogo: dialogoPerfil, formulario: formPerfil } = formularioEnHoja({
+    titulo: 'Perfil del taller',
+    id: 'form-perfil',
+    enviar: 'Guardar',
+    campos: [
+        campo('Nombre del taller', el('input', { id: 'perfil-nombre', name: 'nombre', required: true, minlength: 2, maxlength: 80 })),
+        campo('Dirección', el('input', { id: 'perfil-direccion', name: 'direccion', required: true, maxlength: 120, autocomplete: 'address-line1' })),
+        el('div', { class: 'campos-fila' },
+            campo('Localidad', el('input', { id: 'perfil-localidad', name: 'localidad', required: true, maxlength: 100, placeholder: 'Mercedes' })),
+            campo('Teléfono', el('input', { id: 'perfil-telefono', name: 'telefono', type: 'tel', required: true, maxlength: 30, placeholder: '(02324) 15-123456' }))),
+        campo('Precio de la inspección ($)', el('input', {
+            id: 'perfil-precio', name: 'precio_inspeccion', type: 'number', required: true,
+            min: 1000, max: 10000000, step: 1000, inputmode: 'numeric',
+        }), ''),
+    ],
+});
 const ayudaPrecio = document.getElementById('perfil-precio-ayuda');
-const dialogoAceptar = document.getElementById('dialogo-aceptar');
-const formAceptar = document.getElementById('form-aceptar');
-const dialogoRechazar = document.getElementById('dialogo-rechazar');
-const formRechazar = document.getElementById('form-rechazar');
+ayudaPrecio.setAttribute('aria-live', 'polite');
+
+const autoAceptar = el('p', { class: 'suave' });
+const { dialogo: dialogoAceptar, formulario: formAceptar } = formularioEnHoja({
+    titulo: 'Aceptar la inspección',
+    id: 'form-aceptar',
+    enviar: 'Aceptar',
+    campos: [
+        autoAceptar,
+        campo('Día y hora del turno', el('input', { id: 'aceptar-fecha', name: 'fecha_turno', type: 'datetime-local', required: true }),
+            'El comprador la ve en su pedido. El vendedor no sabe quién sos hasta la cita.'),
+    ],
+});
+
+const autoRechazar = el('p', { class: 'suave' });
+const { dialogo: dialogoRechazar, formulario: formRechazar } = formularioEnHoja({
+    titulo: 'Rechazar la inspección',
+    id: 'form-rechazar',
+    enviar: 'Rechazar',
+    campos: [
+        autoRechazar,
+        campo('Motivo', el('textarea', { id: 'rechazar-motivo', name: 'motivo', rows: 3, required: true, maxlength: 300 }),
+            'Lo ve el comprador. Se le devuelve todo lo que pagó.'),
+    ],
+});
 
 let taller = null;
 let elegida = null; // la inspección que se está aceptando o rechazando
@@ -48,7 +85,7 @@ function mostrarPerfil() {
     const datos = document.getElementById('perfil-datos');
     document.getElementById('perfil-falta').hidden = Boolean(taller);
     datos.hidden = !taller;
-    document.getElementById('editar-perfil').textContent = taller ? 'Editar perfil' : 'Completar perfil';
+    botonPerfil.textContent = taller ? 'Editar perfil' : 'Completar perfil';
     document.getElementById('taller-subtitulo').textContent = taller ? `${taller.nombre} · ${taller.localidad}` : '';
     if (!taller) return;
 
@@ -91,7 +128,9 @@ formularios.alEnviar(formPerfil, async (datos) => {
 });
 
 formPerfil.elements.precio_inspeccion.addEventListener('input', describirPrecio);
-document.getElementById('editar-perfil').addEventListener('click', abrirPerfil);
+// "Completar perfil" / "Editar perfil", al final del recuadro del perfil
+const botonPerfil = boton('Completar perfil', abrirPerfil, 'boton boton--secundario');
+document.getElementById('perfil-datos').after(botonPerfil);
 
 // ---------- Bandeja ----------
 
@@ -110,12 +149,6 @@ function enlaceAviso(i) {
     return el('a', { class: 'boton-link', href: i.url, target: '_blank', rel: 'noopener noreferrer' }, 'Ver el aviso');
 }
 
-function boton(texto, clase, alHacerClic) {
-    const b = el('button', { class: clase, type: 'button' }, texto);
-    b.addEventListener('click', alHacerClic);
-    return b;
-}
-
 function filaPedida(i) {
     return el('li', {},
         el('div', { class: 'fila fila--inspeccion' },
@@ -125,8 +158,8 @@ function filaPedida(i) {
                 el('span', { class: 'fila__meta' }, `Cobrás ${formato.precio(i.monto_mecanico)}`)),
             el('ul', { class: 'acciones-fila', role: 'list' },
                 el('li', {}, enlaceAviso(i)),
-                el('li', {}, boton('Rechazar', 'boton boton--secundario boton--chico', () => abrirRechazo(i))),
-                el('li', {}, boton('Aceptar', 'boton boton--chico', () => abrirAceptar(i))))));
+                el('li', {}, boton('Rechazar', () => abrirRechazo(i), 'boton boton--secundario boton--chico')),
+                el('li', {}, boton('Aceptar', () => abrirAceptar(i), 'boton boton--chico')))));
 }
 
 function filaConInforme(i) {
@@ -187,7 +220,7 @@ function ahoraLocal() {
 
 function abrirAceptar(i) {
     elegida = i;
-    document.getElementById('aceptar-auto').textContent = `${insp.tituloAuto(i)} · ${metaDe(i)}`;
+    autoAceptar.textContent = `${insp.tituloAuto(i)} · ${metaDe(i)}`;
     formAceptar.reset();
     formAceptar.elements.fecha_turno.min = ahoraLocal();
     formularios.alerta(formAceptar, '');
@@ -196,7 +229,7 @@ function abrirAceptar(i) {
 
 function abrirRechazo(i) {
     elegida = i;
-    document.getElementById('rechazar-auto').textContent = `${insp.tituloAuto(i)} · ${metaDe(i)}`;
+    autoRechazar.textContent = `${insp.tituloAuto(i)} · ${metaDe(i)}`;
     formRechazar.reset();
     formularios.alerta(formRechazar, '');
     dialogoRechazar.showModal();

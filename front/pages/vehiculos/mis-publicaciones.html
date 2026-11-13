@@ -6,7 +6,6 @@
   <title>Mis publicaciones - AutoCar</title>
   <meta name="description" content="Tus vehículos publicados en AutoCar.">
   <link rel="stylesheet" href="../../styles/estilos.css">
-  <script src="../../js/dialogos.js" defer></script>
   <script type="module" src="../../js/paginas/mis-publicaciones.js"></script>
   <script src="../../js/tema.js"></script><script src="../../js/barra-admin.js" defer></script><script src="../../js/navegacion.js" defer></script><link rel="stylesheet" href="../../styles/componentes.css">
   <link rel="stylesheet" href="../../styles/pantallas.css">
@@ -56,32 +55,7 @@
   </main>
 
   <!-- Confirmación antes de eliminar: DELETE /api/mis-vehiculos/{id} (baja lógica) -->
-  <dialog class="hoja" id="confirmar-eliminar" aria-labelledby="eliminar-titulo">
-    <form class="pila" method="dialog">
-      <h2 id="eliminar-titulo">¿Eliminar esta publicación?</h2>
-      <p id="eliminar-vehiculo"></p>
-      <p class="campo__ayuda">Deja de verse en AutoCar y no la vas a poder recuperar.</p>
-      <p class="campo__ayuda" id="eliminar-vendida" hidden>Si ya la vendiste, conviene usar «Marcar vendida» en vez de eliminarla.</p>
-      <p class="formulario__alerta" id="eliminar-error" role="alert" tabindex="-1"></p>
-      <div class="hoja__acciones">
-        <button class="boton boton--secundario" type="button" data-cerrar>Cancelar</button>
-        <button class="boton" type="button" id="eliminar-confirmar">Eliminar</button>
-      </div>
-    </form>
-  </dialog>
 
-  <dialog class="hoja" id="confirmar-vendida" aria-labelledby="vendida-titulo">
-    <form class="pila" method="dialog">
-      <h2 id="vendida-titulo">¡Felicitaciones por la venta!</h2>
-      <p id="vendida-vehiculo"></p>
-      <p class="campo__ayuda">La publicación deja de aparecer en Explorar y queda en tus publicaciones como <strong>Vendida</strong>. Las conversaciones con los interesados siguen abiertas.</p>
-      <p class="formulario__alerta" id="vendida-error" role="alert" tabindex="-1"></p>
-      <div class="hoja__acciones">
-        <button class="boton boton--secundario" type="button" data-cerrar>Todavía no</button>
-        <button class="boton" type="button" id="vendida-confirmar">Sí, la vendí</button>
-      </div>
-    </form>
-  </dialog>
 
 </body>
 </html>

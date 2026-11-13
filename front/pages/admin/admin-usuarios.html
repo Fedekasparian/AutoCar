@@ -9,7 +9,6 @@
   <script src="../../js/tema.js"></script><script src="../../js/barra-admin.js" defer></script><script src="../../js/navegacion.js" defer></script><link rel="stylesheet" href="../../styles/componentes.css">
   <link rel="stylesheet" href="../../styles/pantallas.css">
   <link rel="stylesheet" href="../../styles/print.css" media="print">
-  <script src="../../js/dialogos.js" defer></script>
   <script type="module" src="../../js/paginas/admin-usuarios.js"></script>
 <link rel="stylesheet" href="../../styles/identidad.css">
 <link rel="stylesheet" href="../../styles/portada.css">
@@ -72,27 +71,5 @@
     <div class="estado" id="estado"></div>
     <nav class="paginacion" id="paginacion" aria-label="Páginas de resultados"></nav>
   </main>
-  <!-- Edición: PATCH /api/admin/usuarios/{id} con nombre, rol y activo -->
-  <dialog class="hoja" id="editar-usuario" aria-labelledby="editar-titulo">
-    <form class="pila" id="form-usuario" method="dialog" novalidate>
-      <h2 id="editar-titulo">Editar usuario</h2>
-      <p class="suave" id="editar-email"></p>
-      <div class="campo">
-        <label class="campo__etiqueta" for="editar-nombre">Nombre</label>
-        <input class="campo__input" id="editar-nombre" name="nombre" required minlength="2" maxlength="80">
-      </div>
-      <div class="campo">
-        <label class="campo__etiqueta" for="editar-rol">Rol</label>
-        <select class="campo__input" id="editar-rol" name="rol" aria-describedby="editar-rol-ayuda"></select>
-        <span class="campo__ayuda" id="editar-rol-ayuda"></span>
-      </div>
-      <label class="opcion"><input type="checkbox" id="editar-activo" name="activo"> <span>Cuenta activa (si se desmarca, es una baja lógica: no puede ingresar)</span></label>
-      <p class="formulario__alerta" id="editar-error" role="alert" tabindex="-1"></p>
-      <div class="hoja__acciones">
-        <button class="boton boton--secundario" type="button" data-cerrar>Cancelar</button>
-        <button class="boton" type="button" id="editar-guardar">Guardar</button>
-      </div>
-    </form>
-  </dialog>
 </body>
 </html>
