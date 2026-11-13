@@ -51,7 +51,22 @@ export function fichaVehiculo(v) {
                 el('span', { class: 'ficha-vehiculo__precio' }, formato.precio(v.precio)),
                 el('span', { class: 'ficha-vehiculo__titulo' }, formato.titulo(v)),
                 el('span', { class: 'ficha-vehiculo__lugar' },
-                    `${formato.km(v.kilometraje)} · ${formato.combustible(v.combustible)}`))));
+                    `${formato.km(v.kilometraje)} · ${formato.combustible(v.combustible)}`),
+                v.localidad || v.transmision
+                    ? el('span', { class: 'ficha-vehiculo__pie' },
+                        el('span', {}, v.localidad || ''),
+                        el('span', {}, v.transmision ? formato.transmision(v.transmision) : ''))
+                    : null)));
+}
+
+// Fichas grises con brillo mientras carga el listado: ocupan el mismo lugar que las de verdad, así la página
+// no salta cuando llegan. Son decorativas (aria-hidden); el "Cargando…" para lectores de pantalla va aparte.
+export function esqueletoFichas(cantidad = 6) {
+    return Array.from({ length: cantidad }, () => el('li', { class: 'ficha-esqueleto', 'aria-hidden': 'true' },
+        el('span', { class: 'ficha-esqueleto__imagen' }),
+        el('span', { class: 'ficha-esqueleto__linea ficha-esqueleto__linea--precio' }),
+        el('span', { class: 'ficha-esqueleto__linea' }),
+        el('span', { class: 'ficha-esqueleto__linea ficha-esqueleto__linea--corta' })));
 }
 
 // Paginación con enlaces ?page=N que conservan los demás filtros de la URL.
@@ -94,6 +109,35 @@ export function cargando() {
         if (nodo.isConnected) nodo.append(el('p', {}, 'El servidor estaba dormido: puede tardar hasta un minuto en despertar.'));
     }, ESPERA_DORMIDO);
     return nodo;
+}
+
+// Aviso flotante abajo de la pantalla ("Guardado en favoritos", "Se aprobó…"). Uno solo por página.
+let avisoFlotanteNodo;
+let avisoFlotanteTiempo;
+export function avisoFlotante(texto) {
+    if (!avisoFlotanteNodo) {
+        avisoFlotanteNodo = el('p', { class: 'aviso-flotante', role: 'status' });
+        document.body.append(avisoFlotanteNodo);
+    }
+    avisoFlotanteNodo.textContent = texto;
+    avisoFlotanteNodo.classList.remove('aviso-flotante--visible');
+    void avisoFlotanteNodo.offsetWidth; // reinicia la animación si llega otro aviso seguido
+    avisoFlotanteNodo.classList.add('aviso-flotante--visible');
+    clearTimeout(avisoFlotanteTiempo);
+    avisoFlotanteTiempo = setTimeout(() => avisoFlotanteNodo.classList.remove('aviso-flotante--visible'), 3200);
+}
+
+// Cuenta de 0 al valor en ~1 s (desacelerando). formatear convierte el número en el texto a mostrar.
+export function contarHasta(nodo, valor, formatear = String) {
+    const final = formatear(valor);
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches || !valor) { nodo.textContent = final; return; }
+    const inicio = performance.now();
+    const paso = (ahora) => {
+        const t = Math.min(1, (ahora - inicio) / 1000);
+        nodo.textContent = t < 1 ? formatear(Math.round(valor * (1 - (1 - t) ** 3))) : final;
+        if (t < 1) requestAnimationFrame(paso);
+    };
+    requestAnimationFrame(paso);
 }
 
 export function avisoDeError(error) {

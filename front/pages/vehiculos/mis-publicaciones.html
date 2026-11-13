@@ -6,14 +6,17 @@
   <title>Mis publicaciones - AutoCar</title>
   <meta name="description" content="Tus vehículos publicados en AutoCar.">
   <link rel="stylesheet" href="../../styles/estilos.css">
-  <script src="../../js/dialogos.js" defer></script>
   <script type="module" src="../../js/paginas/mis-publicaciones.js"></script>
-  <script src="../../js/tema.js"></script><script src="../../js/barra-admin.js" defer></script><link rel="stylesheet" href="../../styles/componentes.css">
+  <script src="../../js/tema.js"></script><script src="../../js/barra-admin.js" defer></script><script src="../../js/navegacion.js" defer></script><link rel="stylesheet" href="../../styles/componentes.css">
   <link rel="stylesheet" href="../../styles/pantallas.css">
   <link rel="stylesheet" href="../../styles/print.css" media="print">
 <link rel="stylesheet" href="../../styles/identidad.css">
 <link rel="stylesheet" href="../../styles/portada.css">
 <link rel="stylesheet" href="../../styles/interiores.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Sora:wght@600;700;800&amp;display=swap">
+<link rel="stylesheet" href="../../styles/base-visual.css">
 </head>
 <body class="con-barra vista-mis-publicaciones">
 
@@ -43,25 +46,16 @@
       </span>
     </a>
 
+    <!-- Pestañas por estado con la cantidad de cada una (las arma js/paginas/mis-publicaciones.js) -->
+    <div class="pestanas-estado" id="pestanas" role="group" aria-label="Ver publicaciones por estado" hidden></div>
+
     <ul class="lista-filas" id="lista" role="list"></ul>
     <div class="estado" id="estado"></div>
 
   </main>
 
   <!-- Confirmación antes de eliminar: DELETE /api/mis-vehiculos/{id} (baja lógica) -->
-  <dialog class="hoja" id="confirmar-eliminar" aria-labelledby="eliminar-titulo">
-    <form class="pila" method="dialog">
-      <h2 id="eliminar-titulo">¿Eliminar esta publicación?</h2>
-      <p id="eliminar-vehiculo"></p>
-      <p class="campo__ayuda">Deja de verse en AutoCar y no la vas a poder recuperar.</p>
-      <p class="campo__ayuda" id="eliminar-vendida" hidden>Si ya la vendiste, conviene usar «Marcar vendida» en vez de eliminarla.</p>
-      <p class="formulario__alerta" id="eliminar-error" role="alert" tabindex="-1"></p>
-      <div class="hoja__acciones">
-        <button class="boton boton--secundario" type="button" data-cerrar>Cancelar</button>
-        <button class="boton" type="button" id="eliminar-confirmar">Eliminar</button>
-      </div>
-    </form>
-  </dialog>
+
 
 </body>
 </html>

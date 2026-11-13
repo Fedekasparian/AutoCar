@@ -7,6 +7,9 @@ import * as vistas from '../servicios/vistas.js';
 import { achicar } from '../servicios/imagenes.js';
 import * as sesion from '../servicios/sesion.js';
 import { ruta } from '../servicios/rutas.js';
+import { boton } from '../servicios/acciones.js';
+
+const { el } = vistas;
 
 function mostrar(usuario) {
     document.getElementById('usuario-nombre').textContent = usuario.nombre;
@@ -31,7 +34,7 @@ function mostrar(usuario) {
     if (nombre && !nombre.matches(':focus')) nombre.value = usuario.nombre;
     // Foto de perfil (o la inicial) y "Quitar foto" solo si tiene una
     document.getElementById('usuario-avatar').replaceChildren(vistas.avatar(usuario, 'avatar--grande'));
-    document.getElementById('quitar-foto').hidden = !usuario.foto;
+    quitarFoto.hidden = !usuario.foto;
 }
 
 // Guarda lo que devolvió el back (nombre o foto nuevos) y lo muestra
@@ -50,9 +53,18 @@ formularios.alEnviar(document.getElementById('form-perfil'), async (datos) => {
 
 // Foto de perfil: se toca la foto, se elige una y se sube sola. Se recorta en un cuadrado y se achica a 512 px
 // en el navegador, así sirve cualquier foto (aunque pese varios MB).
-const entradaFoto = document.getElementById('foto');
+// En cuenta.html está sólo la foto (#usuario-avatar): el botón que la envuelve, el selector de archivo
+// y "Quitar foto" los crea el JS.
 const errorFoto = document.getElementById('foto-error');
-document.getElementById('cambiar-foto').addEventListener('click', () => entradaFoto.click());
+const entradaFoto = el('input', { id: 'foto', type: 'file', accept: 'image/jpeg,image/png,image/webp', hidden: true });
+const cambiarFoto = boton('', () => entradaFoto.click(), 'perfil-foto', 'cambiar-foto');
+cambiarFoto.setAttribute('aria-label', 'Cambiar foto de perfil');
+const quitarFoto = boton('Quitar foto', borrarFoto, 'boton-link', 'quitar-foto');
+quitarFoto.hidden = true;
+const fotoActual = document.getElementById('usuario-avatar');
+fotoActual.replaceWith(cambiarFoto);
+cambiarFoto.append(fotoActual, el('span', { class: 'perfil-foto__editar', 'aria-hidden': 'true' }, '✎'));
+cambiarFoto.after(entradaFoto, el('p', {}, quitarFoto));
 
 entradaFoto.addEventListener('change', async () => {
     if (!entradaFoto.files.length) return;
@@ -74,9 +86,8 @@ entradaFoto.addEventListener('change', async () => {
     entradaFoto.value = '';
 });
 
-document.getElementById('quitar-foto').addEventListener('click', async (evento) => {
-    const boton = evento.currentTarget;
-    boton.disabled = true;
+async function borrarFoto() {
+    quitarFoto.disabled = true;
     errorFoto.textContent = '';
     try {
         await auth.borrarFoto();
@@ -84,8 +95,8 @@ document.getElementById('quitar-foto').addEventListener('click', async (evento) 
     } catch (error) {
         errorFoto.textContent = error.message;
     }
-    boton.disabled = false;
-});
+    quitarFoto.disabled = false;
+}
 
 // Cantidades reales de favoritos y publicaciones; si no responde, queda el texto genérico
 async function contar() {
@@ -103,7 +114,8 @@ async function contar() {
 }
 
 // La cookie la borra el back; si no responde, igual se sale en este navegador (la cookie vence sola).
-document.getElementById('salir').addEventListener('click', async () => {
+// "Salir" va al final de la columna de la izquierda, debajo de los enlaces.
+async function salir() {
     try {
         await auth.logout();
     } catch {
@@ -111,7 +123,8 @@ document.getElementById('salir').addEventListener('click', async () => {
     }
     sesion.cerrar();
     window.location.assign(ruta('index.html'));
-});
+}
+document.querySelector('.cuenta-resumen').append(boton('Salir', salir, 'boton boton--secundario boton--bloque', 'salir'));
 
 if (sesion.requerirLogin()) {
     if (sesion.compraYVende()) contar();

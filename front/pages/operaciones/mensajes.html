@@ -6,13 +6,17 @@
   <title>Mensajes - AutoCar</title>
   <meta name="description" content="Tus conversaciones.">
   <link rel="stylesheet" href="../../styles/estilos.css">
-  <script src="../../js/tema.js"></script><script src="../../js/barra-admin.js" defer></script><link rel="stylesheet" href="../../styles/componentes.css">
+  <script src="../../js/tema.js"></script><script src="../../js/barra-admin.js" defer></script><script src="../../js/navegacion.js" defer></script><link rel="stylesheet" href="../../styles/componentes.css">
   <link rel="stylesheet" href="../../styles/pantallas.css">
   <link rel="stylesheet" href="../../styles/print.css" media="print">
 <link rel="stylesheet" href="../../styles/identidad.css">
 <link rel="stylesheet" href="../../styles/portada.css">
 <link rel="stylesheet" href="../../styles/interiores.css">
 <script type="module" src="../../js/paginas/mensajes.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Sora:wght@600;700;800&amp;display=swap">
+<link rel="stylesheet" href="../../styles/base-visual.css">
 </head>
 <body class="con-barra vista-mensajes">
 
@@ -39,14 +43,14 @@
     <div id="chat-estado"></div>
     <div class="conversacion-panel__cuerpo" id="chat" hidden>
       <header class="conversacion-panel__cabecera"><div id="chat-foto"></div><div>
-        <h2 id="chat-persona"></h2>
+        <h2 id="chat-persona">Conversación</h2>
         <p class="conversacion-panel__rol" id="chat-rol"></p>
         <a id="chat-vehiculo" href="../vehiculos/buscar.html"></a>
       </div></header>
       <ol class="chat" id="chat-historial" aria-label="Mensajes de la conversación" aria-live="polite"></ol>
       <p class="chat__vacio" id="chat-sin-mensajes" hidden>Todavía no hay mensajes. Escribí el primero.</p>
       <form class="chat__enviar" id="chat-form" novalidate>
-        <label class="solo-lector" for="texto">Mensaje</label><input class="campo__input" id="texto" name="texto" required maxlength="1000" autocomplete="off" placeholder="Escribí un mensaje" aria-describedby="texto-error"><button class="boton" type="submit">Enviar</button>
+        <label class="solo-lector" for="texto">Mensaje</label><input class="campo__input" id="texto" name="texto" required maxlength="1000" autocomplete="off" placeholder="Escribí un mensaje" aria-describedby="texto-error"><button class="boton chat__boton-enviar" type="submit"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12 20 4l-5 16-3.5-6.5z"></path><path d="M11.5 13.5 20 4"></path></svg><span>Enviar</span></button>
         <span class="campo__error" id="texto-error" role="alert"></span>
       </form>
       <p class="chat__cerrada" id="chat-cerrada" role="status" hidden>La publicación se eliminó: la conversación queda para leer, pero ya no se pueden mandar mensajes.</p>

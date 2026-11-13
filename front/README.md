@@ -129,9 +129,9 @@ front/
 │   │   ├── sesion.js            usuario y token CSRF, requerirLogin / requerirAdmin
 │   │   ├── formato.js           precios, km y nombres de combustible, transmisión y estado
 │   │   ├── vistas.js            fichas, paginación y avisos armados con el DOM
+│   │   ├── acciones.js          botones, campos y ventanas <dialog> de las acciones (ver "Botones y ventanas")
 │   │   └── formularios.js       envío por fetch y errores del back al lado de cada campo
 │   ├── paginas/                 el script de cada página conectada (catalogo.js sirve a home y buscar)
-│   ├── dialogos.js              abre y cierra las ventanas <dialog>
 │   ├── validacion.js            validación en el cliente con el error al lado de cada campo
 │   └── publicar.js              formulario de publicar en pasos, vista previa de fotos y resumen
 └── styles/
@@ -164,7 +164,18 @@ Las páginas cargan su script con `<script type="module" src="js/paginas/....js"
 
 **Validación en el cliente y en el servidor.** `js/validacion.js` usa las reglas del propio HTML (`required`, `min`, `pattern`…), que copian las del back. Es sólo una ayuda para el usuario: el back vuelve a validar todo.
 
-**Ventanas.** Las ventanas como "Eliminar vehículo" son `<dialog>` que abre `js/dialogos.js`; los menús "⋯" usan `<details>`, que funciona sin JavaScript.
+**Botones y ventanas (regla de la cátedra).** El HTML es semántico y describe el contenido; la funcionalidad la agrega el JS. Lo dice el video "Ejemplo Menú PAW" de la cátedra: *"el 100% de los tags y elementos HTML que necesitamos para darle funcionalidad … los generamos con JavaScript, nunca los incluimos en el HTML"*. Un botón está atado a una idea del negocio: si mañana la acción cambia o se saca, el HTML no se tendría que tocar. Por eso:
+
+- En el HTML **no van** `<button>` de acción, ventanas `<dialog>`, atributos como `data-abrir`/`data-cerrar`, `onclick=` ni JavaScript adentro de `<script>`.
+- **Sí van** la información, los enlaces (`<a href>`) y los formularios con sus campos y su botón `type="submit"`.
+- El JS de la página busca el nodo, crea el botón y lo inserta. Para eso está `js/servicios/acciones.js`:
+  - `boton(texto, alHacerClic, clase)`: un botón de acción;
+  - `confirmacion({ titulo, confirmar, detalle, hacer })`: una ventana "¿Seguro que…?". Devuelve la función que la abre;
+  - `formularioEnHoja({ titulo, id, campos, enviar })` y `campo(etiqueta, control, ayuda)`: una ventana con formulario.
+- Ejemplo (`js/paginas/vehiculo.js`): `document.querySelector('.detalle__acciones').prepend(boton('Consultar', consultar))`.
+- Desde el JS los estilos se cambian con clases (`classList`), no con `.style`. La excepción son los valores calculados, como `--avance` o la posición de la píldora de la barra.
+
+La prueba `tests/unit/html-sin-funcionalidad.test.js` revisa todas las páginas en cada PR (`npm test`). Si alguien agrega un botón o un `<dialog>` al HTML, el check del PR falla. Los menús "⋯" usan `<details>`, que es contenido y funciona sin JavaScript.
 
 **Estados vacíos y de carga.** Las pantallas conectadas muestran "Cargando…" mientras esperan, un aviso con "Reintentar" si la API falla y un estado vacío si no hay resultados.
 

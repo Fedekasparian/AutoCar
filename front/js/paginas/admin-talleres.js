@@ -6,6 +6,7 @@ import * as formularios from '../servicios/formularios.js';
 import * as sesion from '../servicios/sesion.js';
 import * as vistas from '../servicios/vistas.js';
 import { filasDatos } from '../servicios/informe.js';
+import { campo, formularioEnHoja } from '../servicios/acciones.js';
 
 const { el } = vistas;
 const ESTADOS = ['pendiente', 'aprobado', 'rechazado'];
@@ -15,8 +16,18 @@ const estadoActual = ESTADOS.includes(pedido) ? pedido : 'pendiente';
 const lista = document.getElementById('lista');
 const estado = document.getElementById('estado');
 const aviso = document.getElementById('aviso');
-const dialogo = document.getElementById('dialogo-rechazar');
-const form = document.getElementById('form-rechazar');
+// La ventana para rechazar la arma el JS (no está en admin-talleres.html)
+const rechazarTaller = el('p', { class: 'suave' });
+const { dialogo, formulario: form } = formularioEnHoja({
+    titulo: 'Rechazar la solicitud',
+    id: 'form-rechazar',
+    enviar: 'Rechazar',
+    campos: [
+        rechazarTaller,
+        campo('Motivo (lo ve el que la pidió)',
+            el('textarea', { id: 'motivo', name: 'motivo', rows: 3, required: true, minlength: 5, maxlength: 300 })),
+    ],
+});
 let elegida = null;
 
 function avisar(texto) {
@@ -39,7 +50,7 @@ async function aprobar(s, boton) {
 function abrirRechazo(s) {
     elegida = s;
     form.reset();
-    document.getElementById('rechazar-taller').textContent = `${s.taller} · ${s.responsable}`;
+    rechazarTaller.textContent = `${s.taller} · ${s.responsable}`;
     formularios.alerta(form, '');
     dialogo.showModal();
 }

@@ -6,15 +6,18 @@
   <title>Inspección - AutoCar</title>
   <meta name="description" content="Checklist de la inspección y firma del informe.">
   <link rel="stylesheet" href="../../styles/estilos.css">
-  <script src="../../js/tema.js"></script><script src="../../js/barra-admin.js" defer></script><link rel="stylesheet" href="../../styles/componentes.css">
+  <script src="../../js/tema.js"></script><script src="../../js/barra-admin.js" defer></script><script src="../../js/navegacion.js" defer></script><link rel="stylesheet" href="../../styles/componentes.css">
   <link rel="stylesheet" href="../../styles/pantallas.css">
   <link rel="stylesheet" href="../../styles/print.css" media="print">
   <script src="../../js/validacion.js" defer></script>
-  <script src="../../js/dialogos.js" defer></script>
   <script type="module" src="../../js/paginas/taller-verificacion.js"></script>
 <link rel="stylesheet" href="../../styles/identidad.css">
 <link rel="stylesheet" href="../../styles/portada.css">
 <link rel="stylesheet" href="../../styles/interiores.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Sora:wght@600;700;800&amp;display=swap">
+<link rel="stylesheet" href="../../styles/base-visual.css">
 </head>
 <body class="con-barra vista-taller-verificacion">
 
@@ -74,43 +77,11 @@
 
       <p class="formulario__alerta" role="alert" tabindex="-1"></p>
       <div class="pasos__botones">
-        <button class="boton boton--secundario" type="button" id="guardar">Guardar borrador</button>
         <button class="boton" type="submit">Firmar informe</button>
       </div>
-      <p class="campo__ayuda">¿Fuiste y no la pudiste hacer, por ejemplo porque el vendedor no dejó revisar el auto?
-        <button class="boton-link" type="button" data-abrir="dialogo-no-realizada">No pude hacer la inspección</button></p>
     </form>
   </main>
 
-  <!-- PATCH /api/mecanico/inspecciones/{id} con accion=no_realizada -->
-  <dialog class="hoja" id="dialogo-no-realizada" aria-labelledby="no-realizada-titulo">
-    <form class="formulario" id="form-no-realizada" novalidate>
-      <h2 id="no-realizada-titulo">No se pudo hacer la inspección</h2>
-      <p class="formulario__alerta" role="alert" tabindex="-1"></p>
-      <div class="campo">
-        <label class="campo__etiqueta" for="no-realizada-motivo">Qué pasó</label>
-        <textarea class="campo__input" id="no-realizada-motivo" name="motivo" rows="3" required minlength="3" maxlength="300" placeholder="El vendedor no dejó revisar el auto." aria-describedby="no-realizada-motivo-ayuda no-realizada-motivo-error"></textarea>
-        <span class="campo__ayuda" id="no-realizada-motivo-ayuda">Lo ve el comprador. Se le devuelve todo lo que pagó y la inspección queda cerrada.</span>
-        <span class="campo__error" id="no-realizada-motivo-error"></span>
-      </div>
-      <div class="hoja__acciones">
-        <button class="boton boton--secundario" type="button" data-cerrar>Volver</button>
-        <button class="boton" type="submit">Confirmar</button>
-      </div>
-    </form>
-  </dialog>
 
-  <dialog class="hoja" id="dialogo-firmar" aria-labelledby="firmar-titulo">
-    <div class="pila">
-      <h2 id="firmar-titulo">Firmar el informe</h2>
-      <p id="firmar-texto"></p>
-      <p class="campo__ayuda">Después de firmar el informe queda cerrado y no se puede cambiar. Si se te pasó algo que se veía, el comprador puede reclamar durante 15 días.</p>
-      <p class="formulario__alerta" id="firmar-error" role="alert" tabindex="-1"></p>
-      <div class="hoja__acciones">
-        <button class="boton boton--secundario" type="button" data-cerrar>Volver</button>
-        <button class="boton" type="button" id="confirmar-firma">Firmar</button>
-      </div>
-    </div>
-  </dialog>
 </body>
 </html>

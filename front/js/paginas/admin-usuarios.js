@@ -4,6 +4,7 @@ import * as admin from '../api/admin.js';
 import * as formato from '../servicios/formato.js';
 import * as sesion from '../servicios/sesion.js';
 import * as vistas from '../servicios/vistas.js';
+import { campo, formularioEnHoja } from '../servicios/acciones.js';
 
 const { el } = vistas;
 const params = new URLSearchParams(window.location.search);
@@ -20,13 +21,26 @@ const estado = document.getElementById('estado');
 const total = document.getElementById('resultados-total');
 const aviso = document.getElementById('aviso');
 
-const dialogo = document.getElementById('editar-usuario');
-const campoNombre = document.getElementById('editar-nombre');
-const campoRol = document.getElementById('editar-rol');
+// La ventana de edición la arma el JS (no está en admin-usuarios.html)
+const campoNombre = el('input', { id: 'editar-nombre', name: 'nombre', required: true, minlength: 2, maxlength: 80 });
+const campoRol = el('select', { id: 'editar-rol', name: 'rol' });
+const campoActivo = el('input', { type: 'checkbox', id: 'editar-activo', name: 'activo' });
+const editarEmail = el('p', { class: 'suave' });
+const { dialogo, formulario: formEditar } = formularioEnHoja({
+    titulo: 'Editar usuario',
+    id: 'form-usuario',
+    enviar: 'Guardar',
+    campos: [
+        editarEmail,
+        campo('Nombre', campoNombre),
+        campo('Rol', campoRol, ''),
+        el('label', { class: 'opcion' }, campoActivo, ' ',
+            el('span', {}, 'Cuenta activa (si se desmarca, es una baja lógica: no puede ingresar)')),
+    ],
+});
 const ayudaRol = document.getElementById('editar-rol-ayuda');
-const campoActivo = document.getElementById('editar-activo');
-const errorEditar = document.getElementById('editar-error');
-const botonGuardar = document.getElementById('editar-guardar');
+const errorEditar = formEditar.querySelector('.formulario__alerta');
+const botonGuardar = formEditar.querySelector('[type="submit"]');
 let roles = [];
 let editando = null;
 
@@ -47,7 +61,7 @@ function describirRol() {
 
 function abrirEdicion(u) {
     editando = u;
-    document.getElementById('editar-email').textContent = u.email;
+    editarEmail.textContent = u.email;
     campoNombre.value = u.nombre;
     campoRol.value = u.rol;
     campoActivo.checked = u.activo;
@@ -115,7 +129,8 @@ async function cargar() {
 
 campoRol.addEventListener('change', describirRol);
 
-botonGuardar.addEventListener('click', async () => {
+formEditar.addEventListener('submit', async (evento) => {
+    evento.preventDefault();
     if (!editando) return;
     const cambios = {};
     const nombre = campoNombre.value.trim();

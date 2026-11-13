@@ -9,6 +9,7 @@ import * as insp from '../servicios/inspecciones.js';
 import * as sesion from '../servicios/sesion.js';
 import * as vistas from '../servicios/vistas.js';
 import { ruta } from '../servicios/rutas.js';
+import { boton, confirmacion } from '../servicios/acciones.js';
 
 const { proximoPaso } = informe;
 
@@ -36,6 +37,7 @@ function mostrarResumen(i) {
     $('titulo').textContent = insp.tituloAuto(i);
     document.title = `${insp.tituloAuto(i)} · Inspección - AutoCar`;
     $('resumen-estado').replaceChildren(informe.etiquetaEstado(i), ' ', proximoPaso(i));
+    $('resumen-linea').replaceChildren(informe.lineaDeTiempo(i));
     $('resumen-datos').replaceChildren(...informe.filasDatos([
         ['Aviso', el('a', { href: i.url, target: '_blank', rel: 'noopener noreferrer' }, `Ver en ${insp.fuente(i.fuente)}`)],
         ['Mecánico', `${i.mecanico.nombre} · ${i.mecanico.taller || ''}`],
@@ -45,7 +47,9 @@ function mostrarResumen(i) {
         ['Pago', PAGOS[i.pago] || i.pago],
         ['Pedida el', formato.fecha(i.created_at)],
     ]));
-    $('cancelar').hidden = !(i.estado === 'pedida' && soyComprador());
+    // Sólo el comprador cancela, y mientras el mecánico no la aceptó
+    if (i.estado === 'pedida' && soyComprador()) $('resumen').append(botonCancelar);
+    else botonCancelar.remove();
     $('resumen').hidden = false;
 }
 
@@ -56,10 +60,13 @@ function mostrarInforme(i) {
     $('informe').hidden = !firmada;
     $('tramites').hidden = !firmada;
     if (!firmada) return;
-    $('informe-conclusion').replaceChildren('Conclusión: ', el('strong', {}, insp.conclusion(i.conclusion)));
+    $('informe-conclusion').replaceChildren('Conclusión del mecánico ', informe.conclusionDestacada(i));
     $('informe-resumen').textContent = i.resumen || '';
     $('informe-resumen').hidden = !i.resumen;
+    $('informe-conteo').replaceChildren(informe.resumenItems(i));
     $('informe-items').replaceChildren(informe.listaItems(i));
+    $('informe-sello').replaceChildren(informe.sello(i));
+    $('informe').classList.add('informe-documento');
     $('informe-firma').replaceChildren(...informe.datosFirma(i));
     $('tramites-lista').replaceChildren(...insp.TRAMITES.map((t) => el('li', {},
         el('a', { class: 'fila', href: t.url, target: '_blank', rel: 'noopener noreferrer' },
@@ -106,26 +113,20 @@ formularios.alEnviar($('form-reclamo'), async ({ descripcion, item_codigo: item 
 
 // ---------- Cancelar ----------
 
-$('cancelar').addEventListener('click', () => {
-    $('cancelar-error').textContent = '';
-    $('dialogo-cancelar').showModal();
-});
-
-$('confirmar-cancelar').addEventListener('click', async () => {
-    const boton = $('confirmar-cancelar');
-    boton.disabled = true;
-    try {
+const pedirCancelar = confirmacion({
+    titulo: 'Cancelar la inspección',
+    confirmar: 'Cancelar inspección',
+    volver: 'Volver',
+    detalle: () => [el('p', {}, 'El mecánico todavía no la aceptó. Si la cancelás, te devolvemos todo lo que pagaste.')],
+    hacer: async () => {
         inspeccion = (await api.cancelar(id)).inspeccion;
-        $('dialogo-cancelar').close();
         mostrarTodo(inspeccion);
         avisar('Cancelaste la inspección. Te devolvemos lo que pagaste.');
-    } catch (error) {
-        $('cancelar-error').textContent = error.message;
-        $('cancelar-error').focus();
-    } finally {
-        boton.disabled = false;
-    }
+    },
 });
+
+// Se agrega al final del recuadro "Estado" en mostrarResumen
+const botonCancelar = boton('Cancelar la inspección', () => pedirCancelar(), 'boton boton--secundario', 'cancelar');
 
 // ---------- Inicio ----------
 

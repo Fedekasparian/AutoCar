@@ -6,13 +6,17 @@
   <title>Mecánicos de la red - AutoCar</title>
   <meta name="description" content="Ranking de los mecánicos que revisan y firman inspecciones en AutoCar.">
   <link rel="stylesheet" href="../../styles/estilos.css">
-  <script src="../../js/tema.js"></script><script src="../../js/barra-admin.js" defer></script><link rel="stylesheet" href="../../styles/componentes.css">
+  <script src="../../js/tema.js"></script><script src="../../js/barra-admin.js" defer></script><script src="../../js/navegacion.js" defer></script><link rel="stylesheet" href="../../styles/componentes.css">
   <link rel="stylesheet" href="../../styles/pantallas.css">
   <link rel="stylesheet" href="../../styles/print.css" media="print">
   <script type="module" src="../../js/paginas/talleres.js"></script>
 <link rel="stylesheet" href="../../styles/identidad.css">
 <link rel="stylesheet" href="../../styles/portada.css">
 <link rel="stylesheet" href="../../styles/interiores.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Sora:wght@600;700;800&amp;display=swap">
+<link rel="stylesheet" href="../../styles/base-visual.css">
 </head>
 <body class="con-barra vista-talleres">
 
@@ -34,15 +38,25 @@
   <main id="contenido" class="pantalla">
     <p class="campo__ayuda">Mecánicos independientes que revisan autos usados <strong>y firman el informe con su nombre</strong>. Si se les pasa algo que se veía, AutoCar te devuelve la plata, te compensa y el mecánico baja en el ranking.</p>
 
-    <div class="campo">
-      <label class="campo__etiqueta" for="filtro-localidad">Localidad del taller</label>
-      <select class="campo__input" id="filtro-localidad">
-        <option value="">Todas</option>
-      </select>
+    <div class="talleres-filtros">
+      <div class="campo">
+        <label class="campo__etiqueta" for="filtro-localidad">Localidad del taller</label>
+        <select class="campo__input" id="filtro-localidad">
+          <option value="">Todas</option>
+        </select>
+      </div>
+  
+      <div class="campo">
+        <label class="campo__etiqueta" for="orden-mecanicos">Ordenar por</label>
+        <select class="campo__input" id="orden-mecanicos">
+          <option value="puntaje">Mejor puntaje</option>
+          <option value="precio">Menor precio</option>
+          <option value="firmadas">Más inspecciones</option>
+        </select>
+      </div>
     </div>
-
     <div id="estado-mecanicos" aria-live="polite"></div>
-    <ol class="lista-filas lista-ranking" id="ranking"></ol>
+    <ol class="talleres-grilla" id="ranking"></ol>
 
     <details class="recuadro" id="como-funciona">
       <summary>Cómo se arma el ranking</summary>
