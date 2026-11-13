@@ -6,7 +6,7 @@
   <title>Guía de componentes - AutoCar</title>
   <meta name="description" content="Componentes del sistema de diseño de AutoCar.">
   <link rel="stylesheet" href="../../styles/estilos.css">
-  <script src="../../js/tema.js"></script><script src="../../js/barra-admin.js" defer></script><script src="../../js/navegacion.js" defer></script><link rel="stylesheet" href="../../styles/componentes.css">
+  <script src="../../js/tema.js"></script><script src="../../js/barra-admin.js" defer></script><script src="../../js/navegacion.js" defer></script><script type="module" src="../../js/paginas/guia.js"></script><link rel="stylesheet" href="../../styles/componentes.css">
   <link rel="stylesheet" href="../../styles/pantallas.css">
   <link rel="stylesheet" href="../../styles/print.css" media="print">
 <link rel="stylesheet" href="../../styles/identidad.css">
@@ -39,9 +39,6 @@
     </a>
     <h1>Guía de componentes <span class="encabezado__subtitulo">Sistema de diseño de AutoCar</span>
 </h1>
-    <button type="button" class="encabezado__accion" aria-label="Más opciones">
-      <svg width="20" height="20" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="5" cy="12" r="1"></circle><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle></svg>
-    </button>
   </header>
 
   <main id="contenido" class="pantalla">
@@ -76,17 +73,7 @@
 
     <section class="pila" aria-labelledby="g-botones">
       <h2 id="g-botones">Botones</h2>
-      <button type="button" class="boton boton--bloque">Guardar y buscar</button>
-      <button type="button" class="boton boton--secundario boton--bloque">
-        <svg width="16" height="16" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l2 7 7 2-7 2-2 7-2-7-7-2 7-2z"></path></svg>
-        Buscar
-      </button>
-      <p>
-        <button type="button" class="boton boton--chico">Aprobar</button>
-        <button type="button" class="boton boton--secundario boton--chico">Rechazar</button>
-        <button type="button" class="boton boton--chico" disabled>Deshabilitado</button>
-      </p>
-      <button type="button" class="boton-link">+ Nueva lista</button>
+      <!-- Los ejemplos de botones los agrega js/paginas/guia.js: en el HTML no van botones (son funcionalidad) -->
     </section>
 
     <section aria-labelledby="g-campos">

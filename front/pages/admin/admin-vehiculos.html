@@ -9,7 +9,6 @@
   <script src="../../js/tema.js"></script><script src="../../js/barra-admin.js" defer></script><script src="../../js/navegacion.js" defer></script><link rel="stylesheet" href="../../styles/componentes.css">
   <link rel="stylesheet" href="../../styles/pantallas.css">
   <link rel="stylesheet" href="../../styles/print.css" media="print">
-  <script src="../../js/dialogos.js" defer></script>
   <script type="module" src="../../js/paginas/admin-vehiculos.js"></script>
 <link rel="stylesheet" href="../../styles/identidad.css">
 <link rel="stylesheet" href="../../styles/portada.css">
@@ -70,18 +69,6 @@
   </main>
 
   <!-- Confirmación de baja: DELETE /api/admin/vehiculos/{id} -->
-  <dialog class="hoja" id="confirmar-baja" aria-labelledby="baja-titulo">
-    <form class="pila" method="dialog">
-      <h2 id="baja-titulo">¿Eliminar este vehículo?</h2>
-      <p id="baja-vehiculo"></p>
-      <p class="campo__ayuda">Es una baja lógica: deja de verse en el sitio pero queda guardado (lo referencian los chats). Si sólo se vendió, lo marca su dueño desde Mis publicaciones.</p>
-      <p class="formulario__alerta" id="baja-error" role="alert" tabindex="-1"></p>
-      <div class="hoja__acciones">
-        <button class="boton boton--secundario" type="button" data-cerrar>Cancelar</button>
-        <button class="boton" type="button" id="baja-confirmar">Eliminar</button>
-      </div>
-    </form>
-  </dialog>
 
 </body>
 </html>

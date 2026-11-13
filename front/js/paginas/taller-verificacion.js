@@ -9,6 +9,7 @@ import * as insp from '../servicios/inspecciones.js';
 import * as sesion from '../servicios/sesion.js';
 import * as vistas from '../servicios/vistas.js';
 import { ruta } from '../servicios/rutas.js';
+import { boton, campo, confirmacion, formularioEnHoja } from '../servicios/acciones.js';
 
 const { el } = vistas;
 const id = new URLSearchParams(window.location.search).get('id');
@@ -19,10 +20,6 @@ const form = document.getElementById('informe');
 const alertaForm = form.querySelector('.formulario__alerta');
 const progreso = document.getElementById('progreso');
 const progresoTexto = document.getElementById('progreso-texto');
-const dialogoFirmar = document.getElementById('dialogo-firmar');
-const errorFirmar = document.getElementById('firmar-error');
-const botonFirmar = document.getElementById('confirmar-firma');
-const botonGuardar = document.getElementById('guardar');
 
 let inspeccion = null;
 let sinGuardar = false;
@@ -160,10 +157,39 @@ form.addEventListener('change', () => {
 });
 form.addEventListener('input', () => { sinGuardar = true; });
 
-botonGuardar.addEventListener('click', async () => {
+// "Guardar borrador", al lado de "Firmar informe" (el submit del formulario)
+const botonGuardar = boton('Guardar borrador', async () => {
     botonGuardar.disabled = true;
     if (await guardar(false)) avisar('Se guardó el borrador. Podés seguir después.');
     botonGuardar.disabled = false;
+}, 'boton boton--secundario');
+form.querySelector('.pasos__botones').prepend(botonGuardar);
+
+// Confirmación de la firma (la ventana la arma acciones.js)
+const pedirFirma = confirmacion({
+    titulo: 'Firmar el informe',
+    confirmar: 'Firmar',
+    volver: 'Volver',
+    detalle: (conclusion) => [
+        el('p', {}, `Vas a firmar con tu nombre, ${sesion.usuario()?.nombre || ''}, un informe "${conclusion}" sobre ${insp.tituloAuto(inspeccion)}.`),
+        el('p', { class: 'campo__ayuda' }, 'Después de firmar el informe queda cerrado y no se puede cambiar. Si se te pasó algo que se veía, el comprador puede reclamar durante 15 días.'),
+    ],
+    hacer: async () => {
+        // Se guarda lo último que cargó y después se firma eso mismo. Si no se pudo guardar, el motivo
+        // queda en el formulario y la ventana se cierra.
+        if (!(await guardar(true))) return;
+        try {
+            inspeccion = (await api.firmar(id)).inspeccion;
+        } catch (error) {
+            if (error.status === 401) sesion.requerirLogin();
+            throw error;
+        }
+        form.hidden = true;
+        mostrarAuto(inspeccion);
+        mostrarFirmado(inspeccion);
+        avisar('Firmaste el informe. El comprador ya lo puede ver.');
+        window.scrollTo({ top: 0 });
+    },
 });
 
 // "Firmar informe": primero revisa que esté todo y pide confirmación.
@@ -175,37 +201,7 @@ form.addEventListener('submit', (evento) => {
         mostrarErrores(revision);
         return;
     }
-    const conclusion = insp.conclusion(form.elements.conclusion.value);
-    document.getElementById('firmar-texto').textContent =
-        `Vas a firmar con tu nombre, ${sesion.usuario()?.nombre || ''}, un informe "${conclusion}" sobre ${insp.tituloAuto(inspeccion)}.`;
-    errorFirmar.textContent = '';
-    dialogoFirmar.showModal();
-});
-
-botonFirmar.addEventListener('click', async () => {
-    botonFirmar.disabled = true;
-    botonFirmar.textContent = 'Firmando…';
-    try {
-        // Se guarda lo último que cargó y después se firma eso mismo.
-        if (!(await guardar(true))) {
-            dialogoFirmar.close();
-            return;
-        }
-        inspeccion = (await api.firmar(id)).inspeccion;
-        dialogoFirmar.close();
-        form.hidden = true;
-        mostrarAuto(inspeccion);
-        mostrarFirmado(inspeccion);
-        avisar('Firmaste el informe. El comprador ya lo puede ver.');
-        window.scrollTo({ top: 0 });
-    } catch (error) {
-        if (error.status === 401) sesion.requerirLogin();
-        errorFirmar.textContent = error.message;
-        errorFirmar.focus();
-    } finally {
-        botonFirmar.disabled = false;
-        botonFirmar.textContent = 'Firmar';
-    }
+    pedirFirma(insp.conclusion(form.elements.conclusion.value));
 });
 
 window.addEventListener('beforeunload', (evento) => {
@@ -230,11 +226,26 @@ function mostrarFirmado(i) {
 
 // ---------- No se pudo hacer ----------
 
-const formNoRealizada = document.getElementById('form-no-realizada');
+// La ventana y el enlace que la abre (al final del formulario) los arma el JS
+const { dialogo: dialogoNoRealizada, formulario: formNoRealizada } = formularioEnHoja({
+    titulo: 'No se pudo hacer la inspección',
+    id: 'form-no-realizada',
+    enviar: 'Confirmar',
+    volver: 'Volver',
+    campos: [
+        campo('Qué pasó', el('textarea', {
+            id: 'no-realizada-motivo', name: 'motivo', rows: 3, required: true, minlength: 3, maxlength: 300,
+            placeholder: 'El vendedor no dejó revisar el auto.',
+        }), 'Lo ve el comprador. Se le devuelve todo lo que pagó y la inspección queda cerrada.'),
+    ],
+});
+form.append(el('p', { class: 'campo__ayuda' },
+    '¿Fuiste y no la pudiste hacer, por ejemplo porque el vendedor no dejó revisar el auto? ',
+    boton('No pude hacer la inspección', () => dialogoNoRealizada.showModal(), 'boton-link')));
 
 formularios.alEnviar(formNoRealizada, async ({ motivo }) => {
     inspeccion = (await api.noRealizada(id, motivo)).inspeccion;
-    document.getElementById('dialogo-no-realizada').close();
+    dialogoNoRealizada.close();
     sinGuardar = false;
     form.hidden = true;
     mostrarAuto(inspeccion);

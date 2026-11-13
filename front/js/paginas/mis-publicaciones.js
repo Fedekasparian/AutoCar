@@ -7,6 +7,7 @@ import * as formato from '../servicios/formato.js';
 import * as sesion from '../servicios/sesion.js';
 import * as vistas from '../servicios/vistas.js';
 import { ruta } from '../servicios/rutas.js';
+import { confirmacion } from '../servicios/acciones.js';
 
 const { el } = vistas;
 const lista = document.getElementById('lista');
@@ -21,55 +22,42 @@ function avisar(texto) {
     aviso.hidden = !texto;
 }
 
-// ---------- Confirmaciones (los <dialog> están en mis-publicaciones.html) ----------
-
-// Arma una confirmación: al aceptar llama a hacer(v); si falla, el error queda en el dialog
-function confirmacion(idDialogo, idBoton, idError, alAbrir, hacer) {
-    const dialogo = document.getElementById(idDialogo);
-    const boton = document.getElementById(idBoton);
-    const error = document.getElementById(idError);
-    const texto = boton.textContent;
-    let elegido = null;
-    boton.addEventListener('click', async () => {
-        if (!elegido) return;
-        boton.disabled = true;
-        boton.textContent = 'Un momento…';
-        try {
-            await hacer(elegido);
-            dialogo.close();
-            await cargar();
-        } catch (e) {
-            error.textContent = e.message;
-            error.focus();
-        } finally {
-            boton.disabled = false;
-            boton.textContent = texto;
-        }
-    });
-    return (v) => {
-        elegido = v;
-        error.textContent = '';
-        alAbrir(v);
-        dialogo.showModal();
-    };
-}
+// ---------- Confirmaciones (las ventanas las arma acciones.js) ----------
 
 const resumenDe = (v) => [formato.titulo(v), v.precio === null ? null : formato.precio(v.precio)].filter(Boolean).join(' · ');
 
-const pedirEliminar = confirmacion('confirmar-eliminar', 'eliminar-confirmar', 'eliminar-error', (v) => {
-    document.getElementById('eliminar-vehiculo').textContent = resumenDe(v);
-    // A una publicada se le sugiere "Marcar vendida", que es lo que suele querer el vendedor
-    document.getElementById('eliminar-vendida').hidden = v.estado !== 'disponible';
-}, async (v) => {
-    await api.eliminar(v.id);
-    avisar(`Se eliminó ${formato.titulo(v)}.`);
+const pedirEliminar = confirmacion({
+    titulo: '¿Eliminar esta publicación?',
+    confirmar: 'Eliminar',
+    detalle: (v) => [
+        el('p', {}, resumenDe(v)),
+        el('p', { class: 'campo__ayuda' }, 'Deja de verse en AutoCar y no la vas a poder recuperar.'),
+        // A una publicada se le sugiere "Marcar vendida", que es lo que suele querer el vendedor
+        v.estado === 'disponible'
+            ? el('p', { class: 'campo__ayuda' }, 'Si ya la vendiste, conviene usar «Marcar vendida» en vez de eliminarla.')
+            : null,
+    ],
+    hacer: async (v) => {
+        await api.eliminar(v.id);
+        avisar(`Se eliminó ${formato.titulo(v)}.`);
+        await cargar();
+    },
 });
 
-const pedirVendida = confirmacion('confirmar-vendida', 'vendida-confirmar', 'vendida-error', (v) => {
-    document.getElementById('vendida-vehiculo').textContent = resumenDe(v);
-}, async (v) => {
-    await api.marcarVendida(v.id);
-    avisar(`${formato.titulo(v)} quedó como vendida. ¡Felicitaciones!`);
+const pedirVendida = confirmacion({
+    titulo: '¡Felicitaciones por la venta!',
+    confirmar: 'Sí, la vendí',
+    volver: 'Todavía no',
+    detalle: (v) => [
+        el('p', {}, resumenDe(v)),
+        el('p', { class: 'campo__ayuda' }, 'La publicación deja de aparecer en Explorar y queda en tus publicaciones como ',
+            el('strong', {}, 'Vendida'), '. Las conversaciones con los interesados siguen abiertas.'),
+    ],
+    hacer: async (v) => {
+        await api.marcarVendida(v.id);
+        avisar(`${formato.titulo(v)} quedó como vendida. ¡Felicitaciones!`);
+        await cargar();
+    },
 });
 
 // ---------- Estado de cada publicación ----------

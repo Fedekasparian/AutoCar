@@ -9,10 +9,12 @@ import * as sesion from '../servicios/sesion.js';
 import * as vistas from '../servicios/vistas.js';
 
 import { ruta } from '../servicios/rutas.js';
+import { boton } from '../servicios/acciones.js';
 
 const id = new URLSearchParams(window.location.search).get('id');
 const estado = document.getElementById('estado');
 const $ = (idElemento) => document.getElementById(idElemento);
+const { el } = vistas;
 
 function mostrar(v) {
     const titulo = formato.titulo(v);
@@ -63,7 +65,10 @@ function mostrar(v) {
         $('vehiculo-mecanico-ayuda').hidden = false;
     }
     if (v.estado === 'disponible' && sesion.compraYVende()) {
-        $('vehiculo-consultar').hidden = false;
+        // "Consultar" va primero entre las acciones; abajo, el lugar para el motivo si no se puede
+        const acciones = document.querySelector('.detalle__acciones');
+        acciones.prepend(botonConsultar);
+        acciones.after(avisoConsultar);
         $('vehiculo-canje').hidden = false;
         mostrarFavorito();
         barraDeAccion(v);
@@ -95,22 +100,23 @@ async function cargar() {
 }
 
 // "Consultar": abre (o retoma) la conversación con el vendedor. Sin sesión, pasa por el login y vuelve acá.
-$('vehiculo-consultar').addEventListener('click', async (evento) => {
+// El botón y su aviso los crea el JS (no están en vehiculo.html); mostrar() los pone en la ficha.
+async function consultar() {
     if (!sesion.requerirLogin()) return;
-    const boton = evento.currentTarget;
-    const aviso = $('vehiculo-consultar-aviso');
-    aviso.hidden = true;
-    boton.disabled = true;
+    avisoConsultar.hidden = true;
+    botonConsultar.disabled = true;
     try {
         const { conversacion } = await chat.abrir(id);
         window.location.assign(ruta(`conversacion.html?id=${conversacion.id}`));
     } catch (error) {
         // 409: es una publicación propia o no tiene vendedor; el back manda el motivo
-        aviso.textContent = error.message;
-        aviso.hidden = false;
-        boton.disabled = false;
+        avisoConsultar.textContent = error.message;
+        avisoConsultar.hidden = false;
+        botonConsultar.disabled = false;
     }
-});
+}
+const botonConsultar = boton('Consultar', consultar);
+const avisoConsultar = el('p', { class: 'campo__ayuda', role: 'status', hidden: true });
 
 // ---------- Comparador: si el precio está bien frente a autos parecidos de otros sitios ----------
 
@@ -137,7 +143,6 @@ function rango(c) {
     const hasta = Math.max(maximo, c.precio);
     if (!(hasta > desde)) return;
     const pos = (valor) => `${(((valor - desde) / (hasta - desde)) * 100).toFixed(1)}%`;
-    const { el } = vistas;
     const pista = el('div', { class: 'rango__pista', 'aria-hidden': 'true' },
         el('span', { class: 'rango__franja' }),
         el('span', { class: 'rango__tipico' }),
@@ -164,27 +169,27 @@ function rango(c) {
 // y "Consultar" (toca el mismo botón de la ficha). En escritorio no se muestra: la columna ya está a la vista.
 function barraDeAccion(v) {
     if (!('IntersectionObserver' in window)) return;
-    const consultar = $('vehiculo-consultar');
-    const { el } = vistas;
-    const boton = el('button', { class: 'boton boton--acento', type: 'button', tabindex: '-1' }, 'Consultar');
-    boton.addEventListener('click', () => consultar.click());
+    const consultarAbajo = boton('Consultar', consultar, 'boton boton--acento');
+    consultarAbajo.tabIndex = -1;
     const barra = el('div', { class: 'barra-accion', 'aria-hidden': 'true' },
         el('p', { class: 'barra-accion__texto' }, el('strong', {}, formato.precio(v.precio)), el('span', {}, formato.titulo(v))),
-        boton);
+        consultarAbajo);
     document.body.append(barra);
     // Aparece solo cuando los botones de verdad quedaron más abajo (todavía no se llegó a ellos)
     new IntersectionObserver(([entrada]) => {
         const visible = !entrada.isIntersecting && entrada.boundingClientRect.top > 0;
         barra.classList.toggle('barra-accion--visible', visible);
         barra.setAttribute('aria-hidden', String(!visible));
-        boton.tabIndex = visible ? 0 : -1;
-    }).observe(consultar.closest('.detalle__acciones'));
+        consultarAbajo.tabIndex = visible ? 0 : -1;
+    }).observe(botonConsultar.closest('.detalle__acciones'));
 }
 
 // ---------- Favorito: guardar o sacar. Sin sesión, pasa por el login y vuelve acá ----------
 
-const botonFavorito = $('vehiculo-favorito');
-const avisoFavorito = $('vehiculo-favorito-aviso');
+// El botón y su aviso los crea el JS (no están en vehiculo.html); mostrarFavorito() los pone debajo del precio.
+const botonFavorito = boton('Guardar en favoritos', guardarOSacar, 'boton boton--secundario');
+botonFavorito.setAttribute('aria-pressed', 'false');
+const avisoFavorito = el('p', { class: 'campo__ayuda', role: 'status', hidden: true });
 
 function pintarFavorito(guardado) {
     botonFavorito.setAttribute('aria-pressed', String(guardado));
@@ -192,7 +197,7 @@ function pintarFavorito(guardado) {
 }
 
 async function mostrarFavorito() {
-    botonFavorito.hidden = false;
+    $('vehiculo-vendido').after(botonFavorito, avisoFavorito);
     if (!sesion.iniciada()) return;
     try {
         const { items } = await favoritos.listar();
@@ -202,7 +207,7 @@ async function mostrarFavorito() {
     }
 }
 
-botonFavorito.addEventListener('click', async () => {
+async function guardarOSacar() {
     if (!sesion.requerirLogin()) return;
     const guardado = botonFavorito.getAttribute('aria-pressed') === 'true';
     avisoFavorito.hidden = true;
@@ -217,6 +222,6 @@ botonFavorito.addEventListener('click', async () => {
         avisoFavorito.hidden = false;
     }
     botonFavorito.disabled = false;
-});
+}
 
 cargar();

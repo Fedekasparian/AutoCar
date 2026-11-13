@@ -35,18 +35,13 @@
 
   <main id="contenido" class="pantalla cuenta-layout">
     <aside class="cuenta-resumen"><section class="recuadro" aria-labelledby="usuario-nombre">
-      <!-- Foto de perfil (opcional): se toca para elegir una nueva y se sube sola (POST /api/me/foto) -->
-      <button class="perfil-foto" type="button" id="cambiar-foto" aria-label="Cambiar foto de perfil">
-        <span id="usuario-avatar"></span><span class="perfil-foto__editar" aria-hidden="true">✎</span>
-      </button>
-      <input id="foto" type="file" accept="image/jpeg,image/png,image/webp" hidden>
-      <p><button class="boton-link" type="button" id="quitar-foto" hidden>Quitar foto</button></p>
+      <!-- Foto de perfil (opcional). Cambiarla y quitarla (POST/DELETE /api/me/foto) lo agrega js/paginas/cuenta.js -->
+      <span id="usuario-avatar"></span>
       <p class="campo__error" id="foto-error" role="alert"></p><h2 id="usuario-nombre"> </h2>
       <p class="campo__ayuda" id="usuario-email"></p>
     </section>
     <a class="boton boton--secundario boton--bloque" id="enlace-admin" href="../admin/admin.html" hidden>Panel de administración</a>
     <a class="boton boton--secundario boton--bloque" id="enlace-taller" href="../talleres/taller.html" hidden>Mi taller</a>
-    <button class="boton boton--secundario boton--bloque" type="button" id="salir">Salir</button>
   </aside><section class="cuenta-detalle" aria-label="Opciones y datos de la cuenta"><ul class="lista-filas" role="list">
       <li>
         <a class="fila" href="../info/plan.html">

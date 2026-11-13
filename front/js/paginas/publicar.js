@@ -12,14 +12,21 @@ import * as formularios from '../servicios/formularios.js';
 import * as sesion from '../servicios/sesion.js';
 import * as vistas from '../servicios/vistas.js';
 import { ruta } from '../servicios/rutas.js';
+import { boton } from '../servicios/acciones.js';
 
 const { el } = vistas;
 const form = document.getElementById('form-publicar');
 const pasos = Array.from(form.querySelectorAll('.paso'));
-const anterior = document.getElementById('paso-anterior');
+// En publicar.html está sólo "Siguiente" (el submit del formulario). "Anterior", "Terminar después" y el botón
+// del último paso los crea el JS; mostrarPaso() decide cuáles se ven en cada paso.
 const siguiente = document.getElementById('paso-siguiente');
-const guardarSalir = document.getElementById('guardar-salir');
-const terminar = document.getElementById('terminar');
+const anterior = boton('Anterior', null, 'boton boton--secundario');
+const guardarSalir = boton('Terminar después', null, 'boton boton--secundario');
+const terminar = boton('Enviar a revisión'); // el texto lo pone mostrarPaso: "Enviar a revisión" o "Terminar después"
+anterior.hidden = true;
+terminar.hidden = true;
+siguiente.before(anterior, guardarSalir);
+siguiente.after(terminar);
 const aviso = document.getElementById('aviso');
 const faltanTexto = document.getElementById('faltan');
 const fotos = document.getElementById('fotos');

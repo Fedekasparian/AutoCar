@@ -3,6 +3,7 @@ import * as admin from '../api/admin.js';
 import * as formato from '../servicios/formato.js';
 import * as sesion from '../servicios/sesion.js';
 import * as vistas from '../servicios/vistas.js';
+import { confirmacion } from '../servicios/acciones.js';
 
 import { ruta } from '../servicios/rutas.js';
 
@@ -15,11 +16,6 @@ const estado = document.getElementById('estado');
 const total = document.getElementById('resultados-total');
 const aviso = document.getElementById('aviso');
 
-const dialogo = document.getElementById('confirmar-baja');
-const botonBaja = document.getElementById('baja-confirmar');
-const errorBaja = document.getElementById('baja-error');
-let aEliminar = null;
-
 // Mensaje después de una baja.
 function avisar(texto) {
     aviso.textContent = texto;
@@ -28,12 +24,7 @@ function avisar(texto) {
 
 function fila(v) {
     const eliminar = el('button', { class: 'boton-link', type: 'button' }, 'Eliminar');
-    eliminar.addEventListener('click', () => {
-        aEliminar = v;
-        document.getElementById('baja-vehiculo').textContent = `${formato.titulo(v)} · ${formato.precio(v.precio)}`;
-        errorBaja.textContent = '';
-        dialogo.showModal();
-    });
+    eliminar.addEventListener('click', () => pedirBaja(v));
     return el('tr', {},
         el('td', {}, el('a', { href: ruta(`vehiculo.html?id=${v.id}`) }, formato.titulo(v))),
         el('td', {}, formato.precio(v.precio)),
@@ -65,19 +56,19 @@ async function cargar() {
     }
 }
 
-botonBaja.addEventListener('click', async () => {
-    if (!aEliminar) return;
-    botonBaja.disabled = true;
-    try {
-        await admin.eliminar(aEliminar.id);
-        dialogo.close();
-        avisar(`Se eliminó ${formato.titulo(aEliminar)}.`);
+// Confirmación de la baja (la ventana la arma acciones.js)
+const pedirBaja = confirmacion({
+    titulo: '¿Eliminar este vehículo?',
+    confirmar: 'Eliminar',
+    detalle: (v) => [
+        el('p', {}, `${formato.titulo(v)} · ${formato.precio(v.precio)}`),
+        el('p', { class: 'campo__ayuda' }, 'Es una baja lógica: deja de verse en el sitio pero queda guardado (lo referencian los chats). Si sólo se vendió, lo marca su dueño desde Mis publicaciones.'),
+    ],
+    hacer: async (v) => {
+        await admin.eliminar(v.id);
+        avisar(`Se eliminó ${formato.titulo(v)}.`);
         await cargar();
-    } catch (error) {
-        errorBaja.textContent = error.message;
-    } finally {
-        botonBaja.disabled = false;
-    }
+    },
 });
 
 if (sesion.requerirPermiso('vehiculos.gestionar')) {
