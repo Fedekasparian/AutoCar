@@ -45,6 +45,7 @@ test('publicar de a poco: guardar el paso 1, salir, terminarla después y enviar
     });
 
     const fila = vendedor.locator('li.publicacion', { hasText: `Ford Ka ${anio}` });
+    let idPublicacion = null; // el año se puede repetir entre corridas: la tarjeta del moderador se busca por id
 
     await test.step('en Mis publicaciones aparece "Sin terminar" con lo que le falta', async () => {
         await expect(fila).toContainText('Sin terminar');
@@ -54,6 +55,7 @@ test('publicar de a poco: guardar el paso 1, salir, terminarla después y enviar
     await test.step('la continúa: cada paso se guarda', async () => {
         await fila.getByRole('link', { name: 'Continuar' }).click();
         await expect(vendedor).toHaveURL(/publicar\.html\?id=\d+/);
+        idPublicacion = new URL(vendedor.url()).searchParams.get('id');
         // Arranca en el primer paso que tiene algo sin cargar: la ficha técnica
         await expect(vendedor.locator('#pasos-texto')).toContainText('Paso 2');
         await vendedor.fill('#kilometraje', '90000');
@@ -89,9 +91,9 @@ test('publicar de a poco: guardar el paso 1, salir, terminarla después y enviar
         const admin = await (await browser.newContext()).newPage();
         await ingresar(admin, ADMIN.email, ADMIN.password);
         await admin.goto(pagina('pages/admin/admin-moderar.html?estado=pendiente'));
-        const tarjeta = admin.locator('li.propuesta', { hasText: `Ford Ka ${anio}` });
+        const tarjeta = admin.locator(`li.propuesta:has(#motivo-${idPublicacion})`);
         await tarjeta.getByRole('button', { name: 'Aprobar' }).click();
-        await expect(admin.locator('#aviso')).toContainText('Se aprobó');
+        await expect(admin.locator('.aviso-flotante')).toContainText('Se aprobó'); // aviso flotante (vistas.avisoFlotante)
 
         await vendedor.reload();
         await expect(fila).toContainText('Publicada');
